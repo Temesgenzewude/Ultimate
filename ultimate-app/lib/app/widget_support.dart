@@ -6,6 +6,7 @@ import '../common/constant/images.dart';
 import '../common/constant/styles.dart';
 import '../common/widget/animation_click.dart';
 
+
 mixin AppWidget {
   static double getHeightScreen(BuildContext context) {
     return MediaQuery.of(context).size.height;
