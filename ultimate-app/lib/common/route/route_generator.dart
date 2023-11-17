@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ultimate/ecommerces/menu.dart';
-import 'package:flutter_ultimate/finances/menu.dart';
-import 'package:flutter_ultimate/food_delivery/menu.dart';
-import 'package:flutter_ultimate/profiles/menu.dart';
-import 'package:flutter_ultimate/readings/menu.dart';
-import 'package:flutter_ultimate/socials_media/menu.dart';
 
 import '../../authentications/account_information/screen/account_information.dart';
 import '../../authentications/add_mobile_number/screen/add_mobile_number.dart';
@@ -24,6 +18,7 @@ import '../../ecommerces/earning/screen/earning_home.dart';
 import '../../ecommerces/inventory/screen/inventory.dart';
 import '../../ecommerces/list_product/screen/list_product_home.dart';
 import '../../ecommerces/main_seller/screen/main_seller.dart';
+import '../../ecommerces/menu.dart';
 import '../../ecommerces/order_management/screen/order_management_home.dart';
 import '../../ecommerces/payment_processing/screen/payment_processing_home.dart';
 import '../../ecommerces/product_details/screen/product_details.dart';
@@ -38,6 +33,7 @@ import '../../finances/goal_detail/screen/goal_detail.dart';
 import '../../finances/invest_1/screen/invest_1_home.dart';
 import '../../finances/invest_2/screen/invest_2_home.dart';
 import '../../finances/main_saving/screen/main_saving_home.dart';
+import '../../finances/menu.dart';
 import '../../finances/payout/screen/payout_home.dart';
 import '../../finances/portfolios/screen/portfolios.dart';
 import '../../finances/profits/screen/profits_home.dart';
@@ -51,6 +47,7 @@ import '../../food_delivery/eat_now/screen/eat_now.dart';
 import '../../food_delivery/food_detail/screen/food_detail.dart';
 import '../../food_delivery/home_1/screen/home_1_home.dart';
 import '../../food_delivery/home_2/screen/home_2_home.dart';
+import '../../food_delivery/menu.dart';
 import '../../food_delivery/my_order/screen/my_order.dart';
 import '../../food_delivery/nearby_me/screen/nearby_me.dart';
 import '../../food_delivery/order_success/screen/order_success.dart';
@@ -59,16 +56,7 @@ import '../../food_delivery/today_food/screen/today_food.dart';
 import '../../food_delivery/tracking_order/screen/tracking_order.dart';
 import '../../onboardings/menu.dart';
 import '../../onboardings/onboarding_1/screen/onboarding_1.dart';
-import '../../onboardings/onboarding_10/screen/onboarding_10.dart';
-import '../../onboardings/onboarding_11/screen/onboarding_11.dart';
-import '../../onboardings/onboarding_2/screen/onboarding_2.dart';
-import '../../onboardings/onboarding_3/screen/onboarding_3.dart';
-import '../../onboardings/onboarding_4/screen/onboarding_4.dart';
-import '../../onboardings/onboarding_5/screen/onboarding_5.dart';
-import '../../onboardings/onboarding_6/screen/onboarding_6.dart';
-import '../../onboardings/onboarding_7/screen/onboarding_7.dart';
-import '../../onboardings/onboarding_8/screen/onboarding_8.dart';
-import '../../onboardings/onboarding_9/screen/onboarding_9.dart';
+import '../../profiles/menu.dart';
 import '../../profiles/profile_eight/screen/profile_eight.dart';
 import '../../profiles/profile_elevent/screen/profile_elevent_home.dart';
 import '../../profiles/profile_five/screen/profile_five.dart';
@@ -89,6 +77,7 @@ import '../../readings/interest_1/screen/interest_1.dart';
 import '../../readings/interest_2/screen/interest_2.dart';
 import '../../readings/main_seller_1/screen/main_seller_1.dart';
 import '../../readings/main_seller_2/screen/main_seller_2_home.dart';
+import '../../readings/menu.dart';
 import '../../readings/post_details/screen/post_detail.dart';
 import '../../readings/reading_habit/screen/reading_habit_home.dart';
 import '../../socials_media/achievements/screen/achievements.dart';
@@ -99,6 +88,7 @@ import '../../socials_media/friend_list/screen/friend_list.dart';
 import '../../socials_media/home_social/screen/home_social_home.dart';
 import '../../socials_media/invite_friends/screen/invite_friends.dart';
 import '../../socials_media/list_friends/screen/list_friends_home.dart';
+import '../../socials_media/menu.dart';
 import '../../socials_media/notification/screen/notification.dart';
 import '../../socials_media/post_details/screen/post_details.dart';
 import '../../socials_media/reviews/screen/reviews_home.dart';
@@ -147,46 +137,6 @@ mixin RouteGenerator {
       case Routes.onBoarding1:
         return MaterialPageRoute<dynamic>(
           builder: (context) => const OnBoardingOne(),
-        );
-      case Routes.onBoarding2:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const OnBoardingTwo(),
-        );
-      case Routes.onBoarding3:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const OnBoardingThree(),
-        );
-      case Routes.onBoarding4:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const OnBoardingFour(),
-        );
-      case Routes.onBoarding5:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const OnBoardingFive(),
-        );
-      case Routes.onBoarding6:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const OnBoardingSix(),
-        );
-      case Routes.onBoarding7:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const OnBoardingSeven(),
-        );
-      case Routes.onBoarding8:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const OnBoardingEight(),
-        );
-      case Routes.onBoarding9:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const OnBoardingNine(),
-        );
-      case Routes.onBoarding10:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const OnBoardingTen(),
-        );
-      case Routes.onBoarding11:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const OnBoardingElevent(),
         );
 
       // / route catalog Authen

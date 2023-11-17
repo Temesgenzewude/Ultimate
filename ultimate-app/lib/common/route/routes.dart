@@ -1,15 +1,6 @@
 class Routes {
   static const String onBoarding1 = '/onBoarding1';
-  static const String onBoarding2 = '/onBoarding2';
-  static const String onBoarding3 = '/onBoarding3';
-  static const String onBoarding4 = '/onBoarding4';
-  static const String onBoarding5 = '/onBoarding5';
-  static const String onBoarding6 = '/onBoarding6';
-  static const String onBoarding7 = '/onBoarding7';
-  static const String onBoarding8 = '/onBoarding8';
-  static const String onBoarding9 = '/onBoarding9';
-  static const String onBoarding10 = '/onBoarding10';
-  static const String onBoarding11 = '/onBoarding11';
+ 
 
   static const String profile1 = '/profile1';
   static const String profile2 = '/profile2';

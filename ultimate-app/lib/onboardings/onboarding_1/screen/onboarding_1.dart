@@ -6,6 +6,7 @@ import '../../../common/bloc/slider/bloc_slider.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
+import '../../../common/route/routes.dart';
 import '../widget/onboarding_widget.dart';
 
 final List<Color> colors = [
@@ -140,7 +141,9 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
               child: AppWidget.typeButtonStartAction(
                   context: context,
                   input: 'Continue',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, Routes.signUp);
+                  },
                   bgColor: primary,
                   icon: icArrowRight,
                   colorAsset: grey1100,
