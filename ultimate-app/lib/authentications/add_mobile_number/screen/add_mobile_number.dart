@@ -104,8 +104,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                           context: context,
                           input: 'Next',
                           onPressed: () {
-                            Navigator.pushNamed(
-                                context, Routes.verify);
+                            Navigator.pushNamed(context, Routes.verify);
                           },
                           bgColor: primary,
                           icon: icArrowRight,
