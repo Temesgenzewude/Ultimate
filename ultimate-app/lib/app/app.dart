@@ -3,9 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-
-
-import '../common/bloc/slider/slider_bloc.dart';
+import '../common/bloc/slider/bloc_slider.dart';
 import '../common/constant/dark_mode.dart';
 import '../common/route/route_generator.dart';
 import '../common/route/routes.dart';

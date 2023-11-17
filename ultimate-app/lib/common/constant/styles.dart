@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'colors.dart';
-
-
+import '../../../common/constant/colors.dart';
 
 FontWeight checkWeight(String weight) {
   switch (weight) {

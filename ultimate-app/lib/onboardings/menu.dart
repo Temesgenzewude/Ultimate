@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
+import '../../../common/constant/images.dart';
 import '../app/widget_support.dart';
-
-
 import '../common/bloc/slider/bloc_slider.dart';
-import '../common/constant/images.dart';
 import '../common/route/routes.dart';
 import 'onboarding_1/screen/onboarding_1.dart';
 

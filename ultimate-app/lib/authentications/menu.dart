@@ -1,46 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/constant/colors.dart';
-import '../../../common/constant/images.dart';
-import '../../../common/constant/styles.dart';
-import '../../../common/widget/animation_click.dart';
 import '../app/widget_support.dart';
-import '../common/bloc/slider/bloc_slider.dart';
+import '../common/constant/colors.dart';
+import '../common/constant/images.dart';
+import '../common/constant/styles.dart';
 import '../common/route/routes.dart';
+import '../common/widget/animation_click.dart';
 
 final List<Map<String, String>> routers = [
-  {'title': 'Onboarding', 'route': Routes.onboarding},
-  {'title': 'Authentication', 'route': Routes.authentication},
-  {'title': 'Profile', 'route': Routes.profile},
-  {'title': 'Finance', 'route': Routes.finance},
-  {'title': 'Social Media', 'route': Routes.socialMedia},
-  {'title': 'Food Delivery', 'route': Routes.foodDelivery},
-  {'title': 'Ecommerce', 'route': Routes.ecommerce},
-  {'title': 'Reading', 'route': Routes.reading},
+  {'title': 'Account information', 'route': Routes.accountInformation},
+  {'title': 'Add mobile number', 'route': Routes.addMobileNumber},
+  {'title': 'Forgot password', 'route': Routes.forgotPassword},
+  {'title': 'Kyc', 'route': Routes.kyc},
+  {'title': 'Login', 'route': Routes.login},
+  {'title': 'Register', 'route': Routes.register},
+  {'title': 'Reset password', 'route': Routes.resetPassword},
+  {'title': 'Sign up', 'route': Routes.signUp},
+  {'title': 'Sign up social', 'route': Routes.signUpSocial},
+  {'title': 'Verify', 'route': Routes.verify},
 ];
 
-class MenuNavigation extends StatefulWidget {
-  const MenuNavigation({Key? key}) : super(key: key);
+class MenuAuthenNavigation extends StatefulWidget {
+  const MenuAuthenNavigation({Key? key}) : super(key: key);
 
   @override
-  State<MenuNavigation> createState() => _MenuNavigationState();
+  State<MenuAuthenNavigation> createState() => _MenuAuthenNavigationState();
 }
 
-class _MenuNavigationState extends State<MenuNavigation> {
-  late SliderBloc sliderBloc;
+class _MenuAuthenNavigationState extends State<MenuAuthenNavigation> {
   int selected = 0;
-
-  @override
-  void didChangeDependencies() {
-    sliderBloc = BlocProvider.of<SliderBloc>(context);
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
-    sliderBloc.add(SwipeReset());
     return Scaffold(
       body: SafeArea(
         child: Column(
