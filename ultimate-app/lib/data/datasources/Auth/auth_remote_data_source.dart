@@ -3,13 +3,15 @@
 import 'dart:convert';
 import 'package:flutter_ultimate/data/app_exceptions.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
+import 'package:flutter_ultimate/data/models/login_response_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../common/constant/api_endpoints.dart';
+import '../../models/login_request_model.dart';
 
 abstract class AuthenticationRemoteDataSource {
-  Future<AuthenticationModel> signup(AuthenticationModel newuser);
-  Future<AuthenticationModel> signin(AuthenticationModel user);
+  Future<SingUpResponseModel> signup(AuthenticationModel newuser);
+  Future<LoginResponseModel> signin(LoginRequestModel user);
   Future<void> sendOtp(String id, String phoneNumber);
   Future<void> verifyOtp(String id, String otp);
 }
@@ -20,14 +22,11 @@ class AuthenticationRemoteDataSourceImpl
   final http.Client client;
 
   @override
-  Future<AuthenticationModel> signin(AuthenticationModel user) async {
-    
+  Future<LoginResponseModel> signin(LoginRequestModel user) async {
     final String url = AppUrl.signInEndPoint;
-    final jsonBody = json.encode({
-      'email': 'khalrr@gmail.com',
-      'phoneNumber': '',
-      'password': 'hazmed78',
-    });
+    final jsonBody = json.encode(user.toJson());
+    
+    print(" signing in user ${user.toJson()}");
     final response = await client.post(
       Uri.parse(url),
       body: jsonBody,
@@ -38,7 +37,7 @@ class AuthenticationRemoteDataSourceImpl
 
     if (response.statusCode == 200) {
       final dynamic data = json.decode(response.body);
-      final jsonData = AuthenticationModel.fromJson(data);
+      final jsonData = LoginResponseModel.fromJson(data);
       return jsonData;
     } else if (response.statusCode == 403) {
       throw Exception(
@@ -49,19 +48,10 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<AuthenticationModel> signup(AuthenticationModel user) async {
+  Future<SingUpResponseModel> signup(AuthenticationModel user) async {
     final String url = AppUrl.signUpEndPoint;
-    final jsonBody = json.encode({
-      'name': 'khalid',
-      'email': 'b68uhdh6q2@gmail.com',
-      'phoneNumber': '+25191489',
-      'birthDate': '21-10-2000',
-      'password': '@Khalidmhd21',
-      'address': 'Dr Imad ud din Yousaf Butt Neurologist - Lahore, Pakistan',
-      'coordinates': '31.536267224296935, 74.32805961092151',
-      'user_type': 'user',
-      'terms': true
-    });
+    final jsonBody = json.encode(user.toJson());
+    print(" signing up user ${user.toJson()}");
     final response = await client.post(
       Uri.parse(url),
       body: jsonBody,
@@ -69,11 +59,11 @@ class AuthenticationRemoteDataSourceImpl
         'Content-Type': 'application/json',
       },
     );
-    print(response.statusCode);
+    print('sing up api status code: ${response.statusCode}');
 
     if (response.statusCode == 200) {
       final dynamic data = json.decode(response.body);
-      return AuthenticationModel.fromJson(data);
+      return SingUpResponseModel.fromJson(data);
     } else if (response.statusCode == 403) {
       throw Exception("User already registered");
     } else {

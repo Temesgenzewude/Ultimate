@@ -104,21 +104,34 @@
 
 import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
+import 'package:flutter_ultimate/data/models/login_response_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../models/login_request_model.dart';
 
 class AuthenticationRepository {
   AuthenticationRepository({required this.remoteDataSource});
   final AuthenticationRemoteDataSource remoteDataSource;
 
-  Future<AuthenticationModel> signin(AuthenticationModel user) async {
+  Future<LoginResponseModel> signin(LoginRequestModel user) async {
     try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
       final response = await remoteDataSource.signin(user);
+
+      print('...User Token...: ${response.token}');
+      print('...User Id...: ${response.user?.userId}');
+
+      prefs.setString('token', response.token.toString());
+      prefs.setString('userId', response.user?.userId.toString() ?? '');
+
       return response;
     } catch (e) {
       throw Exception(e.toString().substring(10));
     }
   }
 
-  Future<AuthenticationModel> signup(AuthenticationModel newUser) async {
+  Future<SingUpResponseModel> signup(AuthenticationModel newUser) async {
     try {
       return await remoteDataSource.signup(newUser);
     } catch (e) {

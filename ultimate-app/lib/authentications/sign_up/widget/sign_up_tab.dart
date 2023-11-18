@@ -33,6 +33,8 @@ class _SignUpTabState extends State<SignUpTab> {
   TextEditingController addressCtl = TextEditingController();
   FocusNode addressFn = FocusNode();
   FocusNode repasswordFn = FocusNode();
+  TextEditingController birthdayCtl = TextEditingController();
+  FocusNode birthdayFn = FocusNode();
   bool showPass = false;
   bool showRePass = false;
   Position? _currentPosition;
@@ -95,9 +97,7 @@ class _SignUpTabState extends State<SignUpTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 16),
             GradientText(
               'Welcom to  Ultimate!',
               style: const TextStyle(
@@ -110,6 +110,7 @@ class _SignUpTabState extends State<SignUpTab> {
                 const Color(0xFFFFFDE1).withOpacity(0.9),
               ]),
             ),
+            const SizedBox(height: 10),
             Column(
               children: [
                 TextFieldCpn(
@@ -130,6 +131,17 @@ class _SignUpTabState extends State<SignUpTab> {
                   focusNode: addressFn,
                   labelText: 'Address',
                 ),
+
+                const SizedBox(
+                  height: 16,
+                ),
+
+                TextFieldCpn(
+                  controller: birthdayCtl,
+                  focusNode: birthdayFn,
+                  labelText: 'Birthday',
+                ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: TextFieldCpn(
@@ -173,35 +185,79 @@ class _SignUpTabState extends State<SignUpTab> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is AuthenticationSuccessState) {
                       Future.delayed(Duration.zero, () {
-                        // Navigate to the home page or some authenticated page
                         Navigator.of(context)
                             .pushReplacementNamed(Routes.signUp);
                       });
                     } else if (state is AuthenticationFailureState) {
-                      return const Center(
-                          child: Text('Failure while creating user'));
+                      return Column(
+                        children: [
+                          AppWidget.typeButtonStartAction(
+                            context: context,
+                            input: 'Sign Up Now',
+                            onPressed: () {
+                              final AuthenticationModel user =
+                                  AuthenticationModel(
+                                email: usernameCtl.text,
+                                password: passwordCtl.text,
+                                name: nameCtl.text,
+                                address: addressCtl.text,
+                                phoneNumber: phoneCtl.text,
+                                coordinates:
+                                    '${_currentPosition?.latitude},${_currentPosition?.longitude}',
+                                birthDate: birthdayCtl.text,
+                              );
+                              // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
+                              BlocProvider.of<AuthenticationBloc>(context).add(
+                                SignUpEvent(newUser: user),
+                              );
+                            },
+                            colorAsset: grey1100,
+                            icon: icKeyboardRight,
+                            sizeAsset: 24,
+                            bgColor: primary,
+                            borderColor: primary,
+                            textColor: grey1100,
+                          ),
+                          Center(
+                            child: Text(
+                              state.errorMessage,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
                     }
                     return AppWidget.typeButtonStartAction(
-                        context: context,
-                        input: 'Sign Up Now',
-                        onPressed: () {
-                          final AuthenticationModel user = AuthenticationModel(
-                            userName: usernameCtl.text,
-                            password: passwordCtl.text,
-                          );
-                          // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
-                          BlocProvider.of<AuthenticationBloc>(context).add(
-                            SignUpEvent(newUser: user),
-                          );
+                      context: context,
+                      input: 'Sign Up Now',
+                      onPressed: () {
+                        final AuthenticationModel user = AuthenticationModel(
+                          email: usernameCtl.text,
+                          password: passwordCtl.text,
+                          name: nameCtl.text,
+                          address: addressCtl.text,
+                          phoneNumber: phoneCtl.text,
+                          coordinates:
+                              '${_currentPosition?.latitude},${_currentPosition?.longitude}',
+                          birthDate: birthdayCtl.text,
+                        );
+                        // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
+                        BlocProvider.of<AuthenticationBloc>(context).add(
+                          SignUpEvent(newUser: user),
+                        );
 
-                          // Navigator.of(context).pushNamed(Routes.signUp);
-                        },
-                        colorAsset: grey1100,
-                        icon: icKeyboardRight,
-                        sizeAsset: 24,
-                        bgColor: primary,
-                        borderColor: primary,
-                        textColor: grey1100);
+                        // Navigator.of(context).pushNamed(Routes.signUp);
+                      },
+                      colorAsset: grey1100,
+                      icon: icKeyboardRight,
+                      sizeAsset: 24,
+                      bgColor: primary,
+                      borderColor: primary,
+                      textColor: grey1100,
+                    );
                   },
                 ),
                 // AppWidget.typeButtonStartAction(

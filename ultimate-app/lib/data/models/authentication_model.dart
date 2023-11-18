@@ -1,45 +1,63 @@
 // ignore_for_file: sort_constructors_first
 
 class AuthenticationModel {
-  String userName;
+  String name;
   String password;
-  String? email;
-  String? phoneNumber;
-  String? birthday;
-  String? address;
-  String? coordinates;
-  String? userType;
-  String? terms;
+  String email;
+  String phoneNumber;
+  String birthDate;
+  String address;
+  String coordinates;
+  String? user_type;
+  bool terms;
 
   AuthenticationModel({
-    required this.userName,
+    required this.name,
     required this.password,
-    this.email,
-    this.address,
-    this.birthday,
-    this.coordinates,
-    this.phoneNumber,
-    this.terms,
-    this.userType,
+    required this.email,
+    required this.address,
+    required this.birthDate,
+    required this.coordinates,
+    required this.phoneNumber,
+    this.terms = true,
+    this.user_type = 'user',
   });
 
-  factory AuthenticationModel.fromJson(Map<String, dynamic> json) {
-    print(json);
-    final authmodel = AuthenticationModel(
-        userName: (json['user'] != null) ? json['user']['name'] : 'mock name',
-        password: json['token'] ?? 'mock token');
-    return authmodel;
-  }
+  AuthenticationModel.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        password = json['password'],
+        email = json['email'],
+        phoneNumber = json['phoneNumber'],
+        birthDate = json['birthDate'],
+        address = json['address'],
+        coordinates = json['coordinates'],
+        user_type = json['user_type'],
+        terms = json['terms'];
 
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> data = Map<String, dynamic>();
-    data['userName'] = this.userName;
-    data['password'] = this.password;
-    return data;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name,
+        'password': password,
+        'email': email,
+        'phoneNumber': phoneNumber,
+        'birthDate': birthDate,
+        'address': address,
+        'coordinates': coordinates,
+        'user_type': user_type,
+        'terms': terms,
+      };
+}
+
+class SingUpResponseModel {
+  String? message;
+  String? userId;
+
+  SingUpResponseModel({
+    this.message,
+    this.userId,
+  });
+
+  SingUpResponseModel.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    userId = json['id'];
   }
-//   Map<String, dynamic> toJson() => <String, dynamic>{
-//         'id': userName,
-//         'password': password,
-//       };
-// 
 }
