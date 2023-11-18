@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/api/verification.dart';
 import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
 
 import 'otp_event.dart';
