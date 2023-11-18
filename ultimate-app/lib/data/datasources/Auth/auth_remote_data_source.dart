@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_single_quotes
+
 import 'dart:convert';
 import 'package:flutter_ultimate/data/app_exceptions.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
@@ -26,7 +28,6 @@ class AuthenticationRemoteDataSourceImpl
       'phoneNumber': '',
       'password': 'hazmed78',
     });
-
     final response = await client.post(
       Uri.parse(url),
       body: jsonBody,
@@ -34,13 +35,16 @@ class AuthenticationRemoteDataSourceImpl
         'Content-Type': 'application/json',
       },
     );
+
     if (response.statusCode == 200) {
       final dynamic data = json.decode(response.body);
       final jsonData = AuthenticationModel.fromJson(data);
       return jsonData;
+    } else if (response.statusCode == 403) {
+      throw Exception(
+          'Invalid Email or or ..'); // Update the error message if desired
     } else {
-      throw FetchDataException(
-          'Failed to login'); // Update the error message if desired
+      throw Exception("Error while trying to sing in");
     }
   }
 
@@ -49,8 +53,8 @@ class AuthenticationRemoteDataSourceImpl
     final String url = AppUrl.signUpEndPoint;
     final jsonBody = json.encode({
       'name': 'khalid',
-      'email': 'b686q2@gmail.com',
-      'phoneNumber': '+2511786707099189',
+      'email': 'b68uhdh6q2@gmail.com',
+      'phoneNumber': '+25191489',
       'birthDate': '21-10-2000',
       'password': '@Khalidmhd21',
       'address': 'Dr Imad ud din Yousaf Butt Neurologist - Lahore, Pakistan',
@@ -73,7 +77,7 @@ class AuthenticationRemoteDataSourceImpl
     } else if (response.statusCode == 403) {
       throw Exception("User already registered");
     } else {
-      throw FetchDataException('Failed to create a new user');
+      throw Exception('Failed to create a new user');
     }
   }
 

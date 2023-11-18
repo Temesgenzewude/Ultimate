@@ -75,33 +75,66 @@ class _SignInTabState extends State<SignInTab> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is AuthenticationSuccessState) {
                   Future.delayed(Duration.zero, () {
-                    // Navigate to the home page or some authenticated page
                     Navigator.of(context)
                         .pushReplacementNamed(Routes.addMobileNumber);
                   });
                 } else if (state is AuthenticationFailureState) {
-                  return const Center(child: Text('Login Failure'));
+                  return Column(
+                    children: [
+                      AppWidget.typeButtonStartAction(
+                        context: context,
+                        input: 'Sign In Now',
+                        onPressed: () {
+                          final AuthenticationModel user = AuthenticationModel(
+                            userName: usernameCtl.text,
+                            password: passwordCtl.text,
+                          );
+                          BlocProvider.of<AuthenticationBloc>(context).add(
+                            SignInEvent(
+                              user: user,
+                            ),
+                          );
+                        },
+                        colorAsset: grey1100,
+                        icon: icKeyboardRight,
+                        sizeAsset: 24,
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100,
+                      ),
+                      Center(
+                        child: Text(
+                          state.errorMessage,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
                 }
                 return AppWidget.typeButtonStartAction(
-                    context: context,
-                    input: 'Sign In Now',
-                    onPressed: () {
-                      final AuthenticationModel user = AuthenticationModel(
-                        userName: usernameCtl.text,
-                        password: passwordCtl.text,
-                      );
-                      BlocProvider.of<AuthenticationBloc>(context).add(
-                        SignInEvent(
-                          user: user,
-                        ),
-                      );
-                    },
-                    colorAsset: grey1100,
-                    icon: icKeyboardRight,
-                    sizeAsset: 24,
-                    bgColor: primary,
-                    borderColor: primary,
-                    textColor: grey1100);
+                  context: context,
+                  input: 'Sign In Now',
+                  onPressed: () {
+                    final AuthenticationModel user = AuthenticationModel(
+                      userName: usernameCtl.text,
+                      password: passwordCtl.text,
+                    );
+                    BlocProvider.of<AuthenticationBloc>(context).add(
+                      SignInEvent(
+                        user: user,
+                      ),
+                    );
+                  },
+                  colorAsset: grey1100,
+                  icon: icKeyboardRight,
+                  sizeAsset: 24,
+                  bgColor: primary,
+                  borderColor: primary,
+                  textColor: grey1100,
+                );
               }),
             ],
           ),
