@@ -43,6 +43,9 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         )
+        BlocProvider(
+          create: (BuildContext context) => OtpBloc(AuthRepository()),
+        ),
       ],
       child: MaterialApp(
         initialRoute: Routes.onBoarding1,
