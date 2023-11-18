@@ -178,7 +178,9 @@ mixin RouteGenerator {
         );
       case Routes.verify:
         return MaterialPageRoute<dynamic>(
-          builder: (context) => const Verify(),
+          builder: (context) => Verify(
+            phoneNumber: settings.arguments as String,
+          ),
         );
       // / route catalog profile
       case Routes.profile1:
