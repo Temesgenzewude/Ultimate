@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
-import 'package:flutter_ultimate/common/route/routes.dart';
-import 'package:flutter_ultimate/data/models/authentication_model.dart';
 
 import '../../../app/widget_support.dart';
+import '../../../common/bloc/auth/authentication_bloc.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
+import '../../../common/route/routes.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/textfield.dart';
 import '../../../common/widget/textfield_pass.dart';
+import '../../../data/models/login_request_model.dart';
 
 class SignInTab extends StatefulWidget {
   const SignInTab({Key? key}) : super(key: key);
@@ -50,7 +50,7 @@ class _SignInTabState extends State<SignInTab> {
               TextFieldCpn(
                 controller: usernameCtl,
                 focusNode: usernameFn,
-                labelText: 'Username',
+                labelText: 'Email',
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 24, bottom: 32),
@@ -70,9 +70,9 @@ class _SignInTabState extends State<SignInTab> {
               ),
               BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   builder: (context, state) {
-                if (state is AuthenticationLoadingState) {
+                if (state is LoginLoadingState) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is AuthenticationSuccessState) {
+                } else if (state is LoginSuccessState) {
                   Future.delayed(Duration.zero, () {
                     Navigator.of(context)
                         .pushReplacementNamed(Routes.addMobileNumber);
@@ -84,8 +84,8 @@ class _SignInTabState extends State<SignInTab> {
                         context: context,
                         input: 'Sign In Now',
                         onPressed: () {
-                          final AuthenticationModel user = AuthenticationModel(
-                            userName: usernameCtl.text,
+                          final LoginRequestModel user = LoginRequestModel(
+                            email: usernameCtl.text,
                             password: passwordCtl.text,
                           );
                           BlocProvider.of<AuthenticationBloc>(context).add(
@@ -117,8 +117,8 @@ class _SignInTabState extends State<SignInTab> {
                   context: context,
                   input: 'Sign In Now',
                   onPressed: () {
-                    final AuthenticationModel user = AuthenticationModel(
-                      userName: usernameCtl.text,
+                    final LoginRequestModel user = LoginRequestModel(
+                      email: usernameCtl.text,
                       password: passwordCtl.text,
                     );
                     BlocProvider.of<AuthenticationBloc>(context).add(

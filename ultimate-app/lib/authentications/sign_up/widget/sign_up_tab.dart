@@ -33,6 +33,8 @@ class _SignUpTabState extends State<SignUpTab> {
   TextEditingController addressCtl = TextEditingController();
   FocusNode addressFn = FocusNode();
   FocusNode repasswordFn = FocusNode();
+  TextEditingController birthdayCtl = TextEditingController();
+  FocusNode birthdayFn = FocusNode();
   bool showPass = false;
   bool showRePass = false;
   Position? _currentPosition;
@@ -95,6 +97,7 @@ class _SignUpTabState extends State<SignUpTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            const SizedBox(height: 16),
             GradientText(
               'Welcom to  Ultimate!',
               style: const TextStyle(
@@ -107,6 +110,7 @@ class _SignUpTabState extends State<SignUpTab> {
                 const Color(0xFFFFFDE1).withOpacity(0.9),
               ]),
             ),
+            const SizedBox(height: 10),
             Column(
               children: [
                 TextFieldCpn(
@@ -127,6 +131,17 @@ class _SignUpTabState extends State<SignUpTab> {
                   focusNode: addressFn,
                   labelText: 'Address',
                 ),
+
+                const SizedBox(
+                  height: 16,
+                ),
+
+                TextFieldCpn(
+                  controller: birthdayCtl,
+                  focusNode: birthdayFn,
+                  labelText: 'Birthday',
+                ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: TextFieldCpn(
@@ -182,14 +197,19 @@ class _SignUpTabState extends State<SignUpTab> {
                             onPressed: () {
                               final AuthenticationModel user =
                                   AuthenticationModel(
-                                userName: usernameCtl.text,
+                                email: usernameCtl.text,
                                 password: passwordCtl.text,
+                                name: nameCtl.text,
+                                address: addressCtl.text,
+                                phoneNumber: phoneCtl.text,
+                                coordinates:
+                                    '${_currentPosition?.latitude},${_currentPosition?.longitude}',
+                                birthDate: birthdayCtl.text,
                               );
                               // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
                               BlocProvider.of<AuthenticationBloc>(context).add(
                                 SignUpEvent(newUser: user),
                               );
-
                             },
                             colorAsset: grey1100,
                             icon: icKeyboardRight,
@@ -215,8 +235,14 @@ class _SignUpTabState extends State<SignUpTab> {
                       input: 'Sign Up Now',
                       onPressed: () {
                         final AuthenticationModel user = AuthenticationModel(
-                          userName: usernameCtl.text,
+                          email: usernameCtl.text,
                           password: passwordCtl.text,
+                          name: nameCtl.text,
+                          address: addressCtl.text,
+                          phoneNumber: phoneCtl.text,
+                          coordinates:
+                              '${_currentPosition?.latitude},${_currentPosition?.longitude}',
+                          birthDate: birthdayCtl.text,
                         );
                         // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
                         BlocProvider.of<AuthenticationBloc>(context).add(

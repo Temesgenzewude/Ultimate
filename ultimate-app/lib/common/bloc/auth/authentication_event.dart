@@ -5,13 +5,11 @@ abstract class AuthenticationEvent {
 }
 
 class SignInEvent extends AuthenticationEvent {
-  final AuthenticationModel user;
-
   SignInEvent({required this.user});
+  final LoginRequestModel user;
 }
 
 class SignUpEvent extends AuthenticationEvent {
-  final AuthenticationModel newUser;
-
   SignUpEvent({required this.newUser});
+  final AuthenticationModel newUser;
 }

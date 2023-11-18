@@ -2,6 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
 
+import '../../../data/models/login_request_model.dart';
+import '../../../data/models/login_response_model.dart';
+
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
@@ -18,6 +21,8 @@ class AuthenticationBloc
   AuthenticationState authenticationSuccessOrFailure(dynamic result) {
     if (result is AuthenticationModel) {
       return AuthenticationSuccessState(user: result);
+    } else if (result is LoginResponseModel) {
+      return LoginSuccessState(user: result);
     } else if (result is String) {
       return AuthenticationFailureState(errorMessage: result);
     } else {
@@ -27,7 +32,7 @@ class AuthenticationBloc
   }
 
   void _signIn(SignInEvent event, Emitter<AuthenticationState> emit) async {
-    emit(AuthenticationLoadingState());
+    emit(LoginLoadingState());
     try {
       final result = await authenticationRepository.signin(event.user);
       emit(authenticationSuccessOrFailure(result));
