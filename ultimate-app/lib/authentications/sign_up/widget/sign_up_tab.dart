@@ -170,34 +170,35 @@ class _SignUpTabState extends State<SignUpTab> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is AuthenticationSuccessState) {
                       Future.delayed(Duration.zero, () {
-                        // Navigate to the home page or some authenticated page
                         Navigator.of(context)
                             .pushReplacementNamed(Routes.signUp);
                       });
                     } else if (state is AuthenticationFailureState) {
-                      return const Center(child: Text('Failure while creating user'));
+                      return const Center(
+                          child: Text('Failure while creating user'));
                     }
                     return AppWidget.typeButtonStartAction(
-                        context: context,
-                        input: 'Sign Up Now',
-                        onPressed: () {
-                          final AuthenticationModel user = AuthenticationModel(
-                            userName: usernameCtl.text,
-                            password: passwordCtl.text,
-                          );
-                          // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
-                          BlocProvider.of<AuthenticationBloc>(context).add(
-                            SignUpEvent(newUser: user),
-                          );
+                      context: context,
+                      input: 'Sign Up Now',
+                      onPressed: () {
+                        final AuthenticationModel user = AuthenticationModel(
+                          userName: usernameCtl.text,
+                          password: passwordCtl.text,
+                        );
+                        // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
+                        BlocProvider.of<AuthenticationBloc>(context).add(
+                          SignUpEvent(newUser: user),
+                        );
 
-                          // Navigator.of(context).pushNamed(Routes.signUp);
-                        },
-                        colorAsset: grey1100,
-                        icon: icKeyboardRight,
-                        sizeAsset: 24,
-                        bgColor: primary,
-                        borderColor: primary,
-                        textColor: grey1100);
+                        // Navigator.of(context).pushNamed(Routes.signUp);
+                      },
+                      colorAsset: grey1100,
+                      icon: icKeyboardRight,
+                      sizeAsset: 24,
+                      bgColor: primary,
+                      borderColor: primary,
+                      textColor: grey1100,
+                    );
                   },
                 ),
                 // AppWidget.typeButtonStartAction(
