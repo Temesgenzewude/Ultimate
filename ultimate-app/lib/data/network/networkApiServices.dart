@@ -16,7 +16,7 @@ class NetworkApiServices extends BaseApiServices {
         headers: {
           'Authorization': 'Bearer $token',
         },
-      ).timeout(const Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 30));
 
       responseJson = returnResponse(response);
     } on SocketException {
@@ -33,7 +33,7 @@ class NetworkApiServices extends BaseApiServices {
       final response = await http.post(
         Uri.parse(url),
         body: data,
-      ).timeout(const Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 30));
 
       responseJson = returnResponse(response);
     } on SocketException {
