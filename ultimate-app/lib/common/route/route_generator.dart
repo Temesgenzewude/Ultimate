@@ -146,7 +146,7 @@ mixin RouteGenerator {
         );
       case Routes.addMobileNumber:
         return MaterialPageRoute<dynamic>(
-          builder: (context) => const AddMobileNumber(),
+          builder: (context) => AddMobileNumber(),
         );
       case Routes.forgotPassword:
         return MaterialPageRoute<dynamic>(

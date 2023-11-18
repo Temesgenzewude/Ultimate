@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_event.dart';
 import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
+import 'package:flutter_ultimate/dependency_indjection.dart';
+import 'package:flutter_ultimate/sharedPreferences.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../app/widget_support.dart';
@@ -17,7 +19,8 @@ import '../../../common/widget/unfocus_click.dart';
 
 class Verify extends StatefulWidget {
   final String phoneNumber;
-  const Verify({required this.phoneNumber, Key? key}) : super(key: key);
+  final prefManager = sl<PrefManager>();
+  Verify({required this.phoneNumber, Key? key}) : super(key: key);
 
   @override
   State<Verify> createState() => _VerifyState();
@@ -124,7 +127,9 @@ class _VerifyState extends State<Verify> {
                       autofocus: true,
                       length: 5,
                       onSubmitted: (String otp) {
-                        context.read<OtpBloc>().add(OtpVerified(otp));
+                        context
+                            .read<OtpBloc>()
+                            .add(OtpVerified(otp, widget.prefManager.kUserID));
                       },
                       androidSmsAutofillMethod:
                           AndroidSmsAutofillMethod.smsUserConsentApi,
@@ -176,9 +181,9 @@ class _VerifyState extends State<Verify> {
                         onPressed: _start != 0
                             ? () {}
                             : () {
-                                context
-                                    .read<OtpBloc>()
-                                    .add(OtpSent(widget.phoneNumber));
+                                context.read<OtpBloc>().add(OtpSent(
+                                    widget.phoneNumber,
+                                    widget.prefManager.kUserID));
                                 restartTimer();
                               },
                         bgColor: _start != 0 ? grey200 : primary,

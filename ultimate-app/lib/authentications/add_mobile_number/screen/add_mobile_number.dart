@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_event.dart';
 import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
+import 'package:flutter_ultimate/dependency_indjection.dart';
+import 'package:flutter_ultimate/sharedPreferences.dart';
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
@@ -14,7 +16,8 @@ import '../../../common/widget/textfield.dart';
 import '../../../common/widget/unfocus_click.dart';
 
 class AddMobileNumber extends StatefulWidget {
-  const AddMobileNumber({Key? key}) : super(key: key);
+  final prefManager = sl<PrefManager>();
+  AddMobileNumber({Key? key}) : super(key: key);
 
   @override
   State<AddMobileNumber> createState() => _AddMobileNumberState();
@@ -107,7 +110,8 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                           context: context,
                           input: 'Next',
                           onPressed: () {
-                            context.read<OtpBloc>().add(OtpSent(phoneCtl.text));
+                            context.read<OtpBloc>().add(OtpSent(
+                                phoneCtl.text, widget.prefManager.kUserID));
                             Navigator.pushNamed(context, Routes.verify,
                                 arguments: phoneCtl.text);
                           },
