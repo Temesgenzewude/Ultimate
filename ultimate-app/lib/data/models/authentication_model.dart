@@ -11,6 +11,10 @@ class AuthenticationModel {
     );
   }
 
-  
-
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = Map<String, dynamic>();
+    data['userName'] = this.userName;
+    data['password'] = this.password;
+    return data;
+  }
 }
