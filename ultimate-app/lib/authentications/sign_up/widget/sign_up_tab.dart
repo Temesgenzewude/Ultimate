@@ -95,6 +95,9 @@ class _SignUpTabState extends State<SignUpTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            const SizedBox(
+              height: 20,
+            ),
             GradientText(
               'Welcom to  Ultimate!',
               style: const TextStyle(
@@ -175,7 +178,8 @@ class _SignUpTabState extends State<SignUpTab> {
                             .pushReplacementNamed(Routes.signUp);
                       });
                     } else if (state is AuthenticationFailureState) {
-                      return const Center(child: Text('Failure while creating user'));
+                      return const Center(
+                          child: Text('Failure while creating user'));
                     }
                     return AppWidget.typeButtonStartAction(
                         context: context,

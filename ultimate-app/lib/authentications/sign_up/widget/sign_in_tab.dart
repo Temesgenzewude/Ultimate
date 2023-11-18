@@ -33,6 +33,7 @@ class _SignInTabState extends State<SignInTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+         
           GradientText(
             'Welcom to  Ultimate!',
             style: const TextStyle(
@@ -50,7 +51,7 @@ class _SignInTabState extends State<SignInTab> {
               TextFieldCpn(
                 controller: usernameCtl,
                 focusNode: usernameFn,
-                labelText: 'Username',
+                labelText: 'Email',
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 24, bottom: 32),
