@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
+import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
+import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
+import 'package:http/http.dart' as http;
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../common/bloc/slider/bloc_slider.dart';
@@ -30,6 +34,15 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<SliderBloc>(
           create: (BuildContext context) => SliderBloc(),
         ),
+        BlocProvider<AuthenticationBloc>(
+          create: (BuildContext context) => AuthenticationBloc(
+            authenticationRepository: AuthenticationRepository(
+              remoteDataSource: AuthenticationRemoteDataSourceImpl(
+                client: http.Client(),
+              ),
+            ),
+          ),
+        )
       ],
       child: MaterialApp(
         initialRoute: Routes.onBoarding1,

@@ -39,4 +39,8 @@ class AuthenticationBloc
 
     emit(authenticationSuccessOrFailure(result));
   }
+
+  bool isAuthenticated() {
+    return state is AuthenticationSuccessState;
+  }
 }

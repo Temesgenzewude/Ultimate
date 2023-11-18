@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
 import 'package:flutter_ultimate/common/route/routes.dart';
+import 'package:flutter_ultimate/data/models/authentication_model.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
@@ -86,7 +89,15 @@ class _SignUpTabState extends State<SignUpTab> {
                   context: context,
                   input: 'Sign Up Now',
                   onPressed: () {
-                    Navigator.pushNamed(context, Routes.addMobileNumber);
+                    final AuthenticationModel user = AuthenticationModel(
+                      userName: usernameCtl.text,
+                      password: passwordCtl.text,
+                    );
+                    // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
+                    BlocProvider.of<AuthenticationBloc>(context).add(
+                      SignUpEvent(newUser: user),
+                    );
+                    Navigator.of(context).pushNamed(Routes.signUp);
                   },
                   colorAsset: grey1100,
                   icon: icKeyboardRight,

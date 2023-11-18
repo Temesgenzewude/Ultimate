@@ -9,13 +9,11 @@ class AuthenticationInitialState extends AuthenticationState {}
 class AuthenticationLoadingState extends AuthenticationState {}
 
 class AuthenticationSuccessState extends AuthenticationState {
-  final AuthenticationModel user;
-
   const AuthenticationSuccessState({required this.user});
+  final AuthenticationModel user;
 }
 
 class AuthenticationFailureState extends AuthenticationState {
-  final String errorMessage;
-
   const AuthenticationFailureState({required this.errorMessage});
+  final String errorMessage;
 }
