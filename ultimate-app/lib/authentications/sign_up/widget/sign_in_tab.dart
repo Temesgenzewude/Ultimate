@@ -68,26 +68,39 @@ class _SignInTabState extends State<SignInTab> {
                       });
                     }),
               ),
-              AppWidget.typeButtonStartAction(
-                  context: context,
-                  input: 'Sign In Now',
-                  onPressed: () {
-                    final AuthenticationModel user = AuthenticationModel(
-                      userName: usernameCtl.text,
-                      password: passwordCtl.text,
-                    );
-                    BlocProvider.of<AuthenticationBloc>(context).add(
-                      SignInEvent(
-                        user: user,
-                      ),
-                    );
-                  },
-                  colorAsset: grey1100,
-                  icon: icKeyboardRight,
-                  sizeAsset: 24,
-                  bgColor: primary,
-                  borderColor: primary,
-                  textColor: grey1100),
+              BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                  builder: (context, state) {
+                if (state is AuthenticationLoadingState) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (state is AuthenticationSuccessState) {
+                  Future.delayed(Duration.zero, () {
+                    // Navigate to the home page or some authenticated page
+                    Navigator.of(context).pushReplacementNamed(Routes.profile);
+                  });
+                } else if (state is AuthenticationFailureState) {
+                  return Center(child: Text("Failure while creating user"));
+                }
+                return AppWidget.typeButtonStartAction(
+                    context: context,
+                    input: 'Sign In Now',
+                    onPressed: () {
+                      final AuthenticationModel user = AuthenticationModel(
+                        userName: usernameCtl.text,
+                        password: passwordCtl.text,
+                      );
+                      BlocProvider.of<AuthenticationBloc>(context).add(
+                        SignInEvent(
+                          user: user,
+                        ),
+                      );
+                    },
+                    colorAsset: grey1100,
+                    icon: icKeyboardRight,
+                    sizeAsset: 24,
+                    bgColor: primary,
+                    borderColor: primary,
+                    textColor: grey1100);
+              }),
             ],
           ),
           Align(

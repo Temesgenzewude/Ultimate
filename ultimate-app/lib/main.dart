@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app/app.dart';
 
 Future<void> main() async {
-  final prefs = await SharedPreferences.getInstance();
-  initPrefManager(prefs);
+  // final prefs = await SharedPreferences.getInstance();
+  // initPrefManager(prefs);
   runApp(const MyApp());
 }

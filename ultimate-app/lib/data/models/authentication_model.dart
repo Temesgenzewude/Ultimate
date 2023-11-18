@@ -24,10 +24,11 @@ class AuthenticationModel {
   });
 
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) {
-    return AuthenticationModel(
-      userName: json['userName'],
-      password: json['password'],
-    );
+    print(json);
+    final authmodel = AuthenticationModel(
+        userName: (json['user'] != null) ? json['user']['name'] : 'mock name',
+        password: json['token'] ?? 'mock token');
+    return authmodel;
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
