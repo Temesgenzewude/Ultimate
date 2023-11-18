@@ -75,7 +75,8 @@ class _SignInTabState extends State<SignInTab> {
                 } else if (state is AuthenticationSuccessState) {
                   Future.delayed(Duration.zero, () {
                     // Navigate to the home page or some authenticated page
-                    Navigator.of(context).pushReplacementNamed(Routes.profile);
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.addMobileNumber);
                   });
                 } else if (state is AuthenticationFailureState) {
                   return Center(child: Text("Failure while creating user"));

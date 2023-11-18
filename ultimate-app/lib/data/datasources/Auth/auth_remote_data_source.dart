@@ -48,8 +48,8 @@ class AuthenticationRemoteDataSourceImpl
     final String url = AppUrl.signUpEndPoint;
     final jsonBody = json.encode({
       'name': 'khalid',
-      'email': 'b66q2@gmail.com',
-      'phoneNumber': '+2511707099189',
+      'email': 'b686q2@gmail.com',
+      'phoneNumber': '+2511786707099189',
       'birthDate': '21-10-2000',
       'password': '@Khalidmhd21',
       'address': 'Dr Imad ud din Yousaf Butt Neurologist - Lahore, Pakistan',
