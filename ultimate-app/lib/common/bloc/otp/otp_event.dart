@@ -14,6 +14,7 @@ class OtpSent extends OtpEvent {
 
   @override
   List<Object> get props => [phoneNumber];
+
 }
 
 class OtpVerified extends OtpEvent {
