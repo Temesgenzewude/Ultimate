@@ -102,6 +102,8 @@
 //   }
 // }
 
+
+
 import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 
@@ -110,6 +112,7 @@ class AuthenticationRepository {
   final AuthenticationRemoteDataSource remoteDataSource;
 
   Future<AuthenticationModel> signin(AuthenticationModel user) async {
+    print('auth repo: Signing in---user---: ${user.toJson()}');
     try {
       return await remoteDataSource.signin(user);
     } catch (e) {
@@ -119,11 +122,12 @@ class AuthenticationRepository {
   }
 
   Future<AuthenticationModel> signup(AuthenticationModel newUser) async {
+    print('auth repo: Signing up---user---: ${newUser.toJson()}');
     try {
       return await remoteDataSource.signup(newUser);
     } catch (e) {
       // Handle exceptions or rethrow as needed
-      throw Exception('Sign up failed: $e');
+      throw Exception('...Sign up failed...: $e');
     }
   }
 
