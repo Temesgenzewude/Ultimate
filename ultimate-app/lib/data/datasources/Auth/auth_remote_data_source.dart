@@ -8,6 +8,8 @@ import '../../../common/constant/api_endpoints.dart';
 abstract class AuthenticationRemoteDataSource {
   Future<AuthenticationModel> signup(AuthenticationModel newuser);
   Future<AuthenticationModel> signin(AuthenticationModel user);
+  Future<void> sendOtp(String id, String phoneNumber);
+  Future<void> verifyOtp(String id, String otp);
 }
 
 class AuthenticationRemoteDataSourceImpl
@@ -35,7 +37,7 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-   Future<AuthenticationModel> signup(AuthenticationModel user) async {
+  Future<AuthenticationModel> signup(AuthenticationModel user) async {
     final String url = AppUrl.signUpEndPoint;
     final response = await client.post(
       Uri.parse(url),
@@ -48,8 +50,37 @@ class AuthenticationRemoteDataSourceImpl
       final dynamic data = json.decode(response.body);
       return AuthenticationModel.fromJson(data);
     } else {
-      throw FetchDataException(
-          'Failed to create a new user');
+      throw FetchDataException('Failed to create a new user');
+    }
+  }
+
+  @override
+  Future<void> sendOtp(String id, String phoneNumber) async {
+    final response = await client
+        .post(Uri.parse(AppUrl.sendOTPByPhoneNumberEndPoint), body: {
+      'id': id,
+      'phoneNumber': phoneNumber
+    }, headers: {
+      'Content-Type': 'application/json',
+    });
+    if (response.statusCode == 200) {
+    } else {
+      throw FetchDataException('Failed to send Otp');
+    }
+  }
+
+  @override
+  Future<void> verifyOtp(String id, String otp) async {
+    final response = await client
+        .post(Uri.parse(AppUrl.sendOTPByPhoneNumberEndPoint), body: {
+      'id': id,
+      'otp': otp
+    }, headers: {
+      'Content-Type': 'application/json',
+    });
+    if (response.statusCode == 200) {
+    } else {
+      throw FetchDataException('Failed to verify Otp');
     }
   }
 }

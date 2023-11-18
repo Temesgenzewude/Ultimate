@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/otp/otp_bloc.dart';
 import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
 import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
 import 'package:http/http.dart' as http;
@@ -42,7 +43,14 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
           ),
-        )
+        ),
+        BlocProvider<OtpBloc>(
+          create: (BuildContext context) => OtpBloc(
+            authRepository: AuthenticationRepository(
+                remoteDataSource:
+                    AuthenticationRemoteDataSourceImpl(client: http.Client())),
+          ),
+        ),
       ],
       child: MaterialApp(
         initialRoute: Routes.onBoarding1,

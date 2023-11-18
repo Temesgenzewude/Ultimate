@@ -126,4 +126,21 @@ class AuthenticationRepository {
       throw Exception('Sign up failed: $e');
     }
   }
+
+  Future<void> sendOTPByPhoneNumberApiCall(
+      String id, String phoneNumber) async {
+    try {
+      return await remoteDataSource.sendOtp(id, phoneNumber);
+    } catch (e) {
+      throw Exception("Sending OTP failed");
+    }
+  }
+
+  Future<void> verifyOTPApi(String id, String otp) async {
+    try {
+      return await remoteDataSource.verifyOtp(id, otp);
+    } catch (e) {
+      throw Exception("Verifying OTP failed");
+    }
+  }
 }
