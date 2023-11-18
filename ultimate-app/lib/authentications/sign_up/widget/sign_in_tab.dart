@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
 import 'package:flutter_ultimate/common/route/routes.dart';
+import 'package:flutter_ultimate/data/models/authentication_model.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
@@ -69,7 +72,15 @@ class _SignInTabState extends State<SignInTab> {
                   context: context,
                   input: 'Sign In Now',
                   onPressed: () {
-                    Navigator.pushNamed(context, Routes.addMobileNumber);
+                    final AuthenticationModel user = AuthenticationModel(
+                      userName: usernameCtl.text,
+                      password: passwordCtl.text,
+                    );
+                    BlocProvider.of<AuthenticationBloc>(context).add(
+                      SignInEvent(
+                        user: user,
+                      ),
+                    );
                   },
                   colorAsset: grey1100,
                   icon: icKeyboardRight,
@@ -104,9 +115,7 @@ class _SignInTabState extends State<SignInTab> {
                 child: AppWidget.typeButtonStartAction2(
                     context: context,
                     input: 'Twitter',
-                    onPressed: () {
-                      
-                    },
+                    onPressed: () {},
                     icon: icTwitter,
                     sizeAsset: 24,
                     bgColor: grey200,
