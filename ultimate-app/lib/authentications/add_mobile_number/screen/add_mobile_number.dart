@@ -129,6 +129,9 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                           style: title4(color: grey1100),
                         ),
                       ),
+                      function: () {
+                        Navigator.pushNamed(context, Routes.accountInformation);
+                      },
                     ),
                     const SizedBox(height: 24)
                   ],

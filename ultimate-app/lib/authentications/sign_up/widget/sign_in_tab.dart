@@ -71,7 +71,7 @@ class _SignInTabState extends State<SignInTab> {
               BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   builder: (context, state) {
                 if (state is AuthenticationLoadingState) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (state is AuthenticationSuccessState) {
                   Future.delayed(Duration.zero, () {
                     // Navigate to the home page or some authenticated page
@@ -79,7 +79,7 @@ class _SignInTabState extends State<SignInTab> {
                         .pushReplacementNamed(Routes.addMobileNumber);
                   });
                 } else if (state is AuthenticationFailureState) {
-                  return Center(child: Text("Failure while creating user"));
+                  return const Center(child: Text('Login Failure'));
                 }
                 return AppWidget.typeButtonStartAction(
                     context: context,
