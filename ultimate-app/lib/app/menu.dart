@@ -46,6 +46,8 @@ class _MenuNavigationState extends State<MenuNavigation> {
       listener: (context, state) {
         if (BlocProvider.of<AuthenticationBloc>(context).isAuthenticated()) {
           Navigator.of(context).pushReplacementNamed(Routes.profile);
+        } else if (state is AuthSignUPSuccess) {
+          Navigator.of(context).pushReplacementNamed(Routes.signUp);
         }
       },
       child: Scaffold(
