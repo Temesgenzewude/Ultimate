@@ -17,6 +17,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   late TabController _controller;
   int _currentIndex = 0;
+
   @override
   void initState() {
     _controller =
@@ -30,22 +31,16 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
     final width = AppWidget.getWidthScreen(context);
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Image.asset(
-                  bg10,
-                  width: width,
-                  height: height / 3.5,
-                  fit: BoxFit.fill,
-                ),
-                Expanded(child: Container())
-              ],
-            ),
-            Positioned(
-              bottom: 0,
-              child: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Image.asset(
+                bg10,
+                width: width,
+                height: height / 3.5,
+                fit: BoxFit.fill,
+              ),
+              Container(
                 width: width,
                 height: height / 1.25,
                 decoration: const BoxDecoration(
@@ -80,8 +75,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                         unselectedLabelColor: grey1100,
                         indicatorColor: primary,
                         indicatorPadding: const EdgeInsets.all(2),
-                        labelPadding:
-                            const EdgeInsets.symmetric(horizontal: 0),
+                        labelPadding: const EdgeInsets.symmetric(horizontal: 0),
                         tabs: [
                           Tab(text: 'Sign in'.toUpperCase()),
                           Tab(text: 'sign up'.toUpperCase()),
@@ -90,17 +84,18 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                     ),
                     Expanded(
                       child: TabBarView(
-                          controller: _controller,
-                          children: const [
-                            SignInTab(),
-                            SignUpTab(),
-                          ]),
+                        controller: _controller,
+                        children: const [
+                          SignInTab(),
+                          SignUpTab(),
+                        ],
+                      ),
                     )
                   ],
                 ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
