@@ -16,7 +16,6 @@ class AuthenticationBloc
   final AuthenticationRepository authenticationRepository;
 
   AuthenticationState authenticationSuccessOrFailure(dynamic result) {
-    print(" thiis is result : ${result}");
     if (result is AuthenticationModel) {
       return AuthenticationSuccessState(user: result);
     } else if (result is String) {
@@ -29,23 +28,21 @@ class AuthenticationBloc
 
   void _signIn(SignInEvent event, Emitter<AuthenticationState> emit) async {
     emit(AuthenticationLoadingState());
-    final result = await authenticationRepository.signin(event.user);
-
-    emit(authenticationSuccessOrFailure(result));
+    try {
+      final result = await authenticationRepository.signin(event.user);
+      emit(authenticationSuccessOrFailure(result));
+    } catch (e) {
+      emit(authenticationSuccessOrFailure(e.toString().substring(10)));
+    }
   }
 
   void _signUp(SignUpEvent event, Emitter<AuthenticationState> emit) async {
     emit(AuthenticationLoadingState());
     try {
       final result = await authenticationRepository.signup(event.newUser);
-      emit(authenticationSuccessOrFailure(result));
+      emit(AuthSignUPSuccess());
     } catch (e) {
-      String errorMessage = "An unexpected error occurred.";
-      if (e is Exception) {
-        errorMessage = e.toString();
-      }
-      print("this is error message: ${errorMessage}");
-      emit(authenticationSuccessOrFailure(errorMessage));
+      emit(authenticationSuccessOrFailure(e.toString().substring(10)));
     }
   }
 

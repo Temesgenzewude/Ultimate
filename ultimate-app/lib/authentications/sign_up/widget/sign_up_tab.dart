@@ -174,8 +174,41 @@ class _SignUpTabState extends State<SignUpTab> {
                             .pushReplacementNamed(Routes.signUp);
                       });
                     } else if (state is AuthenticationFailureState) {
-                      return const Center(
-                          child: Text('Failure while creating user'));
+                      return Column(
+                        children: [
+                          AppWidget.typeButtonStartAction(
+                            context: context,
+                            input: 'Sign Up Now',
+                            onPressed: () {
+                              final AuthenticationModel user =
+                                  AuthenticationModel(
+                                userName: usernameCtl.text,
+                                password: passwordCtl.text,
+                              );
+                              // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
+                              BlocProvider.of<AuthenticationBloc>(context).add(
+                                SignUpEvent(newUser: user),
+                              );
+
+                            },
+                            colorAsset: grey1100,
+                            icon: icKeyboardRight,
+                            sizeAsset: 24,
+                            bgColor: primary,
+                            borderColor: primary,
+                            textColor: grey1100,
+                          ),
+                          Center(
+                            child: Text(
+                              state.errorMessage,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
                     }
                     return AppWidget.typeButtonStartAction(
                       context: context,

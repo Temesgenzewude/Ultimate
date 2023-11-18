@@ -8,6 +8,8 @@ class AuthenticationInitialState extends AuthenticationState {}
 
 class AuthenticationLoadingState extends AuthenticationState {}
 
+class AuthSignUPSuccess extends AuthenticationState {}
+
 class AuthenticationSuccessState extends AuthenticationState {
   const AuthenticationSuccessState({required this.user});
   final AuthenticationModel user;
