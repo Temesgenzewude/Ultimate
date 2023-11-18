@@ -114,20 +114,23 @@ class AuthenticationRepository {
   Future<AuthenticationModel> signin(AuthenticationModel user) async {
     print('auth repo: Signing in---user---: ${user.toJson()}');
     try {
-      return await remoteDataSource.signin(user);
+      final response = await remoteDataSource.signin(user);
+      return response;
     } catch (e) {
       // Handle exceptions or rethrow as needed
-      throw Exception('Sign in failed: $e');
+      throw Exception(e);
     }
   }
 
   Future<AuthenticationModel> signup(AuthenticationModel newUser) async {
     print('auth repo: Signing up---user---: ${newUser.toJson()}');
     try {
+      print(newUser);
       return await remoteDataSource.signup(newUser);
     } catch (e) {
       // Handle exceptions or rethrow as needed
-      throw Exception('...Sign up failed...: $e');
+      // throw Exception('...Sign up failed...: $e');
+      throw Exception(e);
     }
   }
 

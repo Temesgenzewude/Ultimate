@@ -75,10 +75,12 @@ class _SignUpTabState extends State<SignUpTab> {
       setState(() => _currentPosition = position);
       debugPrint('location: ${_currentPosition?.latitude}');
       debugPrint('location: ${_currentPosition?.longitude}');
+
     }).catchError((dynamic e) {
       debugPrint(e);
     });
   }
+
 
   @override
   void initState() {
