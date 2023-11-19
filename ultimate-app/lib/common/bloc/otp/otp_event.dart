@@ -7,22 +7,13 @@ abstract class OtpEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OtpSent extends OtpEvent {
-  final String phoneNumber;
-  final String id;
-
-  const OtpSent(this.phoneNumber, this.id);
-
-  @override
-  List<Object> get props => [phoneNumber, id];
-}
+class OtpSent extends OtpEvent {}
 
 class OtpVerified extends OtpEvent {
   final String otp;
-  final String id;
 
-  const OtpVerified(this.otp, this.id);
+  const OtpVerified(this.otp);
 
   @override
-  List<Object> get props => [otp, id];
+  List<Object> get props => [otp];
 }

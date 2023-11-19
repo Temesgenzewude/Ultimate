@@ -127,8 +127,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                           context: context,
                           input: 'Next',
                           onPressed: () {
-                            context.read<OtpBloc>().add(OtpSent(
-                                phoneCtl.text, widget.prefManager.kUserID));
+                            context.read<OtpBloc>().add(OtpSent());
                           },
                           bgColor: primary,
                           icon: icArrowRight,

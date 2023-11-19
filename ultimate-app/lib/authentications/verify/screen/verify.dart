@@ -124,7 +124,7 @@ class _VerifyState extends State<Verify> {
                   BlocListener<OtpBloc, OtpState>(
                     listener: (context, state) {
                       if (state is OtpVerifiedSuccess) {
-                         ScaffoldMessenger.of(context).showSnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('OTP verified successfully!'),
                           ),
@@ -144,9 +144,7 @@ class _VerifyState extends State<Verify> {
                       autofocus: true,
                       length: 5,
                       onSubmitted: (String otp) {
-                        context
-                            .read<OtpBloc>()
-                            .add(OtpVerified(otp, widget.prefManager.kUserID));
+                        context.read<OtpBloc>().add(OtpVerified(otp));
                       },
                       androidSmsAutofillMethod:
                           AndroidSmsAutofillMethod.smsUserConsentApi,
@@ -198,9 +196,7 @@ class _VerifyState extends State<Verify> {
                         onPressed: _start != 0
                             ? () {}
                             : () {
-                                context.read<OtpBloc>().add(OtpSent(
-                                    widget.phoneNumber,
-                                    widget.prefManager.kUserID));
+                                context.read<OtpBloc>().add(OtpSent());
                                 restartTimer();
                               },
                         bgColor: _start != 0 ? grey200 : primary,

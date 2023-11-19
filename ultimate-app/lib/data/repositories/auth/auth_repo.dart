@@ -139,18 +139,17 @@ class AuthenticationRepository {
     }
   }
 
-  Future<void> sendOTPByPhoneNumberApiCall(
-      String id, String phoneNumber) async {
+  Future<void> sendOTP() async {
     try {
-      return await remoteDataSource.sendOtp(id);
+      return await remoteDataSource.sendOtp();
     } catch (e) {
       throw Exception("Sending OTP failed");
     }
   }
 
-  Future<void> verifyOTPApi(String id, String otp) async {
+  Future<void> verifyOTPApi(String otp) async {
     try {
-      return await remoteDataSource.verifyOtp(id, otp);
+      return await remoteDataSource.verifyOtp(otp);
     } catch (e) {
       throw Exception("Verifying OTP failed");
     }
