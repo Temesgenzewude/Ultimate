@@ -13,8 +13,7 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
 
   Future<void> _mapOtpSentToState(OtpSent event, Emitter<OtpState> emit) async {
     try {
-      await authRepository.sendOTPByPhoneNumberApiCall(
-          event.phoneNumber, event.id);
+      await authRepository.sendOTP();
       emit(OtpSentSuccess());
     } catch (error) {
       emit(OtpSentFailure());
@@ -24,7 +23,7 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
   Future<void> _mapOtpVerifiedToState(
       OtpVerified event, Emitter<OtpState> emit) async {
     try {
-      await authRepository.verifyOTPApi(event.otp, event.id);
+      await authRepository.verifyOTPApi(event.otp);
       emit(OtpVerifiedSuccess());
     } catch (error) {
       emit(OtpVerifiedFailure());

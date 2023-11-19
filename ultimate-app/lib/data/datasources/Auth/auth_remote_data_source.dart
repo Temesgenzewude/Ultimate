@@ -16,8 +16,8 @@ final prefManager = sl<PrefManager>();
 abstract class AuthenticationRemoteDataSource {
   Future<SingUpResponseModel> signup(AuthenticationModel newuser);
   Future<LoginResponseModel> signin(LoginRequestModel user);
-  Future<void> sendOtp(String id);
-  Future<void> verifyOtp(String id, String otp);
+  Future<void> sendOtp();
+  Future<void> verifyOtp(String otp);
 }
 
 class AuthenticationRemoteDataSourceImpl
@@ -76,10 +76,10 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<void> sendOtp(String id) async {
+  Future<void> sendOtp() async {
     final response =
         await client.post(Uri.parse(AppUrl.verifyOTPEndPoint), body: {
-      'id': id,
+      'id': prefManager.kUserID,
     }, headers: {
       'Authorization': 'Bearer ${prefManager.kToken}',
       'Content-Type': 'application/json',
@@ -91,10 +91,10 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<void> verifyOtp(String id, String otp) async {
+  Future<void> verifyOtp(String otp) async {
     final response =
         await client.post(Uri.parse(AppUrl.sendOTPEndPoint), body: {
-      'id': id,
+      'id': prefManager.kUserID,
       'otp': otp
     }, headers: {
       'Authorization': 'Bearer ${prefManager.kToken}',
