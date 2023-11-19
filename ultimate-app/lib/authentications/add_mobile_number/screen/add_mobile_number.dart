@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_event.dart';
+import 'package:flutter_ultimate/common/bloc/otp/otp_state.dart';
 import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
@@ -104,6 +105,22 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                       controller: phoneCtl,
                       focusNode: phoneFn,
                     ),
+                    BlocListener<OtpBloc, OtpState>(
+                        listener: ((context, state) {
+                      if (state is OtpSentSuccess) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('OTP sent successfully!'),
+                          ),
+                        );
+                        Navigator.pushNamed(context, Routes.verify,
+                            arguments: phoneCtl.text);
+                      }
+                      if (state is OtpSentFailure) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("verification Failed")));
+                      }
+                    })),
                     Padding(
                       padding: const EdgeInsets.only(top: 24, bottom: 16),
                       child: AppWidget.typeButtonStartAction(
@@ -112,8 +129,6 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                           onPressed: () {
                             context.read<OtpBloc>().add(OtpSent(
                                 phoneCtl.text, widget.prefManager.kUserID));
-                            Navigator.pushNamed(context, Routes.verify,
-                                arguments: phoneCtl.text);
                           },
                           bgColor: primary,
                           icon: icArrowRight,

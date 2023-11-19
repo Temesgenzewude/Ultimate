@@ -124,6 +124,11 @@ class _VerifyState extends State<Verify> {
                   BlocListener<OtpBloc, OtpState>(
                     listener: (context, state) {
                       if (state is OtpVerifiedSuccess) {
+                         ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('OTP verified successfully!'),
+                          ),
+                        );
                         Navigator.pushNamed(context, Routes.TempHoem);
                       }
                       if (state is OtpVerifiedFailure) {
