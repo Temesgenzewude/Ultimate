@@ -45,7 +45,7 @@ class AuthenticationRemoteDataSourceImpl
       return jsonData;
     } else if (response.statusCode == 403) {
       throw Exception(
-          'Invalid Email or or ..'); // Update the error message if desired
+          'Invalid Email or or password'); // Update the error message if desired
     } else {
       throw Exception("Error while trying to sing in");
     }
@@ -54,15 +54,47 @@ class AuthenticationRemoteDataSourceImpl
   @override
   Future<SingUpResponseModel> signup(AuthenticationModel user) async {
     final String url = AppUrl.signUpEndPoint;
-    final jsonBody = json.encode(user.toJson());
-    print(" signing up user ${user.toJson()}");
+    final Map<String, dynamic> body = <String, dynamic>{
+      "name": user.name,
+      "email": user.email,
+      "phoneNumber": user.phoneNumber,
+      "birthDate": user.birthDate,
+      "password": user.password,
+      "address": user.address,
+      "coordinates": "31.536267224296935,74.32805961092151",
+      "user_type": user.user_type,
+      "terms": user.terms,
+    };
+    // final body = {
+    //   "name": "test",
+    //   "email": "khaliyiytidd10@gmail.com",
+    //   "phoneNumber": "+903939560848",
+    //   "birthDate": "10-10-2022",
+    //   "password": "1234567890",
+    //   "address": "Dr Imad ud din",
+    //   "coordinates": "31.536267224296935,74.32805961092151",
+    //   "user_type": "user",
+    //   "terms": true
+    // };
+
+    // print("dummy body ${json.encode(body)}");
+    // final jsonBody = json.encode(user.toJson());
+    // print(body);
+
+    final String bodyString = json.encode(user.toJson());
+
     final response = await client.post(
       Uri.parse(url),
-      body: jsonBody,
+      body: json.encode(body),
       headers: {
         'Content-Type': 'application/json',
+      
       },
     );
+
+  
+
+
     print('sing up api status code: ${response.statusCode}');
 
     if (response.statusCode == 200) {

@@ -12,7 +12,7 @@ class AuthSignUPSuccess extends AuthenticationState {}
 
 class AuthenticationSuccessState extends AuthenticationState {
   const AuthenticationSuccessState({required this.user});
-  final AuthenticationModel user;
+  final SingUpResponseModel user;
 }
 
 class LoginSuccessState extends AuthenticationState {

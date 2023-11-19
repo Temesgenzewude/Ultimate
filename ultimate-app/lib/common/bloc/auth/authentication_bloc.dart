@@ -19,7 +19,7 @@ class AuthenticationBloc
   final AuthenticationRepository authenticationRepository;
 
   AuthenticationState authenticationSuccessOrFailure(dynamic result) {
-    if (result is AuthenticationModel) {
+    if (result is SingUpResponseModel) {
       return AuthenticationSuccessState(user: result);
     } else if (result is LoginResponseModel) {
       return LoginSuccessState(user: result);
@@ -45,7 +45,7 @@ class AuthenticationBloc
     emit(AuthenticationLoadingState());
     try {
       final result = await authenticationRepository.signup(event.newUser);
-      emit(AuthSignUPSuccess());
+      emit(authenticationSuccessOrFailure(result));
     } catch (e) {
       emit(authenticationSuccessOrFailure(e.toString().substring(10)));
     }

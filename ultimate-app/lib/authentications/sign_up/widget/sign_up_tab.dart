@@ -21,11 +21,11 @@ class SignUpTab extends StatefulWidget {
 }
 
 class _SignUpTabState extends State<SignUpTab> {
-  TextEditingController usernameCtl = TextEditingController();
+  TextEditingController usernameCtl = new TextEditingController();
   FocusNode usernameFn = FocusNode();
-  TextEditingController passwordCtl = TextEditingController();
+  TextEditingController passwordCtl = new TextEditingController();
   FocusNode passwordFn = FocusNode();
-  TextEditingController repasswordCtl = TextEditingController();
+  TextEditingController repasswordCtl = new TextEditingController();
   TextEditingController nameCtl = TextEditingController();
   FocusNode nameFn = FocusNode();
   TextEditingController phoneCtl = TextEditingController();
@@ -197,14 +197,14 @@ class _SignUpTabState extends State<SignUpTab> {
                             onPressed: () {
                               final AuthenticationModel user =
                                   AuthenticationModel(
-                                email: usernameCtl.text,
-                                password: passwordCtl.text,
-                                name: nameCtl.text,
-                                address: addressCtl.text,
-                                phoneNumber: phoneCtl.text,
+                                email: usernameCtl.value.text,
+                                password: passwordCtl.value.text,
+                                name: nameCtl.value.text,
+                                address: addressCtl.value.text,
+                                phoneNumber: phoneCtl.value.text,
                                 coordinates:
                                     '${_currentPosition?.latitude},${_currentPosition?.longitude}',
-                                birthDate: birthdayCtl.text,
+                                birthDate: birthdayCtl.value.text,
                               );
                               // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
                               BlocProvider.of<AuthenticationBloc>(context).add(
@@ -235,14 +235,14 @@ class _SignUpTabState extends State<SignUpTab> {
                       input: 'Sign Up Now',
                       onPressed: () {
                         final AuthenticationModel user = AuthenticationModel(
-                          email: usernameCtl.text,
-                          password: passwordCtl.text,
-                          name: nameCtl.text,
-                          address: addressCtl.text,
-                          phoneNumber: phoneCtl.text,
+                          email: usernameCtl.value.text,
+                          password: passwordCtl.value.text,
+                          name: nameCtl.value.text,
+                          address: addressCtl.value.text,
+                          phoneNumber: phoneCtl.value.text,
                           coordinates:
                               '${_currentPosition?.latitude},${_currentPosition?.longitude}',
-                          birthDate: birthdayCtl.text,
+                          birthDate: birthdayCtl.value.text,
                         );
                         // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
                         BlocProvider.of<AuthenticationBloc>(context).add(
