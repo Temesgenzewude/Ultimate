@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_event.dart';
+import 'package:flutter_ultimate/common/bloc/otp/otp_state.dart';
 import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
@@ -119,6 +120,17 @@ class _VerifyState extends State<Verify> {
                       textAlign: TextAlign.center,
                       style: body(color: grey800),
                     ),
+                  ),
+                  BlocListener<OtpBloc, OtpState>(
+                    listener: (context, state) {
+                      if (state is OtpVerifiedSuccess) {
+                        Navigator.pushNamed(context, Routes.TempHoem);
+                      }
+                      if (state is OtpVerifiedFailure) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("verification Failed")));
+                      }
+                    },
                   ),
                   SizedBox(
                     width: width,

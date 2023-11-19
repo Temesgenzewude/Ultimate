@@ -4,15 +4,19 @@ import 'dart:convert';
 import 'package:flutter_ultimate/data/app_exceptions.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
+import 'package:flutter_ultimate/dependency_indjection.dart';
+import 'package:flutter_ultimate/sharedPreferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../common/constant/api_endpoints.dart';
 import '../../models/login_request_model.dart';
 
+final prefManager = sl<PrefManager>();
+
 abstract class AuthenticationRemoteDataSource {
   Future<SingUpResponseModel> signup(AuthenticationModel newuser);
   Future<LoginResponseModel> signin(LoginRequestModel user);
-  Future<void> sendOtp(String id, String phoneNumber);
+  Future<void> sendOtp(String id);
   Future<void> verifyOtp(String id, String otp);
 }
 
@@ -25,7 +29,7 @@ class AuthenticationRemoteDataSourceImpl
   Future<LoginResponseModel> signin(LoginRequestModel user) async {
     final String url = AppUrl.signInEndPoint;
     final jsonBody = json.encode(user.toJson());
-    
+
     print(" signing in user ${user.toJson()}");
     final response = await client.post(
       Uri.parse(url),
@@ -72,12 +76,12 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<void> sendOtp(String id, String phoneNumber) async {
-    final response = await client
-        .post(Uri.parse(AppUrl.sendOTPByPhoneNumberEndPoint), body: {
+  Future<void> sendOtp(String id) async {
+    final response =
+        await client.post(Uri.parse(AppUrl.verifyOTPEndPoint), body: {
       'id': id,
-      'phoneNumber': phoneNumber
     }, headers: {
+      'bearer': prefManager.kToken,
       'Content-Type': 'application/json',
     });
     if (response.statusCode == 200) {
@@ -88,11 +92,12 @@ class AuthenticationRemoteDataSourceImpl
 
   @override
   Future<void> verifyOtp(String id, String otp) async {
-    final response = await client
-        .post(Uri.parse(AppUrl.sendOTPByPhoneNumberEndPoint), body: {
+    final response =
+        await client.post(Uri.parse(AppUrl.sendOTPEndPoint), body: {
       'id': id,
       'otp': otp
     }, headers: {
+      'bearer': prefManager.kToken,
       'Content-Type': 'application/json',
     });
     if (response.statusCode == 200) {
