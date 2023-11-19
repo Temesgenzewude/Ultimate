@@ -82,11 +82,11 @@ class _SignUpTabState extends State<SignUpTab> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _getCurrentPosition();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _getCurrentPosition();
+  // }
 
   @override
   Widget build(BuildContext context) {

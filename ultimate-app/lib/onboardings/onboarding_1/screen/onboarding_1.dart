@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/dependency_indjection.dart';
+import 'package:flutter_ultimate/sharedPreferences.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/bloc/slider/bloc_slider.dart';
@@ -35,6 +38,53 @@ class OnBoardingOne extends StatefulWidget {
 }
 
 class _OnBoardingOneState extends State<OnBoardingOne> {
+  Position? _currentPosition;
+  final prefManager = sl<PrefManager>();
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      prefManager.kLatitude = _currentPosition?.latitude.toString() ?? '';
+      prefManager.kLongitude = _currentPosition?.longitude.toString() ?? '';
+      debugPrint('location: ${_currentPosition?.latitude}');
+      debugPrint('location: ${_currentPosition?.longitude}');
+    }).catchError((dynamic e) {
+      debugPrint(e);
+    });
+  }
+
   PageController controller = PageController(
     initialPage: 0,
     viewportFraction: 0.7,
@@ -60,6 +110,12 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    _getCurrentPosition();
+    super.initState();
   }
 
   @override

@@ -61,7 +61,7 @@ class AuthenticationRemoteDataSourceImpl
       "birthDate": user.birthDate,
       "password": user.password,
       "address": user.address,
-      "coordinates": "31.536267224296935,74.32805961092151",
+      "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
       "user_type": user.user_type,
       "terms": user.terms,
     };
@@ -79,7 +79,7 @@ class AuthenticationRemoteDataSourceImpl
 
     // print("dummy body ${json.encode(body)}");
     // final jsonBody = json.encode(user.toJson());
-    // print(body);
+    print(jsonEncode(body));
 
     final String bodyString = json.encode(user.toJson());
 
@@ -88,12 +88,8 @@ class AuthenticationRemoteDataSourceImpl
       body: json.encode(body),
       headers: {
         'Content-Type': 'application/json',
-      
       },
     );
-
-  
-
 
     print('sing up api status code: ${response.statusCode}');
 
@@ -109,14 +105,20 @@ class AuthenticationRemoteDataSourceImpl
 
   @override
   Future<void> sendOtp() async {
-    final response =
-        await client.post(Uri.parse(AppUrl.verifyOTPEndPoint), body: {
-      'id': prefManager.kUserID,
-    }, headers: {
-      'Authorization': 'Bearer ${prefManager.kToken}',
-      'Content-Type': 'application/json',
-    });
+    print('here');
+    print(prefManager.kUserID);
+    print(prefManager.kToken);
+
+    final jsonbody = {'id': '${prefManager.kUserID}'};
+    final response = await client.post(Uri.parse(AppUrl.sendOTPEndPoint),
+        body: jsonEncode(jsonbody),
+        headers: {
+          'Authorization': prefManager.kToken,
+          'Content-Type': 'application/json',
+        });
+
     if (response.statusCode == 200) {
+      print('success');
     } else {
       throw FetchDataException('Failed to send Otp');
     }
@@ -124,14 +126,13 @@ class AuthenticationRemoteDataSourceImpl
 
   @override
   Future<void> verifyOtp(String otp) async {
-    final response =
-        await client.post(Uri.parse(AppUrl.sendOTPEndPoint), body: {
-      'id': prefManager.kUserID,
-      'otp': otp
-    }, headers: {
-      'Authorization': 'Bearer ${prefManager.kToken}',
-      'Content-Type': 'application/json',
-    });
+    final jsonbody = {'id': prefManager.kUserID, 'otp': otp};
+    final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPoint),
+        body: jsonEncode(jsonbody),
+        headers: {
+          'Authorization': '${prefManager.kToken}',
+          'Content-Type': 'application/json',
+        });
     if (response.statusCode == 200) {
     } else {
       throw FetchDataException('Failed to verify Otp');

@@ -69,6 +69,23 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                   ],
                 ),
               ),
+              BlocListener<OtpBloc, OtpState>(
+                listener: ((context, state) {
+                  if (state is OtpSentSuccess) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('OTP sent successfully!'),
+                      ),
+                    );
+                    Navigator.pushNamed(context, Routes.verify,
+                        arguments: phoneCtl.text);
+                  } else if (state is OtpSentFailure) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("OTP sending Failed")));
+                  }
+                }),
+                child: Container(),
+              ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
@@ -105,36 +122,27 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                       controller: phoneCtl,
                       focusNode: phoneFn,
                     ),
-                    BlocListener<OtpBloc, OtpState>(
-                        listener: ((context, state) {
-                      if (state is OtpSentSuccess) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('OTP sent successfully!'),
-                          ),
-                        );
-                        Navigator.pushNamed(context, Routes.verify,
-                            arguments: phoneCtl.text);
-                      }
-                      if (state is OtpSentFailure) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("verification Failed")));
-                      }
-                    })),
                     Padding(
-                      padding: const EdgeInsets.only(top: 24, bottom: 16),
-                      child: AppWidget.typeButtonStartAction(
-                          context: context,
-                          input: 'Next',
-                          onPressed: () {
-                            context.read<OtpBloc>().add(OtpSent());
+                        padding: const EdgeInsets.only(top: 24, bottom: 16),
+                        child: BlocBuilder<OtpBloc, OtpState>(
+                          builder: (context, state) {
+                            if (state is OtpLoading) {
+                              return Center(child: CircularProgressIndicator());
+                            } else {
+                              return AppWidget.typeButtonStartAction(
+                                  context: context,
+                                  input: 'Next',
+                                  onPressed: () {
+                                    context.read<OtpBloc>().add(OtpSent());
+                                  },
+                                  bgColor: primary,
+                                  icon: icArrowRight,
+                                  colorAsset: grey1100,
+                                  borderColor: primary,
+                                  textColor: grey1100);
+                            }
                           },
-                          bgColor: primary,
-                          icon: icArrowRight,
-                          colorAsset: grey1100,
-                          borderColor: primary,
-                          textColor: grey1100),
-                    ),
+                        )),
                     AnimationClick(
                       child: Align(
                         alignment: Alignment.center,

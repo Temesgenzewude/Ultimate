@@ -9,6 +9,10 @@ abstract class OtpState extends Equatable {
 
 class OtpInitial extends OtpState {}
 
+class OtpLoading extends OtpState {}
+
+class OtpVerifiedLoading extends OtpState {}
+
 class OtpSentSuccess extends OtpState {}
 
 class OtpSentFailure extends OtpState {}
