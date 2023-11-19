@@ -121,7 +121,7 @@ class _VerifyState extends State<Verify> {
                       style: body(color: grey800),
                     ),
                   ),
-                  BlocListener<OtpBloc, OtpState>(
+                  BlocConsumer<OtpBloc, OtpState>(
                     listener: (context, state) {
                       if (state is OtpVerifiedSuccess) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -136,10 +136,22 @@ class _VerifyState extends State<Verify> {
                             SnackBar(content: Text("verification Failed")));
                       }
                     },
+                    builder: (context, state) {
+                      if (state is OtpVerifiedLoading) {
+                    return const Center(
+                      child: Stack(children: [CircularProgressIndicator()]),
+                    );
+                  } else {
+                    return Container();
+                  }
+                    },
                   ),
                   SizedBox(
                     width: width,
                     child: Pinput(
+                      onCompleted: (String otp) {
+                        context.read<OtpBloc>().add(OtpVerified(otp));
+                      },
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       autofocus: true,
                       length: 5,

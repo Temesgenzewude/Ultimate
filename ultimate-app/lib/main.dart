@@ -12,6 +12,6 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
   initPrefManager(prefs);
 
-  
+
   runApp(const MyApp());
 }

@@ -22,7 +22,6 @@ class SignInTab extends StatefulWidget {
 }
 
 class _SignInTabState extends State<SignInTab> {
-  final prefManager = sl<PrefManager>();
   TextEditingController usernameCtl = TextEditingController();
   FocusNode usernameFn = FocusNode();
   TextEditingController passwordCtl = TextEditingController();
@@ -76,10 +75,6 @@ class _SignInTabState extends State<SignInTab> {
                 if (state is LoginLoadingState) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is LoginSuccessState) {
-                  prefManager.token = state.user.token;
-                  prefManager.userId = state.user.user!.userId;
-                  print(prefManager.kToken);
-                  print(prefManager.kUserID);
                   Future.delayed(Duration.zero, () {
                     Navigator.of(context)
                         .pushReplacementNamed(Routes.addMobileNumber);
