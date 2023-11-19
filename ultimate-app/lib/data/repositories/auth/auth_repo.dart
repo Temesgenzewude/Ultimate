@@ -142,7 +142,7 @@ class AuthenticationRepository {
   Future<void> sendOTPByPhoneNumberApiCall(
       String id, String phoneNumber) async {
     try {
-      return await remoteDataSource.sendOtp(id, phoneNumber);
+      return await remoteDataSource.sendOtp(id);
     } catch (e) {
       throw Exception("Sending OTP failed");
     }

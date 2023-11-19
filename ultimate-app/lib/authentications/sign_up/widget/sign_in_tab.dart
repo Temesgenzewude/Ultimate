@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/dependency_indjection.dart';
+import 'package:flutter_ultimate/sharedPreferences.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/bloc/auth/authentication_bloc.dart';
@@ -20,6 +22,7 @@ class SignInTab extends StatefulWidget {
 }
 
 class _SignInTabState extends State<SignInTab> {
+  final prefManager = sl<PrefManager>();
   TextEditingController usernameCtl = TextEditingController();
   FocusNode usernameFn = FocusNode();
   TextEditingController passwordCtl = TextEditingController();
@@ -73,6 +76,10 @@ class _SignInTabState extends State<SignInTab> {
                 if (state is LoginLoadingState) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is LoginSuccessState) {
+                  prefManager.token = state.user.token;
+                  prefManager.userId = state.user.user!.userId;
+                  print(prefManager.kToken);
+                  print(prefManager.kUserID);
                   Future.delayed(Duration.zero, () {
                     Navigator.of(context)
                         .pushReplacementNamed(Routes.addMobileNumber);
