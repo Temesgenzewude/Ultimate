@@ -81,7 +81,7 @@ class AuthenticationRemoteDataSourceImpl
         await client.post(Uri.parse(AppUrl.verifyOTPEndPoint), body: {
       'id': id,
     }, headers: {
-      'bearer': prefManager.kToken,
+      'Authorization': 'Bearer ${prefManager.kToken}',
       'Content-Type': 'application/json',
     });
     if (response.statusCode == 200) {
@@ -97,7 +97,7 @@ class AuthenticationRemoteDataSourceImpl
       'id': id,
       'otp': otp
     }, headers: {
-      'bearer': prefManager.kToken,
+      'Authorization': 'Bearer ${prefManager.kToken}',
       'Content-Type': 'application/json',
     });
     if (response.statusCode == 200) {
