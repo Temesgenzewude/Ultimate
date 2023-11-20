@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/bloc/otp/otp_bloc.dart';
@@ -15,9 +18,9 @@ import '../../../common/widget/textfield.dart';
 import '../../../common/widget/unfocus_click.dart';
 import '../../../dependency_indjection.dart';
 import '../../../sharedPreferences.dart';
+import 'package:geocoding/geocoding.dart';
 
 class AddMobileNumber extends StatefulWidget {
-  final prefManager = sl<PrefManager>();
   AddMobileNumber({Key? key}) : super(key: key);
 
   @override
@@ -25,8 +28,30 @@ class AddMobileNumber extends StatefulWidget {
 }
 
 class _AddMobileNumberState extends State<AddMobileNumber> {
+  final prefManager = sl<PrefManager>();
+  String? countryCode = 'US';
+  Future<void> getCountryCode() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          double.parse(prefManager.kLatitude),
+          double.parse(prefManager.kLongitude));
+      setState(() {
+        countryCode = placemarks[0].isoCountryCode;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  String initialCountry = 'ET';
   TextEditingController phoneCtl = TextEditingController();
   FocusNode phoneFn = FocusNode();
+
+  @override
+  void initState() {
+    getCountryCode();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,10 +143,35 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                         ],
                       ),
                     ),
-                    TextFieldCpn(
+                    // TextFieldCpn(
+                    //   controller: phoneCtl,
+                    //   focusNode: phoneFn,
+                    // ),
+                    IntlPhoneField(
+                      dropdownTextStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      decoration: InputDecoration(
+                        counterStyle: TextStyle(color: Colors.white),
+                        suffixIconColor: Colors.white,
+                        fillColor: Colors.white,
+                        labelStyle: TextStyle(color: Colors.white),
+                        prefixIconColor: Colors.white,
+                        prefixStyle: TextStyle(color: Colors.white),
+                        suffixStyle: TextStyle(color: Colors.white),
+                        labelText: 'Phone Number',
+                        iconColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                      ),
+                      initialCountryCode: countryCode,
+                      keyboardType: const TextInputType.numberWithOptions(
+                          signed: true, decimal: true),
                       controller: phoneCtl,
                       focusNode: phoneFn,
                     ),
+
                     Padding(
                         padding: const EdgeInsets.only(top: 24, bottom: 16),
                         child: BlocBuilder<OtpBloc, OtpState>(
@@ -164,5 +214,11 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    phoneCtl.dispose();
+    super.dispose();
   }
 }
