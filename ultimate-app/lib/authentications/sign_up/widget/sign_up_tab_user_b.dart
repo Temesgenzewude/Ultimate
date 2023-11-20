@@ -236,40 +236,6 @@ class _SignUpTabBState extends State<SignUpTabB> {
             ),
             Align(
               alignment: Alignment.center,
-              child: Text(
-                'or Sign Up with social account',
-                style: subhead(color: grey600),
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: AppWidget.typeButtonStartAction2(
-                      context: context,
-                      input: 'Facebook',
-                      onPressed: () {},
-                      icon: icFacebook,
-                      sizeAsset: 24,
-                      bgColor: grey200,
-                      borderColor: grey200,
-                      textColor: grey1100),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: AppWidget.typeButtonStartAction2(
-                      context: context,
-                      input: 'Twitter',
-                      onPressed: () {},
-                      icon: icTwitter,
-                      sizeAsset: 24,
-                      bgColor: grey200,
-                      borderColor: grey200,
-                      textColor: grey1100),
-                ),
-              ],
-            ),
-            Align(
-              alignment: Alignment.center,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
                 child: Text(
