@@ -41,7 +41,7 @@ class _SignUpTabBState extends State<SignUpTabB> {
 
   List<String> genders = ['Male', 'Female'];
 
-  String _selectedGender = '';
+  String? _selectedGender;
 
   @override
   Widget build(BuildContext context) {
@@ -92,31 +92,50 @@ class _SignUpTabBState extends State<SignUpTabB> {
 
                 // select gender
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Container(
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        style: body(color: grey1100),
-                        hint: Text(
-                          'Select Gender',
-                          style: body(color: grey200),
-                        ),
-                        items: genders.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        value: _selectedGender,
-                        onChanged: (String? value) {
-                          setState(() {
-                            _selectedGender = value ?? '';
-                          });
-                        },
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Container(
+                      height: 60.0,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: grey200),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
-                    ),
-                  ),
-                ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          isDense: true,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          hint: const Text(
+                            'Select Gender',
+                            style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          dropdownColor: primary,
+                          icon: const Icon(
+                            Icons.arrow_drop_down_outlined,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          items: genders.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500)),
+                            );
+                          }).toList(),
+                          value: _selectedGender,
+                          onChanged: (String? value) {
+                            setState(() {
+                              _selectedGender = value;
+                            });
+                          },
+                        ),
+                      ),
+                    )),
 
                 TextFieldCpn(
                   controller: aboutCtl,
@@ -266,3 +285,31 @@ class _SignUpTabBState extends State<SignUpTabB> {
     );
   }
 }
+
+/*
+Container(
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        style: body(color: grey1100),
+                        hint: Text(
+                          'Select Gender',
+                          style: body(color: grey200),
+                        ),
+                        items: genders.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        value: _selectedGender,
+                        onChanged: (String? value) {
+                          setState(() {
+                            _selectedGender = value;
+                          });
+                        },
+                        key: UniqueKey(), // add this line
+                      ),
+                    ),
+                  ),
+
+*/

@@ -103,4 +103,6 @@ class Routes {
   static const String foodDelivery = '/food_delivery';
   static const String ecommerce = '/ecommerce';
   static const String reading = '/reading';
+
+  static const String signUpB = '/sign_up_b';
 }
