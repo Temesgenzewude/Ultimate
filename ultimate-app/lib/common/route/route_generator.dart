@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ultimate/authentications/sign_up/screen/auth_user_b.dart';
 
 import '../../authentications/account_information/screen/account_information.dart';
 import '../../authentications/add_mobile_number/screen/add_mobile_number.dart';
@@ -163,6 +164,10 @@ mixin RouteGenerator {
       case Routes.signUp:
         return MaterialPageRoute<dynamic>(
           builder: (context) => const SignUp(),
+        );
+      case Routes.signUpB:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const AuthPageB(),
         );
       case Routes.signUpSocial:
         return MaterialPageRoute<dynamic>(

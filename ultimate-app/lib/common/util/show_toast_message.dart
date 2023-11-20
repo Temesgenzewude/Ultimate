@@ -8,12 +8,11 @@ class Utils {
         msg: message,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 5,
+        timeInSecForIosWeb: 3,
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0);
   }
-
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(
       BuildContext context,
