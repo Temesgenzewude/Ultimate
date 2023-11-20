@@ -51,6 +51,7 @@ class _SignInTabState extends State<SignInTab> {
                 controller: usernameCtl,
                 focusNode: usernameFn,
                 labelText: 'Email',
+                type: 'email',
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 24, bottom: 32),

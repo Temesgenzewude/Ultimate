@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/util/show_toast_message.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/bloc/auth/authentication_bloc.dart';
@@ -37,6 +39,8 @@ class _SignUpTabState extends State<SignUpTab> {
   FocusNode birthdayFn = FocusNode();
   bool showPass = false;
   bool showRePass = false;
+  String? countryCode = '+251';
+  String? languageCode = '+251';
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +71,7 @@ class _SignUpTabState extends State<SignUpTab> {
                   controller: nameCtl,
                   focusNode: nameFn,
                   labelText: 'Name',
+                  type: 'name',
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -74,12 +79,14 @@ class _SignUpTabState extends State<SignUpTab> {
                     controller: usernameCtl,
                     focusNode: usernameFn,
                     labelText: 'Email',
+                    type: 'email',
                   ),
                 ),
                 TextFieldCpn(
                   controller: addressCtl,
                   focusNode: addressFn,
                   labelText: 'Address',
+                  type: 'address',
                 ),
 
                 const SizedBox(
@@ -94,12 +101,49 @@ class _SignUpTabState extends State<SignUpTab> {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: TextFieldCpn(
+                  child: IntlPhoneField(
+                    onCountryChanged: (value) {
+                      setState(() {
+                        countryCode = value.dialCode;
+                      });
+                    },
+                    style: TextStyle(color: Colors.white),
+                    dropdownTextStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    decoration: InputDecoration(
+                      hintStyle: TextStyle(color: Colors.white),
+                      floatingLabelStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      counterStyle: TextStyle(color: Colors.white),
+                      suffixIconColor: Colors.white,
+                      fillColor: Colors.white,
+                      labelStyle: TextStyle(color: Colors.white),
+                      prefixIconColor: Colors.white,
+                      prefixStyle: TextStyle(color: Colors.white),
+                      suffixStyle: TextStyle(color: Colors.white),
+                      labelText: 'Phone Number',
+                      iconColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(),
+                      ),
+                    ),
+                    // initialCountryCode: countryCode.toString(),
+                    initialValue: countryCode,
+                    // languageCode: countryCode.toString(),
+                    keyboardType: const TextInputType.numberWithOptions(
+                        signed: true, decimal: true),
                     controller: phoneCtl,
                     focusNode: phoneFn,
-                    labelText: 'Phone',
-                    keyboardType: TextInputType.phone,
                   ),
+
+                  // child: TextFieldCpn(
+                  //   controller: phoneCtl,
+                  //   focusNode: phoneFn,
+                  //   labelText: 'Phone',
+                  //   keyboardType: TextInputType.phone,
+                  // ),
                 ),
                 TextFieldPassCpn(
                     controller: passwordCtl,
@@ -154,7 +198,8 @@ class _SignUpTabState extends State<SignUpTab> {
                                 password: passwordCtl.value.text,
                                 name: nameCtl.value.text,
                                 address: addressCtl.value.text,
-                                phoneNumber: phoneCtl.value.text,
+                                phoneNumber:
+                                    '${countryCode}${phoneCtl.value.text}',
                                 coordinates: '10,10',
                                 birthDate: birthdayCtl.value.text,
                               );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ultimate/common/widget/validator.dart';
 
 import '../constant/colors.dart';
 import '../constant/styles.dart';
@@ -35,6 +36,7 @@ class TextFieldCpn extends StatelessWidget {
     this.onEditingComplete,
     this.suffixWidget,
     this.keyboardType,
+    this.type,
     Key? key,
   }) : super(key: key);
   final TextEditingController controller;
@@ -66,6 +68,7 @@ class TextFieldCpn extends StatelessWidget {
   final Color? fillColor;
   final Color? borderColor;
   final TextInputType? keyboardType;
+  final String? type;
 
   OutlineInputBorder createInputDecoration(BuildContext context,
       {Color? color}) {
@@ -163,8 +166,23 @@ class TextFieldCpn extends StatelessWidget {
               enabledBorder: createInputDecoration(context),
               errorBorder: createInputDecoration(context, color: radicalRed1),
               enabled: enabled,
+              // errorText: type == null && controller.text == ''
+              //     ? null
+              //     : validatePassword(type!, controller.text),
             )),
       ],
     );
+  }
+
+  String? validatePassword(String type, String value) {
+    if (type == 'email') {
+      return GeneralValidator.validateEmail(value);
+    } else if (type == 'address') {
+      return GeneralValidator.validateAddress(value);
+    } else if (type == 'name') {
+      return GeneralValidator.validateName(value);
+    } else {
+      return null;
+    }
   }
 }
