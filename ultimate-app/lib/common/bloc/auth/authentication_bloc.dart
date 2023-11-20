@@ -36,7 +36,7 @@ class AuthenticationBloc
   void _signIn(SignInEvent event, Emitter<AuthenticationState> emit) async {
     emit(LoginLoadingState());
     try {
-      final result = await authenticationRepository.signin(event.user);
+      final result = await authenticationRepository.signInUserA(event.user);
       emit(authenticationSuccessOrFailure(result: result, isLogin: true));
     } catch (e) {
       emit(
@@ -49,7 +49,7 @@ class AuthenticationBloc
   void _signUp(SignUpEvent event, Emitter<AuthenticationState> emit) async {
     emit(AuthenticationLoadingState());
     try {
-      final result = await authenticationRepository.signup(event.newUser);
+      final result = await authenticationRepository.signUpUserA(event.newUser);
       emit(authenticationSuccessOrFailure(result: result));
     } catch (e) {
       emit(authenticationSuccessOrFailure(result: e.toString().substring(10)));
