@@ -1,6 +1,6 @@
 // ignore: avoid_classes_with_only_static_members
 class AppUrl {
-  static var baseUrl = 'http://16.170.201.181:5001/api/';
+  static var baseUrl = 'http://13.48.221.106:5001/api/';
 
   static var signInEndPoint = '$baseUrl/signin';
   static var signUpEndPoint = '$baseUrl/signup';

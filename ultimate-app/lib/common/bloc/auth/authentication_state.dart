@@ -16,8 +16,8 @@ class AuthenticationSuccessState extends AuthenticationState {
 }
 
 class LoginSuccessState extends AuthenticationState {
-  const LoginSuccessState({required this.user});
-  final LoginResponseModel user;
+  const LoginSuccessState({required this.loginResponse});
+  final LoginResponseModel loginResponse;
 }
 
 class LoginFailureState extends AuthenticationState {

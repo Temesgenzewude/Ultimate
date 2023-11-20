@@ -113,8 +113,8 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
   }
 
   @override
-  void initState() {
-    _getCurrentPosition();
+void initState() {
+  _getCurrentPosition();
     super.initState();
   }
 

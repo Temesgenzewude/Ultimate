@@ -18,15 +18,17 @@ class AuthenticationBloc
   }
   final AuthenticationRepository authenticationRepository;
 
-  AuthenticationState authenticationSuccessOrFailure(dynamic result) {
+  AuthenticationState authenticationSuccessOrFailure(
+      {dynamic result, bool isLogin = false}) {
     if (result is SingUpResponseModel) {
       return AuthenticationSuccessState(user: result);
     } else if (result is LoginResponseModel) {
-      return LoginSuccessState(user: result);
-    } else if (result is String) {
+      return LoginSuccessState(loginResponse: result);
+    } else if (!isLogin && result is String) {
       return AuthenticationFailureState(errorMessage: result);
+    } else if (isLogin && result is String) {
+      return LoginFailureState(errorMessage: result);
     } else {
-      // Handle other cases if needed
       return const AuthenticationFailureState(errorMessage: 'Unexpected error');
     }
   }
@@ -35,9 +37,12 @@ class AuthenticationBloc
     emit(LoginLoadingState());
     try {
       final result = await authenticationRepository.signin(event.user);
-      emit(authenticationSuccessOrFailure(result));
+      emit(authenticationSuccessOrFailure(result: result, isLogin: true));
     } catch (e) {
-      emit(authenticationSuccessOrFailure(e.toString().substring(10)));
+      emit(
+        authenticationSuccessOrFailure(
+            result: e.toString().substring(10), isLogin: true),
+      );
     }
   }
 
@@ -45,13 +50,13 @@ class AuthenticationBloc
     emit(AuthenticationLoadingState());
     try {
       final result = await authenticationRepository.signup(event.newUser);
-      emit(authenticationSuccessOrFailure(result));
+      emit(authenticationSuccessOrFailure(result: result));
     } catch (e) {
-      emit(authenticationSuccessOrFailure(e.toString().substring(10)));
+      emit(authenticationSuccessOrFailure(result: e.toString().substring(10)));
     }
   }
 
   bool isAuthenticated() {
-    return state is AuthenticationSuccessState;
+    return state is LoginSuccessState;
   }
 }

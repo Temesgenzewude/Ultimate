@@ -36,7 +36,7 @@ class _SignInTabState extends State<SignInTab> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           GradientText(
-            'Welcom to  Ultimate!',
+            'Welcome to  Ultimate!',
             style: const TextStyle(
                 fontSize: 32,
                 height: 1,
@@ -79,7 +79,7 @@ class _SignInTabState extends State<SignInTab> {
                     Navigator.of(context)
                         .pushReplacementNamed(Routes.addMobileNumber);
                   });
-                } else if (state is AuthenticationFailureState) {
+                } else if (state is LoginFailureState) {
                   return Column(
                     children: [
                       AppWidget.typeButtonStartAction(

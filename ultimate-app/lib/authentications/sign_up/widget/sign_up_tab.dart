@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
-import 'package:flutter_ultimate/common/route/routes.dart';
-import 'package:flutter_ultimate/data/models/authentication_model.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 
 import '../../../app/widget_support.dart';
+import '../../../common/bloc/auth/authentication_bloc.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
+import '../../../common/route/routes.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/textfield.dart';
 import '../../../common/widget/textfield_pass.dart';
+import '../../../data/models/authentication_model.dart';
 
 class SignUpTab extends StatefulWidget {
   const SignUpTab({Key? key}) : super(key: key);
@@ -37,56 +37,6 @@ class _SignUpTabState extends State<SignUpTab> {
   FocusNode birthdayFn = FocusNode();
   bool showPass = false;
   bool showRePass = false;
-  Position? _currentPosition;
-
-  Future<bool> _handleLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
-      return false;
-    }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
-        return false;
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
-      return false;
-    }
-    return true;
-  }
-
-  Future<void> _getCurrentPosition() async {
-    final hasPermission = await _handleLocationPermission();
-
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => _currentPosition = position);
-      debugPrint('location: ${_currentPosition?.latitude}');
-      debugPrint('location: ${_currentPosition?.longitude}');
-    }).catchError((dynamic e) {
-      debugPrint(e);
-    });
-  }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _getCurrentPosition();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +49,7 @@ class _SignUpTabState extends State<SignUpTab> {
           children: [
             const SizedBox(height: 16),
             GradientText(
-              'Welcom to  Ultimate!',
+              'Welcome to  Ultimate!',
               style: const TextStyle(
                   fontSize: 32,
                   height: 1,
@@ -184,7 +134,11 @@ class _SignUpTabState extends State<SignUpTab> {
                     if (state is AuthenticationLoadingState) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is AuthenticationSuccessState) {
-                      Future.delayed(Duration.zero, () {
+                      Utils.flutterToast('''You have successfully registered. 
+                             Verification email is sent to ${usernameCtl.value.text}
+                             Please verify your email address and login!''');
+
+                      Future.delayed(const Duration(seconds: 5), () {
                         Navigator.of(context)
                             .pushReplacementNamed(Routes.signUp);
                       });
@@ -202,8 +156,7 @@ class _SignUpTabState extends State<SignUpTab> {
                                 name: nameCtl.value.text,
                                 address: addressCtl.value.text,
                                 phoneNumber: phoneCtl.value.text,
-                                coordinates:
-                                    '${_currentPosition?.latitude},${_currentPosition?.longitude}',
+                                coordinates: '10,10',
                                 birthDate: birthdayCtl.value.text,
                               );
                               // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
@@ -240,8 +193,7 @@ class _SignUpTabState extends State<SignUpTab> {
                           name: nameCtl.value.text,
                           address: addressCtl.value.text,
                           phoneNumber: phoneCtl.value.text,
-                          coordinates:
-                              '${_currentPosition?.latitude},${_currentPosition?.longitude}',
+                          coordinates: '10,10',
                           birthDate: birthdayCtl.value.text,
                         );
                         // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
