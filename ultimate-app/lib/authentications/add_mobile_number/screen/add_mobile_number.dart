@@ -13,7 +13,6 @@ import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/gradient_text.dart';
-import '../../../common/widget/textfield.dart';
 import '../../../common/widget/unfocus_click.dart';
 
 class AddMobileNumber extends StatefulWidget {
