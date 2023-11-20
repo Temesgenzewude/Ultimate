@@ -106,7 +106,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                         arguments: phoneCtl.text);
                   } else if (state is OtpSentFailure) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("OTP sending Failed")));
+                        SnackBar(content: Text('OTP sending Failed')));
                   }
                 }),
                 child: Container(),

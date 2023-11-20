@@ -14,7 +14,7 @@ import '../../models/login_request_model.dart';
 final prefManager = sl<PrefManager>();
 
 abstract class AuthenticationRemoteDataSource {
-  Future<SingUpResponseModel> signup(AuthenticationModel newuser);
+  Future<SingUpResponseModel> signup(UserAModel newuser);
   Future<LoginResponseModel> signin(LoginRequestModel user);
   Future<void> sendOtp();
   Future<void> verifyOtp(String otp);
@@ -52,7 +52,7 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<SingUpResponseModel> signup(AuthenticationModel user) async {
+  Future<SingUpResponseModel> signup(UserAModel user) async {
     final String url = AppUrl.signUpEndPoint;
     final Map<String, dynamic> body = <String, dynamic>{
       "name": user.name,

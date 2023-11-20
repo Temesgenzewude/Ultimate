@@ -11,5 +11,5 @@ class SignInEvent extends AuthenticationEvent {
 
 class SignUpEvent extends AuthenticationEvent {
   SignUpEvent({required this.newUser});
-  final AuthenticationModel newUser;
+  final UserAModel newUser;
 }
