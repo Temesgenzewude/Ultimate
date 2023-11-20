@@ -31,10 +31,13 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
   final prefManager = sl<PrefManager>();
   String? countryCode = 'US';
   Future<void> getCountryCode() async {
+    double latitude = double.parse(prefManager.kLatitude);
+    double longitude = double.parse(prefManager.kLongitude);
+    print(latitude);
+    print(longitude);
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          double.parse(prefManager.kLatitude),
-          double.parse(prefManager.kLongitude));
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
       setState(() {
         countryCode = placemarks[0].isoCountryCode;
       });
@@ -152,6 +155,9 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                         color: Colors.white,
                       ),
                       decoration: InputDecoration(
+                        floatingLabelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
                         counterStyle: TextStyle(color: Colors.white),
                         suffixIconColor: Colors.white,
                         fillColor: Colors.white,
