@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import '../../../app/widget_support.dart';
@@ -9,14 +7,15 @@ import '../../../common/constant/styles.dart';
 import '../widget/sign_in_tab_user_b.dart';
 import '../widget/sign_up_tab_user_b.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+class AuthPageB extends StatefulWidget {
+  const AuthPageB({Key? key}) : super(key: key);
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<AuthPageB> createState() => _AuthPageBState();
 }
 
-class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
+class _AuthPageBState extends State<AuthPageB>
+    with SingleTickerProviderStateMixin {
   late TabController _controller;
   int _currentIndex = 0;
 
