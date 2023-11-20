@@ -21,11 +21,11 @@ class SignUpTab extends StatefulWidget {
 }
 
 class _SignUpTabState extends State<SignUpTab> {
-  TextEditingController usernameCtl = new TextEditingController();
+  TextEditingController usernameCtl = TextEditingController();
   FocusNode usernameFn = FocusNode();
-  TextEditingController passwordCtl = new TextEditingController();
+  TextEditingController passwordCtl = TextEditingController();
   FocusNode passwordFn = FocusNode();
-  TextEditingController repasswordCtl = new TextEditingController();
+  TextEditingController repasswordCtl = TextEditingController();
   TextEditingController nameCtl = TextEditingController();
   FocusNode nameFn = FocusNode();
   TextEditingController phoneCtl = TextEditingController();

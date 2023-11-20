@@ -107,7 +107,6 @@ import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/login_request_model.dart';
 
@@ -148,7 +147,7 @@ class AuthenticationRepository {
     try {
       return await remoteDataSource.sendOtp();
     } catch (e) {
-      throw Exception("Sending OTP failed");
+      throw Exception('Sending OTP failed');
     }
   }
 
@@ -156,7 +155,7 @@ class AuthenticationRepository {
     try {
       return await remoteDataSource.verifyOtp(otp);
     } catch (e) {
-      throw Exception("Verifying OTP failed");
+      throw Exception('Verifying OTP failed');
     }
   }
 }
