@@ -47,6 +47,58 @@ class UserAModel {
       };
 }
 
+class UserBModel {
+  String name;
+  String password;
+  String email;
+  String age;
+  String gender;
+  String phoneNumber;
+  String birthDate;
+  String location;
+  String about;
+  String? user_type;
+  bool terms;
+
+  UserBModel({
+    required this.name,
+    required this.password,
+    required this.email,
+    required this.age,
+    required this.birthDate,
+    required this.gender,
+    required this.location,
+    required this.phoneNumber,
+    required this.about,
+    this.terms = true,
+  });
+
+  UserBModel.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        age = json['age'],
+        password = json['password'],
+        email = json['email'],
+        phoneNumber = json['phoneNumber'],
+        gender = json['gender'],
+        birthDate = json['birthDate'],
+        location = json['location'],
+        about = json['about'],
+        terms = json['terms'];
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name,
+        'password': password,
+        'email': email,
+        'phoneNumber': phoneNumber,
+        'birthDate': birthDate,
+        'location': location,
+        'about': about,
+        'terms': terms,
+        'age': age,
+        'gender': gender,
+      };
+}
+
 class SingUpResponseModel {
   String? message;
   String? userId;
