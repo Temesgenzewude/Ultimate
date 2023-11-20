@@ -135,7 +135,7 @@ class AuthenticationRepository {
     }
   }
 
-  Future<SingUpResponseModel> signup(AuthenticationModel newUser) async {
+  Future<SingUpResponseModel> signup(UserAModel newUser) async {
     try {
       return await remoteDataSource.signup(newUser);
     } catch (e) {

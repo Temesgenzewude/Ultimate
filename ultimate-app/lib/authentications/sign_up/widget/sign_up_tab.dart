@@ -149,8 +149,7 @@ class _SignUpTabState extends State<SignUpTab> {
                             context: context,
                             input: 'Sign Up Now',
                             onPressed: () {
-                              final AuthenticationModel user =
-                                  AuthenticationModel(
+                              final UserAModel user = UserAModel(
                                 email: usernameCtl.value.text,
                                 password: passwordCtl.value.text,
                                 name: nameCtl.value.text,
@@ -187,7 +186,7 @@ class _SignUpTabState extends State<SignUpTab> {
                       context: context,
                       input: 'Sign Up Now',
                       onPressed: () {
-                        final AuthenticationModel user = AuthenticationModel(
+                        final UserAModel user = UserAModel(
                           email: usernameCtl.value.text,
                           password: passwordCtl.value.text,
                           name: nameCtl.value.text,

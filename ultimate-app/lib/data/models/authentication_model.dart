@@ -1,6 +1,6 @@
 // ignore_for_file: sort_constructors_first
 
-class AuthenticationModel {
+class UserAModel {
   String name;
   String password;
   String email;
@@ -11,7 +11,7 @@ class AuthenticationModel {
   String? user_type;
   bool terms;
 
-  AuthenticationModel({
+  UserAModel({
     required this.name,
     required this.password,
     required this.email,
@@ -23,7 +23,7 @@ class AuthenticationModel {
     this.user_type = 'user',
   });
 
-  AuthenticationModel.fromJson(Map<String, dynamic> json)
+  UserAModel.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         password = json['password'],
         email = json['email'],
