@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_event.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_state.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
 import '../../../app/widget_support.dart';
@@ -13,6 +13,7 @@ import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/gradient_text.dart';
+import '../../../common/widget/textfield.dart';
 import '../../../common/widget/unfocus_click.dart';
 
 class AddMobileNumber extends StatefulWidget {
@@ -24,8 +25,6 @@ class AddMobileNumber extends StatefulWidget {
 }
 
 class _AddMobileNumberState extends State<AddMobileNumber> {
-  String initialCountry = 'ET';
-  PhoneNumber number = PhoneNumber(isoCode: 'ET');
   TextEditingController phoneCtl = TextEditingController();
   FocusNode phoneFn = FocusNode();
 
@@ -119,18 +118,9 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                         ],
                       ),
                     ),
-                    // TextFieldCpn(
-                    //   controller: phoneCtl,
-                    //   focusNode: phoneFn,
-                    // ),
-                    InternationalPhoneNumberInput(
-                      onInputChanged: (PhoneNumber number) {
-                        print(number.phoneNumber);
-                      },
-                      textFieldController: phoneCtl,
+                    TextFieldCpn(
+                      controller: phoneCtl,
                       focusNode: phoneFn,
-                      keyboardType: TextInputType.numberWithOptions(
-                          signed: true, decimal: true),
                     ),
                     Padding(
                         padding: const EdgeInsets.only(top: 24, bottom: 16),
@@ -174,14 +164,5 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
         ),
       ),
     );
-  }
-
-  void getPhoneNumber(String phoneNumber) async {
-    final PhoneNumber number =
-        await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'ET');
-
-    setState(() {
-      this.number = number;
-    });
   }
 }
