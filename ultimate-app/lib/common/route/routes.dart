@@ -1,6 +1,6 @@
 class Routes {
   static const String onBoarding1 = '/onBoarding1';
-  static const String TempHoem = "/Temp";
+  static const String TempHoem = '/Temp';
 
   static const String profile1 = '/profile1';
   static const String profile2 = '/profile2';

@@ -21,11 +21,11 @@ class SignUpTab extends StatefulWidget {
 }
 
 class _SignUpTabState extends State<SignUpTab> {
-  TextEditingController usernameCtl = new TextEditingController();
+  TextEditingController usernameCtl = TextEditingController();
   FocusNode usernameFn = FocusNode();
-  TextEditingController passwordCtl = new TextEditingController();
+  TextEditingController passwordCtl = TextEditingController();
   FocusNode passwordFn = FocusNode();
-  TextEditingController repasswordCtl = new TextEditingController();
+  TextEditingController repasswordCtl = TextEditingController();
   TextEditingController nameCtl = TextEditingController();
   FocusNode nameFn = FocusNode();
   TextEditingController phoneCtl = TextEditingController();
@@ -149,8 +149,7 @@ class _SignUpTabState extends State<SignUpTab> {
                             context: context,
                             input: 'Sign Up Now',
                             onPressed: () {
-                              final AuthenticationModel user =
-                                  AuthenticationModel(
+                              final UserAModel user = UserAModel(
                                 email: usernameCtl.value.text,
                                 password: passwordCtl.value.text,
                                 name: nameCtl.value.text,
@@ -187,7 +186,7 @@ class _SignUpTabState extends State<SignUpTab> {
                       context: context,
                       input: 'Sign Up Now',
                       onPressed: () {
-                        final AuthenticationModel user = AuthenticationModel(
+                        final UserAModel user = UserAModel(
                           email: usernameCtl.value.text,
                           password: passwordCtl.value.text,
                           name: nameCtl.value.text,

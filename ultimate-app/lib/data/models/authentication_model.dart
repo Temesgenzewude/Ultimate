@@ -1,6 +1,6 @@
 // ignore_for_file: sort_constructors_first
 
-class AuthenticationModel {
+class UserAModel {
   String name;
   String password;
   String email;
@@ -11,7 +11,7 @@ class AuthenticationModel {
   String? user_type;
   bool terms;
 
-  AuthenticationModel({
+  UserAModel({
     required this.name,
     required this.password,
     required this.email,
@@ -23,7 +23,7 @@ class AuthenticationModel {
     this.user_type = 'user',
   });
 
-  AuthenticationModel.fromJson(Map<String, dynamic> json)
+  UserAModel.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         password = json['password'],
         email = json['email'],
@@ -44,6 +44,58 @@ class AuthenticationModel {
         'coordinates': coordinates,
         'user_type': user_type,
         'terms': terms,
+      };
+}
+
+class UserBModel {
+  String name;
+  String password;
+  String email;
+  String age;
+  String gender;
+  String phoneNumber;
+  String birthDate;
+  String location;
+  String about;
+  String? user_type;
+  bool terms;
+
+  UserBModel({
+    required this.name,
+    required this.password,
+    required this.email,
+    required this.age,
+    required this.birthDate,
+    required this.gender,
+    required this.location,
+    required this.phoneNumber,
+    required this.about,
+    this.terms = true,
+  });
+
+  UserBModel.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        age = json['age'],
+        password = json['password'],
+        email = json['email'],
+        phoneNumber = json['phoneNumber'],
+        gender = json['gender'],
+        birthDate = json['birthDate'],
+        location = json['location'],
+        about = json['about'],
+        terms = json['terms'];
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name,
+        'password': password,
+        'email': email,
+        'phoneNumber': phoneNumber,
+        'birthDate': birthDate,
+        'location': location,
+        'about': about,
+        'terms': terms,
+        'age': age,
+        'gender': gender,
       };
 }
 
