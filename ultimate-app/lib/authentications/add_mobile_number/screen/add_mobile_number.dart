@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/otp/otp_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/otp/otp_event.dart';
-import 'package:flutter_ultimate/common/bloc/otp/otp_state.dart';
-import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
-import 'package:flutter_ultimate/dependency_indjection.dart';
-import 'package:flutter_ultimate/sharedPreferences.dart';
+
 import '../../../app/widget_support.dart';
+import '../../../common/bloc/otp/otp_bloc.dart';
+import '../../../common/bloc/otp/otp_event.dart';
+import '../../../common/bloc/otp/otp_state.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
@@ -15,6 +13,8 @@ import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/textfield.dart';
 import '../../../common/widget/unfocus_click.dart';
+import '../../../dependency_indjection.dart';
+import '../../../sharedPreferences.dart';
 
 class AddMobileNumber extends StatefulWidget {
   final prefManager = sl<PrefManager>();
