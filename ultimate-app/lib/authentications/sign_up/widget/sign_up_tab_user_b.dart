@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
+import 'package:flutter_ultimate/common/route/routes.dart';
+import 'package:flutter_ultimate/common/util/show_toast_message.dart';
+import 'package:flutter_ultimate/data/models/authentication_model.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
@@ -16,17 +21,17 @@ class SignUpTabB extends StatefulWidget {
 }
 
 class _SignUpTabBState extends State<SignUpTabB> {
-  TextEditingController usernameCtl = new TextEditingController();
+  TextEditingController usernameCtl = TextEditingController();
   FocusNode usernameFn = FocusNode();
-  TextEditingController passwordCtl = new TextEditingController();
+  TextEditingController passwordCtl = TextEditingController();
   FocusNode passwordFn = FocusNode();
-  TextEditingController repasswordCtl = new TextEditingController();
+  TextEditingController repasswordCtl = TextEditingController();
   TextEditingController nameCtl = TextEditingController();
   FocusNode nameFn = FocusNode();
   TextEditingController phoneCtl = TextEditingController();
   FocusNode phoneFn = FocusNode();
-  TextEditingController addressCtl = TextEditingController();
-  FocusNode addressFn = FocusNode();
+  TextEditingController locationCtl = TextEditingController();
+  FocusNode locationFn = FocusNode();
   FocusNode repasswordFn = FocusNode();
   TextEditingController birthdayCtl = TextEditingController();
   FocusNode birthdayFn = FocusNode();
@@ -83,8 +88,8 @@ class _SignUpTabBState extends State<SignUpTabB> {
                 ),
 
                 TextFieldCpn(
-                  controller: addressCtl,
-                  focusNode: addressFn,
+                  controller: ageCtl,
+                  focusNode: ageFn,
                   keyboardType: const TextInputType.numberWithOptions(
                       signed: true, decimal: false),
                   labelText: 'Age',
@@ -146,9 +151,9 @@ class _SignUpTabBState extends State<SignUpTabB> {
                 ),
 
                 TextFieldCpn(
-                  controller: addressCtl,
-                  focusNode: addressFn,
-                  labelText: 'Address',
+                  controller: locationCtl,
+                  focusNode: locationFn,
+                  labelText: 'Location',
                 ),
 
                 const SizedBox(
@@ -198,40 +203,87 @@ class _SignUpTabBState extends State<SignUpTabB> {
                     }),
 
                 const SizedBox(height: 32),
+                BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                  builder: (context, state) {
+                    if (state is AuthenticationLoadingState) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is AuthenticationSuccessState) {
+                      Utils.flutterToast('''You have successfully registered. 
+                             Verification email is sent to ${usernameCtl.value.text}
+                             Please verify your email location and login!''');
 
-                AppWidget.typeButtonStartAction(
-                  context: context,
-                  input: 'Sign Up Now',
-                  onPressed: () {
-                    // Navigator.of(context).pushNamed(Routes.signUp);
+                      Future.delayed(const Duration(seconds: 5), () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(Routes.signUp);
+                      });
+                    } else if (state is AuthenticationFailureState) {
+                      return Column(
+                        children: [
+                          AppWidget.typeButtonStartAction(
+                            context: context,
+                            input: 'Sign Up Now',
+                            onPressed: () {
+                              final UserBModel user = UserBModel(
+                                  email: usernameCtl.value.text,
+                                  password: passwordCtl.value.text,
+                                  name: nameCtl.value.text,
+                                  about: aboutCtl.value.text,
+                                  phoneNumber: phoneCtl.value.text,
+                                  location: '10,10',
+                                  birthDate: birthdayCtl.value.text,
+                                  age: ageCtl.value.text,
+                                  gender: _selectedGender!);
+                              // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
+                              BlocProvider.of<AuthenticationBloc>(context).add(
+                                UserBSignUpEvent(newUser: user),
+                              );
+                            },
+                            colorAsset: grey1100,
+                            icon: icKeyboardRight,
+                            sizeAsset: 24,
+                            bgColor: primary,
+                            borderColor: primary,
+                            textColor: grey1100,
+                          ),
+                          Center(
+                            child: Text(
+                              state.errorMessage,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return AppWidget.typeButtonStartAction(
+                      context: context,
+                      input: 'Sign Up Now',
+                      onPressed: () {
+                        final UserBModel user = UserBModel(
+                            email: usernameCtl.value.text,
+                            password: passwordCtl.value.text,
+                            name: nameCtl.value.text,
+                            about: aboutCtl.value.text,
+                            phoneNumber: phoneCtl.value.text,
+                            location: '10,10',
+                            birthDate: birthdayCtl.value.text,
+                            age: ageCtl.value.text,
+                            gender: _selectedGender!);
+                        BlocProvider.of<AuthenticationBloc>(context).add(
+                          UserBSignUpEvent(newUser: user),
+                        );
+                      },
+                      colorAsset: grey1100,
+                      icon: icKeyboardRight,
+                      sizeAsset: 24,
+                      bgColor: primary,
+                      borderColor: primary,
+                      textColor: grey1100,
+                    );
                   },
-                  colorAsset: grey1100,
-                  icon: icKeyboardRight,
-                  sizeAsset: 24,
-                  bgColor: primary,
-                  borderColor: primary,
-                  textColor: grey1100,
                 ),
-                // AppWidget.typeButtonStartAction(
-                //     context: context,
-                //     input: 'Sign Up Now',
-                //     onPressed: () {
-                //       final AuthenticationModel user = AuthenticationModel(
-                //         userName: usernameCtl.text,
-                //         password: passwordCtl.text,
-                //       );
-                //       // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
-                //       BlocProvider.of<AuthenticationBloc>(context).add(
-                //         SignUpEvent(newUser: user),
-                //       );
-                //       Navigator.of(context).pushNamed(Routes.signUp);
-                //     },
-                //     colorAsset: grey1100,
-                //     icon: icKeyboardRight,
-                //     sizeAsset: 24,
-                //     bgColor: primary,
-                //     borderColor: primary,
-                //     textColor: grey1100),
               ],
             ),
             Align(
@@ -251,31 +303,3 @@ class _SignUpTabBState extends State<SignUpTabB> {
     );
   }
 }
-
-/*
-Container(
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        style: body(color: grey1100),
-                        hint: Text(
-                          'Select Gender',
-                          style: body(color: grey200),
-                        ),
-                        items: genders.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        value: _selectedGender,
-                        onChanged: (String? value) {
-                          setState(() {
-                            _selectedGender = value;
-                          });
-                        },
-                        key: UniqueKey(), // add this line
-                      ),
-                    ),
-                  ),
-
-*/

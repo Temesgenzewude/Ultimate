@@ -57,7 +57,6 @@ class UserBModel {
   String birthDate;
   String location;
   String about;
-  String? user_type;
   bool terms;
 
   UserBModel({
@@ -109,7 +108,7 @@ class SingUpResponseModel {
   });
 
   SingUpResponseModel.fromJson(Map<String, dynamic> json) {
-    message = json['message'];
+    message = json['message'] ? json['message'] : '';
     userId = json['id'];
   }
 }

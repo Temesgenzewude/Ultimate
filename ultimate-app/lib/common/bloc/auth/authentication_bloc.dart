@@ -13,8 +13,10 @@ class AuthenticationBloc
   AuthenticationBloc({
     required this.authenticationRepository,
   }) : super(AuthenticationInitialState()) {
-    on<SignInEvent>(_signIn);
-    on<SignUpEvent>(_signUp);
+    on<UserASignInEvent>(_signInUserA);
+    on<UserASignUpEvent>(_signUpUserA);
+    on<UserBSignInEvent>(_signInUserB);
+    on<UserBSignUpEvent>(_signUpUserB);
   }
   final AuthenticationRepository authenticationRepository;
 
@@ -33,10 +35,11 @@ class AuthenticationBloc
     }
   }
 
-  void _signIn(SignInEvent event, Emitter<AuthenticationState> emit) async {
+  void _signInUserA(
+      UserASignInEvent event, Emitter<AuthenticationState> emit) async {
     emit(LoginLoadingState());
     try {
-      final result = await authenticationRepository.signin(event.user);
+      final result = await authenticationRepository.signInUserA(event.user);
       emit(authenticationSuccessOrFailure(result: result, isLogin: true));
     } catch (e) {
       emit(
@@ -46,10 +49,36 @@ class AuthenticationBloc
     }
   }
 
-  void _signUp(SignUpEvent event, Emitter<AuthenticationState> emit) async {
+  void _signUpUserA(
+      UserASignUpEvent event, Emitter<AuthenticationState> emit) async {
     emit(AuthenticationLoadingState());
     try {
-      final result = await authenticationRepository.signup(event.newUser);
+      final result = await authenticationRepository.signUpUserA(event.newUser);
+      emit(authenticationSuccessOrFailure(result: result));
+    } catch (e) {
+      emit(authenticationSuccessOrFailure(result: e.toString().substring(10)));
+    }
+  }
+
+  void _signInUserB(
+      UserBSignInEvent event, Emitter<AuthenticationState> emit) async {
+    emit(LoginLoadingState());
+    try {
+      final result = await authenticationRepository.signInUserB(event.user);
+      emit(authenticationSuccessOrFailure(result: result, isLogin: true));
+    } catch (e) {
+      emit(
+        authenticationSuccessOrFailure(
+            result: e.toString().substring(10), isLogin: true),
+      );
+    }
+  }
+
+  void _signUpUserB(
+      UserBSignUpEvent event, Emitter<AuthenticationState> emit) async {
+    emit(AuthenticationLoadingState());
+    try {
+      final result = await authenticationRepository.signUpUserB(event.newUser);
       emit(authenticationSuccessOrFailure(result: result));
     } catch (e) {
       emit(authenticationSuccessOrFailure(result: e.toString().substring(10)));
