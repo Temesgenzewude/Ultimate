@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
@@ -21,6 +22,9 @@ class _SignInTabBState extends State<SignInTabB> {
   TextEditingController passwordCtl = TextEditingController();
   FocusNode passwordFn = FocusNode();
   bool showPass = false;
+  String? countryCode = 'US';
+  String? languageCode = '+1';
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,11 +47,40 @@ class _SignInTabBState extends State<SignInTabB> {
           ),
           Column(
             children: [
-              TextFieldCpn(
+              IntlPhoneField(
+                onCountryChanged: (value) {
+                  setState(() {
+                    languageCode = value.dialCode;
+                  });
+                },
+                style: TextStyle(color: Colors.white),
+                dropdownTextStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.white),
+                  floatingLabelStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                  counterStyle: TextStyle(color: Colors.white),
+                  suffixIconColor: Colors.white,
+                  fillColor: Colors.white,
+                  labelStyle: TextStyle(color: Colors.white),
+                  prefixIconColor: Colors.white,
+                  prefixStyle: TextStyle(color: Colors.white),
+                  suffixStyle: TextStyle(color: Colors.white),
+                  labelText: 'Phone Number',
+                  iconColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(),
+                  ),
+                ),
+                initialCountryCode: countryCode.toString(),
+                // languageCode: countryCode.toString(),
+                keyboardType: const TextInputType.numberWithOptions(
+                    signed: true, decimal: true),
                 controller: phoneNumberCtl,
                 focusNode: phoneNumberFn,
-                labelText: 'Phone Number',
-                keyboardType: TextInputType.phone,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 24, bottom: 32),
