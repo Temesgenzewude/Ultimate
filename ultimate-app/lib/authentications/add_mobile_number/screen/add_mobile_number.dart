@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
-import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../app/widget_support.dart';
@@ -14,11 +13,9 @@ import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/gradient_text.dart';
-import '../../../common/widget/textfield.dart';
 import '../../../common/widget/unfocus_click.dart';
 import '../../../dependency_indjection.dart';
 import '../../../sharedPreferences.dart';
-import 'package:geocoding/geocoding.dart';
 
 class AddMobileNumber extends StatefulWidget {
   AddMobileNumber({Key? key}) : super(key: key);
@@ -98,10 +95,10 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                 ),
               ),
               BlocListener<OtpBloc, OtpState>(
-                listener: ((context, state) {
+                listener: (context, state) {
                   if (state is OtpSentSuccess) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text('OTP sent successfully!'),
                       ),
                     );
@@ -109,9 +106,9 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                         arguments: phoneCtl.text);
                   } else if (state is OtpSentFailure) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('OTP sending Failed')));
+                        const SnackBar(content: Text('OTP sending Failed')));
                   }
-                }),
+                },
                 child: Container(),
               ),
               Padding(
@@ -151,10 +148,10 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                     //   focusNode: phoneFn,
                     // ),
                     IntlPhoneField(
-                      dropdownTextStyle: TextStyle(
+                      dropdownTextStyle: const TextStyle(
                         color: Colors.white,
                       ),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         floatingLabelStyle: TextStyle(
                           color: Colors.white,
                         ),
@@ -183,13 +180,14 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                         child: BlocBuilder<OtpBloc, OtpState>(
                           builder: (context, state) {
                             if (state is OtpLoading) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             } else {
                               return AppWidget.typeButtonStartAction(
                                   context: context,
                                   input: 'Next',
                                   onPressed: () {
-                                    context.read<OtpBloc>().add(OtpSent());
+                                    context.read<OtpBloc>().add(OTPSendUserA());
                                   },
                                   bgColor: primary,
                                   icon: icArrowRight,
