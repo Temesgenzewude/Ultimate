@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:intl_phone_field/intl_phone_field.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
+import 'package:flutter_ultimate/common/route/routes.dart';
+import 'package:flutter_ultimate/data/models/login_request_model.dart';
+
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
@@ -98,17 +105,74 @@ class _SignInTabBState extends State<SignInTabB> {
                       });
                     }),
               ),
-              AppWidget.typeButtonStartAction(
-                context: context,
-                input: 'Sign In Now',
-                onPressed: () {},
-                colorAsset: grey1100,
-                icon: icKeyboardRight,
-                sizeAsset: 24,
-                bgColor: primary,
-                borderColor: primary,
-                textColor: grey1100,
-              ),
+              BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                  builder: (context, state) {
+                if (state is LoginLoadingState) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is LoginSuccessState) {
+                  Future.delayed(Duration.zero, () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.addMobileNumber);
+                  });
+                } else if (state is LoginFailureState) {
+                  return Column(
+                    children: [
+                      AppWidget.typeButtonStartAction(
+                        context: context,
+                        input: 'Sign In Now',
+                        onPressed: () {
+                          final UserBLoginRequestModel user =
+                              UserBLoginRequestModel(
+                            phoneNumber: phoneNumberCtl.text,
+                            password: passwordCtl.text,
+                          );
+                          BlocProvider.of<AuthenticationBloc>(context).add(
+                            UserBSignInEvent(
+                              user: user,
+                            ),
+                          );
+                        },
+                        colorAsset: grey1100,
+                        icon: icKeyboardRight,
+                        sizeAsset: 24,
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100,
+                      ),
+                      Center(
+                        child: Text(
+                          state.errorMessage,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return AppWidget.typeButtonStartAction(
+                  context: context,
+                  input: 'Sign In Now',
+                  onPressed: () {
+                    final UserBLoginRequestModel user = UserBLoginRequestModel(
+                      phoneNumber: phoneNumberCtl.text,
+                      password: passwordCtl.text,
+                    );
+                    BlocProvider.of<AuthenticationBloc>(context).add(
+                      UserBSignInEvent(
+                        user: user,
+                      ),
+                    );
+                  },
+                  colorAsset: grey1100,
+                  icon: icKeyboardRight,
+                  sizeAsset: 24,
+                  bgColor: primary,
+                  borderColor: primary,
+                  textColor: grey1100,
+                );
+              }),
             ],
           ),
           Align(

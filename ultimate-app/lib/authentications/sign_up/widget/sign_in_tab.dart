@@ -87,12 +87,13 @@ class _SignInTabState extends State<SignInTab> {
                         context: context,
                         input: 'Sign In Now',
                         onPressed: () {
-                          final LoginRequestModel user = LoginRequestModel(
+                          final UserALoginRequestModel user =
+                              UserALoginRequestModel(
                             email: usernameCtl.text,
                             password: passwordCtl.text,
                           );
                           BlocProvider.of<AuthenticationBloc>(context).add(
-                            SignInEvent(
+                            UserASignInEvent(
                               user: user,
                             ),
                           );
@@ -120,7 +121,9 @@ class _SignInTabState extends State<SignInTab> {
                   context: context,
                   input: 'Sign In Now',
                   onPressed: () {
+
                     _submitForm();
+
                   },
                   colorAsset: grey1100,
                   icon: icKeyboardRight,

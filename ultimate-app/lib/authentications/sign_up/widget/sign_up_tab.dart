@@ -205,7 +205,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                               );
                               // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
                               BlocProvider.of<AuthenticationBloc>(context).add(
-                                SignUpEvent(newUser: user),
+                                UserASignUpEvent(newUser: user),
                               );
                             },
                             colorAsset: grey1100,
@@ -234,6 +234,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                         _submitForm();
                         // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
 
+
                         // Navigator.of(context).pushNamed(Routes.signUp);
                       },
                       colorAsset: grey1100,
@@ -245,26 +246,6 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                     );
                   },
                 ),
-                // AppWidget.typeButtonStartAction(
-                //     context: context,
-                //     input: 'Sign Up Now',
-                //     onPressed: () {
-                //       final AuthenticationModel user = AuthenticationModel(
-                //         userName: usernameCtl.text,
-                //         password: passwordCtl.text,
-                //       );
-                //       // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
-                //       BlocProvider.of<AuthenticationBloc>(context).add(
-                //         SignUpEvent(newUser: user),
-                //       );
-                //       Navigator.of(context).pushNamed(Routes.signUp);
-                //     },
-                //     colorAsset: grey1100,
-                //     icon: icKeyboardRight,
-                //     sizeAsset: 24,
-                //     bgColor: primary,
-                //     borderColor: primary,
-                //     textColor: grey1100),
               ],
             ),
             Align(

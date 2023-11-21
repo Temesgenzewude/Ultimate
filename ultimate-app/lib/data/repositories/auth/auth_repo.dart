@@ -116,20 +116,13 @@ class AuthenticationRepository {
   AuthenticationRepository({required this.remoteDataSource});
   final AuthenticationRemoteDataSource remoteDataSource;
 
-  Future<LoginResponseModel> signin(LoginRequestModel user) async {
+  Future<LoginResponseModel> signInUserA(UserALoginRequestModel user) async {
     try {
       final prefManager = sl<PrefManager>();
-      // final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final response = await remoteDataSource.signInUserA(user);
 
-      final response = await remoteDataSource.signin(user);
-
-      print('...User Token...: ${response.token}');
-      print('...User Id...: ${response.user?.userId}');
       prefManager.kToken = response.token.toString();
       prefManager.kUserID = response.user?.userId.toString() ?? '';
-
-      // prefs.setString('token', response.token.toString());
-      // prefs.setString('userId', response.user?.userId.toString() ?? '');
 
       return response;
     } catch (e) {
@@ -137,9 +130,31 @@ class AuthenticationRepository {
     }
   }
 
-  Future<SingUpResponseModel> signup(UserAModel newUser) async {
+  Future<SingUpResponseModel> signUpUserA(UserAModel newUser) async {
     try {
-      return await remoteDataSource.signup(newUser);
+      return await remoteDataSource.signUpUserA(newUser);
+    } catch (e) {
+      throw Exception(e.toString().substring(10));
+    }
+  }
+
+  Future<LoginResponseModel> signInUserB(UserBLoginRequestModel user) async {
+    try {
+      final prefManager = sl<PrefManager>();
+      final response = await remoteDataSource.signInUserB(user);
+
+      prefManager.kToken = response.token.toString();
+      prefManager.kUserID = response.user?.userId.toString() ?? '';
+
+      return response;
+    } catch (e) {
+      throw Exception(e.toString().substring(10));
+    }
+  }
+
+  Future<SingUpResponseModel> signUpUserB(UserBModel newUser) async {
+    try {
+      return await remoteDataSource.signUpUserB(newUser);
     } catch (e) {
       throw Exception(e.toString().substring(10));
     }
