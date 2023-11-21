@@ -109,6 +109,8 @@ import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
 
 import '../../models/login_request_model.dart';
+import '../../models/social_login_request_model.dart';
+import '../../models/social_login_response_model.dart';
 
 class AuthenticationRepository {
   AuthenticationRepository({required this.remoteDataSource});
@@ -156,6 +158,15 @@ class AuthenticationRepository {
       return await remoteDataSource.verifyOtp(otp);
     } catch (e) {
       throw Exception('Verifying OTP failed');
+    }
+  }
+
+  Future<SocialLoginResponseModel> loginSocial(
+      SocialLoginRequestModel socialLoginRequestModel) async {
+    try {
+      return await remoteDataSource.loginSocial(socialLoginRequestModel);
+    } catch (e) {
+      throw Exception(e.toString().substring(10)); 
     }
   }
 }

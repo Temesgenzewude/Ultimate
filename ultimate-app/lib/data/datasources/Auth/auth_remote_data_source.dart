@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter_ultimate/data/app_exceptions.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
+import 'package:flutter_ultimate/data/models/social_login_request_model.dart';
+import 'package:flutter_ultimate/data/models/social_login_response_model.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +20,9 @@ abstract class AuthenticationRemoteDataSource {
   Future<LoginResponseModel> signin(LoginRequestModel user);
   Future<void> sendOtp();
   Future<void> verifyOtp(String otp);
+
+  Future<SocialLoginResponseModel> loginSocial(
+      SocialLoginRequestModel socialLoginRequestModel);
 }
 
 class AuthenticationRemoteDataSourceImpl
@@ -44,8 +49,7 @@ class AuthenticationRemoteDataSourceImpl
       final jsonData = LoginResponseModel.fromJson(data);
       return jsonData;
     } else if (response.statusCode == 403) {
-      throw Exception(
-          'Invalid Email or or password'); // Update the error message if desired
+      throw Exception('Invalid Email or password');
     } else {
       throw Exception("Error while trying to sing in");
     }
@@ -136,6 +140,25 @@ class AuthenticationRemoteDataSourceImpl
     if (response.statusCode == 200) {
     } else {
       throw FetchDataException('Failed to verify Otp');
+    }
+  }
+
+  @override
+  Future<SocialLoginResponseModel> loginSocial(
+      SocialLoginRequestModel socialLoginRequestModel) async {
+    final response = await client.post(
+      Uri.parse(AppUrl.socialLoginEndPoint),
+      body: jsonEncode(socialLoginRequestModel.toJson()),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      final dynamic data = json.decode(response.body);
+      return SocialLoginResponseModel.fromJson(data);
+    } else {
+      final dynamic data = json.decode(response.body);
+      throw Exception(data['message'] ?? "Social Login Failed!");
     }
   }
 }
