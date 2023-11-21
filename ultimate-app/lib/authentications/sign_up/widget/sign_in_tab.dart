@@ -90,7 +90,7 @@ class _SignInTabState extends State<SignInTab> {
                             password: passwordCtl.text,
                           );
                           BlocProvider.of<AuthenticationBloc>(context).add(
-                            SignInEvent(
+                            UserASignInEvent(
                               user: user,
                             ),
                           );
@@ -123,7 +123,7 @@ class _SignInTabState extends State<SignInTab> {
                       password: passwordCtl.text,
                     );
                     BlocProvider.of<AuthenticationBloc>(context).add(
-                      SignInEvent(
+                      UserASignInEvent(
                         user: user,
                       ),
                     );
