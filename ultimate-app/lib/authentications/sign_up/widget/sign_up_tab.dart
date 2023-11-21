@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/util/form_validator.dart';
 import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
@@ -22,7 +23,7 @@ class SignUpTab extends StatefulWidget {
   State<SignUpTab> createState() => _SignUpTabState();
 }
 
-class _SignUpTabState extends State<SignUpTab> {
+class _SignUpTabState extends State<SignUpTab> with FormValidator {
   TextEditingController usernameCtl = TextEditingController();
   FocusNode usernameFn = FocusNode();
   TextEditingController passwordCtl = TextEditingController();
@@ -39,8 +40,8 @@ class _SignUpTabState extends State<SignUpTab> {
   FocusNode birthdayFn = FocusNode();
   bool showPass = false;
   bool showRePass = false;
-  String? countryCode = '+251';
-  String? languageCode = '+251';
+  String? countryCode = 'US';
+  String? languageCode = '+1';
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +105,7 @@ class _SignUpTabState extends State<SignUpTab> {
                   child: IntlPhoneField(
                     onCountryChanged: (value) {
                       setState(() {
-                        countryCode = value.dialCode;
+                        languageCode = value.dialCode;
                       });
                     },
                     style: TextStyle(color: Colors.white),
@@ -129,8 +130,7 @@ class _SignUpTabState extends State<SignUpTab> {
                         borderSide: BorderSide(),
                       ),
                     ),
-                    // initialCountryCode: countryCode.toString(),
-                    initialValue: countryCode,
+                    initialCountryCode: countryCode.toString(),
                     // languageCode: countryCode.toString(),
                     keyboardType: const TextInputType.numberWithOptions(
                         signed: true, decimal: true),
@@ -199,7 +199,7 @@ class _SignUpTabState extends State<SignUpTab> {
                                 name: nameCtl.value.text,
                                 address: addressCtl.value.text,
                                 phoneNumber:
-                                    '${countryCode}${phoneCtl.value.text}',
+                                    '${languageCode}${phoneCtl.value.text}',
                                 coordinates: '10,10',
                                 birthDate: birthdayCtl.value.text,
                               );
@@ -231,19 +231,8 @@ class _SignUpTabState extends State<SignUpTab> {
                       context: context,
                       input: 'Sign Up Now',
                       onPressed: () {
-                        final UserAModel user = UserAModel(
-                          email: usernameCtl.value.text,
-                          password: passwordCtl.value.text,
-                          name: nameCtl.value.text,
-                          address: addressCtl.value.text,
-                          phoneNumber: phoneCtl.value.text,
-                          coordinates: '10,10',
-                          birthDate: birthdayCtl.value.text,
-                        );
+                        _submitForm();
                         // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
-                        BlocProvider.of<AuthenticationBloc>(context).add(
-                          SignUpEvent(newUser: user),
-                        );
 
                         // Navigator.of(context).pushNamed(Routes.signUp);
                       },
@@ -326,6 +315,46 @@ class _SignUpTabState extends State<SignUpTab> {
           ],
         ),
       ),
+    );
+  }
+
+  void _submitForm() {
+    if (!FormValidator.validateName(nameCtl.text)) {
+      Utils.flutterToast('Name can not be empty');
+      return;
+    }
+
+    if (!FormValidator.validateEmail(usernameCtl.text)) {
+      Utils.flutterToast('Invalid Email');
+      return;
+    }
+
+    if (!FormValidator.validatePassword(passwordCtl.text)) {
+      Utils.flutterToast('Invalid Password');
+      return;
+    }
+    if (passwordCtl.text != repasswordCtl.text) {
+      Utils.flutterToast('Passwords do not match');
+      return;
+    }
+    if (phoneCtl.text == '') {
+      Utils.flutterToast('Please provide a phone number');
+      return;
+    }
+
+    // If all validation passes
+    final UserAModel user = UserAModel(
+      email: usernameCtl.value.text,
+      password: passwordCtl.value.text,
+      name: nameCtl.value.text,
+      address: addressCtl.value.text,
+      phoneNumber: '${languageCode}${phoneCtl.value.text}',
+      coordinates: '10,10',
+      birthDate: birthdayCtl.value.text,
+    );
+
+    BlocProvider.of<AuthenticationBloc>(context).add(
+      SignUpEvent(newUser: user),
     );
   }
 }
