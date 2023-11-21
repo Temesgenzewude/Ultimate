@@ -46,9 +46,6 @@ class AuthenticationRemoteDataSourceImpl
         'Content-Type': 'application/json',
       },
     );
-
-    print(response.body);
-
     if (response.statusCode == 200) {
       final dynamic data = json.decode(response.body);
       final jsonData = LoginResponseModel.fromJson(data);
@@ -144,6 +141,8 @@ class AuthenticationRemoteDataSourceImpl
         'Content-Type': 'application/json',
       },
     );
+
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
       final dynamic data = json.decode(response.body);
