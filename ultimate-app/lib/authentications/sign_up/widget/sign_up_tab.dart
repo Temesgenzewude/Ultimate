@@ -12,6 +12,7 @@ import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/textfield.dart';
 import '../../../common/widget/textfield_pass.dart';
 import '../../../data/models/authentication_model.dart';
+import 'social_login_apis.dart';
 
 class SignUpTab extends StatefulWidget {
   const SignUpTab({Key? key}) : super(key: key);
@@ -37,6 +38,24 @@ class _SignUpTabState extends State<SignUpTab> {
   FocusNode birthdayFn = FocusNode();
   bool showPass = false;
   bool showRePass = false;
+
+  Future<void> _handleGoogleSignIn() async {
+    final user = await SocialLoginApi.googleSignIn();
+
+    if (user == null) {
+      Utils.flutterToast('Sign in with Google failed');
+    } else {
+      Utils.flutterToast('Sign in with Google success');
+
+      print('name: ${user.displayName}');
+      print('email: ${user.email}');
+      print('photo: ${user.photoUrl}');
+      print('id: ${user.id}');
+      print('token: $user');
+
+      print('user $user');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -257,8 +276,10 @@ class _SignUpTabState extends State<SignUpTab> {
                 Expanded(
                   child: AppWidget.typeButtonStartAction2(
                       context: context,
-                      input: 'Twitter',
-                      onPressed: () {},
+                      input: 'Google',
+                      onPressed: () {
+                        _handleGoogleSignIn();
+                      },
                       icon: icTwitter,
                       sizeAsset: 24,
                       bgColor: grey200,

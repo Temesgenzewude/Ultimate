@@ -137,19 +137,19 @@ class _VerifyState extends State<Verify> {
                     },
                     builder: (context, state) {
                       if (state is OtpVerifiedLoading) {
-                    return const Center(
-                      child: Stack(children: [CircularProgressIndicator()]),
-                    );
-                  } else {
-                    return Container();
-                  }
+                        return const Center(
+                          child: Stack(children: [CircularProgressIndicator()]),
+                        );
+                      } else {
+                        return Container();
+                      }
                     },
                   ),
                   SizedBox(
                     width: width,
                     child: Pinput(
                       onCompleted: (String otp) {
-                        context.read<OtpBloc>().add(OtpVerified(otp));
+                        context.read<OtpBloc>().add(OTPVerifyUserA(otp));
                       },
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       autofocus: true,
