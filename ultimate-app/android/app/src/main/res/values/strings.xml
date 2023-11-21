@@ -1,0 +1,11 @@
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ultimate</string>
+    <!-- //TODO:CHANGE THE APP ID -->
+    <string name="facebook_app_id">2250492605300034</string>
+    <string name="fb_login_protocol_scheme">fb2250492605300034</string>
+    <!-- //TODO:CHANGE THE CLIENT TOKEN -->
+    <string name="facebook_client_token">e5ab9eacbaff705464aba4ad2845ec09</string>
+</resources>

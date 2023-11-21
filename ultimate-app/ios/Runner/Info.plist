@@ -2,6 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+
+
+
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+	<key>CFBundleURLSchemes</key>
+	<array>
+	<!-- //TODO: CHANGE THE APP ID -->
+		<string>fb2250492605300034</string>
+	</array>
+	</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<!-- //TODO: CHANGE THE APP ID -->
+	<string>2250492605300034</string>
+	<key>FacebookClientToken</key>
+	<!-- //TODO: CHANGE THE CLEINT TOKEN -->
+	<string>e5ab9eacbaff705464aba4ad2845ec09</string>
+	<key>FacebookDisplayName</key>
+	<string>Ultimate</string>
+
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -52,4 +75,6 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to location when in the background.</string>
 </dict>
+
+
 </plist>
