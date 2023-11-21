@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/util/form_validator.dart';
+import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/bloc/auth/authentication_bloc.dart';
@@ -51,6 +53,7 @@ class _SignInTabState extends State<SignInTab> {
                 controller: usernameCtl,
                 focusNode: usernameFn,
                 labelText: 'Email',
+                type: 'email',
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 24, bottom: 32),
@@ -118,15 +121,9 @@ class _SignInTabState extends State<SignInTab> {
                   context: context,
                   input: 'Sign In Now',
                   onPressed: () {
-                    final UserALoginRequestModel user = UserALoginRequestModel(
-                      email: usernameCtl.text,
-                      password: passwordCtl.text,
-                    );
-                    BlocProvider.of<AuthenticationBloc>(context).add(
-                      UserASignInEvent(
-                        user: user,
-                      ),
-                    );
+
+                    _submitForm();
+
                   },
                   colorAsset: grey1100,
                   icon: icKeyboardRight,
@@ -185,6 +182,28 @@ class _SignInTabState extends State<SignInTab> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _submitForm() {
+    if (!FormValidator.validateEmail(usernameCtl.text)) {
+      Utils.flutterToast('Invalid Email');
+      return;
+    }
+
+    if (!FormValidator.validatePassword(passwordCtl.text)) {
+      Utils.flutterToast('Invalid Password');
+      return;
+    }
+    // If all validation passes
+    final LoginRequestModel user = LoginRequestModel(
+      email: usernameCtl.text,
+      password: passwordCtl.text,
+    );
+    BlocProvider.of<AuthenticationBloc>(context).add(
+      SignInEvent(
+        user: user,
       ),
     );
   }
