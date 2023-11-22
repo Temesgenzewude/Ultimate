@@ -176,12 +176,28 @@ class AuthenticationRepository {
     }
   }
 
+  Future<void> sendOTPUserA() {
+    try {
+      return remoteDataSource.sendOTPUserA();
+    } catch (e) {
+      throw Exception('Sending OTP failed');
+    }
+  }
+
+  Future<void> verifyOTPUserA(String otp) {
+    try {
+      return remoteDataSource.verifyOTPUserA(otp);
+    } catch (e) {
+      throw Exception('Verifying OTP failed');
+    }
+  }
+
   Future<SocialLoginResponseModel> loginSocial(
       SocialLoginRequestModel socialLoginRequestModel) async {
     try {
       return await remoteDataSource.loginSocial(socialLoginRequestModel);
     } catch (e) {
-      throw Exception(e.toString().substring(10)); 
+      throw Exception(e.toString().substring(10));
     }
   }
 }

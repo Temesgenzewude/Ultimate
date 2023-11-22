@@ -23,6 +23,8 @@ abstract class AuthenticationRemoteDataSource {
 
   Future<void> sendOtp();
   Future<void> verifyOtp(String otp);
+  Future<void> sendOTPUserA();
+  Future<void> verifyOTPUserA(String otp);
 
   Future<SocialLoginResponseModel> loginSocial(
       SocialLoginRequestModel socialLoginRequestModel);
@@ -128,7 +130,7 @@ class AuthenticationRemoteDataSourceImpl
       "birthDate": user.birthDate,
       "password": user.password,
       "about": user.about,
-      "location": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
+      "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
       "age": user.age,
       "terms": user.terms,
       "gender": user.gender,
@@ -187,6 +189,36 @@ class AuthenticationRemoteDataSourceImpl
     if (response.statusCode == 200) {
     } else {
       throw FetchDataException('Failed to verify Otp');
+    }
+  }
+
+  Future<void> verifyOTPUserA(String otp) async {
+    final jsonbody = {'id': prefManager.kUserID, 'otp': otp};
+    final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPointA),
+        body: jsonEncode(jsonbody),
+        headers: {
+          'Authorization': '${prefManager.kToken}',
+          'Content-Type': 'application/json',
+        });
+    if (response.statusCode == 200) {
+    } else {
+      throw FetchDataException('Failed to verify Otp');
+    }
+  }
+
+  Future<void> sendOTPUserA() async {
+    final jsonbody = {'id': '${prefManager.kUserID}'};
+    final response = await client.post(Uri.parse(AppUrl.sendOTPEndPointA),
+        body: jsonEncode(jsonbody),
+        headers: {
+          'Authorization': prefManager.kToken,
+          'Content-Type': 'application/json',
+        });
+
+    if (response.statusCode == 200) {
+      print('success');
+    } else {
+      throw FetchDataException('Failed to send Otp');
     }
   }
 

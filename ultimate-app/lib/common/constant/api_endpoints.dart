@@ -9,5 +9,7 @@ class AppUrl {
   static var sendOTPEndPoint = '$baseUrl/user-b-send-otp';
   static var verifyOTPEndPoint = '$baseUrl/user-b-verify-otp';
   static var socialLoginEndPoint = '$baseUrl/login-with-social';
+  static var sendOTPEndPointA = '$baseUrl/send-otp';
+  static var verifyOTPEndPointA = '$baseUrl/verify-otp';
   static var sendOTP = '$baseUrl/send-otp-by-phone-number';
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/util/form_validator.dart';
-import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/bloc/auth/authentication_bloc.dart';
@@ -9,10 +7,13 @@ import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
+import '../../../common/util/form_validator.dart';
+import '../../../common/util/show_toast_message.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/textfield.dart';
 import '../../../common/widget/textfield_pass.dart';
 import '../../../data/models/login_request_model.dart';
+import 'social_login_apis.dart';
 
 class SignInTab extends StatefulWidget {
   const SignInTab({Key? key}) : super(key: key);
@@ -27,6 +28,36 @@ class _SignInTabState extends State<SignInTab> {
   TextEditingController passwordCtl = TextEditingController();
   FocusNode passwordFn = FocusNode();
   bool showPass = false;
+
+  Future<void> _handleGoogleSignIn() async {
+    final user = await SocialLoginApi.googleSignIn();
+
+    if (user == null) {
+      Utils.flutterToast('Sign in with Google failed');
+    } else {
+      Utils.flutterToast('Sign in with Google success');
+
+      print('name: ${user.displayName}');
+      print('email: ${user.email}');
+      print('photo: ${user.photoUrl}');
+      print('id: ${user.id}');
+      print('token: $user');
+
+      print('user $user');
+    }
+  }
+
+  Future<void> _handleFacebookSignIn() async {
+    final Map<String, dynamic> user = await SocialLoginApi.facebookSignIn();
+
+    if (!user['status']) {
+      Utils.flutterToast('Sign in with Facebook failed');
+    } else {
+      Utils.flutterToast('Sign in with Facebook success');
+      print('facebook user: $user');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -87,16 +118,7 @@ class _SignInTabState extends State<SignInTab> {
                         context: context,
                         input: 'Sign In Now',
                         onPressed: () {
-                          final UserALoginRequestModel user =
-                              UserALoginRequestModel(
-                            email: usernameCtl.text,
-                            password: passwordCtl.text,
-                          );
-                          BlocProvider.of<AuthenticationBloc>(context).add(
-                            UserASignInEvent(
-                              user: user,
-                            ),
-                          );
+                          _submitForm();
                         },
                         colorAsset: grey1100,
                         icon: icKeyboardRight,
@@ -121,9 +143,7 @@ class _SignInTabState extends State<SignInTab> {
                   context: context,
                   input: 'Sign In Now',
                   onPressed: () {
-
                     _submitForm();
-
                   },
                   colorAsset: grey1100,
                   icon: icKeyboardRight,
@@ -148,7 +168,9 @@ class _SignInTabState extends State<SignInTab> {
                 child: AppWidget.typeButtonStartAction2(
                     context: context,
                     input: 'Facebook',
-                    onPressed: () {},
+                    onPressed: () {
+                      _handleFacebookSignIn();
+                    },
                     icon: icFacebook,
                     sizeAsset: 24,
                     bgColor: grey200,
@@ -159,8 +181,10 @@ class _SignInTabState extends State<SignInTab> {
               Expanded(
                 child: AppWidget.typeButtonStartAction2(
                     context: context,
-                    input: 'Twitter',
-                    onPressed: () {},
+                    input: 'Google',
+                    onPressed: () {
+                      _handleGoogleSignIn();
+                    },
                     icon: icTwitter,
                     sizeAsset: 24,
                     bgColor: grey200,
@@ -197,12 +221,12 @@ class _SignInTabState extends State<SignInTab> {
       return;
     }
     // If all validation passes
-    final LoginRequestModel user = LoginRequestModel(
+    final UserALoginRequestModel user = UserALoginRequestModel(
       email: usernameCtl.text,
       password: passwordCtl.text,
     );
     BlocProvider.of<AuthenticationBloc>(context).add(
-      SignInEvent(
+      UserASignInEvent(
         user: user,
       ),
     );

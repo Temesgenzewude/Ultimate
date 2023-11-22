@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/util/form_validator.dart';
-import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:intl_phone_field/phone_number.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/bloc/auth/authentication_bloc.dart';
@@ -11,10 +8,13 @@ import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
+import '../../../common/util/form_validator.dart';
+import '../../../common/util/show_toast_message.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/textfield.dart';
 import '../../../common/widget/textfield_pass.dart';
 import '../../../data/models/authentication_model.dart';
+import 'social_login_apis.dart';
 
 class SignUpTab extends StatefulWidget {
   const SignUpTab({Key? key}) : super(key: key);
@@ -42,6 +42,24 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
   bool showRePass = false;
   String? countryCode = 'US';
   String? languageCode = '+1';
+
+  Future<void> _handleGoogleSignIn() async {
+    final user = await SocialLoginApi.googleSignIn();
+
+    if (user == null) {
+      Utils.flutterToast('Sign in with Google failed');
+    } else {
+      Utils.flutterToast('Sign in with Google success');
+
+      print('name: ${user.displayName}');
+      print('email: ${user.email}');
+      print('photo: ${user.photoUrl}');
+      print('id: ${user.id}');
+      print('token: $user');
+
+      print('user $user');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,17 +107,14 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                   labelText: 'Address',
                   type: 'address',
                 ),
-
                 const SizedBox(
                   height: 16,
                 ),
-
                 TextFieldCpn(
                   controller: birthdayCtl,
                   focusNode: birthdayFn,
                   labelText: 'Birthday',
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: IntlPhoneField(
@@ -108,11 +123,11 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                         languageCode = value.dialCode;
                       });
                     },
-                    style: TextStyle(color: Colors.white),
-                    dropdownTextStyle: TextStyle(
+                    style: const TextStyle(color: Colors.white),
+                    dropdownTextStyle: const TextStyle(
                       color: Colors.white,
                     ),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintStyle: TextStyle(color: Colors.white),
                       floatingLabelStyle: TextStyle(
                         color: Colors.white,
@@ -171,7 +186,6 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                         showRePass = !showRePass;
                       });
                     }),
-
                 const SizedBox(height: 32),
                 BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   builder: (context, state) {
@@ -193,20 +207,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                             context: context,
                             input: 'Sign Up Now',
                             onPressed: () {
-                              final UserAModel user = UserAModel(
-                                email: usernameCtl.value.text,
-                                password: passwordCtl.value.text,
-                                name: nameCtl.value.text,
-                                address: addressCtl.value.text,
-                                phoneNumber:
-                                    '${languageCode}${phoneCtl.value.text}',
-                                coordinates: '10,10',
-                                birthDate: birthdayCtl.value.text,
-                              );
-                              // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
-                              BlocProvider.of<AuthenticationBloc>(context).add(
-                                UserASignUpEvent(newUser: user),
-                              );
+                              _submitForm();
                             },
                             colorAsset: grey1100,
                             icon: icKeyboardRight,
@@ -233,7 +234,6 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                       onPressed: () {
                         _submitForm();
                         // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
-
 
                         // Navigator.of(context).pushNamed(Routes.signUp);
                       },
@@ -272,8 +272,10 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                 Expanded(
                   child: AppWidget.typeButtonStartAction2(
                       context: context,
-                      input: 'Twitter',
-                      onPressed: () {},
+                      input: 'Google',
+                      onPressed: () {
+                        _handleGoogleSignIn();
+                      },
                       icon: icTwitter,
                       sizeAsset: 24,
                       bgColor: grey200,
@@ -335,7 +337,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
     );
 
     BlocProvider.of<AuthenticationBloc>(context).add(
-      SignUpEvent(newUser: user),
+      UserASignUpEvent(newUser: user),
     );
   }
 }
