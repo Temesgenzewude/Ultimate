@@ -7,6 +7,7 @@ import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
+import '../../../common/util/form_validator.dart';
 import '../../../common/util/show_toast_message.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/textfield.dart';
@@ -83,6 +84,7 @@ class _SignInTabState extends State<SignInTab> {
                 controller: usernameCtl,
                 focusNode: usernameFn,
                 labelText: 'Email',
+                type: 'email',
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 24, bottom: 32),
@@ -116,15 +118,7 @@ class _SignInTabState extends State<SignInTab> {
                         context: context,
                         input: 'Sign In Now',
                         onPressed: () {
-                          final LoginRequestModel user = LoginRequestModel(
-                            email: usernameCtl.text,
-                            password: passwordCtl.text,
-                          );
-                          BlocProvider.of<AuthenticationBloc>(context).add(
-                            SignInEvent(
-                              user: user,
-                            ),
-                          );
+                          _submitForm();
                         },
                         colorAsset: grey1100,
                         icon: icKeyboardRight,
@@ -149,15 +143,7 @@ class _SignInTabState extends State<SignInTab> {
                   context: context,
                   input: 'Sign In Now',
                   onPressed: () {
-                    final LoginRequestModel user = LoginRequestModel(
-                      email: usernameCtl.text,
-                      password: passwordCtl.text,
-                    );
-                    BlocProvider.of<AuthenticationBloc>(context).add(
-                      SignInEvent(
-                        user: user,
-                      ),
-                    );
+                    _submitForm();
                   },
                   colorAsset: grey1100,
                   icon: icKeyboardRight,
@@ -220,6 +206,28 @@ class _SignInTabState extends State<SignInTab> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _submitForm() {
+    if (!FormValidator.validateEmail(usernameCtl.text)) {
+      Utils.flutterToast('Invalid Email');
+      return;
+    }
+
+    if (!FormValidator.validatePassword(passwordCtl.text)) {
+      Utils.flutterToast('Invalid Password');
+      return;
+    }
+    // If all validation passes
+    final UserALoginRequestModel user = UserALoginRequestModel(
+      email: usernameCtl.text,
+      password: passwordCtl.text,
+    );
+    BlocProvider.of<AuthenticationBloc>(context).add(
+      UserASignInEvent(
+        user: user,
       ),
     );
   }

@@ -28,16 +28,22 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
   final prefManager = sl<PrefManager>();
   String? countryCode = 'US';
   Future<void> getCountryCode() async {
-    double latitude = double.parse(prefManager.kLatitude);
-    double longitude = double.parse(prefManager.kLongitude);
-    print(latitude);
-    print(longitude);
+    print('here=================================');
+    // print(prefManager);
+    double latitude = double.tryParse(prefManager.kLatitude) ?? 0.0;
+    double longitude = double.tryParse(prefManager.kLongitude) ?? 0.0;
+
+    // print(latitude);
+    // print(longitude);
     try {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(latitude, longitude);
+      print(placemarks);
+      print("=======================================");
       setState(() {
         countryCode = placemarks[0].isoCountryCode;
       });
+      print(countryCode);
     } catch (e) {
       print(e);
     }
@@ -49,8 +55,8 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
 
   @override
   void initState() {
-    getCountryCode();
     super.initState();
+    getCountryCode();
   }
 
   @override
@@ -152,6 +158,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                         color: Colors.white,
                       ),
                       decoration: const InputDecoration(
+                        hintStyle: TextStyle(color: Colors.white),
                         floatingLabelStyle: TextStyle(
                           color: Colors.white,
                         ),
@@ -168,7 +175,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                           borderSide: BorderSide(),
                         ),
                       ),
-                      initialCountryCode: countryCode,
+                      initialCountryCode: countryCode.toString(),
                       keyboardType: const TextInputType.numberWithOptions(
                           signed: true, decimal: true),
                       controller: phoneCtl,

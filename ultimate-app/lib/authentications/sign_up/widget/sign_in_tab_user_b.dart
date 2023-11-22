@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../app/widget_support.dart';
+import '../../../common/bloc/auth/authentication_bloc.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
-import '../../../common/constant/styles.dart';
+import '../../../common/route/routes.dart';
+import '../../../common/util/form_validator.dart';
+import '../../../common/util/show_toast_message.dart';
 import '../../../common/widget/gradient_text.dart';
-import '../../../common/widget/textfield.dart';
 import '../../../common/widget/textfield_pass.dart';
+import '../../../data/models/login_request_model.dart';
 
 class SignInTabB extends StatefulWidget {
   const SignInTabB({Key? key}) : super(key: key);
@@ -21,6 +26,9 @@ class _SignInTabBState extends State<SignInTabB> {
   TextEditingController passwordCtl = TextEditingController();
   FocusNode passwordFn = FocusNode();
   bool showPass = false;
+  String? countryCode = 'US';
+  String? languageCode = '+1';
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,11 +51,40 @@ class _SignInTabBState extends State<SignInTabB> {
           ),
           Column(
             children: [
-              TextFieldCpn(
+              IntlPhoneField(
+                onCountryChanged: (value) {
+                  setState(() {
+                    languageCode = value.dialCode;
+                  });
+                },
+                style: const TextStyle(color: Colors.white),
+                dropdownTextStyle: const TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(color: Colors.white),
+                  floatingLabelStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                  counterStyle: TextStyle(color: Colors.white),
+                  suffixIconColor: Colors.white,
+                  fillColor: Colors.white,
+                  labelStyle: TextStyle(color: Colors.white),
+                  prefixIconColor: Colors.white,
+                  prefixStyle: TextStyle(color: Colors.white),
+                  suffixStyle: TextStyle(color: Colors.white),
+                  labelText: 'Phone Number',
+                  iconColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(),
+                  ),
+                ),
+                initialCountryCode: countryCode.toString(),
+                // languageCode: countryCode.toString(),
+                keyboardType: const TextInputType.numberWithOptions(
+                    signed: true, decimal: true),
                 controller: phoneNumberCtl,
                 focusNode: phoneNumberFn,
-                labelText: 'Phone Number',
-                keyboardType: TextInputType.phone,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 24, bottom: 32),
@@ -65,66 +102,85 @@ class _SignInTabBState extends State<SignInTabB> {
                       });
                     }),
               ),
-              AppWidget.typeButtonStartAction(
-                context: context,
-                input: 'Sign In Now',
-                onPressed: () {},
-                colorAsset: grey1100,
-                icon: icKeyboardRight,
-                sizeAsset: 24,
-                bgColor: primary,
-                borderColor: primary,
-                textColor: grey1100,
-              ),
+              BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                  builder: (context, state) {
+                if (state is LoginLoadingState) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is LoginSuccessState) {
+                  Future.delayed(Duration.zero, () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.addMobileNumber);
+                  });
+                } else if (state is LoginFailureState) {
+                  return Column(
+                    children: [
+                      AppWidget.typeButtonStartAction(
+                        context: context,
+                        input: 'Sign In Now',
+                        onPressed: () {
+                          _submitForm();
+                        },
+                        colorAsset: grey1100,
+                        icon: icKeyboardRight,
+                        sizeAsset: 24,
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100,
+                      ),
+                      Center(
+                        child: Text(
+                          state.errorMessage,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return AppWidget.typeButtonStartAction(
+                  context: context,
+                  input: 'Sign In Now',
+                  onPressed: () {
+                    _submitForm();
+                  },
+                  colorAsset: grey1100,
+                  icon: icKeyboardRight,
+                  sizeAsset: 24,
+                  bgColor: primary,
+                  borderColor: primary,
+                  textColor: grey1100,
+                );
+              }),
             ],
           ),
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              'or Sign Up with social account',
-              style: subhead(color: grey600),
-            ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: AppWidget.typeButtonStartAction2(
-                    context: context,
-                    input: 'Facebook',
-                    onPressed: () {},
-                    icon: icFacebook,
-                    sizeAsset: 24,
-                    bgColor: grey200,
-                    borderColor: grey200,
-                    textColor: grey1100),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: AppWidget.typeButtonStartAction2(
-                    context: context,
-                    input: 'Twitter',
-                    onPressed: () {},
-                    icon: icTwitter,
-                    sizeAsset: 24,
-                    bgColor: grey200,
-                    borderColor: grey200,
-                    textColor: grey1100),
-              ),
-            ],
-          ),
-          const SizedBox(),
-          Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
-              child: Text(
-                'By clicking Sign Up you are agreeing to the Terms of Use and the Privacy Policy',
-                textAlign: TextAlign.center,
-                style: subhead(color: grey600),
-              ),
-            ),
-          ),
+       
+          
         ],
+      ),
+    );
+  }
+
+  void _submitForm() {
+    if (!FormValidator.validateEmail(phoneNumberCtl.text)) {
+      Utils.flutterToast(
+          'Invalid Phone Number: Please enter a valid phone number!');
+      return;
+    }
+
+    if (!FormValidator.validatePassword(passwordCtl.text)) {
+      Utils.flutterToast('Invalid Password');
+      return;
+    }
+    // If all validation passes
+    final UserBLoginRequestModel user = UserBLoginRequestModel(
+      phoneNumber: phoneNumberCtl.text,
+      password: passwordCtl.text,
+    );
+    BlocProvider.of<AuthenticationBloc>(context).add(
+      UserBSignInEvent(
+        user: user,
       ),
     );
   }

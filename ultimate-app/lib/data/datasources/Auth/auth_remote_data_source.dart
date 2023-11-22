@@ -16,8 +16,11 @@ import '../../models/login_request_model.dart';
 final prefManager = sl<PrefManager>();
 
 abstract class AuthenticationRemoteDataSource {
-  Future<SingUpResponseModel> signup(UserAModel newuser);
-  Future<LoginResponseModel> signin(LoginRequestModel user);
+  Future<SingUpResponseModel> signUpUserA(UserAModel newuser);
+  Future<LoginResponseModel> signInUserA(UserALoginRequestModel user);
+  Future<SingUpResponseModel> signUpUserB(UserBModel newuser);
+  Future<LoginResponseModel> signInUserB(UserBLoginRequestModel user);
+
   Future<void> sendOtp();
   Future<void> verifyOtp(String otp);
   Future<void> sendOTPUserA();
@@ -33,11 +36,11 @@ class AuthenticationRemoteDataSourceImpl
   final http.Client client;
 
   @override
-  Future<LoginResponseModel> signin(LoginRequestModel user) async {
-    final String url = AppUrl.signInEndPoint;
+  Future<LoginResponseModel> signInUserA(UserALoginRequestModel user) async {
     final jsonBody = json.encode(user.toJson());
 
-    print(" signing in user ${user.toJson()}");
+    final String url = AppUrl.userASignInEndPoint;
+
     final response = await client.post(
       Uri.parse(url),
       body: jsonBody,
@@ -45,7 +48,6 @@ class AuthenticationRemoteDataSourceImpl
         'Content-Type': 'application/json',
       },
     );
-
     if (response.statusCode == 200) {
       final dynamic data = json.decode(response.body);
       final jsonData = LoginResponseModel.fromJson(data);
@@ -58,8 +60,8 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<SingUpResponseModel> signup(UserAModel user) async {
-    final String url = AppUrl.signUpEndPoint;
+  Future<SingUpResponseModel> signUpUserA(UserAModel user) async {
+    final String url = AppUrl.userBSignUpEndPoint;
     final Map<String, dynamic> body = <String, dynamic>{
       "name": user.name,
       "email": user.email,
@@ -71,23 +73,6 @@ class AuthenticationRemoteDataSourceImpl
       "user_type": user.user_type,
       "terms": user.terms,
     };
-    // final body = {
-    //   "name": "test",
-    //   "email": "khaliyiytidd10@gmail.com",
-    //   "phoneNumber": "+903939560848",
-    //   "birthDate": "10-10-2022",
-    //   "password": "1234567890",
-    //   "address": "Dr Imad ud din",
-    //   "coordinates": "31.536267224296935,74.32805961092151",
-    //   "user_type": "user",
-    //   "terms": true
-    // };
-
-    // print("dummy body ${json.encode(body)}");
-    // final jsonBody = json.encode(user.toJson());
-    print(jsonEncode(body));
-
-    final String bodyString = json.encode(user.toJson());
 
     final response = await client.post(
       Uri.parse(url),
@@ -97,7 +82,69 @@ class AuthenticationRemoteDataSourceImpl
       },
     );
 
-    print('sing up api status code: ${response.statusCode}');
+    if (response.statusCode == 200) {
+      final dynamic data = json.decode(response.body);
+      return SingUpResponseModel.fromJson(data);
+    } else if (response.statusCode == 403) {
+      throw Exception("User already registered");
+    } else {
+      throw Exception('Failed to create a new user');
+    }
+  }
+
+  @override
+  Future<LoginResponseModel> signInUserB(UserBLoginRequestModel user) async {
+    final jsonBody = json.encode(user.toJson());
+
+    final String url = AppUrl.userBSignInEndPoint;
+
+    final response = await client.post(
+      Uri.parse(url),
+      body: jsonBody,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      final dynamic data = json.decode(response.body);
+      final jsonData = LoginResponseModel.fromJson(data);
+      return jsonData;
+    } else if (response.statusCode == 403) {
+      throw Exception(
+          'Invalid Email or or password'); // Update the error message if desired
+    } else {
+      throw Exception("Error while trying to sing in");
+    }
+  }
+
+  @override
+  Future<SingUpResponseModel> signUpUserB(UserBModel user) async {
+    final String url = AppUrl.userBSignUpEndPoint;
+    final Map<String, dynamic> body = <String, dynamic>{
+      "name": user.name,
+      "email": user.email,
+      "phoneNumber": user.phoneNumber,
+      "birthDate": user.birthDate,
+      "password": user.password,
+      "about": user.about,
+      "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
+      "age": user.age,
+      "terms": user.terms,
+      "gender": user.gender,
+    };
+
+    final response = await client.post(
+      Uri.parse(url),
+      body: json.encode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
       final dynamic data = json.decode(response.body);

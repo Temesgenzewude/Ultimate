@@ -4,12 +4,22 @@ abstract class AuthenticationEvent {
   const AuthenticationEvent();
 }
 
-class SignInEvent extends AuthenticationEvent {
-  SignInEvent({required this.user});
-  final LoginRequestModel user;
+class UserASignInEvent extends AuthenticationEvent {
+  UserASignInEvent({required this.user});
+  final UserALoginRequestModel user;
 }
 
-class SignUpEvent extends AuthenticationEvent {
-  SignUpEvent({required this.newUser});
+class UserASignUpEvent extends AuthenticationEvent {
+  UserASignUpEvent({required this.newUser});
   final UserAModel newUser;
+}
+
+class UserBSignInEvent extends AuthenticationEvent {
+  UserBSignInEvent({required this.user});
+  final UserBLoginRequestModel user;
+}
+
+class UserBSignUpEvent extends AuthenticationEvent {
+  UserBSignUpEvent({required this.newUser});
+  final UserBModel newUser;
 }
