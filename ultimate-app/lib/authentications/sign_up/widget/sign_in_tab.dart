@@ -47,10 +47,10 @@ class _SignInTabState extends State<SignInTab> {
     }
   }
 
-  Future<dynamic> _handleFacebookSignIn() async {
-    final dynamic user = await SocialLoginApi.facebookSignIn();
+  Future<void> _handleFacebookSignIn() async {
+    final Map<String, dynamic> user = await SocialLoginApi.facebookSignIn();
 
-    if (user == null) {
+    if (!user['status']) {
       Utils.flutterToast('Sign in with Facebook failed');
     } else {
       Utils.flutterToast('Sign in with Facebook success');

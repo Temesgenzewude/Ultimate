@@ -9,27 +9,33 @@ class SocialLoginApi {
 
   static Future signOut() => _googleSignIn.signOut();
 
-  static dynamic  facebookSignIn() {
-    Map<String, dynamic> _userData = <String, dynamic>{};
-    FacebookAuth.instance
-        .login(permissions: ["public_profile", "email"]).then((value) {
-      FacebookAuth.instance.getUserData().then((userData) async {
-        print('name: ${userData['name']}');
-        print('email: ${userData['email']}');
-        print('photo: ${userData['picture']['data']['url']}');
-        print('id: ${userData['id']}');
-        print('token: ${value.accessToken?.token}');
-        _userData = userData;
+  static Future<Map<String, dynamic>> facebookSignIn() async {
+    final Map<String, dynamic> _userData = <String, dynamic>{};
+    try {
+      final LoginResult result = await FacebookAuth.instance
+          .login(permissions: ["public_profile", "email"]);
+      final userData = await FacebookAuth.instance.getUserData();
+      print('name: ${userData['name']}');
+      print('email: ${userData['email']}');
+      print('photo: ${userData['picture']['data']['url']}');
+      print('id: ${userData['id']}');
+      print('token: ${result.accessToken?.token}');
 
-        print('user $userData');
-      });
-    }).onError((error, stackTrace) {
-      print('error $error');
+      _userData['name'] = userData['name'];
+      _userData['email'] = userData['email'];
+      _userData['photo'] = userData['picture']['data']['url'];
+      _userData['id'] = userData['id'];
+      _userData['token'] = result.accessToken?.token;
+      _userData['success'] = true;
 
-      return null;
+      print('user $_userData');
+    } catch (e) {
+      print('error $e');
 
+      _userData['success'] = false;
 
-    });
+      return _userData;
+    }
 
     return _userData;
   }
