@@ -128,7 +128,7 @@ class AuthenticationRemoteDataSourceImpl
       "birthDate": user.birthDate,
       "password": user.password,
       "about": user.about,
-      "location": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
+      "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
       "age": user.age,
       "terms": user.terms,
       "gender": user.gender,

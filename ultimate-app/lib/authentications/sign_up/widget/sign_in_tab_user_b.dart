@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
-import 'package:flutter_ultimate/common/route/routes.dart';
-import 'package:flutter_ultimate/data/models/login_request_model.dart';
-
-
 import '../../../app/widget_support.dart';
+import '../../../common/bloc/auth/authentication_bloc.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
+import '../../../common/route/routes.dart';
 import '../../../common/widget/gradient_text.dart';
-import '../../../common/widget/textfield.dart';
 import '../../../common/widget/textfield_pass.dart';
+import '../../../data/models/login_request_model.dart';
 
 class SignInTabB extends StatefulWidget {
   const SignInTabB({Key? key}) : super(key: key);
@@ -60,11 +56,11 @@ class _SignInTabBState extends State<SignInTabB> {
                     languageCode = value.dialCode;
                   });
                 },
-                style: TextStyle(color: Colors.white),
-                dropdownTextStyle: TextStyle(
+                style: const TextStyle(color: Colors.white),
+                dropdownTextStyle: const TextStyle(
                   color: Colors.white,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintStyle: TextStyle(color: Colors.white),
                   floatingLabelStyle: TextStyle(
                     color: Colors.white,

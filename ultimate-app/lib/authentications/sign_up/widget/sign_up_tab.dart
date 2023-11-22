@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/util/form_validator.dart';
-import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:intl_phone_field/phone_number.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/bloc/auth/authentication_bloc.dart';
@@ -11,6 +8,8 @@ import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
+import '../../../common/util/form_validator.dart';
+import '../../../common/util/show_toast_message.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/textfield.dart';
 import '../../../common/widget/textfield_pass.dart';
@@ -108,11 +107,11 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                         languageCode = value.dialCode;
                       });
                     },
-                    style: TextStyle(color: Colors.white),
-                    dropdownTextStyle: TextStyle(
+                    style: const TextStyle(color: Colors.white),
+                    dropdownTextStyle: const TextStyle(
                       color: Colors.white,
                     ),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintStyle: TextStyle(color: Colors.white),
                       floatingLabelStyle: TextStyle(
                         color: Colors.white,
@@ -335,7 +334,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
     );
 
     BlocProvider.of<AuthenticationBloc>(context).add(
-      SignUpEvent(newUser: user),
+      UserASignUpEvent(newUser: user),
     );
   }
 }

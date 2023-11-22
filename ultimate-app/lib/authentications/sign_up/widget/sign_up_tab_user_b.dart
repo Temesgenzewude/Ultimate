@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
-
-import 'package:flutter_ultimate/common/util/form_validator.dart';
-import 'package:flutter_ultimate/common/util/show_toast_message.dart';
-import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-import 'package:flutter_ultimate/common/route/routes.dart';
-import 'package:flutter_ultimate/common/util/show_toast_message.dart';
-import 'package:flutter_ultimate/data/models/authentication_model.dart';
-
-
 import '../../../app/widget_support.dart';
+import '../../../common/bloc/auth/authentication_bloc.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
+import '../../../common/route/routes.dart';
+import '../../../common/util/form_validator.dart';
+import '../../../common/util/show_toast_message.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/textfield.dart';
 import '../../../common/widget/textfield_pass.dart';
+import '../../../data/models/authentication_model.dart';
 
 class SignUpTabB extends StatefulWidget {
   const SignUpTabB({Key? key}) : super(key: key);
@@ -183,11 +178,11 @@ class _SignUpTabBState extends State<SignUpTabB> {
                         languageCode = value.dialCode;
                       });
                     },
-                    style: TextStyle(color: Colors.white),
-                    dropdownTextStyle: TextStyle(
+                    style: const TextStyle(color: Colors.white),
+                    dropdownTextStyle: const TextStyle(
                       color: Colors.white,
                     ),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintStyle: TextStyle(color: Colors.white),
                       floatingLabelStyle: TextStyle(
                         color: Colors.white,
@@ -242,6 +237,131 @@ class _SignUpTabBState extends State<SignUpTabB> {
 
                 const SizedBox(height: 32),
                 BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                  builder: (context, state) {
+                    if (state is AuthenticationLoadingState) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is AuthenticationSuccessState) {
+                      Utils.flutterToast('''You have successfully registered. 
+                             Verification email is sent to ${usernameCtl.value.text}
+                             Please verify your email address and login!''');
+
+                      Future.delayed(const Duration(seconds: 5), () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(Routes.signUp);
+                      });
+                    } else if (state is AuthenticationFailureState) {
+                      return Column(
+                        children: [
+                          AppWidget.typeButtonStartAction(
+                            context: context,
+                            input: 'Sign Up Now',
+                            onPressed: () {
+                              _submitForm();
+                            },
+                            colorAsset: grey1100,
+                            icon: icKeyboardRight,
+                            sizeAsset: 24,
+                            bgColor: primary,
+                            borderColor: primary,
+                            textColor: grey1100,
+                          ),
+                          Center(
+                            child: Text(
+                              state.errorMessage,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return AppWidget.typeButtonStartAction(
+                      context: context,
+                      input: 'Sign Up Now',
+                      onPressed: () {
+                        _submitForm();
+                        // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
+
+                        // Navigator.of(context).pushNamed(Routes.signUp);
+                      },
+                      colorAsset: grey1100,
+                      icon: icKeyboardRight,
+                      sizeAsset: 24,
+                      bgColor: primary,
+                      borderColor: primary,
+                      textColor: grey1100,
+                    );
+                  },
+                ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                child: Text(
+                  'By clicking Sign Up you are agreeing to the Terms of Use and the Privacy Policy',
+                  textAlign: TextAlign.center,
+                  style: subhead(color: grey600),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _submitForm() {
+    if (!FormValidator.validateName(nameCtl.text)) {
+      Utils.flutterToast('Name can not be empty');
+      return;
+    }
+
+    if (!FormValidator.validateEmail(usernameCtl.text)) {
+      Utils.flutterToast('Invalid Email');
+      return;
+    }
+
+    if (!FormValidator.validatePassword(passwordCtl.text)) {
+      Utils.flutterToast('Invalid Password');
+      return;
+    }
+    if (passwordCtl.text != repasswordCtl.text) {
+      Utils.flutterToast('Passwords do not match');
+      return;
+    }
+    if (phoneCtl.text == '') {
+      Utils.flutterToast('Please provide a phone number');
+      return;
+    }
+    
+
+    // If all validation passes
+    final UserBModel user = UserBModel(
+      email: usernameCtl.value.text,
+      password: passwordCtl.value.text,
+      name: nameCtl.value.text,
+      phoneNumber: '${languageCode}${phoneCtl.value.text}',
+      birthDate: birthdayCtl.value.text,
+      age: ageCtl.value.text,
+      gender: _selectedGender ?? 'Male',
+      location: '10,10',
+      about: aboutCtl.value.text,
+    );
+
+    BlocProvider.of<AuthenticationBloc>(context).add(
+      UserBSignUpEvent(newUser: user),
+    );
+  }
+}
+
+
+/*
+
+   BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   builder: (context, state) {
                     if (state is AuthenticationLoadingState) {
                       return const Center(child: CircularProgressIndicator());
@@ -330,62 +450,8 @@ class _SignUpTabBState extends State<SignUpTabB> {
 
                   },
                 ),
-              ],
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
-                child: Text(
-                  'By clicking Sign Up you are agreeing to the Terms of Use and the Privacy Policy',
-                  textAlign: TextAlign.center,
-                  style: subhead(color: grey600),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _submitForm() {
-    if (!FormValidator.validateName(nameCtl.text)) {
-      Utils.flutterToast('Name can not be empty');
-      return;
-    }
-
-    if (!FormValidator.validateEmail(usernameCtl.text)) {
-      Utils.flutterToast('Invalid Email');
-      return;
-    }
-
-    if (!FormValidator.validatePassword(passwordCtl.text)) {
-      Utils.flutterToast('Invalid Password');
-      return;
-    }
-    if (passwordCtl.text != repasswordCtl.text) {
-      Utils.flutterToast('Passwords do not match');
-      return;
-    }
-    if (phoneCtl.text == '') {
-      Utils.flutterToast('Please provide a phone number');
-      return;
-    }
-
-    // If all validation passes
-    final UserAModel user = UserAModel(
-      email: usernameCtl.value.text,
-      password: passwordCtl.value.text,
-      name: nameCtl.value.text,
-      address: addressCtl.value.text,
-      phoneNumber: '${languageCode}${phoneCtl.value.text}',
-      coordinates: '10,10',
-      birthDate: birthdayCtl.value.text,
-    );
-
-    BlocProvider.of<AuthenticationBloc>(context).add(
-      SignUpEvent(newUser: user),
-    );
-  }
-}
+             
+             
+             
+             
+*/ 
