@@ -76,7 +76,7 @@ class AuthenticationRemoteDataSourceImpl
 
   @override
   Future<SingUpResponseModel> signUpUserA(UserAModel user) async {
-    final String url = AppUrl.userBSignUpEndPoint;
+    final String url = AppUrl.userASignUpEndPoint;
     final Map<String, dynamic> body = <String, dynamic>{
       "name": user.name,
       "email": user.email,
@@ -101,7 +101,8 @@ class AuthenticationRemoteDataSourceImpl
       final dynamic data = json.decode(response.body);
       return SingUpResponseModel.fromJson(data);
     } else if (response.statusCode == 403) {
-      throw Exception("User already registered");
+      final dynamic error = json.decode(response.body);
+      throw ForbiddenResponseException(error);
     } else {
       throw Exception('Failed to create a new user');
     }
@@ -131,8 +132,9 @@ class AuthenticationRemoteDataSourceImpl
       final jsonData = LoginResponseModel.fromJson(data);
       return jsonData;
     } else if (response.statusCode == 403) {
-      throw Exception(
-          'Invalid Email or or password'); // Update the error message if desired
+      final dynamic error = json.decode(response.body);
+      throw ForbiddenResponseException(
+          error['message']); // Update the error message if desired
     } else {
       throw Exception("Error while trying to sing in");
     }
@@ -168,7 +170,9 @@ class AuthenticationRemoteDataSourceImpl
       final dynamic data = json.decode(response.body);
       return SingUpResponseModel.fromJson(data);
     } else if (response.statusCode == 403) {
-      throw Exception("User already registered");
+      final dynamic error = json.decode(response.body);
+      throw ForbiddenResponseException(
+          error['message']); // Update the error message if desired
     } else {
       throw Exception('Failed to create a new user');
     }
@@ -205,6 +209,10 @@ class AuthenticationRemoteDataSourceImpl
           'Content-Type': 'application/json',
         });
     if (response.statusCode == 200) {
+    } else if (response.statusCode == 403) {
+      final dynamic error = json.decode(response.body);
+      throw ForbiddenResponseException(
+          error['message']); // Update the error message if desired
     } else {
       throw FetchDataException('Failed to verify Otp');
     }
@@ -219,6 +227,10 @@ class AuthenticationRemoteDataSourceImpl
           'Content-Type': 'application/json',
         });
     if (response.statusCode == 200) {
+    } else if (response.statusCode == 403) {
+      final dynamic error = json.decode(response.body);
+      throw ForbiddenResponseException(
+          error['message']); // Update the error message if desired
     } else {
       throw FetchDataException('Failed to verify Otp');
     }
@@ -235,6 +247,10 @@ class AuthenticationRemoteDataSourceImpl
 
     if (response.statusCode == 200) {
       print('success');
+    } else if (response.statusCode == 403) {
+      final dynamic error = json.decode(response.body);
+      throw ForbiddenResponseException(
+          error['message']); // Update the error message if desired
     } else {
       throw FetchDataException('Failed to send Otp');
     }
@@ -253,6 +269,10 @@ class AuthenticationRemoteDataSourceImpl
     if (response.statusCode == 200) {
       final dynamic data = json.decode(response.body);
       return SocialLoginResponseModel.fromJson(data);
+    } else if (response.statusCode == 403) {
+      final dynamic error = json.decode(response.body);
+      throw ForbiddenResponseException(
+          error['message']); // Update the error message if desired
     } else {
       final dynamic data = json.decode(response.body);
       throw Exception(data['message'] ?? "Social Login Failed!");

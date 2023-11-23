@@ -1,8 +1,8 @@
 class AppException implements Exception {
+  AppException([this._message, this._prefix]);
+
   final String? _message;
   final String? _prefix;
-
-  AppException([this._message, this._prefix]);
 
   @override
   String toString() {
@@ -26,4 +26,8 @@ class UnauthorizedException extends AppException {
 
 class InvalidInputException extends AppException {
   InvalidInputException([String? message]) : super(message, 'Invalid Input');
+}
+
+class ForbiddenResponseException extends AppException {
+  ForbiddenResponseException([String? message]) : super(message, "");
 }

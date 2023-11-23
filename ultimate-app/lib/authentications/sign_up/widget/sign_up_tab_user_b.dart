@@ -250,6 +250,7 @@ class _SignUpTabBState extends State<SignUpTabB> {
                             .pushReplacementNamed(Routes.signUp);
                       });
                     } else if (state is AuthenticationFailureState) {
+                      Utils.flutterToast(state.errorMessage);
                       return Column(
                         children: [
                           AppWidget.typeButtonStartAction(
@@ -264,15 +265,6 @@ class _SignUpTabBState extends State<SignUpTabB> {
                             bgColor: primary,
                             borderColor: primary,
                             textColor: grey1100,
-                          ),
-                          Center(
-                            child: Text(
-                              state.errorMessage,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                            ),
                           ),
                         ],
                       );

@@ -112,6 +112,7 @@ class _SignInTabBState extends State<SignInTabB> {
                         .pushReplacementNamed(Routes.addMobileNumber);
                   });
                 } else if (state is LoginFailureState) {
+                  Utils.flutterToast(state.errorMessage);
                   return Column(
                     children: [
                       AppWidget.typeButtonStartAction(
@@ -127,30 +128,25 @@ class _SignInTabBState extends State<SignInTabB> {
                         borderColor: primary,
                         textColor: grey1100,
                       ),
-                      Center(
-                        child: Text(
-                          state.errorMessage,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
                     ],
                   );
                 }
-                return AppWidget.typeButtonStartAction(
-                  context: context,
-                  input: 'Sign In Now',
-                  onPressed: () {
-                    _submitForm();
-                  },
-                  colorAsset: grey1100,
-                  icon: icKeyboardRight,
-                  sizeAsset: 24,
-                  bgColor: primary,
-                  borderColor: primary,
-                  textColor: grey1100,
+                return Column(
+                  children: [
+                    AppWidget.typeButtonStartAction(
+                      context: context,
+                      input: 'Sign In Now',
+                      onPressed: () {
+                        _submitForm();
+                      },
+                      colorAsset: grey1100,
+                      icon: icKeyboardRight,
+                      sizeAsset: 24,
+                      bgColor: primary,
+                      borderColor: primary,
+                      textColor: grey1100,
+                    ),
+                  ],
                 );
               }),
             ],
@@ -161,10 +157,21 @@ class _SignInTabBState extends State<SignInTabB> {
   }
 
   void _submitForm() {
+    if (passwordCtl.text.isEmpty) {
+      Utils.flutterToast('Password is required');
+      return;
+    }
+
+    if (phoneNumberCtl.text.isEmpty) {
+      Utils.flutterToast('Phone number is required');
+      return;
+    }
+
     String phoneNumber = '+' + languageCode! + phoneNumberCtl.text;
     print(phoneNumber);
     if (!FormValidator.validatePhoneNumber(phoneNumber)) {
-      Utils.flutterToast('Invalid Phone number');
+      Utils.flutterToast(
+          'Invalid Phone number:Please enter a valid phone number!');
       return;
     }
 
