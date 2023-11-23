@@ -217,12 +217,12 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                               Utils.flutterToast(
                                   'Please select user type to continue!');
                             } else {
-                              if (selectedUserType == 'User A') {
+                              if (selectedUserType == 'A') {
                                 Future.delayed(const Duration(seconds: 1), () {
                                   Navigator.pushReplacementNamed(
                                       context, Routes.signUp);
                                 });
-                              } else if (selectedUserType == 'User B') {
+                              } else if (selectedUserType == 'B') {
                                 Future.delayed(const Duration(seconds: 1), () {
                                   Navigator.pushReplacementNamed(
                                       context, Routes.signUpB);
@@ -252,8 +252,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                             child: DropdownButton<String>(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),
-                                  
-                                  isDense: true,
+                              isDense: true,
                               icon: const Icon(
                                 Icons.arrow_drop_down_outlined,
                                 color: Colors.black87,
@@ -287,6 +286,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                               onChanged: (String? value) {
                                 setState(() {
                                   selectedUserType = value;
+                                  prefManager.userType = selectedUserType;
                                 });
                               },
                             ),
