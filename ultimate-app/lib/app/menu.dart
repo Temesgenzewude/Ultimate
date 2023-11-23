@@ -1,6 +1,10 @@
+// ignore_for_file: avoid_void_async
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
+import 'package:flutter_ultimate/dependency_indjection.dart';
+import 'package:flutter_ultimate/sharedPreferences.dart';
 
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
@@ -39,13 +43,32 @@ class _MenuNavigationState extends State<MenuNavigation> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkAuthenticationStatus(); // Check authentication status after the frame has been built
+    }); // Check authentication status when the widget is initialized
+  }
+
+  void checkAuthenticationStatus() async {
+    // final authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+
+    final String? token = sl<PrefManager>().kToken;
+
+    if (token != null && token.isNotEmpty) {
+      // If the token is available, navigate to the home page
+      Navigator.of(context).pushReplacementNamed(Routes.accountInformation);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
     sliderBloc.add(SwipeReset());
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
         if (BlocProvider.of<AuthenticationBloc>(context).isAuthenticated()) {
-          Navigator.of(context).pushReplacementNamed(Routes.profile);
+          Navigator.of(context).pushReplacementNamed(Routes.accountInformation);
         } else if (state is AuthSignUPSuccess) {
           Navigator.of(context).pushReplacementNamed(Routes.signUp);
         }
