@@ -55,7 +55,8 @@ class _MenuNavigationState extends State<MenuNavigation> {
 
     final String? token = sl<PrefManager>().kToken;
 
-    if (token != null && token.isNotEmpty) {
+    print(' Here is the token stored: ${token.toString()}');
+    if (token != null && token.isNotEmpty && token != 'token') {
       // If the token is available, navigate to the home page
       Navigator.of(context).pushReplacementNamed(Routes.accountInformation);
     }
