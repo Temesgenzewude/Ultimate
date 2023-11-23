@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_single_quotes
 
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter_ultimate/core/error/exception.dart';
 import 'package:flutter_ultimate/data/app_exceptions.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
@@ -37,26 +40,38 @@ class AuthenticationRemoteDataSourceImpl
 
   @override
   Future<LoginResponseModel> signInUserA(UserALoginRequestModel user) async {
-    final jsonBody = json.encode(user.toJson());
-
     final String url = AppUrl.userASignInEndPoint;
 
-    final response = await client.post(
-      Uri.parse(url),
-      body: jsonBody,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
-    if (response.statusCode == 200) {
-      final dynamic data = json.decode(response.body);
-      final jsonData = LoginResponseModel.fromJson(data);
-      return jsonData;
-    } else if (response.statusCode == 403) {
-      throw Exception('Invalid Email or password');
-    } else {
-      throw Exception("Error while trying to sing in");
-    }
+    try {
+      final jsonBody = json.encode(user.toJson());
+
+      final response = await client.post(
+        Uri.parse(url),
+        body: jsonBody,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      print('remote data source response status code: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        final dynamic data = json.decode(response.body);
+        final jsonData = LoginResponseModel.fromJson(data);
+        return jsonData;
+      } else if (response.statusCode == 403) {
+        final dynamic data = json.decode(response.body);
+        throw ServerException(
+            message: data["message"] ?? 'Invalid Email or password');
+      } else {
+        final dynamic data = json.decode(response.body);
+        throw UnknownException(
+            message: data["message"] ?? "Error while trying to sign in");
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
+    } 
   }
 
   @override
@@ -98,6 +113,8 @@ class AuthenticationRemoteDataSourceImpl
 
     final String url = AppUrl.userBSignInEndPoint;
 
+    print("user b sign in request body: $jsonBody");
+
     final response = await client.post(
       Uri.parse(url),
       body: jsonBody,
@@ -107,6 +124,7 @@ class AuthenticationRemoteDataSourceImpl
     );
 
     print(response.body);
+    print("user b sign in response code: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       final dynamic data = json.decode(response.body);
