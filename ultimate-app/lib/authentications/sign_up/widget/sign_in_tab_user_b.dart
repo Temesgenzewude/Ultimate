@@ -157,11 +157,21 @@ class _SignInTabBState extends State<SignInTabB> {
   }
 
   void _submitForm() {
-    print('${languageCode}${phoneNumberCtl.text}');
-    print(passwordCtl.text);
-    if (!FormValidator.validateName('${languageCode}${phoneNumberCtl.text}')) {
+    if (passwordCtl.text.isEmpty) {
+      Utils.flutterToast('Password is required');
+      return;
+    }
+
+    if (phoneNumberCtl.text.isEmpty) {
+      Utils.flutterToast('Phone number is required');
+      return;
+    }
+
+    String phoneNumber = '+' + languageCode! + phoneNumberCtl.text;
+    print(phoneNumber);
+    if (!FormValidator.validatePhoneNumber(phoneNumber)) {
       Utils.flutterToast(
-          'Invalid Phone Number: Please enter a valid phone number!');
+          'Invalid Phone number:Please enter a valid phone number!');
       return;
     }
 
@@ -171,7 +181,7 @@ class _SignInTabBState extends State<SignInTabB> {
     }
     // If all validation passes
     final UserBLoginRequestModel user = UserBLoginRequestModel(
-      phoneNumber: '${languageCode}${phoneNumberCtl.text}',
+      phoneNumber: phoneNumber,
       password: passwordCtl.text,
     );
     BlocProvider.of<AuthenticationBloc>(context).add(

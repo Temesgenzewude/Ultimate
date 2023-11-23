@@ -115,7 +115,7 @@ class _VerifyState extends State<Verify> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 24),
                     child: Text(
-                      'Enter code we sent to +84 1234567890',
+                      'Enter code we sent to ${widget.phoneNumber}',
                       textAlign: TextAlign.center,
                       style: body(color: grey800),
                     ),
@@ -124,7 +124,7 @@ class _VerifyState extends State<Verify> {
                     listener: (context, state) {
                       if (state is OtpVerifiedSuccess) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text('OTP verified successfully!'),
                           ),
                         );
@@ -132,7 +132,7 @@ class _VerifyState extends State<Verify> {
                       }
                       if (state is OtpVerifiedFailure) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('verification Failed')));
+                            const SnackBar(content: Text('verification Failed')));
                       }
                     },
                     builder: (context, state) {

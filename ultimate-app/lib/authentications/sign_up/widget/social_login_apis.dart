@@ -3,7 +3,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class SocialLoginApi {
-  static final _googleSignIn = GoogleSignIn();
+  static final _googleSignIn = GoogleSignIn(
+      serverClientId:
+          '619260391142-aetgvard7dg3uhds69eh7qkcmi0qkbaj.apps.googleusercontent.com');
 
   static Future<GoogleSignInAccount?> googleSignIn() => _googleSignIn.signIn();
 
@@ -13,7 +15,7 @@ class SocialLoginApi {
     final Map<String, dynamic> _userData = <String, dynamic>{};
     try {
       final LoginResult result = await FacebookAuth.instance
-          .login(permissions: ["public_profile", "email"]);
+          .login(permissions: ['public_profile', 'email']);
       final userData = await FacebookAuth.instance.getUserData();
       print('name: ${userData['name']}');
       print('email: ${userData['email']}');

@@ -44,6 +44,10 @@ class _SignInTabState extends State<SignInTab> {
       print('token: $user');
 
       print('user $user');
+
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.of(context).pushReplacementNamed(Routes.accountInformation);
+      });
     }
   }
 
@@ -55,6 +59,10 @@ class _SignInTabState extends State<SignInTab> {
     } else {
       Utils.flutterToast('Sign in with Facebook success');
       print('facebook user: $user');
+
+      // Future.delayed(const Duration(seconds: 3), () {
+      //   Navigator.of(context).pushReplacementNamed(Routes.accountInformation);
+      // });
     }
   }
 
@@ -107,7 +115,8 @@ class _SignInTabState extends State<SignInTab> {
                 if (state is LoginLoadingState) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is LoginSuccessState) {
-                  Future.delayed(Duration.zero, () {
+                  Utils.flutterToast('Successfully logged in');
+                  Future.delayed(const Duration(seconds: 3), () {
                     Navigator.of(context)
                         .pushReplacementNamed(Routes.addMobileNumber);
                   });
@@ -158,7 +167,7 @@ class _SignInTabState extends State<SignInTab> {
             children: [
               Expanded(
                 child: AppWidget.typeButtonStartAction2(
-                    context: context,
+                    context                                                                                                                                                                                                                                                                                                                : context,
                     input: 'Facebook',
                     onPressed: () {
                       _handleFacebookSignIn();
@@ -177,7 +186,7 @@ class _SignInTabState extends State<SignInTab> {
                     onPressed: () {
                       _handleGoogleSignIn();
                     },
-                    icon: icTwitter,
+                    icon: google,
                     sizeAsset: 24,
                     bgColor: grey200,
                     borderColor: grey200,
@@ -203,6 +212,10 @@ class _SignInTabState extends State<SignInTab> {
   }
 
   void _submitForm() {
+    if (usernameCtl.text.isEmpty || passwordCtl.text.isEmpty) {
+      Utils.flutterToast('Please fill all fields');
+      return;
+    }
     if (!FormValidator.validateEmail(usernameCtl.text)) {
       Utils.flutterToast('Invalid Email');
       return;
