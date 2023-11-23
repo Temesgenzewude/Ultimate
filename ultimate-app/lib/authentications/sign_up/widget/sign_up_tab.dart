@@ -322,8 +322,16 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
       Utils.flutterToast('Passwords do not match');
       return;
     }
-    if (phoneCtl.text == '') {
+    if (phoneCtl.text.isEmpty) {
       Utils.flutterToast('Please provide a phone number');
+      return;
+    }
+
+    String phoneNumber = '+' + languageCode! + phoneCtl.text;
+    print(phoneNumber);
+    if (!FormValidator.validatePhoneNumber(phoneNumber)) {
+      Utils.flutterToast(
+          'Invalid Phone number:Please enter a valid phone number!');
       return;
     }
 
@@ -333,7 +341,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
       password: passwordCtl.value.text,
       name: nameCtl.value.text,
       address: addressCtl.value.text,
-      phoneNumber: '${languageCode}${phoneCtl.value.text}',
+      phoneNumber: phoneNumber,
       coordinates: '10,10',
       birthDate: birthdayCtl.value.text,
     );

@@ -53,9 +53,9 @@ class _MenuNavigationState extends State<MenuNavigation> {
   void checkAuthenticationStatus() async {
     // final authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
 
-    final String? token = sl<PrefManager>().kToken;
+    final String? token = sl<PrefManager>().token;
 
-    print(' Here is the token stored: ${token.toString()}');
+    print(' Here is the token stored: $token');
     if (token != null && token.isNotEmpty && token != 'token') {
       // If the token is available, navigate to the home page
       Navigator.of(context).pushReplacementNamed(Routes.accountInformation);

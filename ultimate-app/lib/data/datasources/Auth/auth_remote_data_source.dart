@@ -77,34 +77,72 @@ class AuthenticationRemoteDataSourceImpl
   @override
   Future<SingUpResponseModel> signUpUserA(UserAModel user) async {
     final String url = AppUrl.userASignUpEndPoint;
-    final Map<String, dynamic> body = <String, dynamic>{
-      "name": user.name,
-      "email": user.email,
-      "phoneNumber": user.phoneNumber,
-      "birthDate": user.birthDate,
-      "password": user.password,
-      "address": user.address,
-      "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
-      "user_type": user.user_type,
-      "terms": user.terms,
-    };
+    // final Map<String, dynamic> body = <String, dynamic>{
+    //   "name": user.name,
+    //   "email": user.email,
+    //   "phoneNumber": user.phoneNumber,
+    //   "birthDate": user.birthDate,
+    //   "password": user.password,
+    //   "address": user.address,
+    //   "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
+    //   "user_type": user.user_type,
+    //   "terms": user.terms,
+    // };
+    user.coordinates = '${prefManager.kLatitude}${prefManager.kLongitude}';
 
-    final response = await client.post(
-      Uri.parse(url),
-      body: json.encode(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
+    // final body = user.toJson();
+    // print('---- sign up user a body: $body');
 
-    if (response.statusCode == 200) {
-      final dynamic data = json.decode(response.body);
-      return SingUpResponseModel.fromJson(data);
-    } else if (response.statusCode == 403) {
-      final dynamic error = json.decode(response.body);
-      throw ForbiddenResponseException(error);
-    } else {
-      throw Exception('Failed to create a new user');
+    // final response = await client.post(
+    //   Uri.parse(url),
+    //   body: json.encode(body),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // );
+
+    // print('--- sign u user a--- response body: ${response.body}');
+
+    // if (response.statusCode == 200) {
+    //   final dynamic data = json.decode(response.body);
+    //   return SingUpResponseModel.fromJson(data);
+    // } else if (response.statusCode == 403) {
+    //   final dynamic error = json.decode(response.body);
+    //   throw ForbiddenResponseException(error);
+    // } else {
+    //   throw Exception('Failed to create a new user');
+    // }
+
+    try {
+      final body = user.toJson();
+      print('---- sign up user a body: $body');
+
+      final response = await client.post(
+        Uri.parse(url),
+        body: json.encode(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 10));
+
+      print('--- sign u user a--- response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final dynamic data = json.decode(response.body);
+        return SingUpResponseModel.fromJson(data);
+      } else if (response.statusCode == 403) {
+        final dynamic data = json.decode(response.body);
+        throw ServerException(
+            message: data["message"] ?? 'Failed to create a new user');
+      } else {
+        final dynamic data = json.decode(response.body);
+        throw UnknownException(
+            message: data["message"] ?? "Error while trying to sign up");
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
     }
   }
 

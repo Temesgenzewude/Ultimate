@@ -23,8 +23,11 @@ class AuthenticationRepository {
         final prefManager = sl<PrefManager>();
         final response = await remoteDataSource.signInUserA(user);
 
-        prefManager.kToken = response.token.toString();
-        prefManager.kUserID = response.user?.userId.toString() ?? '';
+        prefManager.token = response.token.toString();
+        //prefManager.kToken = response.token.toString();
+        prefManager.userId = response.user?.userId.toString() ?? '';
+
+        print('auth repo user token: ${prefManager.token}');
 
         return response;
       } on NoInternetException catch (e) {
@@ -52,10 +55,30 @@ class AuthenticationRepository {
   }
 
   Future<SingUpResponseModel> signUpUserA(UserAModel newUser) async {
-    try {
-      return await remoteDataSource.signUpUserA(newUser);
-    } catch (e) {
-      throw Exception(e.toString().substring(10));
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        return await remoteDataSource.signUpUserA(newUser);
+      } on NoInternetException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw NoInternetException(message: e.message);
+      } on ConnectionTimeOutException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw ConnectionTimeOutException(message: e.message);
+      } on ServerException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw ServerException(message: e.message);
+      } on UnknownException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        //throw UnknownException(message: e.message);
+      }
+    } else {
+      throw const NoInternetException(
+          message:
+              'No Internet Connection! Please check your internet connection and try again.');
     }
   }
 

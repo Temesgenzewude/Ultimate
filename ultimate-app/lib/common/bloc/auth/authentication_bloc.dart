@@ -67,8 +67,22 @@ class AuthenticationBloc
     try {
       final result = await authenticationRepository.signUpUserA(event.newUser);
       emit(authenticationSuccessOrFailure(result: result));
-    } catch (e) {
-      emit(authenticationSuccessOrFailure(result: e.toString().substring(10)));
+    } on NoInternetException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: false),
+      );
+    } on ConnectionTimeOutException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: false),
+      );
+    } on ServerException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: false),
+      );
+    } on UnknownException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: false),
+      );
     }
   }
 
