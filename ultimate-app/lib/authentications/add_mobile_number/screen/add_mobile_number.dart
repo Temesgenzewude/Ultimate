@@ -194,7 +194,13 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                                   context: context,
                                   input: 'Next',
                                   onPressed: () {
-                                    context.read<OtpBloc>().add(OTPSendUserA());
+                                    if (prefManager.userType == "A") {
+                                      context
+                                          .read<OtpBloc>()
+                                          .add(OTPSendUserA());
+                                    } else {
+                                      context.read<OtpBloc>().add(OtpSent());
+                                    }
                                   },
                                   bgColor: primary,
                                   icon: icArrowRight,
