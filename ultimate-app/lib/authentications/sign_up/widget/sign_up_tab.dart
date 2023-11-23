@@ -201,6 +201,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                             .pushReplacementNamed(Routes.signUp);
                       });
                     } else if (state is AuthenticationFailureState) {
+                      Utils.flutterToast(state.errorMessage);
                       return Column(
                         children: [
                           AppWidget.typeButtonStartAction(
@@ -215,15 +216,6 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                             bgColor: primary,
                             borderColor: primary,
                             textColor: grey1100,
-                          ),
-                          Center(
-                            child: Text(
-                              state.errorMessage,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                            ),
                           ),
                         ],
                       );

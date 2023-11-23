@@ -112,6 +112,7 @@ class _SignInTabState extends State<SignInTab> {
                         .pushReplacementNamed(Routes.addMobileNumber);
                   });
                 } else if (state is LoginFailureState) {
+                  Utils.flutterToast(state.errorMessage);
                   return Column(
                     children: [
                       AppWidget.typeButtonStartAction(
@@ -126,15 +127,6 @@ class _SignInTabState extends State<SignInTab> {
                         bgColor: primary,
                         borderColor: primary,
                         textColor: grey1100,
-                      ),
-                      Center(
-                        child: Text(
-                          state.errorMessage,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
                       ),
                     ],
                   );
