@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/core/error/exception.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
 
@@ -41,10 +42,21 @@ class AuthenticationBloc
     try {
       final result = await authenticationRepository.signInUserA(event.user);
       emit(authenticationSuccessOrFailure(result: result, isLogin: true));
-    } catch (e) {
+    } on NoInternetException catch (e) {
       emit(
-        authenticationSuccessOrFailure(
-            result: e.toString().substring(10), isLogin: true),
+        authenticationSuccessOrFailure(result: e.message, isLogin: true),
+      );
+    } on ConnectionTimeOutException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: true),
+      );
+    } on ServerException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: true),
+      );
+    } on UnknownException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: true),
       );
     }
   }
