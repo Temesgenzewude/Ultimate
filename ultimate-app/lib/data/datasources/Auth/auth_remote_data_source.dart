@@ -51,7 +51,7 @@ class AuthenticationRemoteDataSourceImpl
         headers: {
           'Content-Type': 'application/json',
         },
-      );
+      ).timeout(const Duration(seconds: 10));
 
       print('remote data source response status code: ${response.statusCode}');
       if (response.statusCode == 200) {
@@ -71,7 +71,7 @@ class AuthenticationRemoteDataSourceImpl
       throw const NoInternetException(message: 'No internet connection');
     } on TimeoutException catch (_) {
       throw const ConnectionTimeOutException(message: 'Connection timed out');
-    } 
+    }
   }
 
   @override
