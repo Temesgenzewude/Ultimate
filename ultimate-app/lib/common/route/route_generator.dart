@@ -109,10 +109,10 @@ mixin RouteGenerator {
         return MaterialPageRoute<dynamic>(
           builder: (context) => const MenuAuthenNavigation(),
         );
-      case Routes.profile:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const MenuProfileNavigation(),
-        );
+      // case Routes.profile:
+      //   return MaterialPageRoute<dynamic>(
+      //     builder: (context) => const MenuProfileNavigation(),
+      //   );
       case Routes.finance:
         return MaterialPageRoute<dynamic>(
           builder: (context) => const MenuFinanceNavigation(),

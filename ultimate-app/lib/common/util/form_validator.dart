@@ -25,6 +25,15 @@ mixin FormValidator {
     return false;
   }
 
+  static bool validatePhoneNumber(String phone) {
+    const String pattern = r'(^(\+[0-9]{1,3}[- ]?)?\d{10}$)';
+    final RegExp regExp = RegExp(pattern);
+    if (!regExp.hasMatch(phone)) {
+      return false;
+    }
+    return true;
+  }
+
   static bool validatePassword(String value) {
     if (value.isEmpty) {
       return false;
