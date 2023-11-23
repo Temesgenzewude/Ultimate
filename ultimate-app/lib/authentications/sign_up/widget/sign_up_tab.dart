@@ -307,8 +307,18 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
       return;
     }
 
+    if (usernameCtl.text.isEmpty) {
+      Utils.flutterToast('Please enter your email!');
+      return;
+    }
+
     if (!FormValidator.validateEmail(usernameCtl.text)) {
       Utils.flutterToast('Invalid Email');
+      return;
+    }
+
+    if (passwordCtl.text.isEmpty) {
+      Utils.flutterToast('Please enter password');
       return;
     }
 

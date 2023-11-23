@@ -320,8 +320,18 @@ class _SignUpTabBState extends State<SignUpTabB> {
       return;
     }
 
+    if (usernameCtl.text.isEmpty) {
+      Utils.flutterToast('Please enter your email!');
+      return;
+    }
+
     if (!FormValidator.validateEmail(usernameCtl.text)) {
       Utils.flutterToast('Invalid Email');
+      return;
+    }
+
+    if (passwordCtl.text.isEmpty) {
+      Utils.flutterToast('Please enter password');
       return;
     }
 
@@ -333,11 +343,15 @@ class _SignUpTabBState extends State<SignUpTabB> {
       Utils.flutterToast('Passwords do not match');
       return;
     }
+
+    if (_selectedGender == null) {
+      Utils.flutterToast('Please select gender!');
+      return;
+    }
     if (phoneCtl.text == '') {
       Utils.flutterToast('Please provide a phone number');
       return;
     }
-    
 
     // If all validation passes
     final UserBModel user = UserBModel(

@@ -155,17 +155,16 @@ class _SignInTabBState extends State<SignInTabB> {
               }),
             ],
           ),
-       
-          
         ],
       ),
     );
   }
 
   void _submitForm() {
-    if (!FormValidator.validateEmail(phoneNumberCtl.text)) {
-      Utils.flutterToast(
-          'Invalid Phone Number: Please enter a valid phone number!');
+    String phoneNumber = '+' + languageCode! + phoneNumberCtl.text;
+    print(phoneNumber);
+    if (!FormValidator.validatePhoneNumber(phoneNumber)) {
+      Utils.flutterToast('Invalid Phone number');
       return;
     }
 
@@ -175,7 +174,7 @@ class _SignInTabBState extends State<SignInTabB> {
     }
     // If all validation passes
     final UserBLoginRequestModel user = UserBLoginRequestModel(
-      phoneNumber: phoneNumberCtl.text,
+      phoneNumber: phoneNumber,
       password: passwordCtl.text,
     );
     BlocProvider.of<AuthenticationBloc>(context).add(

@@ -18,7 +18,7 @@ import '../../../dependency_indjection.dart';
 import '../../../sharedPreferences.dart';
 
 class AddMobileNumber extends StatefulWidget {
-  AddMobileNumber({Key? key}) : super(key: key);
+  const AddMobileNumber({Key? key}) : super(key: key);
 
   @override
   State<AddMobileNumber> createState() => _AddMobileNumberState();
