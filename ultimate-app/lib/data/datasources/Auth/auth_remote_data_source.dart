@@ -577,6 +577,77 @@ class AuthenticationRemoteDataSourceImpl
     }
   }
 
+  // @override
+  // Future<UserBSingUpResponse> saveUserBInterest(UserBModel user) async {
+  //   final String url = AppUrl.userBSignUpEndPoint;
+  //   // final Map<String, dynamic> body = <String, dynamic>{
+  //   //   "name": user.name,
+  //   //   "email": user.email,
+  //   //   "phoneNumber": user.phoneNumber,
+  //   //   "birthDate": user.birthDate,
+  //   //   "password": user.password,
+  //   //   "about": user.about,
+  //   //   "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
+  //   //   "age": user.age,
+  //   //   "terms": user.terms,
+  //   //   "gender": user.gender,
+  //   // };
+
+  //   // final response = await client.post(
+  //   //   Uri.parse(url),
+  //   //   body: json.encode(body),
+  //   //   headers: {
+  //   //     'Content-Type': 'application/json',
+  //   //   },
+  //   // );
+
+  //   // print(response.statusCode);
+
+  //   // if (response.statusCode == 200) {
+  //   //   final dynamic data = json.decode(response.body);
+  //   //   return SingUpResponseModel.fromJson(data);
+  //   // } else if (response.statusCode == 403) {
+  //   //   final dynamic error = json.decode(response.body);
+  //   //   throw ForbiddenResponseException(
+  //   //       error['message']); // Update the error message if desired
+  //   // } else {
+  //   //   throw Exception('Failed to create a new user');
+  //   // }
+
+  //   user.location = '100.536267224296935,34.32805961092151';
+  //   try {
+  //     final body = user.toJson();
+  //     print('---- sign up user b body: $body');
+
+  //     final response = await client.post(
+  //       Uri.parse(url),
+  //       body: json.encode(body),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     ).timeout(const Duration(seconds: 20));
+
+  //     print('--- sign u user b--- response body: ${response.body}');
+
+  //     if (response.statusCode == 201) {
+  //       final dynamic data = json.decode(response.body);
+  //       return UserBSingUpResponse.fromJson(data);
+  //     } else if (response.statusCode == 403) {
+  //       final dynamic data = json.decode(response.body);
+  //       throw ServerException(
+  //           message: data["message"] ?? 'Failed to create a new user');
+  //     } else {
+  //       final dynamic data = json.decode(response.body);
+  //       throw UnknownException(
+  //           message: data["message"] ?? "Error while trying to sign up");
+  //     }
+  //   } on SocketException catch (_) {
+  //     throw const NoInternetException(message: 'No internet connection');
+  //   } on TimeoutException catch (_) {
+  //     throw const ConnectionTimeOutException(message: 'Connection timed out');
+  //   }
+  // }
+
   @override
   Future<SocialLoginResponseModel> loginSocial(
       SocialLoginRequestModel socialLoginRequestModel) async {
