@@ -22,7 +22,7 @@ final prefManager = sl<PrefManager>();
 abstract class AuthenticationRemoteDataSource {
   Future<SingUpResponseModel> signUpUserA(UserAModel newuser);
   Future<LoginResponseModel> signInUserA(UserALoginRequestModel user);
-  Future<SingUpResponseModel> signUpUserB(UserBModel newuser);
+  Future<UserBSingUpResponse> signUpUserB(UserBModel newuser);
   Future<LoginResponseModel> signInUserB(UserBLoginRequestModel user);
   Future<List<dynamic>> uploadImagesA(List<XFile> files);
   Future<List<dynamic>> uploadImagesB(List<XFile> files);
@@ -214,7 +214,7 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<SingUpResponseModel> signUpUserB(UserBModel user) async {
+  Future<UserBSingUpResponse> signUpUserB(UserBModel user) async {
     final String url = AppUrl.userBSignUpEndPoint;
     // final Map<String, dynamic> body = <String, dynamic>{
     //   "name": user.name,
@@ -267,7 +267,7 @@ class AuthenticationRemoteDataSourceImpl
 
       if (response.statusCode == 201) {
         final dynamic data = json.decode(response.body);
-        return SingUpResponseModel.fromJson(data);
+        return UserBSingUpResponse.fromJson(data);
       } else if (response.statusCode == 403) {
         final dynamic data = json.decode(response.body);
         throw ServerException(
