@@ -28,6 +28,7 @@ class Verify extends StatefulWidget {
 }
 
 class _VerifyState extends State<Verify> {
+  final prefManager = sl<PrefManager>();
   TextEditingController pinController = TextEditingController();
   FocusNode focusNode = FocusNode();
   late Timer _timer;
@@ -149,7 +150,11 @@ class _VerifyState extends State<Verify> {
                     width: width,
                     child: Pinput(
                       onCompleted: (String otp) {
-                        context.read<OtpBloc>().add(OTPVerifyUserA(otp));
+                        if (prefManager.userType == "A") {
+                          context.read<OtpBloc>().add(OTPVerifyUserA(otp));
+                        } else {
+                          context.read<OtpBloc>().add(OtpVerified(otp));
+                        }
                       },
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       autofocus: true,
@@ -207,7 +212,11 @@ class _VerifyState extends State<Verify> {
                         onPressed: _start != 0
                             ? () {}
                             : () {
-                                context.read<OtpBloc>().add(OtpSent());
+                                if (prefManager.userType == "A") {
+                                  context.read<OtpBloc>().add(OTPSendUserA());
+                                } else {
+                                  context.read<OtpBloc>().add(OtpSent());
+                                }
                                 restartTimer();
                               },
                         bgColor: _start != 0 ? grey200 : primary,
