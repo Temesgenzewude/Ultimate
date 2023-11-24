@@ -24,7 +24,8 @@ abstract class AuthenticationRemoteDataSource {
   Future<LoginResponseModel> signInUserA(UserALoginRequestModel user);
   Future<SingUpResponseModel> signUpUserB(UserBModel newuser);
   Future<LoginResponseModel> signInUserB(UserBLoginRequestModel user);
-  Future<List<String>> uploadImages(List<XFile> files);
+  Future<List<dynamic>> uploadImagesA(List<XFile> files);
+  Future<List<dynamic>> uploadImagesB(List<XFile> files);
 
   Future<void> sendOtp();
   Future<void> verifyOtp(String otp);
@@ -461,20 +462,77 @@ class AuthenticationRemoteDataSourceImpl
     }
   }
 
-  Future<List<String>> uploadImages(List<XFile> files) async {
+  @override
+  Future<List<dynamic>> uploadImagesA(List<XFile> files) async {
     try {
-      final uri = Uri.parse('${AppUrl.bulkUploadImagesA}${prefManager.userID}');
+      final uri =
+          Uri.parse('${AppUrl.bulkUploadImagesA}${prefManager.kUserID}');
       final request = http.MultipartRequest('POST', uri);
       files.forEach((file) async {
         request.files
-            .add(await http.MultipartFile.fromPath('image', file.path));
+            .add(await http.MultipartFile.fromPath('images', file.path));
       });
+      request.headers['Authorization'] = prefManager.kToken;
+      // request.headers['Authorization'] = prefManager.kToken;
+      // request.files
+      //     .add(await http.MultipartFile.fromPath('image', files[0].path));
       final response = await request.send();
       final streamedResponse = await http.Response.fromStream(response);
 
       if (response.statusCode == 200) {
-        final dynamic data = json.decode(streamedResponse.body);
-        return data;
+        final Map<String, dynamic> data = json.decode(streamedResponse.body);
+        final List<dynamic> returnedList = data['imageUrls'];
+        final List<String> returedString = [];
+        returnedList.forEach((dynamic element) {
+          returedString.add(element.toString());
+        });
+
+        return returedString;
+      } else if (response.statusCode == 403) {
+        final dynamic error = json.decode(streamedResponse.body);
+        throw ForbiddenResponseException(
+            message: error['error'] ?? 'Image upload failed');
+      } else if (response.statusCode == 400) {
+        final dynamic error = json.decode(streamedResponse.body);
+        throw ForbiddenResponseException(
+            message: error['error'] ?? 'No images selected');
+      } else {
+        final dynamic error = json.decode(streamedResponse.body);
+        throw UnknownException(
+            message: error['error'] ?? 'Image upload failed');
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
+    }
+  }
+  @override
+  Future<List<dynamic>> uploadImagesB(List<XFile> files) async {
+    try {
+      final uri =
+          Uri.parse('${AppUrl.bulkUploadImagesB}${prefManager.kUserID}');
+      final request = http.MultipartRequest('POST', uri);
+      files.forEach((file) async {
+        request.files
+            .add(await http.MultipartFile.fromPath('images', file.path));
+      });
+      request.headers['Authorization'] = prefManager.kToken;
+      // request.headers['Authorization'] = prefManager.kToken;
+      // request.files
+      //     .add(await http.MultipartFile.fromPath('image', files[0].path));
+      final response = await request.send();
+      final streamedResponse = await http.Response.fromStream(response);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(streamedResponse.body);
+        final List<dynamic> returnedList = data['imageUrls'];
+        final List<String> returedString = [];
+        returnedList.forEach((dynamic element) {
+          returedString.add(element.toString());
+        });
+
+        return returedString;
       } else if (response.statusCode == 403) {
         final dynamic error = json.decode(streamedResponse.body);
         throw ForbiddenResponseException(

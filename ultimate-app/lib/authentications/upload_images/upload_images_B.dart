@@ -232,7 +232,7 @@ class _UploadImagesState extends State<UploadImages> {
                         print(prefManager.kToken);
                         print('here');
                         BlocProvider.of<UploadImagesBloc>(context)
-                            .add(UserAUploadImagesEvent(images: imageFileList));
+                            .add(UserBUploadImagesEvent(images: imageFileList));
                       },
                       bgColor: primary,
                       borderColor: primary,
@@ -243,7 +243,7 @@ class _UploadImagesState extends State<UploadImages> {
                     input: 'Continue',
                     onPressed: () {
                       BlocProvider.of<UploadImagesBloc>(context)
-                          .add(UserAUploadImagesEvent(images: imageFileList));
+                          .add(UserBUploadImagesEvent(images: imageFileList));
                     },
                     bgColor: primary,
                     borderColor: primary,

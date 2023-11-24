@@ -317,7 +317,7 @@ class AuthenticationRepository {
     }
   }
 
-  Future<List<String>> uploadImages(List<XFile> files) async {
+  Future<List<dynamic>> uploadImagesA(List<XFile> files) async {
     // try {
     //   return remoteDataSource.verifyOTPUserA(otp);
     // } catch (e) {
@@ -326,7 +326,44 @@ class AuthenticationRepository {
 
     if (await internetConnectionChecker.hasConnection) {
       try {
-        return remoteDataSource.uploadImages(files);
+        return remoteDataSource.uploadImagesA(files);
+      } on NoInternetException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw NoInternetException(message: e.message);
+      } on ConnectionTimeOutException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw ConnectionTimeOutException(message: e.message);
+      } on ForbiddenResponseException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw ServerException(message: e.message);
+      } on UnknownException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        //throw UnknownException(message: e.message);
+      } on ServerException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+      }
+    } else {
+      throw const NoInternetException(
+          message:
+              'No Internet Connection! Please check your internet connection and try again.');
+    }
+  }
+
+  Future<List<dynamic>> uploadImagesB(List<XFile> files) async {
+    // try {
+    //   return remoteDataSource.verifyOTPUserA(otp);
+    // } catch (e) {
+    //   throw Exception('Verifying OTP failed');
+    // }
+
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        return remoteDataSource.uploadImagesB(files);
       } on NoInternetException catch (e) {
         print(' auth repo error: ${e.toString()}');
         rethrow;
