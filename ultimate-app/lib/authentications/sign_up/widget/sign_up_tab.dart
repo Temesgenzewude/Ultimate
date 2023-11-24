@@ -193,12 +193,13 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is AuthenticationSuccessState) {
                       Utils.flutterToast('''You have successfully registered. 
-                             Verification email is sent to ${usernameCtl.value.text}
-                             Please verify your email address and login!''');
+                             OTP is sent to +${languageCode}${phoneCtl.text}
+                             Please verify your account!''');
 
                       Future.delayed(const Duration(seconds: 5), () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(Routes.signUp);
+                        Navigator.of(context).pushReplacementNamed(
+                            Routes.verify,
+                            arguments: '+${languageCode}${phoneCtl.text}');
                       });
                     } else if (state is AuthenticationFailureState) {
                       Utils.flutterToast(state.errorMessage);

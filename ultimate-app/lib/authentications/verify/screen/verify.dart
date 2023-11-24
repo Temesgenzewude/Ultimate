@@ -19,9 +19,8 @@ import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/unfocus_click.dart';
 
 class Verify extends StatefulWidget {
-  final String phoneNumber;
   final prefManager = sl<PrefManager>();
-  Verify({required this.phoneNumber, Key? key}) : super(key: key);
+  Verify({Key? key}) : super(key: key);
 
   @override
   State<Verify> createState() => _VerifyState();
@@ -33,6 +32,8 @@ class _VerifyState extends State<Verify> {
   FocusNode focusNode = FocusNode();
   late Timer _timer;
   int _start = 30;
+
+  String phoneNumber = "";
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -66,6 +67,8 @@ class _VerifyState extends State<Verify> {
   @override
   void initState() {
     startTimer();
+
+    phoneNumber = ModalRoute.of(context)?.settings.arguments as String;
     super.initState();
   }
 
@@ -117,7 +120,7 @@ class _VerifyState extends State<Verify> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 24),
                     child: Text(
-                      'Enter code we sent to ${widget.phoneNumber}',
+                      'Enter code we sent to ${phoneNumber}',
                       textAlign: TextAlign.center,
                       style: body(color: grey800),
                     ),
@@ -158,7 +161,7 @@ class _VerifyState extends State<Verify> {
                       },
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       autofocus: true,
-                      length: 5,
+                      length: 4,
                       onSubmitted: (String otp) {
                         context.read<OtpBloc>().add(OtpVerified(otp));
                       },

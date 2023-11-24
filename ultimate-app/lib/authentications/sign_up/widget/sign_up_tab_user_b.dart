@@ -242,7 +242,7 @@ class _SignUpTabBState extends State<SignUpTabB> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is AuthenticationSuccessState) {
                       Utils.flutterToast('''You have successfully registered. 
-                             Verification email is sent to ${usernameCtl.value.text}
+                             OTP is sent to ${usernameCtl.value.text}
                              Please verify your email address and login!''');
 
                       Future.delayed(const Duration(seconds: 5), () {
