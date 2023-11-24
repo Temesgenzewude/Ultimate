@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/auth/b/authentication_bloc_b.dart';
 import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:responsive_framework/responsive_framework.dart';
@@ -59,6 +60,15 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<AuthenticationBloc>(
           create: (BuildContext context) => AuthenticationBloc(
+            authenticationRepository: AuthenticationRepository(
+              remoteDataSource: AuthenticationRemoteDataSourceImpl(
+                client: http.Client(),
+              ),
+            ),
+          ),
+        ),
+        BlocProvider<AuthenticationBlocB>(
+          create: (BuildContext context) => AuthenticationBlocB(
             authenticationRepository: AuthenticationRepository(
               remoteDataSource: AuthenticationRemoteDataSourceImpl(
                 client: http.Client(),

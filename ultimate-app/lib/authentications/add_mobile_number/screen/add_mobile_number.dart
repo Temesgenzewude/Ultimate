@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/auth/b/authentication_bloc_b.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -18,20 +19,114 @@ import '../../../dependency_indjection.dart';
 import '../../../sharedPreferences.dart';
 
 class AddMobileNumber extends StatefulWidget {
-  const AddMobileNumber({Key? key}) : super(key: key);
+  AddMobileNumber({Key? key}) : super(key: key);
 
   @override
   State<AddMobileNumber> createState() => _AddMobileNumberState();
 }
 
+final prefManager = sl<PrefManager>();
+final String name = prefManager.name ?? '';
+final String email = prefManager.email ?? '';
+final String address = prefManager.address ?? '';
+final String birthday = prefManager.birthday ?? '';
+final String password = prefManager.password ?? '';
+double latitude = double.tryParse(prefManager.kLatitude) ?? 0.0;
+double longitude = double.tryParse(prefManager.kLongitude) ?? 0.0;
+
 class _AddMobileNumberState extends State<AddMobileNumber> {
-  final prefManager = sl<PrefManager>();
+  Widget getAuthWidget() {
+    if (prefManager.userType == 'A') {
+      return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+        listener: (context, state) {
+          if (state is AuthenticationFailureState) {
+            Utils.flutterToast(state.errorMessage);
+          } else if (state is AuthenticationSuccessState) {
+            Utils.flutterToast(
+                'You have successfully registered. OTP is sent to +${languageCode}${phoneCtl.text} Please verify your account!');
+            Future.delayed(const Duration(seconds: 5), () {
+              Navigator.of(context).pushNamed(Routes.verify,
+                  arguments: '+${languageCode}${phoneCtl.text}');
+            });
+          }
+        },
+        builder: (context, state) {
+          if (state is AuthenticationLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return AppWidget.typeButtonStartAction(
+                context: context,
+                input: 'SIGN UP NOW',
+                onPressed: () {
+                  _submitForm(
+                      name: name,
+                      email: email,
+                      address: address,
+                      password: password,
+                      birthDate: birthday);
+                  // if (prefManager.userType == 'User A') {
+                  //   context.read<OtpBloc>().add(OTPSendUserA());
+                  // } else {
+                  //   context.read<OtpBloc>().add(OtpSent());
+                  // }
+                },
+                bgColor: primary,
+                icon: icArrowRight,
+                colorAsset: grey1100,
+                borderColor: primary,
+                textColor: grey1100);
+          }
+        },
+      );
+    } else {
+      return BlocConsumer<AuthenticationBlocB, AuthenticationBState>(
+        listener: (context, state) {
+          if (state is AuthenticationFailureStateB) {
+            Utils.flutterToast(state.errorMessage);
+          } else if (state is AuthenticationSuccessStateB) {
+            Utils.flutterToast(
+                'You have successfully registered. OTP is sent to +${languageCode}${phoneCtl.text} Please verify your account!');
+            Future.delayed(const Duration(seconds: 5), () {
+              Navigator.of(context).pushNamed(Routes.verify,
+                  arguments: '+${languageCode}${phoneCtl.text}');
+            });
+          }
+        },
+        builder: (context, state) {
+          if (state is AuthenticationLoadingStateB) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return AppWidget.typeButtonStartAction(
+                context: context,
+                input: 'SIGN UP NOW',
+                onPressed: () {
+                  _submitForm(
+                      name: name,
+                      email: email,
+                      address: address,
+                      password: password,
+                      birthDate: birthday);
+                  // if (prefManager.userType == 'User A') {
+                  //   context.read<OtpBloc>().add(OTPSendUserA());
+                  // } else {
+                  //   context.read<OtpBloc>().add(OtpSent());
+                  // }
+                },
+                bgColor: primary,
+                icon: icArrowRight,
+                colorAsset: grey1100,
+                borderColor: primary,
+                textColor: grey1100);
+          }
+        },
+      );
+    }
+  }
+
   String? countryCode = 'US';
   Future<void> getCountryCode() async {
     print('here=================================');
     // print(prefManager);
-    double latitude = double.tryParse(prefManager.kLatitude) ?? 0.0;
-    double longitude = double.tryParse(prefManager.kLongitude) ?? 0.0;
 
     // print(latitude);
     // print(longitude);
@@ -75,11 +170,6 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
     // final String address = formData['address'] ?? '';
     // final String birthday = formData['birthday'] ?? '';
     // final String password = formData['password'] ?? '';
-    final String name = prefManager.name ?? '';
-    final String email = prefManager.email ?? '';
-    final String address = prefManager.address ?? '';
-    final String birthday = prefManager.birthday ?? '';
-    final String password = prefManager.password ?? '';
 
     return UnfocusClick(
       child: Scaffold(
@@ -203,55 +293,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                       controller: phoneCtl,
                       focusNode: phoneFn,
                     ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 24, bottom: 16),
-                      child:
-                          BlocConsumer<AuthenticationBloc, AuthenticationState>(
-                        listener: (context, state) {
-                          if (state is AuthenticationFailureState) {
-                            Utils.flutterToast(state.errorMessage);
-                          } else if (state is AuthenticationSuccessState) {
-                            Utils.flutterToast(
-                                'You have successfully registered. OTP is sent to +${languageCode}${phoneCtl.text} Please verify your account!');
-                            Future.delayed(const Duration(seconds: 5), () {
-                              Navigator.of(context).pushNamed(Routes.verify,
-                                  arguments:
-                                      '+${languageCode}${phoneCtl.text}');
-                            });
-                          }
-                        },
-                        builder: (context, state) {
-                          if (state is AuthenticationLoadingState) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else {
-                            return AppWidget.typeButtonStartAction(
-                                context: context,
-                                input: 'SIGN UP NOW',
-                                onPressed: () {
-                                  _submitForm(
-                                      name: name,
-                                      email: email,
-                                      address: address,
-                                      password: password,
-                                      birthDate: birthday);
-                                  // if (prefManager.userType == 'User A') {
-                                  //   context.read<OtpBloc>().add(OTPSendUserA());
-                                  // } else {
-                                  //   context.read<OtpBloc>().add(OtpSent());
-                                  // }
-                                },
-                                bgColor: primary,
-                                icon: icArrowRight,
-                                colorAsset: grey1100,
-                                borderColor: primary,
-                                textColor: grey1100);
-                          }
-                        },
-                      ),
-                    ),
-
+                    getAuthWidget(),
                     // AnimationClick(
                     //   child: Align(
                     //     alignment: Alignment.center,
@@ -324,8 +366,9 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
         terms: true,
         age: '21');
 
+    print(prefManager.userType);
     if (prefManager.userType == 'User B') {
-      BlocProvider.of<AuthenticationBloc>(context).add(
+      BlocProvider.of<AuthenticationBlocB>(context).add(
         UserBSignUpEvent(newUser: userB),
       );
     } else {
@@ -334,32 +377,4 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
       );
     }
   }
-
-  /*
-
-  BlocBuilder<OtpBloc, OtpState>(
-                        builder: (context, state) {
-                          if (state is OtpLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else {
-                            return AppWidget.typeButtonStartAction(
-                                context: context,
-                                input: 'Next',
-                                onPressed: () {
-                                  if (prefManager.userType == 'User A') {
-                                    context.read<OtpBloc>().add(OTPSendUserA());
-                                  } else {
-                                    context.read<OtpBloc>().add(OtpSent());
-                                  }
-                                },
-                                bgColor: primary,
-                                icon: icArrowRight,
-                                colorAsset: grey1100,
-                                borderColor: primary,
-                                textColor: grey1100);
-                          }
-                        },
-                      ),
-  */
 }

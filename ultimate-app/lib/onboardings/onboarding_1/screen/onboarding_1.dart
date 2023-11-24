@@ -287,6 +287,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                                 setState(() {
                                   selectedUserType = value;
                                   prefManager.userType = selectedUserType;
+                                  print(prefManager.userType);
                                 });
                               },
                             ),
