@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/account_information%20/account_information_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/auth/b/authentication_bloc_b.dart';
 import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -92,6 +93,13 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<UploadImagesBloc>(
           create: (BuildContext context) => UploadImagesBloc(
+            authenticationRepository: AuthenticationRepository(
+                remoteDataSource:
+                    AuthenticationRemoteDataSourceImpl(client: http.Client())),
+          ),
+        ),
+        BlocProvider<AccountInfoBloc>(
+          create: (BuildContext context) => AccountInfoBloc(
             authenticationRepository: AuthenticationRepository(
                 remoteDataSource:
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
