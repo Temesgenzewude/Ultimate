@@ -22,6 +22,15 @@ class UploadImages extends StatefulWidget {
 
 class _UploadImagesState extends State<UploadImages> {
   File? imageFile;
+  List<XFile> imageFileList = [];
+
+  void selectImages() async {
+    final List<XFile>? selectedImages = await ImagePicker().pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      imageFileList.addAll(selectedImages);
+    }
+    setState(() {});
+  }
 
   Future _pickImage() async {
     try {
@@ -125,54 +134,87 @@ class _UploadImagesState extends State<UploadImages> {
           ),
         )),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 24),
             Center(
               child: Image.asset(
                 bg6,
-                height: height / 4,
+                height: height / 6,
               ),
             ),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 32, bottom: 8),
-                  child: GradientText(
-                    'Upload up to 6 Images',
-                    style: const TextStyle(
-                        fontSize: 48,
-                        height: 1,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'SpaceGrotesk'),
-                    gradient: LinearGradient(colors: [
-                      const Color(0xFFCFE1FD).withOpacity(0.9),
-                      const Color(0xFFFFFDE1).withOpacity(0.9),
-                    ]),
-                  ),
-                ),
-                Text(
-                  'Verify your identity as fast as you can',
-                  textAlign: TextAlign.center,
-                  style: body(color: grey800),
-                ),
-                const SizedBox(height: 32),
-                item(
-                  'Scan your ID, Passport',
-                  'Take picture of both side card',
-                  green,
-                  _pickImage,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 32, bottom: 8),
+              child: GradientText(
+                'Upload up to 6 Images',
+                style: const TextStyle(
+                    fontSize: 28,
+                    height: 1,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'SpaceGrotesk'),
+                gradient: LinearGradient(colors: [
+                  const Color(0xFFCFE1FD).withOpacity(0.9),
+                  const Color(0xFFFFFDE1).withOpacity(0.9),
+                ]),
+              ),
             ),
+            Text(
+              'Verify your identity as fast as you can',
+              textAlign: TextAlign.center,
+              style: body(color: grey800),
+            ),
+            const SizedBox(height: 32),
+            item(
+              'Scan your ID, Passport',
+              'Take picture of both side card',
+              green,
+              selectImages,
+            ),
+            const SizedBox(height: 24),
+            if (imageFileList.isNotEmpty)
+              Expanded(
+                child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                    itemCount: imageFileList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Image.file(File(imageFileList[index].path),
+                                  fit: BoxFit.cover),
+                              Positioned(
+                                  left: 90,
+                                  top: -20,
+                                  child: IconButton(
+                                      icon: const Icon(
+                                        Icons.delete_forever_rounded,
+                                        size: 30,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          imageFileList.removeAt(index);
+                                        });
+                                      }))
+                            ],
+                          ));
+                    }),
+              ),
             const SizedBox(height: 24),
             AppWidget.typeButtonStartAction2(
                 context: context,
                 input: 'Continue',
-                onPressed: () {},
+                onPressed: () {
+                  
+                },
                 bgColor: primary,
                 borderColor: primary,
                 textColor: grey1100),
