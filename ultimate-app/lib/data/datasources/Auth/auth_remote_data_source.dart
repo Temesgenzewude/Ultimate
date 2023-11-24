@@ -466,13 +466,13 @@ class AuthenticationRemoteDataSourceImpl
   Future<List<dynamic>> uploadImagesA(List<XFile> files) async {
     try {
       final uri =
-          Uri.parse('${AppUrl.bulkUploadImagesA}${prefManager.kUserID}');
+          Uri.parse('${AppUrl.bulkUploadImagesA}${prefManager.kUserIDA}');
       final request = http.MultipartRequest('POST', uri);
       files.forEach((file) async {
         request.files
             .add(await http.MultipartFile.fromPath('images', file.path));
       });
-      request.headers['Authorization'] = prefManager.kToken;
+      request.headers['Authorization'] = prefManager.kTokenA;
       // request.headers['Authorization'] = prefManager.kToken;
       // request.files
       //     .add(await http.MultipartFile.fromPath('image', files[0].path));
@@ -507,6 +507,7 @@ class AuthenticationRemoteDataSourceImpl
       throw const ConnectionTimeOutException(message: 'Connection timed out');
     }
   }
+
   @override
   Future<List<dynamic>> uploadImagesB(List<XFile> files) async {
     try {
