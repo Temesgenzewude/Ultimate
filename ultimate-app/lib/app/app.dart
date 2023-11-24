@@ -72,8 +72,9 @@ class _MyAppState extends State<MyApp> {
           ),
         ],
         child: MaterialApp(
-          initialRoute:
-              _isLoggedIn ? Routes.accountInformation : Routes.onBoarding1,
+          // initialRoute:
+          //     _isLoggedIn ? Routes.accountInformation : Routes.onBoarding1,
+          initialRoute: Routes.kyc,
           navigatorKey: navigatorKey,
           onGenerateRoute: RouteGenerator.generateRoute,
           title: 'Ultimate',
