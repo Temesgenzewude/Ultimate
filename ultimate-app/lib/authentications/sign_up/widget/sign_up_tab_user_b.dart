@@ -344,13 +344,20 @@ class _SignUpTabBState extends State<SignUpTabB> {
       Utils.flutterToast('Please provide a phone number');
       return;
     }
+    String phoneNumber = '+' + languageCode! + phoneCtl.text;
+    print(phoneNumber);
+    if (!FormValidator.validatePhoneNumber(phoneNumber)) {
+      Utils.flutterToast(
+          'Invalid Phone number:Please enter a valid phone number!');
+      return;
+    }
 
     // If all validation passes
     final UserBModel user = UserBModel(
       email: usernameCtl.value.text,
       password: passwordCtl.value.text,
       name: nameCtl.value.text,
-      phoneNumber: '${languageCode}${phoneCtl.value.text}',
+      phoneNumber: phoneNumber,
       birthDate: birthdayCtl.value.text,
       age: ageCtl.value.text,
       gender: _selectedGender ?? 'Male',

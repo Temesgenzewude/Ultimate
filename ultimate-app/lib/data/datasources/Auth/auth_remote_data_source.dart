@@ -3,8 +3,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter_ultimate/core/error/exception.dart';
-import 'package:flutter_ultimate/data/app_exceptions.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
 import 'package:flutter_ultimate/data/models/social_login_request_model.dart';
@@ -88,7 +88,7 @@ class AuthenticationRemoteDataSourceImpl
     //   "user_type": user.user_type,
     //   "terms": user.terms,
     // };
-    user.coordinates = '${prefManager.kLatitude}${prefManager.kLongitude}';
+    user.coordinates = '31.536267224296935,74.32805961092151';
 
     // final body = user.toJson();
     // print('---- sign up user a body: $body');
@@ -154,143 +154,308 @@ class AuthenticationRemoteDataSourceImpl
 
     print("user b sign in request body: $jsonBody");
 
-    final response = await client.post(
-      Uri.parse(url),
-      body: jsonBody,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
+    // final response = await client.post(
+    //   Uri.parse(url),
+    //   body: jsonBody,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // );
 
-    print(response.body);
-    print("user b sign in response code: ${response.statusCode}");
+    // print(response.body);
+    // print("user b sign in response code: ${response.statusCode}");
 
-    if (response.statusCode == 200) {
-      final dynamic data = json.decode(response.body);
-      final jsonData = LoginResponseModel.fromJson(data);
-      return jsonData;
-    } else if (response.statusCode == 403) {
-      final dynamic error = json.decode(response.body);
-      throw ForbiddenResponseException(
-          error['message']); // Update the error message if desired
-    } else {
-      throw Exception("Error while trying to sing in");
+    // if (response.statusCode == 200) {
+    //   final dynamic data = json.decode(response.body);
+    //   final jsonData = LoginResponseModel.fromJson(data);
+    //   return jsonData;
+    // } else if (response.statusCode == 403) {
+    //   final dynamic error = json.decode(response.body);
+    //   throw ForbiddenResponseException(
+    //       error['message']); // Update the error message if desired
+    // } else {
+    //   throw Exception("Error while trying to sing in");
+    // }
+
+    try {
+      final body = user.toJson();
+      final response = await client.post(
+        Uri.parse(url),
+        body: json.encode(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 10));
+
+      print(response.body);
+      print("user b sign in response code: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        final dynamic data = json.decode(response.body);
+        final jsonData = LoginResponseModel.fromJson(data);
+        return jsonData;
+      } else if (response.statusCode == 403) {
+        final dynamic data = json.decode(response.body);
+        throw ServerException(
+            message: data["message"] ?? 'Invalid Email or password');
+      } else {
+        final dynamic data = json.decode(response.body);
+        throw UnknownException(
+            message: data["message"] ?? "Error while trying to sign in");
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
     }
   }
 
   @override
   Future<SingUpResponseModel> signUpUserB(UserBModel user) async {
     final String url = AppUrl.userBSignUpEndPoint;
-    final Map<String, dynamic> body = <String, dynamic>{
-      "name": user.name,
-      "email": user.email,
-      "phoneNumber": user.phoneNumber,
-      "birthDate": user.birthDate,
-      "password": user.password,
-      "about": user.about,
-      "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
-      "age": user.age,
-      "terms": user.terms,
-      "gender": user.gender,
-    };
+    // final Map<String, dynamic> body = <String, dynamic>{
+    //   "name": user.name,
+    //   "email": user.email,
+    //   "phoneNumber": user.phoneNumber,
+    //   "birthDate": user.birthDate,
+    //   "password": user.password,
+    //   "about": user.about,
+    //   "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
+    //   "age": user.age,
+    //   "terms": user.terms,
+    //   "gender": user.gender,
+    // };
 
-    final response = await client.post(
-      Uri.parse(url),
-      body: json.encode(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
+    // final response = await client.post(
+    //   Uri.parse(url),
+    //   body: json.encode(body),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // );
 
-    print(response.statusCode);
+    // print(response.statusCode);
 
-    if (response.statusCode == 200) {
-      final dynamic data = json.decode(response.body);
-      return SingUpResponseModel.fromJson(data);
-    } else if (response.statusCode == 403) {
-      final dynamic error = json.decode(response.body);
-      throw ForbiddenResponseException(
-          error['message']); // Update the error message if desired
-    } else {
-      throw Exception('Failed to create a new user');
+    // if (response.statusCode == 200) {
+    //   final dynamic data = json.decode(response.body);
+    //   return SingUpResponseModel.fromJson(data);
+    // } else if (response.statusCode == 403) {
+    //   final dynamic error = json.decode(response.body);
+    //   throw ForbiddenResponseException(
+    //       error['message']); // Update the error message if desired
+    // } else {
+    //   throw Exception('Failed to create a new user');
+    // }
+
+    user.location = '100.536267224296935,34.32805961092151';
+    try {
+      final body = user.toJson();
+      print('---- sign up user b body: $body');
+
+      final response = await client.post(
+        Uri.parse(url),
+        body: json.encode(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 20));
+
+      print('--- sign u user b--- response body: ${response.body}');
+
+      if (response.statusCode == 201) {
+        final dynamic data = json.decode(response.body);
+        return SingUpResponseModel.fromJson(data);
+      } else if (response.statusCode == 403) {
+        final dynamic data = json.decode(response.body);
+        throw ServerException(
+            message: data["message"] ?? 'Failed to create a new user');
+      } else {
+        final dynamic data = json.decode(response.body);
+        throw UnknownException(
+            message: data["message"] ?? "Error while trying to sign up");
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
     }
   }
 
   @override
   Future<void> sendOtp() async {
-    print('here');
-    print(prefManager.kUserID);
-    print(prefManager.kToken);
+    print('user b sending otp');
+    print(prefManager.userID);
+    print(prefManager.token);
 
-    final jsonbody = {'id': '${prefManager.kUserID}'};
-    final response = await client.post(Uri.parse(AppUrl.sendOTPEndPoint),
-        body: jsonEncode(jsonbody),
-        headers: {
-          'Authorization': prefManager.kToken,
-          'Content-Type': 'application/json',
-        });
+    // final jsonbody = {'id': '${prefManager.userID}'};
+    // final response = await client.post(Uri.parse(AppUrl.sendOTPEndPoint),
+    //     body: jsonEncode(jsonbody),
+    //     headers: {
+    //       'Authorization': prefManager.token??"",
+    //       'Content-Type': 'application/json',
+    //     });
 
-    if (response.statusCode == 200) {
-      print('success');
-    } else {
-      throw FetchDataException('Failed to send Otp');
+    // if (response.statusCode == 200) {
+    //   print('success');
+    // } else {
+    //   throw FetchDataException('Failed to send Otp');
+    // }
+
+    try {
+      final jsonbody = {'id': '${prefManager.userID}'};
+      final response = await client.post(Uri.parse(AppUrl.sendOTPEndPoint),
+          body: jsonEncode(jsonbody),
+          headers: {
+            'Authorization': prefManager.token ?? '',
+            'Content-Type': 'application/json',
+          }).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        print('success');
+      } else if (response.statusCode == 403) {
+        final dynamic error = json.decode(response.body);
+        throw ForbiddenResponseException(
+            message: error['message'] ?? 'Failed to send Otp');
+      } else {
+        final dynamic error = json.decode(response.body);
+        throw UnknownException(
+            message: error['message'] ?? 'Failed to send Otp');
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
     }
   }
 
   @override
   Future<void> verifyOtp(String otp) async {
-    final jsonbody = {'id': prefManager.kUserID, 'otp': otp};
-    final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPoint),
-        body: jsonEncode(jsonbody),
-        headers: {
-          'Authorization': '${prefManager.kToken}',
-          'Content-Type': 'application/json',
-        });
-    if (response.statusCode == 200) {
-    } else if (response.statusCode == 403) {
-      final dynamic error = json.decode(response.body);
-      throw ForbiddenResponseException(
-          error['message']); // Update the error message if desired
-    } else {
-      throw FetchDataException('Failed to verify Otp');
+    // final jsonbody = {'id': prefManager.kUserID, 'otp': otp};
+    // final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPoint),
+    //     body: jsonEncode(jsonbody),
+    //     headers: {
+    //       'Authorization': '${prefManager.kToken}',
+    //       'Content-Type': 'application/json',
+    //     });
+    // if (response.statusCode == 200) {
+    // } else if (response.statusCode == 403) {
+    //   final dynamic error = json.decode(response.body);
+    //   throw ForbiddenResponseException(
+    //       error['message']); // Update the error message if desired
+    // } else {
+    //   throw FetchDataException('Failed to verify Otp');
+    // }
+
+    try {
+      final jsonbody = {'id': prefManager.userID, 'otp': otp};
+      final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPoint),
+          body: jsonEncode(jsonbody),
+          headers: {
+            'Authorization': '${prefManager.kToken}',
+            'Content-Type': 'application/json',
+          }).timeout(const Duration(seconds: 10));
+      if (response.statusCode == 200) {
+      } else if (response.statusCode == 403) {
+        final dynamic error = json.decode(response.body);
+        throw ForbiddenResponseException(
+            message: error['message'] ?? "Failed to verify Otp");
+      } else {
+        final dynamic error = json.decode(response.body);
+        throw UnknownException(
+            message: error['message'] ?? 'Failed to verify Otp');
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
     }
   }
 
   Future<void> verifyOTPUserA(String otp) async {
-    final jsonbody = {'id': prefManager.kUserID, 'otp': otp};
-    final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPointA),
-        body: jsonEncode(jsonbody),
-        headers: {
-          'Authorization': '${prefManager.kToken}',
-          'Content-Type': 'application/json',
-        });
-    if (response.statusCode == 200) {
-    } else if (response.statusCode == 403) {
-      final dynamic error = json.decode(response.body);
-      throw ForbiddenResponseException(
-          error['message']); // Update the error message if desired
-    } else {
-      throw FetchDataException('Failed to verify Otp');
+    // final jsonbody = {'id': prefManager.kUserID, 'otp': otp};
+    // final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPointA),
+    //     body: jsonEncode(jsonbody),
+    //     headers: {
+    //       'Authorization': '${prefManager.kToken}',
+    //       'Content-Type': 'application/json',
+    //     });
+    // if (response.statusCode == 200) {
+    // } else if (response.statusCode == 403) {
+    //   final dynamic error = json.decode(response.body);
+    //   throw ForbiddenResponseException(
+    //       error['message']); // Update the error message if desired
+    // } else {
+    //   throw FetchDataException('Failed to verify Otp');
+    // }
+
+    try {
+      final jsonbody = {'id': prefManager.userID, 'otp': otp};
+      final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPointA),
+          body: jsonEncode(jsonbody),
+          headers: {
+            'Authorization': '${prefManager.kToken}',
+            'Content-Type': 'application/json',
+          }).timeout(const Duration(seconds: 10));
+      if (response.statusCode == 200) {
+      } else if (response.statusCode == 403) {
+        final dynamic error = json.decode(response.body);
+        throw ForbiddenResponseException(
+            message: error['message'] ?? "Failed to verify Otp");
+      } else {
+        final dynamic error = json.decode(response.body);
+        throw UnknownException(
+            message: error['message'] ?? 'Failed to verify Otp');
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
     }
   }
 
   Future<void> sendOTPUserA() async {
-    final jsonbody = {'id': '${prefManager.kUserID}'};
-    final response = await client.post(Uri.parse(AppUrl.sendOTPEndPointA),
-        body: jsonEncode(jsonbody),
-        headers: {
-          'Authorization': prefManager.kToken,
-          'Content-Type': 'application/json',
-        });
+    // final jsonbody = {'id': '${prefManager.kUserID}'};
+    // final response = await client.post(Uri.parse(AppUrl.sendOTPEndPointA),
+    //     body: jsonEncode(jsonbody),
+    //     headers: {
+    //       'Authorization': prefManager.kToken,
+    //       'Content-Type': 'application/json',
+    //     });
 
-    if (response.statusCode == 200) {
-      print('success');
-    } else if (response.statusCode == 403) {
-      final dynamic error = json.decode(response.body);
-      throw ForbiddenResponseException(
-          error['message']); // Update the error message if desired
-    } else {
-      throw FetchDataException('Failed to send Otp');
+    // if (response.statusCode == 200) {
+    //   print('success');
+    // } else if (response.statusCode == 403) {
+    //   final dynamic error = json.decode(response.body);
+    //   throw ForbiddenResponseException(
+    //       error['message']); // Update the error message if desired
+    // } else {
+    //   throw FetchDataException('Failed to send Otp');
+    // }
+
+    try {
+      final jsonbody = {'id': '${prefManager.userID}'};
+      final response = await client.post(Uri.parse(AppUrl.sendOTPEndPointA),
+          body: jsonEncode(jsonbody),
+          headers: {
+            'Authorization': prefManager.token ?? '',
+            'Content-Type': 'application/json',
+          }).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        print('success');
+      } else if (response.statusCode == 403) {
+        final dynamic error = json.decode(response.body);
+        throw ForbiddenResponseException(
+            message: error['message'] ?? 'Failed to send Otp');
+      } else {
+        final dynamic error = json.decode(response.body);
+        throw UnknownException(
+            message: error['message'] ?? 'Failed to send Otp');
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
     }
   }
 
@@ -310,7 +475,7 @@ class AuthenticationRemoteDataSourceImpl
     } else if (response.statusCode == 403) {
       final dynamic error = json.decode(response.body);
       throw ForbiddenResponseException(
-          error['message']); // Update the error message if desired
+          message: error['message']); // Update the error message if desired
     } else {
       final dynamic data = json.decode(response.body);
       throw Exception(data['message'] ?? "Social Login Failed!");

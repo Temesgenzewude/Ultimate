@@ -80,10 +80,10 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       setState(() => _currentPosition = position);
-      prefManager.kLatitude = _currentPosition?.latitude.toString() ?? '';
-      prefManager.kLongitude = _currentPosition?.longitude.toString() ?? '';
-      debugPrint('location: ${_currentPosition?.latitude}');
-      debugPrint('location: ${_currentPosition?.longitude}');
+      prefManager.latitude = _currentPosition?.latitude.toString() ?? '';
+      prefManager.longitude = _currentPosition?.longitude.toString() ?? '';
+      debugPrint('latitude: ${_currentPosition?.latitude}');
+      debugPrint('longitude: ${_currentPosition?.longitude}');
     }).catchError((dynamic e) {
       debugPrint(e);
     });
@@ -252,8 +252,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                             child: DropdownButton<String>(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),
-                                  
-                                  isDense: true,
+                              isDense: true,
                               icon: const Icon(
                                 Icons.arrow_drop_down_outlined,
                                 color: Colors.black87,

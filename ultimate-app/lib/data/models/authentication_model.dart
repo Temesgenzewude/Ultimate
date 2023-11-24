@@ -108,7 +108,7 @@ class SingUpResponseModel {
   });
 
   SingUpResponseModel.fromJson(Map<String, dynamic> json) {
-    message = json['message'] ? json['message'] : '';
+    message = json['message'] ?? '';
     userId = json['id'];
   }
 }

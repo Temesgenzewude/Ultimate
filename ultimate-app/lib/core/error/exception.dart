@@ -56,6 +56,15 @@ class UnknownException extends Equatable implements Exception {
   List<Object> get props => [message];
 }
 
+class ForbiddenResponseException extends Equatable implements Exception {
+  const ForbiddenResponseException({required this.message});
+
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}
+
 class LoginException extends Equatable implements Exception {
   final String message;
   const LoginException({

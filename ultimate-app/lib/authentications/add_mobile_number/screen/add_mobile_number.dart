@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -111,8 +112,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                     Navigator.pushNamed(context, Routes.verify,
                         arguments: phoneCtl.text);
                   } else if (state is OtpSentFailure) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('OTP sending Failed')));
+                    Utils.flutterToast(state.message);
                   }
                 },
                 child: Container(),

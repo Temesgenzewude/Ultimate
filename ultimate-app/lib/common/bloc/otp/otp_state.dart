@@ -15,8 +15,15 @@ class OtpVerifiedLoading extends OtpState {}
 
 class OtpSentSuccess extends OtpState {}
 
-class OtpSentFailure extends OtpState {}
+class OtpSentFailure extends OtpState {
+  const OtpSentFailure({required this.message});
+
+  final String message;
+}
 
 class OtpVerifiedSuccess extends OtpState {}
 
-class OtpVerifiedFailure extends OtpState {}
+class OtpVerifiedFailure extends OtpState {
+  const OtpVerifiedFailure({required this.message});
+  final String message;
+}

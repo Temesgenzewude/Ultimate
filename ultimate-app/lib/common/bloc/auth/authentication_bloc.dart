@@ -92,10 +92,21 @@ class AuthenticationBloc
     try {
       final result = await authenticationRepository.signInUserB(event.user);
       emit(authenticationSuccessOrFailure(result: result, isLogin: true));
-    } catch (e) {
+    } on NoInternetException catch (e) {
       emit(
-        authenticationSuccessOrFailure(
-            result: e.toString().substring(10), isLogin: true),
+        authenticationSuccessOrFailure(result: e.message, isLogin: true),
+      );
+    } on ConnectionTimeOutException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: true),
+      );
+    } on ServerException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: true),
+      );
+    } on UnknownException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: true),
       );
     }
   }
@@ -106,8 +117,22 @@ class AuthenticationBloc
     try {
       final result = await authenticationRepository.signUpUserB(event.newUser);
       emit(authenticationSuccessOrFailure(result: result));
-    } catch (e) {
-      emit(authenticationSuccessOrFailure(result: e.toString().substring(10)));
+    } on NoInternetException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: false),
+      );
+    } on ConnectionTimeOutException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: false),
+      );
+    } on ServerException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: false),
+      );
+    } on UnknownException catch (e) {
+      emit(
+        authenticationSuccessOrFailure(result: e.message, isLogin: false),
+      );
     }
   }
 
