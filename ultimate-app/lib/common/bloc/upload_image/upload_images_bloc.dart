@@ -19,7 +19,7 @@ class UploadImagesBloc extends Bloc<UploadImagesEvent, UploadImagesState> {
   final AuthenticationRepository authenticationRepository;
 
   UploadImagesState UploadImagesSuccessOrFailure({dynamic result}) {
-    if (result.runtimeType is List<String>) {
+    if (result.runtimeType == List<String>) {
       return UploadImagesSuccessState(images: result);
     } else {
       return UploadImagesFailureState(errorMessage: result);
@@ -30,7 +30,7 @@ class UploadImagesBloc extends Bloc<UploadImagesEvent, UploadImagesState> {
       UserAUploadImagesEvent event, Emitter<UploadImagesState> emit) async {
     emit(UploadImagesInitialState());
     try {
-      final result = await authenticationRepository.uploadImages(event.images);
+      final result = await authenticationRepository.uploadImagesA(event.images);
       emit(UploadImagesSuccessOrFailure(result: result));
     } on NoInternetException catch (e) {
       emit(
@@ -55,7 +55,7 @@ class UploadImagesBloc extends Bloc<UploadImagesEvent, UploadImagesState> {
       UserBUploadImagesEvent event, Emitter<UploadImagesState> emit) async {
     emit(UploadImagesInitialState());
     try {
-      final result = await authenticationRepository.uploadImages(event.images);
+      final result = await authenticationRepository.uploadImagesB(event.images);
       emit(UploadImagesSuccessOrFailure(result: result));
     } on NoInternetException catch (e) {
       emit(
