@@ -16,8 +16,6 @@ class AuthenticationBloc
   }) : super(AuthenticationInitialState()) {
     on<UserASignInEvent>(_signInUserA);
     on<UserASignUpEvent>(_signUpUserA);
-    on<UserBSignInEvent>(_signInUserB);
-    on<UserBSignUpEvent>(_signUpUserB);
   }
   final AuthenticationRepository authenticationRepository;
 
@@ -66,56 +64,6 @@ class AuthenticationBloc
     emit(AuthenticationLoadingState());
     try {
       final result = await authenticationRepository.signUpUserA(event.newUser);
-      emit(authenticationSuccessOrFailure(result: result));
-    } on NoInternetException catch (e) {
-      emit(
-        authenticationSuccessOrFailure(result: e.message, isLogin: false),
-      );
-    } on ConnectionTimeOutException catch (e) {
-      emit(
-        authenticationSuccessOrFailure(result: e.message, isLogin: false),
-      );
-    } on ServerException catch (e) {
-      emit(
-        authenticationSuccessOrFailure(result: e.message, isLogin: false),
-      );
-    } on UnknownException catch (e) {
-      emit(
-        authenticationSuccessOrFailure(result: e.message, isLogin: false),
-      );
-    }
-  }
-
-  void _signInUserB(
-      UserBSignInEvent event, Emitter<AuthenticationState> emit) async {
-    emit(LoginLoadingState());
-    try {
-      final result = await authenticationRepository.signInUserB(event.user);
-      emit(authenticationSuccessOrFailure(result: result, isLogin: true));
-    } on NoInternetException catch (e) {
-      emit(
-        authenticationSuccessOrFailure(result: e.message, isLogin: true),
-      );
-    } on ConnectionTimeOutException catch (e) {
-      emit(
-        authenticationSuccessOrFailure(result: e.message, isLogin: true),
-      );
-    } on ServerException catch (e) {
-      emit(
-        authenticationSuccessOrFailure(result: e.message, isLogin: true),
-      );
-    } on UnknownException catch (e) {
-      emit(
-        authenticationSuccessOrFailure(result: e.message, isLogin: true),
-      );
-    }
-  }
-
-  void _signUpUserB(
-      UserBSignUpEvent event, Emitter<AuthenticationState> emit) async {
-    emit(AuthenticationLoadingState());
-    try {
-      final result = await authenticationRepository.signUpUserB(event.newUser);
       emit(authenticationSuccessOrFailure(result: result));
     } on NoInternetException catch (e) {
       emit(

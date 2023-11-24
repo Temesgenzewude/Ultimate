@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/auth/b/authentication_bloc_b.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../app/widget_support.dart';
@@ -102,16 +103,16 @@ class _SignInTabBState extends State<SignInTabB> {
                       });
                     }),
               ),
-              BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              BlocBuilder<AuthenticationBlocB, AuthenticationBState>(
                   builder: (context, state) {
-                if (state is LoginLoadingState) {
+                if (state is LoginLoadingStateB) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is LoginSuccessState) {
+                } else if (state is LoginSuccessStateB) {
                   Future.delayed(Duration.zero, () {
                     Navigator.of(context)
                         .pushReplacementNamed(Routes.addMobileNumber);
                   });
-                } else if (state is LoginFailureState) {
+                } else if (state is LoginFailureStateB) {
                   Utils.flutterToast(state.errorMessage);
                   return Column(
                     children: [
@@ -184,7 +185,7 @@ class _SignInTabBState extends State<SignInTabB> {
       phoneNumber: phoneNumber,
       password: passwordCtl.text,
     );
-    BlocProvider.of<AuthenticationBloc>(context).add(
+    BlocProvider.of<AuthenticationBlocB>(context).add(
       UserBSignInEvent(
         user: user,
       ),

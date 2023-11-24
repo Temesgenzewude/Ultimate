@@ -13,13 +13,3 @@ class UserASignUpEvent extends AuthenticationEvent {
   UserASignUpEvent({required this.newUser});
   final UserAModel newUser;
 }
-
-class UserBSignInEvent extends AuthenticationEvent {
-  UserBSignInEvent({required this.user});
-  final UserBLoginRequestModel user;
-}
-
-class UserBSignUpEvent extends AuthenticationEvent {
-  UserBSignUpEvent({required this.newUser});
-  final UserBModel newUser;
-}
