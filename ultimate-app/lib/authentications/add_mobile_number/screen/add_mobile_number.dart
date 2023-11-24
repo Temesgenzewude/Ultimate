@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/auth/b/authentication_bloc_b.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../app/widget_support.dart';
@@ -261,6 +262,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                     //   focusNode: phoneFn,
                     // ),
                     IntlPhoneField(
+                      style: const TextStyle(color: Colors.white),
                       dropdownTextStyle: const TextStyle(
                         color: Colors.white,
                       ),
