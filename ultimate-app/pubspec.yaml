@@ -59,6 +59,7 @@ dependencies:
   shared_preferences: ^2.0.17
   syncfusion_flutter_charts: ^20.4.53
   image_picker: ^1.0.4
+  path_provider: ^2.1.1
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
