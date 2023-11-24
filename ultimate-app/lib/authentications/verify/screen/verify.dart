@@ -19,7 +19,6 @@ import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/unfocus_click.dart';
 
 class Verify extends StatefulWidget {
-  final prefManager = sl<PrefManager>();
   Verify({Key? key}) : super(key: key);
 
   @override
@@ -160,10 +159,8 @@ class _VerifyState extends State<Verify> {
                       onSubmitted: (String otp) {
                         if (prefManager.userType == 'User B') {
                           context.read<OtpBloc>().add(OtpVerified(otp));
-                         
                         } else {
-                           context.read<OtpBloc>().add(OTPVerifyUserA(otp));
-                          
+                          context.read<OtpBloc>().add(OTPVerifyUserA(otp));
                         }
                       },
                       androidSmsAutofillMethod:
@@ -232,12 +229,12 @@ class _VerifyState extends State<Verify> {
                             onPressed: _start != 0
                                 ? () {}
                                 : () {
-                                    if (prefManager.userType == 'User A') {
+                                    if (prefManager.userType == 'User B') {
+                                      context.read<OtpBloc>().add(OtpSent());
+                                    } else {
                                       context
                                           .read<OtpBloc>()
                                           .add(OTPSendUserA());
-                                    } else {
-                                      context.read<OtpBloc>().add(OtpSent());
                                     }
                                     restartTimer();
                                   },

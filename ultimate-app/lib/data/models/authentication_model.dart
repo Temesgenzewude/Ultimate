@@ -63,12 +63,12 @@ class UserBModel {
     required this.name,
     required this.password,
     required this.email,
-     this.age,
+    this.age,
     required this.birthDate,
     this.gender,
     required this.location,
     required this.phoneNumber,
-     this.about,
+    this.about,
     this.terms = true,
   });
 
@@ -110,5 +110,31 @@ class SingUpResponseModel {
   SingUpResponseModel.fromJson(Map<String, dynamic> json) {
     message = json['message'] ?? '';
     userId = json['id'];
+  }
+}
+
+class UserBSingUpResponse {
+  String? name;
+
+  String? email;
+  String? userId;
+
+  String? phoneNumber;
+
+  UserBSingUpResponse({
+    this.name,
+    this.email,
+    this.userId,
+    this.phoneNumber,
+  });
+
+  UserBSingUpResponse.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+
+    email = json['email'];
+
+    phoneNumber = json['phoneNumber'];
+
+    userId = json['_id'];
   }
 }
