@@ -1,5 +1,8 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/account_information%20/account_information_bloc.dart';
+import 'package:flutter_ultimate/data/models/account_info_model.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
@@ -332,10 +335,44 @@ class _AccountInformationState extends State<AccountInformation> {
                 ],
               ),
               const SizedBox(height: 24),
+              BlocBuilder<AccountInfoBloc, AccInfoState>(
+                  builder: (context, state) {
+                if (state is AccInfoLoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is AccFailureState) {
+                  return AppWidget.typeButtonStartAction2(
+                      context: context,
+                      input: 'Create Account',
+                      onPressed: () {
+                        BlocProvider.of<AccountInfoBloc>(context).add(
+                            AddAccInfoEvent(
+                                accInfo: AccountInfoModel(
+                                    age: '24',
+                                    gender: 'male',
+                                    profession: 'Student')));
+                      },
+                      bgColor: primary,
+                      borderColor: primary,
+                      textColor: grey1100);
+                } else if (state is AccInfoSuccessState) {
+                  return Container();
+                } else {
+                  return Container();
+                }
+              }),
               AppWidget.typeButtonStartAction2(
                   context: context,
                   input: 'Create Account',
-                  onPressed: () {},
+                  onPressed: () {
+                    BlocProvider.of<AccountInfoBloc>(context).add(
+                        AddAccInfoEvent(
+                            accInfo: AccountInfoModel(
+                                age: '24',
+                                gender: 'male',
+                                profession: 'Student')));
+                  },
                   bgColor: primary,
                   borderColor: primary,
                   textColor: grey1100),
