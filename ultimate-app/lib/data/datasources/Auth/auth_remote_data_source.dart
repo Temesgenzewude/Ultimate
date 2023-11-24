@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_ultimate/core/error/exception.dart';
+import 'package:flutter_ultimate/data/models/account_info_model.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
 import 'package:flutter_ultimate/data/models/social_login_request_model.dart';
@@ -26,6 +27,8 @@ abstract class AuthenticationRemoteDataSource {
   Future<LoginResponseModel> signInUserB(UserBLoginRequestModel user);
   Future<List<dynamic>> uploadImagesA(List<XFile> files);
   Future<List<dynamic>> uploadImagesB(List<XFile> files);
+  Future<AccInfoResponseModel> addAccountInfo(
+      AccountInfoModel accountInfoModeladdAccountInfo);
 
   Future<void> sendOtp();
   Future<LoginResponseModel> verifyOtp(String otp);
@@ -594,6 +597,40 @@ class AuthenticationRemoteDataSourceImpl
     } else {
       final dynamic data = json.decode(response.body);
       throw Exception(data['message'] ?? "Social Login Failed!");
+    }
+  }
+
+  @override
+  Future<AccInfoResponseModel> addAccountInfo(
+      AccountInfoModel accountInfoModel) async {
+    try {
+      Map<String, dynamic> jsonBody = accountInfoModel.toJson();
+      jsonBody['userId'] = {'id': '${prefManager.userID}'};
+
+      final response = await client.post(Uri.parse(AppUrl.addAccountInfoUserA),
+          body: jsonEncode(jsonBody),
+          headers: {
+            'Authorization': prefManager.token ?? prefManager.testToken ?? '',
+            'Content-Type': 'application/json',
+          }).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final responseBody = AccInfoResponseModel.fromJson(jsonResponse);
+        return responseBody;
+      } else if (response.statusCode == 403) {
+        final dynamic error = json.decode(response.body);
+        throw ForbiddenResponseException(
+            message: error['message'] ?? 'Failed to send Otp');
+      } else {
+        final dynamic error = json.decode(response.body);
+        throw UnknownException(
+            message: error['message'] ?? 'Failed to send Otp');
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
     }
   }
 }

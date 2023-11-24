@@ -1,6 +1,7 @@
 import 'package:flutter_ultimate/core/error/exception.dart';
 
 import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
+import 'package:flutter_ultimate/data/models/account_info_model.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
@@ -429,6 +430,37 @@ class AuthenticationRepository {
       return await remoteDataSource.loginSocial(socialLoginRequestModel);
     } catch (e) {
       throw Exception(e.toString().substring(10));
+    }
+  }
+
+  Future<AccInfoResponseModel> addAccountInfo(
+      AccountInfoModel accountInfoModel) async {
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        final response =
+            await remoteDataSource.addAccountInfo(accountInfoModel);
+        return response;
+      } on NoInternetException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw NoInternetException(message: e.message);
+      } on ConnectionTimeOutException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw ConnectionTimeOutException(message: e.message);
+      } on ServerException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw ServerException(message: e.message);
+      } on UnknownException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        //throw UnknownException(message: e.message);
+      }
+    } else {
+      throw const NoInternetException(
+          message:
+              'No Internet Connection! Please check your internet connection and try again.');
     }
   }
 }
