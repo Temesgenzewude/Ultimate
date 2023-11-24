@@ -118,7 +118,7 @@ class _SignInTabState extends State<SignInTab> {
                   Utils.flutterToast('Successfully logged in');
                   Future.delayed(const Duration(seconds: 3), () {
                     Navigator.of(context)
-                        .pushReplacementNamed(Routes.addMobileNumber);
+                        .pushReplacementNamed(Routes.accountInformation);
                   });
                 } else if (state is LoginFailureState) {
                   Utils.flutterToast(state.errorMessage);
@@ -167,7 +167,7 @@ class _SignInTabState extends State<SignInTab> {
             children: [
               Expanded(
                 child: AppWidget.typeButtonStartAction2(
-                    context                                                                                                                                                                                                                                                                                                                : context,
+                    context: context,
                     input: 'Facebook',
                     onPressed: () {
                       _handleFacebookSignIn();

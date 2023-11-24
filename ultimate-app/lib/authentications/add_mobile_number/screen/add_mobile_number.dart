@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../app/widget_support.dart';
-import '../../../common/bloc/otp/otp_bloc.dart';
-import '../../../common/bloc/otp/otp_event.dart';
-import '../../../common/bloc/otp/otp_state.dart';
+import '../../../common/bloc/auth/authentication_bloc.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
-import '../../../common/widget/animation_click.dart';
+import '../../../common/util/form_validator.dart';
+import '../../../common/util/show_toast_message.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/unfocus_click.dart';
+import '../../../data/models/authentication_model.dart';
 import '../../../dependency_indjection.dart';
 import '../../../sharedPreferences.dart';
 
@@ -40,7 +39,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(latitude, longitude);
       print(placemarks);
-      print("=======================================");
+      print('=======================================');
       setState(() {
         countryCode = placemarks[0].isoCountryCode;
       });
@@ -50,20 +49,38 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
     }
   }
 
-  String initialCountry = 'ET';
-  TextEditingController phoneCtl = TextEditingController();
-  FocusNode phoneFn = FocusNode();
-
   @override
   void initState() {
+    prefManager.lastViewedPage = Routes.addMobileNumber;
+
+    phoneCtl.text = prefManager.phone ?? '';
     super.initState();
-    getCountryCode();
   }
+
+  String? languageCode = '+1';
+  TextEditingController phoneCtl = TextEditingController();
+  FocusNode phoneFn = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
     final width = AppWidget.getWidthScreen(context);
+
+    // final formData =
+    //     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
+    // Access the individual form fields
+    // final String name = formData['name'] ?? '';
+    // final String email = formData['email'] ?? '';
+    // final String address = formData['address'] ?? '';
+    // final String birthday = formData['birthday'] ?? '';
+    // final String password = formData['password'] ?? '';
+    final String name = prefManager.name ?? '';
+    final String email = prefManager.email ?? '';
+    final String address = prefManager.address ?? '';
+    final String birthday = prefManager.birthday ?? '';
+    final String password = prefManager.password ?? '';
+
     return UnfocusClick(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -101,22 +118,22 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                   ],
                 ),
               ),
-              BlocListener<OtpBloc, OtpState>(
-                listener: (context, state) {
-                  if (state is OtpSentSuccess) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('OTP sent successfully!'),
-                      ),
-                    );
-                    Navigator.pushNamed(context, Routes.verify,
-                        arguments: phoneCtl.text);
-                  } else if (state is OtpSentFailure) {
-                    Utils.flutterToast(state.message);
-                  }
-                },
-                child: Container(),
-              ),
+              // BlocListener<OtpBloc, OtpState>(
+              //   listener: (context, state) {
+              //     if (state is OtpSentSuccess) {
+              //       ScaffoldMessenger.of(context).showSnackBar(
+              //         const SnackBar(
+              //           content: Text('OTP sent successfully!'),
+              //         ),
+              //       );
+              //       Navigator.pushNamed(context, Routes.verify,
+              //           arguments: phoneCtl.text);
+              //     } else if (state is OtpSentFailure) {
+              //       Utils.flutterToast(state.message);
+              //     }
+              //   },
+              //   child: Container(),
+              // ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
@@ -157,6 +174,11 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                       dropdownTextStyle: const TextStyle(
                         color: Colors.white,
                       ),
+                      onCountryChanged: (value) {
+                        setState(() {
+                          languageCode = value.dialCode;
+                        });
+                      },
                       decoration: const InputDecoration(
                         hintStyle: TextStyle(color: Colors.white),
                         floatingLabelStyle: TextStyle(
@@ -183,45 +205,65 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                     ),
 
                     Padding(
-                        padding: const EdgeInsets.only(top: 24, bottom: 16),
-                        child: BlocBuilder<OtpBloc, OtpState>(
-                          builder: (context, state) {
-                            if (state is OtpLoading) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else {
-                              return AppWidget.typeButtonStartAction(
-                                  context: context,
-                                  input: 'Next',
-                                  onPressed: () {
-                                    if (prefManager.userType == "A") {
-                                      context
-                                          .read<OtpBloc>()
-                                          .add(OTPSendUserA());
-                                    } else {
-                                      context.read<OtpBloc>().add(OtpSent());
-                                    }
-                                  },
-                                  bgColor: primary,
-                                  icon: icArrowRight,
-                                  colorAsset: grey1100,
-                                  borderColor: primary,
-                                  textColor: grey1100);
-                            }
-                          },
-                        )),
-                    AnimationClick(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Not now',
-                          style: title4(color: grey1100),
-                        ),
+                      padding: const EdgeInsets.only(top: 24, bottom: 16),
+                      child:
+                          BlocConsumer<AuthenticationBloc, AuthenticationState>(
+                        listener: (context, state) {
+                          if (state is AuthenticationFailureState) {
+                            Utils.flutterToast(state.errorMessage);
+                          } else if (state is AuthenticationSuccessState) {
+                            Utils.flutterToast(
+                                'You have successfully registered. OTP is sent to +${languageCode}${phoneCtl.text} Please verify your account!');
+                            Future.delayed(const Duration(seconds: 5), () {
+                              Navigator.of(context).pushNamed(Routes.verify,
+                                  arguments:
+                                      '+${languageCode}${phoneCtl.text}');
+                            });
+                          }
+                        },
+                        builder: (context, state) {
+                          if (state is AuthenticationLoadingState) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else {
+                            return AppWidget.typeButtonStartAction(
+                                context: context,
+                                input: 'SIGN UP NOW',
+                                onPressed: () {
+                                  _submitForm(
+                                      name: name,
+                                      email: email,
+                                      address: address,
+                                      password: password,
+                                      birthDate: birthday);
+                                  // if (prefManager.userType == 'User A') {
+                                  //   context.read<OtpBloc>().add(OTPSendUserA());
+                                  // } else {
+                                  //   context.read<OtpBloc>().add(OtpSent());
+                                  // }
+                                },
+                                bgColor: primary,
+                                icon: icArrowRight,
+                                colorAsset: grey1100,
+                                borderColor: primary,
+                                textColor: grey1100);
+                          }
+                        },
                       ),
-                      function: () {
-                        Navigator.pushNamed(context, Routes.accountInformation);
-                      },
                     ),
+
+                    // AnimationClick(
+                    //   child: Align(
+                    //     alignment: Alignment.center,
+                    //     child: Text(
+                    //       'Not now',
+                    //       style: title4(color: grey1100),
+                    //     ),
+                    //   ),
+                    //   function: () {
+                    //     Navigator.pushNamed(context, Routes.accountInformation);
+                    //   },
+                    // ),
                     const SizedBox(height: 24)
                   ],
                 ),
@@ -238,4 +280,86 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
     phoneCtl.dispose();
     super.dispose();
   }
+
+  void _submitForm(
+      {required String name,
+      required String email,
+      required String address,
+      required String password,
+      required String birthDate}) {
+    if (phoneCtl.text.isEmpty) {
+      Utils.flutterToast('Please enter phone number');
+      return;
+    }
+
+    String phoneNumber = '+' + languageCode! + phoneCtl.text;
+    print(phoneNumber);
+    if (!FormValidator.validatePhoneNumber(phoneNumber)) {
+      Utils.flutterToast(
+          'Invalid Phone number:Please enter a valid phone number!');
+      return;
+    }
+
+    prefManager.phone = phoneNumber;
+
+    //  If all validation passes
+    final UserAModel user = UserAModel(
+      email: email,
+      password: password,
+      name: name,
+      address: address,
+      phoneNumber: phoneNumber,
+      coordinates: '10,10',
+      birthDate: birthDate,
+    );
+
+    final UserBModel userB = UserBModel(
+        email: email,
+        password: password,
+        name: name,
+        phoneNumber: phoneNumber,
+        location: '10,10',
+        birthDate: birthDate,
+        about: '',
+        terms: true,
+        age: '21');
+
+    if (prefManager.userType == 'User B') {
+      BlocProvider.of<AuthenticationBloc>(context).add(
+        UserBSignUpEvent(newUser: userB),
+      );
+    } else {
+      BlocProvider.of<AuthenticationBloc>(context).add(
+        UserASignUpEvent(newUser: user),
+      );
+    }
+  }
+
+  /*
+
+  BlocBuilder<OtpBloc, OtpState>(
+                        builder: (context, state) {
+                          if (state is OtpLoading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else {
+                            return AppWidget.typeButtonStartAction(
+                                context: context,
+                                input: 'Next',
+                                onPressed: () {
+                                  if (prefManager.userType == 'User A') {
+                                    context.read<OtpBloc>().add(OTPSendUserA());
+                                  } else {
+                                    context.read<OtpBloc>().add(OtpSent());
+                                  }
+                                },
+                                bgColor: primary,
+                                icon: icArrowRight,
+                                colorAsset: grey1100,
+                                borderColor: primary,
+                                textColor: grey1100);
+                          }
+                        },
+                      ),
+  */
 }

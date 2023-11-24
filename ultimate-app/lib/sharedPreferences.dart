@@ -11,13 +11,20 @@ class PrefManager {
   String kUserIDA = '';
   String kLatitude = 'latitude';
   String kLongitude = 'longitude';
-  String kUserType = 'A';
+  String kUserType = 'User B';
+  String kName = 'name';
+  String kEmail = 'email';
+  String kPhone = 'phone';
+  String kAddress = 'address';
+  String kBirthday = 'birthday';
+  String kPassword = 'password';
+  String kTestToken = 'test_token';
   String kLastViewedPage = Routes.onBoarding1;
   SharedPreferences preferences;
   set token(String? value) => preferences.setString(kToken, value ?? '');
   String? get token => preferences.getString(kToken);
   set lastViewedPage(String? value) =>
-      preferences.setString(kLastViewedPage, value ?? '');
+      preferences.setString(kLastViewedPage, value ?? Routes.onBoarding1);
   String? get lastViewedPage => preferences.getString(kLastViewedPage);
   set userType(String? value) => preferences.setString(kUserType, value ?? '');
   String? get userType => preferences.getString(kUserType);
@@ -29,4 +36,21 @@ class PrefManager {
       preferences.setString(kLongitude, value ?? '');
   String? get longitude => preferences.getString(kLongitude);
   void logout() => preferences.clear();
+
+  set name(String? value) => preferences.setString(kName, value ?? '');
+  String? get name => preferences.getString(kName);
+  set email(String? value) => preferences.setString(kEmail, value ?? '');
+  String? get email => preferences.getString(kEmail);
+  set phone(String? value) => preferences.setString(kPhone, value ?? '');
+  String? get phone => preferences.getString(kPhone);
+  set address(String? value) => preferences.setString(kAddress, value ?? '');
+  String? get address => preferences.getString(kAddress);
+  set birthday(String? value) => preferences.setString(kBirthday, value ?? '');
+  String? get birthday => preferences.getString(kBirthday);
+  set password(String? value) => preferences.setString(kPassword, value ?? '');
+  String? get password => preferences.getString(kPassword);
+
+  set testToken(String? value) => preferences.setString(kTestToken,
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDAzNDAxNzZ9.DvWKBxMTWpRLxKjw-YDi_fJWUOLGmPCbhzzqNJzv550');
+  String? get testToken => preferences.getString(kTestToken);
 }

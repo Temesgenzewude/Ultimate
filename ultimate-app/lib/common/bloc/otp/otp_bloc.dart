@@ -38,8 +38,8 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
       OtpVerified event, Emitter<OtpState> emit) async {
     try {
       emit(OtpVerifiedLoading());
-      await authRepository.verifyOTPApi(event.otp);
-      emit(OtpVerifiedSuccess());
+      final result = await authRepository.verifyOTPApi(event.otp);
+      emit(OtpVerifiedSuccess(loginResponseModel: result));
     } on ForbiddenResponseException catch (e) {
       emit(OtpVerifiedFailure(message: e.message));
     } on NoInternetException catch (e) {
@@ -74,12 +74,12 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
   }
 
   FutureOr<void> _handleOTPVerifyUserA(
-      OTPVerifyUserA event, Emitter<OtpState> emit) {
+      OTPVerifyUserA event, Emitter<OtpState> emit) async {
     emit(OtpVerifiedLoading());
 
     try {
-      authRepository.verifyOTPUserA(event.otp);
-      emit(OtpVerifiedSuccess());
+      final result = await authRepository.verifyOTPUserA(event.otp);
+      emit(OtpVerifiedSuccess(loginResponseModel: result));
     } on ForbiddenResponseException catch (e) {
       emit(OtpVerifiedFailure(message: e.message));
     } on NoInternetException catch (e) {

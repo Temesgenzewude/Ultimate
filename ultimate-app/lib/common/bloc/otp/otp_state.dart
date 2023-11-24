@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../data/models/login_response_model.dart';
+
 abstract class OtpState extends Equatable {
   const OtpState();
 
@@ -21,7 +23,11 @@ class OtpSentFailure extends OtpState {
   final String message;
 }
 
-class OtpVerifiedSuccess extends OtpState {}
+class OtpVerifiedSuccess extends OtpState {
+  const OtpVerifiedSuccess({required this.loginResponseModel});
+
+  final LoginResponseModel loginResponseModel;
+}
 
 class OtpVerifiedFailure extends OtpState {
   const OtpVerifiedFailure({required this.message});

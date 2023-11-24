@@ -66,12 +66,6 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
     // update the initial page in the shared preferences
 
     prefManager.lastViewedPage = Routes.signUp;
-    usernameCtl.text = prefManager.email ?? '';
-    nameCtl.text = prefManager.name ?? '';
-    addressCtl.text = prefManager.address ?? '';
-    birthdayCtl.text = prefManager.birthday ?? '';
-    passwordCtl.text = prefManager.password ?? '';
-    repasswordCtl.text = prefManager.password ?? '';
 
     super.initState();
   }
@@ -130,7 +124,51 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                   focusNode: birthdayFn,
                   labelText: 'Birthday',
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(vertical: 16),
+                //   child: IntlPhoneField(
+                //     onCountryChanged: (value) {
+                //       setState(() {
+                //         languageCode = value.dialCode;
+                //       });
+                //     },
+                //     style: const TextStyle(color: Colors.white),
+                //     dropdownTextStyle: const TextStyle(
+                //       color: Colors.white,
+                //     ),
+                //     decoration: const InputDecoration(
+                //       hintStyle: TextStyle(color: Colors.white),
+                //       floatingLabelStyle: TextStyle(
+                //         color: Colors.white,
+                //       ),
+                //       counterStyle: TextStyle(color: Colors.white),
+                //       suffixIconColor: Colors.white,
+                //       fillColor: Colors.white,
+                //       labelStyle: TextStyle(color: Colors.white),
+                //       prefixIconColor: Colors.white,
+                //       prefixStyle: TextStyle(color: Colors.white),
+                //       suffixStyle: TextStyle(color: Colors.white),
+                //       labelText: 'Phone Number',
+                //       iconColor: Colors.white,
+                //       border: OutlineInputBorder(
+                //         borderSide: BorderSide(),
+                //       ),
+                //     ),
+                //     initialCountryCode: countryCode.toString(),
+                //     // languageCode: countryCode.toString(),
+                //     keyboardType: const TextInputType.numberWithOptions(
+                //         signed: true, decimal: true),
+                //     controller: phoneCtl,
+                //     focusNode: phoneFn,
+                //   ),
 
+                //   // child: TextFieldCpn(
+                //   //   controller: phoneCtl,
+                //   //   focusNode: phoneFn,
+                //   //   labelText: 'Phone',
+                //   //   keyboardType: TextInputType.phone,
+                //   // ),
+                // ),
                 TextFieldPassCpn(
                     controller: passwordCtl,
                     focusNode: passwordFn,
@@ -158,6 +196,40 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                       });
                     }),
                 const SizedBox(height: 32),
+                // BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                //   builder: (context, state) {
+                //     if (state is AuthenticationLoadingState) {
+                //       return const Center(child: CircularProgressIndicator());
+                //     } else if (state is AuthenticationSuccessState) {
+                //       Utils.flutterToast('''You have successfully registered.
+                //              OTP is sent to +${languageCode}${phoneCtl.text}
+                //              Please verify your account!''');
+
+                //       Future.delayed(const Duration(seconds: 5), () {
+                //         Navigator.of(context).pushReplacementNamed(
+                //             Routes.verify,
+                //             arguments: '+${languageCode}${phoneCtl.text}');
+                //       });
+                //     } else if (state is AuthenticationFailureState) {
+                //       Utils.flutterToast(state.errorMessage);
+                //       return Column(
+                //         children: [
+                //           AppWidget.typeButtonStartAction(
+                //             context: context,
+                //             input: 'Sign Up Now',
+                //             onPressed: () {
+                //               _submitForm();
+                //             },
+                //             colorAsset: grey1100,
+                //             icon: icKeyboardRight,
+                //             sizeAsset: 24,
+                //             bgColor: primary,
+                //             borderColor: primary,
+                //             textColor: grey1100,
+                //           ),
+                //         ],
+                //       );
+                //     }
 
                 AppWidget.typeButtonStartAction(
                   context: context,
@@ -261,27 +333,35 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
       Utils.flutterToast('Passwords do not match');
       return;
     }
+    // if (phoneCtl.text.isEmpty) {
+    //   Utils.flutterToast('Please provide a phone number');
+    //   return;
+    // }
 
-    if (addressCtl.text.isEmpty) {
-      Utils.flutterToast('Please enter address');
-      return;
-    }
+    // String phoneNumber = '+' + languageCode! + phoneCtl.text;
+    // print(phoneNumber);
+    // if (!FormValidator.validatePhoneNumber(phoneNumber)) {
+    //   Utils.flutterToast(
+    //       'Invalid Phone number:Please enter a valid phone number!');
+    //   return;
+    // }
 
-    prefManager.name = nameCtl.text;
-    prefManager.email = usernameCtl.text;
-    prefManager.address = addressCtl.text;
-    prefManager.birthday = birthdayCtl.text;
-    prefManager.password = passwordCtl.text;
+    // If all validation passes
+    // final UserAModel user = UserAModel(
+    //   email: usernameCtl.value.text,
+    //   password: passwordCtl.value.text,
+    //   name: nameCtl.value.text,
+    //   address: addressCtl.value.text,
+    //   phoneNumber: phoneNumber,
+    //   coordinates: '10,10',
+    //   birthDate: birthdayCtl.value.text,
+    // );
 
-    final formData = {
-      'name': nameCtl.text,
-      'email': usernameCtl.text,
-      'address': addressCtl.text,
-      'birthday': birthdayCtl.text,
-      'password': passwordCtl.text,
-    };
+    // BlocProvider.of<AuthenticationBloc>(context).add(
+    //   UserASignUpEvent(newUser: user),
+    // );
 
-    Navigator.of(context)
-        .pushReplacementNamed(Routes.addMobileNumber, arguments: formData);
+    Navigator.of(context).pushReplacementNamed(Routes.addMobileNumber,
+        arguments: '+${languageCode}${phoneCtl.text}');
   }
 }

@@ -19,9 +19,8 @@ import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/unfocus_click.dart';
 
 class Verify extends StatefulWidget {
-  final String phoneNumber;
   final prefManager = sl<PrefManager>();
-  Verify({required this.phoneNumber, Key? key}) : super(key: key);
+  Verify({Key? key}) : super(key: key);
 
   @override
   State<Verify> createState() => _VerifyState();
@@ -33,6 +32,8 @@ class _VerifyState extends State<Verify> {
   FocusNode focusNode = FocusNode();
   late Timer _timer;
   int _start = 30;
+
+  String phoneNumber = '';
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -57,15 +58,12 @@ class _VerifyState extends State<Verify> {
     startTimer();
   }
 
-  void navigateAccountInformationPage() {
-    if (_start == 0) {
-      Navigator.pushNamed(context, Routes.accountInformation);
-    }
-  }
-
   @override
   void initState() {
     startTimer();
+
+    phoneNumber = prefManager.phone ?? '';
+    prefManager.lastViewedPage = Routes.verify;
     super.initState();
   }
 
@@ -117,7 +115,7 @@ class _VerifyState extends State<Verify> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 24),
                     child: Text(
-                      'Enter code we sent to ${widget.phoneNumber}',
+                      'Enter 4-digit OTP code we sent to ${phoneNumber}',
                       textAlign: TextAlign.center,
                       style: body(color: grey800),
                     ),
@@ -130,7 +128,7 @@ class _VerifyState extends State<Verify> {
                             content: Text('OTP verified successfully!'),
                           ),
                         );
-                        Navigator.pushNamed(context, Routes.TempHoem);
+                        Navigator.pushNamed(context, Routes.accountInformation);
                       }
                       if (state is OtpVerifiedFailure) {
                         Utils.flutterToast(state.message);
@@ -150,17 +148,23 @@ class _VerifyState extends State<Verify> {
                     width: width,
                     child: Pinput(
                       onCompleted: (String otp) {
-                        if (prefManager.userType == "A") {
-                          context.read<OtpBloc>().add(OTPVerifyUserA(otp));
-                        } else {
+                        if (prefManager.userType == 'User B') {
                           context.read<OtpBloc>().add(OtpVerified(otp));
+                        } else {
+                          context.read<OtpBloc>().add(OTPVerifyUserA(otp));
                         }
                       },
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       autofocus: true,
-                      length: 5,
+                      length: 4,
                       onSubmitted: (String otp) {
-                        context.read<OtpBloc>().add(OtpVerified(otp));
+                        if (prefManager.userType == 'User B') {
+                          context.read<OtpBloc>().add(OtpVerified(otp));
+                         
+                        } else {
+                           context.read<OtpBloc>().add(OTPVerifyUserA(otp));
+                          
+                        }
                       },
                       androidSmsAutofillMethod:
                           AndroidSmsAutofillMethod.smsUserConsentApi,
@@ -202,26 +206,46 @@ class _VerifyState extends State<Verify> {
                       focusNode: focusNode,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 24, bottom: 16),
-                    child: AppWidget.typeButtonStartAction(
-                        context: context,
-                        input: _start != 0
-                            ? '${_start}s resend code'
-                            : 'Resend code',
-                        onPressed: _start != 0
-                            ? () {}
-                            : () {
-                                if (prefManager.userType == "A") {
-                                  context.read<OtpBloc>().add(OTPSendUserA());
-                                } else {
-                                  context.read<OtpBloc>().add(OtpSent());
-                                }
-                                restartTimer();
-                              },
-                        bgColor: _start != 0 ? grey200 : primary,
-                        borderColor: _start != 0 ? grey200 : primary,
-                        textColor: _start != 0 ? grey600 : grey1100),
+                  BlocConsumer<OtpBloc, OtpState>(
+                    listener: (context, state) {
+                      if (state is OtpSentSuccess) {
+                        Utils.flutterToast('OTP sent successfully!');
+                      }
+                      if (state is OtpSentFailure) {
+                        Utils.flutterToast(state.message);
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is OtpLoading) {
+                        return const Center(
+                          child: Stack(children: [CircularProgressIndicator()]),
+                        );
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 24, bottom: 16),
+                        child: AppWidget.typeButtonStartAction(
+                            context: context,
+                            input: _start != 0
+                                ? '${_start}s resend code'
+                                : 'Resend code',
+                            onPressed: _start != 0
+                                ? () {}
+                                : () {
+                                    if (prefManager.userType == 'User A') {
+                                      context
+                                          .read<OtpBloc>()
+                                          .add(OTPSendUserA());
+                                    } else {
+                                      context.read<OtpBloc>().add(OtpSent());
+                                    }
+                                    restartTimer();
+                                  },
+                            bgColor: _start != 0 ? grey200 : primary,
+                            borderColor: _start != 0 ? grey200 : primary,
+                            textColor: _start != 0 ? grey600 : grey1100),
+                      );
+                    },
                   ),
                 ],
               ),

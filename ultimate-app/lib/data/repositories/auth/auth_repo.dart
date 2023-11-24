@@ -59,7 +59,12 @@ class AuthenticationRepository {
   Future<SingUpResponseModel> signUpUserA(UserAModel newUser) async {
     if (await internetConnectionChecker.hasConnection) {
       try {
-        return await remoteDataSource.signUpUserA(newUser);
+        final response = await remoteDataSource.signUpUserA(newUser);
+
+        prefManager.userId = response.userId;
+        //prefManager.kToken = response.token.toString();
+
+        return response;
       } on NoInternetException catch (e) {
         print(' auth repo error: ${e.toString()}');
         rethrow;
@@ -141,7 +146,11 @@ class AuthenticationRepository {
 
     if (await internetConnectionChecker.hasConnection) {
       try {
-        return await remoteDataSource.signUpUserB(newUser);
+        final response = await remoteDataSource.signUpUserB(newUser);
+
+        prefManager.userId = response.userId;
+        //prefManager.kToken = response.token.toString();
+        return response;
       } on NoInternetException catch (e) {
         print(' auth repo error: ${e.toString()}');
         rethrow;
@@ -172,6 +181,8 @@ class AuthenticationRepository {
     // } catch (e) {
     //   throw Exception('Sending OTP failed');
     // }
+
+    print('sendOTP UserB');
 
     if (await internetConnectionChecker.hasConnection) {
       try {
@@ -204,16 +215,26 @@ class AuthenticationRepository {
     }
   }
 
-  Future<void> verifyOTPApi(String otp) async {
+  Future<LoginResponseModel> verifyOTPApi(String otp) async {
     // try {
     //   return await remoteDataSource.verifyOtp(otp);
     // } catch (e) {
     //   throw Exception('Verifying OTP failed');
     // }
 
+    print('verifyOTP User B otp: $otp');
+
     if (await internetConnectionChecker.hasConnection) {
       try {
-        return await remoteDataSource.verifyOtp(otp);
+        final response = await remoteDataSource.verifyOtp(otp);
+        final prefManager = sl<PrefManager>();
+        prefManager.token = response.token.toString();
+        //prefManager.kToken = response.token.toString();
+        prefManager.userId = response.user?.userId.toString() ?? '';
+
+        print('auth repo user token: ${prefManager.token}');
+        print('auth repo user id: ${prefManager.userID}');
+        return response;
       } on NoInternetException catch (e) {
         print(' auth repo error: ${e.toString()}');
         rethrow;
@@ -249,6 +270,8 @@ class AuthenticationRepository {
     //   throw Exception('Sending OTP failed');
     // }
 
+    print('sendOTP UserA');
+
     if (await internetConnectionChecker.hasConnection) {
       try {
         return remoteDataSource.sendOTPUserA();
@@ -280,16 +303,25 @@ class AuthenticationRepository {
     }
   }
 
-  Future<void> verifyOTPUserA(String otp) async {
+  Future<LoginResponseModel> verifyOTPUserA(String otp) async {
     // try {
     //   return remoteDataSource.verifyOTPUserA(otp);
     // } catch (e) {
     //   throw Exception('Verifying OTP failed');
     // }
 
+    print('verifyOTPUserA otp: $otp');
+
     if (await internetConnectionChecker.hasConnection) {
       try {
-        return remoteDataSource.verifyOTPUserA(otp);
+        final response = await remoteDataSource.verifyOTPUserA(otp);
+        prefManager.token = response.token.toString();
+        //prefManager.kToken = response.token.toString();
+        prefManager.userId = response.user?.userId.toString() ?? '';
+
+        print('auth repo user a token: ${prefManager.token}');
+        print('auth repo user a id: ${prefManager.userID}');
+        return response;
       } on NoInternetException catch (e) {
         print(' auth repo error: ${e.toString()}');
         rethrow;
