@@ -69,6 +69,9 @@ class _MenuNavigationState extends State<MenuNavigation> {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
         if (BlocProvider.of<AuthenticationBloc>(context).isAuthenticated()) {
+          final PrefManager prefManager = sl<PrefManager>();
+          print('-----user token----: ${prefManager.kToken}');
+
           Navigator.of(context).pushReplacementNamed(Routes.accountInformation);
         } else if (state is AuthSignUPSuccess) {
           Navigator.of(context).pushReplacementNamed(Routes.signUp);
