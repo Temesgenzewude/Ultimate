@@ -19,6 +19,7 @@ class Routes {
   static const String addMobileNumber = '/add_mobile_number';
   static const String forgotPassword = '/forgot_password';
   static const String kyc = '/kyc';
+  static const String uploadImages = '/upload_images';
   static const String login = '/login';
   static const String register = '/register';
   static const String resetPassword = '/reset_password';

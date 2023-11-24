@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/auth_social/auth_social_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/otp/otp_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_bloc.dart';
 import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
 import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
@@ -65,6 +66,13 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider<AuthSocialBloc>(
             create: (BuildContext context) => AuthSocialBloc(
+              authenticationRepository: AuthenticationRepository(
+                  remoteDataSource: AuthenticationRemoteDataSourceImpl(
+                      client: http.Client())),
+            ),
+          ),
+          BlocProvider<UploadImagesBloc>(
+            create: (BuildContext context) => UploadImagesBloc(
               authenticationRepository: AuthenticationRepository(
                   remoteDataSource: AuthenticationRemoteDataSourceImpl(
                       client: http.Client())),

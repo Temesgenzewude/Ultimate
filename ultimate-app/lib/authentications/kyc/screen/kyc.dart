@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
@@ -7,9 +8,53 @@ import '../../../common/constant/styles.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/app_bar_cpn.dart';
 import '../../../common/widget/gradient_text.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
-class Kyc extends StatelessWidget {
+class Kyc extends StatefulWidget {
   const Kyc({Key? key}) : super(key: key);
+
+  @override
+  State<Kyc> createState() => _KycState();
+}
+
+class _KycState extends State<Kyc> {
+  File? imageFile;
+
+  Future _pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      // File imgFile = File(image.path);
+      setState(() {
+        this.imageFile = File(image.path);
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future _pickImageFromCamera() async {
+    try {
+      final cameraImage =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      if (cameraImage == null) return;
+      setState(() {
+        this.imageFile = File(cameraImage.path);
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<File> storeImage(String imagePath) async {
+    final directory = await getApplicationCacheDirectory();
+    final name = basename(imagePath);
+    final image = File('${directory.path}/$name');
+    return File(imagePath).copy(image.path);
+  }
 
   Widget item(String title, String subTitle, Color bgColor, Function() onTap) {
     return AnimationClick(
@@ -115,10 +160,12 @@ class Kyc extends StatelessWidget {
                   style: body(color: grey800),
                 ),
                 const SizedBox(height: 32),
-                item('Scan your ID, Passport', 'Take picture of both side card',
-                    green, () {
-                  print('Get here');
-                }),
+                item(
+                  'Scan your ID, Passport',
+                  'Take picture of both side card',
+                  green,
+                  _pickImage,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: item('Take a Selfie', 'Verify Face', lightSalmon, () {

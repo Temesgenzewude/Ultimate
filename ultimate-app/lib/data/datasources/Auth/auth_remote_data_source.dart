@@ -12,6 +12,7 @@ import 'package:flutter_ultimate/data/models/social_login_response_model.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 import '../../../common/constant/api_endpoints.dart';
 import '../../models/login_request_model.dart';
@@ -23,6 +24,8 @@ abstract class AuthenticationRemoteDataSource {
   Future<LoginResponseModel> signInUserA(UserALoginRequestModel user);
   Future<SingUpResponseModel> signUpUserB(UserBModel newuser);
   Future<LoginResponseModel> signInUserB(UserBLoginRequestModel user);
+  Future<List<dynamic>> uploadImagesA(List<XFile> files);
+  Future<List<dynamic>> uploadImagesB(List<XFile> files);
 
   Future<void> sendOtp();
   Future<void> verifyOtp(String otp);
@@ -451,6 +454,98 @@ class AuthenticationRemoteDataSourceImpl
         final dynamic error = json.decode(response.body);
         throw UnknownException(
             message: error['message'] ?? 'Failed to send Otp');
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
+    }
+  }
+
+  @override
+  Future<List<dynamic>> uploadImagesA(List<XFile> files) async {
+    try {
+      final uri =
+          Uri.parse('${AppUrl.bulkUploadImagesA}${prefManager.kUserIDA}');
+      final request = http.MultipartRequest('POST', uri);
+      files.forEach((file) async {
+        request.files
+            .add(await http.MultipartFile.fromPath('images', file.path));
+      });
+      request.headers['Authorization'] = prefManager.kTokenA;
+      // request.headers['Authorization'] = prefManager.kToken;
+      // request.files
+      //     .add(await http.MultipartFile.fromPath('image', files[0].path));
+      final response = await request.send();
+      final streamedResponse = await http.Response.fromStream(response);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(streamedResponse.body);
+        final List<dynamic> returnedList = data['imageUrls'];
+        final List<String> returedString = [];
+        returnedList.forEach((dynamic element) {
+          returedString.add(element.toString());
+        });
+
+        return returedString;
+      } else if (response.statusCode == 403) {
+        final dynamic error = json.decode(streamedResponse.body);
+        throw ForbiddenResponseException(
+            message: error['error'] ?? 'Image upload failed');
+      } else if (response.statusCode == 400) {
+        final dynamic error = json.decode(streamedResponse.body);
+        throw ForbiddenResponseException(
+            message: error['error'] ?? 'No images selected');
+      } else {
+        final dynamic error = json.decode(streamedResponse.body);
+        throw UnknownException(
+            message: error['error'] ?? 'Image upload failed');
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
+    }
+  }
+
+  @override
+  Future<List<dynamic>> uploadImagesB(List<XFile> files) async {
+    try {
+      final uri =
+          Uri.parse('${AppUrl.bulkUploadImagesB}${prefManager.kUserID}');
+      final request = http.MultipartRequest('POST', uri);
+      files.forEach((file) async {
+        request.files
+            .add(await http.MultipartFile.fromPath('images', file.path));
+      });
+      request.headers['Authorization'] = prefManager.kToken;
+      // request.headers['Authorization'] = prefManager.kToken;
+      // request.files
+      //     .add(await http.MultipartFile.fromPath('image', files[0].path));
+      final response = await request.send();
+      final streamedResponse = await http.Response.fromStream(response);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(streamedResponse.body);
+        final List<dynamic> returnedList = data['imageUrls'];
+        final List<String> returedString = [];
+        returnedList.forEach((dynamic element) {
+          returedString.add(element.toString());
+        });
+
+        return returedString;
+      } else if (response.statusCode == 403) {
+        final dynamic error = json.decode(streamedResponse.body);
+        throw ForbiddenResponseException(
+            message: error['error'] ?? 'Image upload failed');
+      } else if (response.statusCode == 400) {
+        final dynamic error = json.decode(streamedResponse.body);
+        throw ForbiddenResponseException(
+            message: error['error'] ?? 'No images selected');
+      } else {
+        final dynamic error = json.decode(streamedResponse.body);
+        throw UnknownException(
+            message: error['error'] ?? 'Image upload failed');
       }
     } on SocketException catch (_) {
       throw const NoInternetException(message: 'No internet connection');

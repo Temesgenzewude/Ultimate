@@ -12,4 +12,6 @@ class AppUrl {
   static var sendOTPEndPointA = '$baseUrl/send-otp';
   static var verifyOTPEndPointA = '$baseUrl/verify-otp';
   static var sendOTP = '$baseUrl/send-otp-by-phone-number';
+  static var bulkUploadImagesB = '$baseUrl/uploads-bulk-user-b/';
+  static var bulkUploadImagesA = '$baseUrl/uploads-bulk/';
 }

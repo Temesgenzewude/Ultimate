@@ -3,8 +3,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefManager {
   PrefManager(this.preferences);
-  String kToken = 'token';
-  String kUserID = 'userID';
+  String kToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTYwODlhM2Y5MWE3NDczNDk0Y2RlYTEiLCJpYXQiOjE3MDA4NDE2OTV9.sFORF-J0JsEEYTC3oTtxd1ATiAnSjBkT4IU2TaZ-_sk';
+  String kUserID = '';
+  String kTokenA =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTU5ZWExMDNjNTM5OGQ4YWY1NGY4NzQiLCJpYXQiOjE3MDA4NTA5Nzl9.DNMRyqyuxqnrNYqCqYyAMGj7AkZx4gZZOp5D5RQBvOI';
+  String kUserIDA = '';
   String kLatitude = 'latitude';
   String kLongitude = 'longitude';
   String kUserType = 'A';
