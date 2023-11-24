@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/bloc/auth/authentication_bloc.dart';
@@ -13,7 +12,8 @@ import '../../../common/util/show_toast_message.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/textfield.dart';
 import '../../../common/widget/textfield_pass.dart';
-import '../../../data/models/authentication_model.dart';
+import '../../../dependency_indjection.dart';
+import '../../../sharedPreferences.dart';
 
 class SignUpTabB extends StatefulWidget {
   const SignUpTabB({Key? key}) : super(key: key);
@@ -37,6 +37,9 @@ class _SignUpTabBState extends State<SignUpTabB> {
   FocusNode repasswordFn = FocusNode();
   TextEditingController birthdayCtl = TextEditingController();
   FocusNode birthdayFn = FocusNode();
+
+  TextEditingController addressCtl = TextEditingController();
+  FocusNode addressFn = FocusNode();
   bool showPass = false;
   bool showRePass = false;
   String? countryCode = 'US';
@@ -50,7 +53,22 @@ class _SignUpTabBState extends State<SignUpTabB> {
 
   List<String> genders = ['Male', 'Female'];
 
-  String? _selectedGender;
+  final prefManager = sl<PrefManager>();
+
+  @override
+  void initState() {
+    // update the initial page in the shared preferences
+
+    prefManager.lastViewedPage = Routes.signUpB;
+    usernameCtl.text = prefManager.email ?? '';
+    nameCtl.text = prefManager.name ?? '';
+    addressCtl.text = prefManager.address ?? '';
+    birthdayCtl.text = prefManager.birthday ?? '';
+    passwordCtl.text = prefManager.password ?? '';
+    repasswordCtl.text = prefManager.password ?? '';
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,123 +108,25 @@ class _SignUpTabBState extends State<SignUpTabB> {
                     labelText: 'Email',
                   ),
                 ),
-
-                TextFieldCpn(
-                  controller: ageCtl,
-                  focusNode: ageFn,
-                  keyboardType: const TextInputType.numberWithOptions(
-                      signed: true, decimal: false),
-                  labelText: 'Age',
-                ),
-
-                // select gender
-                Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Container(
-                      height: 60.0,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: grey200),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          isDense: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          hint: const Text(
-                            'Select Gender',
-                            style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          dropdownColor: primary,
-                          icon: const Icon(
-                            Icons.arrow_drop_down_outlined,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                          items: genders.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500)),
-                            );
-                          }).toList(),
-                          value: _selectedGender,
-                          onChanged: (String? value) {
-                            setState(() {
-                              _selectedGender = value;
-                            });
-                          },
-                        ),
-                      ),
-                    )),
-
-                TextFieldCpn(
-                  controller: aboutCtl,
-                  focusNode: aboutFn,
-                  labelText: 'About',
-                  hasMutilLine: true,
-                  maxLines: 3,
-                ),
-
-                TextFieldCpn(
-                  controller: locationCtl,
-                  focusNode: locationFn,
-                  labelText: 'Location',
-                ),
-
                 const SizedBox(
                   height: 16,
                 ),
-
                 TextFieldCpn(
                   controller: birthdayCtl,
                   focusNode: birthdayFn,
                   labelText: 'Birthday',
                 ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: IntlPhoneField(
-                    onCountryChanged: (value) {
-                      setState(() {
-                        languageCode = value.dialCode;
-                      });
-                    },
-                    style: const TextStyle(color: Colors.white),
-                    dropdownTextStyle: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    decoration: const InputDecoration(
-                      hintStyle: TextStyle(color: Colors.white),
-                      floatingLabelStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      counterStyle: TextStyle(color: Colors.white),
-                      suffixIconColor: Colors.white,
-                      fillColor: Colors.white,
-                      labelStyle: TextStyle(color: Colors.white),
-                      prefixIconColor: Colors.white,
-                      prefixStyle: TextStyle(color: Colors.white),
-                      suffixStyle: TextStyle(color: Colors.white),
-                      labelText: 'Phone Number',
-                      iconColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(),
-                      ),
-                    ),
-                    initialCountryCode: countryCode.toString(),
-                    // languageCode: countryCode.toString(),
-                    keyboardType: const TextInputType.numberWithOptions(
-                        signed: true, decimal: true),
-                    controller: phoneCtl,
-                    focusNode: phoneFn,
-                  ),
+                const SizedBox(
+                  height: 16,
+                ),
+                TextFieldCpn(
+                  controller: addressCtl,
+                  focusNode: addressFn,
+                  labelText: 'Address',
+                  type: 'address',
+                ),
+                const SizedBox(
+                  height: 16,
                 ),
                 TextFieldPassCpn(
                     controller: passwordCtl,
@@ -234,7 +154,6 @@ class _SignUpTabBState extends State<SignUpTabB> {
                         showRePass = !showRePass;
                       });
                     }),
-
                 const SizedBox(height: 32),
                 BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   builder: (context, state) {
@@ -336,38 +255,65 @@ class _SignUpTabBState extends State<SignUpTabB> {
       return;
     }
 
-    if (_selectedGender == null) {
-      Utils.flutterToast('Please select gender!');
+    if (addressCtl.text.isEmpty) {
+      Utils.flutterToast('Please enter address');
       return;
     }
-    if (phoneCtl.text == '') {
-      Utils.flutterToast('Please provide a phone number');
+
+    if (birthdayCtl.text.isEmpty) {
+      Utils.flutterToast('Please enter birthday');
       return;
     }
-    String phoneNumber = '+' + languageCode! + phoneCtl.text;
-    print(phoneNumber);
-    if (!FormValidator.validatePhoneNumber(phoneNumber)) {
-      Utils.flutterToast(
-          'Invalid Phone number:Please enter a valid phone number!');
-      return;
-    }
+
+    // if (_selectedGender == null) {
+    //   Utils.flutterToast('Please select gender!');
+    //   return;
+    // }
+    // if (phoneCtl.text == '') {
+    //   Utils.flutterToast('Please provide a phone number');
+    //   return;
+    // }
+    // String phoneNumber = '+' + languageCode! + phoneCtl.text;
+    // print(phoneNumber);
+    // if (!FormValidator.validatePhoneNumber(phoneNumber)) {
+    //   Utils.flutterToast(
+    //       'Invalid Phone number:Please enter a valid phone number!');
+    //   return;
+    // }
 
     // If all validation passes
-    final UserBModel user = UserBModel(
-      email: usernameCtl.value.text,
-      password: passwordCtl.value.text,
-      name: nameCtl.value.text,
-      phoneNumber: phoneNumber,
-      birthDate: birthdayCtl.value.text,
-      age: ageCtl.value.text,
-      gender: _selectedGender ?? 'Male',
-      location: '10,10',
-      about: aboutCtl.value.text,
-    );
+    // final UserBModel user = UserBModel(
+    //   email: usernameCtl.value.text,
+    //   password: passwordCtl.value.text,
+    //   name: nameCtl.value.text,
+    //   phoneNumber: phoneNumber,
+    //   birthDate: birthdayCtl.value.text,
+    //   age: ageCtl.value.text,
+    //   gender: _selectedGender ?? 'Male',
+    //   location: '10,10',
+    //   about: aboutCtl.value.text,
+    // );
 
-    BlocProvider.of<AuthenticationBloc>(context).add(
-      UserBSignUpEvent(newUser: user),
-    );
+    // BlocProvider.of<AuthenticationBloc>(context).add(
+    //   UserBSignUpEvent(newUser: user),
+    // );
+
+    prefManager.name = nameCtl.text;
+    prefManager.email = usernameCtl.text;
+    prefManager.address = addressCtl.text;
+    prefManager.birthday = birthdayCtl.text;
+    prefManager.password = passwordCtl.text;
+
+    final formData = {
+      'name': nameCtl.text,
+      'email': usernameCtl.text,
+      'address': addressCtl.text,
+      'birthday': birthdayCtl.text,
+      'password': passwordCtl.text,
+    };
+
+    Navigator.of(context)
+        .pushNamed(Routes.addMobileNumber, arguments: formData);
   }
 }
 

@@ -28,9 +28,9 @@ abstract class AuthenticationRemoteDataSource {
   Future<List<dynamic>> uploadImagesB(List<XFile> files);
 
   Future<void> sendOtp();
-  Future<void> verifyOtp(String otp);
+  Future<LoginResponseModel> verifyOtp(String otp);
   Future<void> sendOTPUserA();
-  Future<void> verifyOTPUserA(String otp);
+  Future<LoginResponseModel> verifyOTPUserA(String otp);
 
   Future<SocialLoginResponseModel> loginSocial(
       SocialLoginRequestModel socialLoginRequestModel);
@@ -309,7 +309,7 @@ class AuthenticationRemoteDataSourceImpl
       final response = await client.post(Uri.parse(AppUrl.sendOTPEndPoint),
           body: jsonEncode(jsonbody),
           headers: {
-            'Authorization': prefManager.token ?? '',
+            'Authorization': prefManager.token ?? prefManager.testToken ?? '',
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 10));
 
@@ -332,7 +332,7 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<void> verifyOtp(String otp) async {
+  Future<LoginResponseModel> verifyOtp(String otp) async {
     // final jsonbody = {'id': prefManager.kUserID, 'otp': otp};
     // final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPoint),
     //     body: jsonEncode(jsonbody),
@@ -349,15 +349,23 @@ class AuthenticationRemoteDataSourceImpl
     //   throw FetchDataException('Failed to verify Otp');
     // }
 
+    print("verifying user b otp");
+    print('otp: $otp');
+    print(prefManager.userID);
+    print(prefManager.token);
+    print(prefManager.testToken);
+
     try {
       final jsonbody = {'id': prefManager.userID, 'otp': otp};
       final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPoint),
           body: jsonEncode(jsonbody),
           headers: {
-            'Authorization': '${prefManager.kToken}',
+            'Authorization': prefManager.token ?? prefManager.testToken ?? '',
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
+        final dynamic data = json.decode(response.body);
+        return LoginResponseModel.fromJson(data);
       } else if (response.statusCode == 403) {
         final dynamic error = json.decode(response.body);
         throw ForbiddenResponseException(
@@ -374,7 +382,7 @@ class AuthenticationRemoteDataSourceImpl
     }
   }
 
-  Future<void> verifyOTPUserA(String otp) async {
+  Future<LoginResponseModel> verifyOTPUserA(String otp) async {
     // final jsonbody = {'id': prefManager.kUserID, 'otp': otp};
     // final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPointA),
     //     body: jsonEncode(jsonbody),
@@ -391,15 +399,23 @@ class AuthenticationRemoteDataSourceImpl
     //   throw FetchDataException('Failed to verify Otp');
     // }
 
+    print("verifying user a otp");
+    print('otp: $otp');
+    print(prefManager.userID);
+    print(prefManager.token);
+    print(prefManager.testToken);
+
     try {
       final jsonbody = {'id': prefManager.userID, 'otp': otp};
       final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPointA),
           body: jsonEncode(jsonbody),
           headers: {
-            'Authorization': '${prefManager.kToken}',
+            'Authorization': prefManager.token ?? prefManager.testToken ?? '',
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
+        final dynamic data = json.decode(response.body);
+        return LoginResponseModel.fromJson(data);
       } else if (response.statusCode == 403) {
         final dynamic error = json.decode(response.body);
         throw ForbiddenResponseException(
@@ -435,12 +451,16 @@ class AuthenticationRemoteDataSourceImpl
     //   throw FetchDataException('Failed to send Otp');
     // }
 
+    print('sending otp user a');
+    print(prefManager.userID);
+    print(prefManager.token);
+
     try {
       final jsonbody = {'id': '${prefManager.userID}'};
       final response = await client.post(Uri.parse(AppUrl.sendOTPEndPointA),
           body: jsonEncode(jsonbody),
           headers: {
-            'Authorization': prefManager.token ?? '',
+            'Authorization': prefManager.token ?? prefManager.testToken ?? '',
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 10));
 

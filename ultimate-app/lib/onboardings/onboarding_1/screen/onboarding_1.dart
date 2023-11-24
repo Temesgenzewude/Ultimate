@@ -217,12 +217,12 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                               Utils.flutterToast(
                                   'Please select user type to continue!');
                             } else {
-                              if (selectedUserType == 'A') {
+                              if (selectedUserType == 'User A') {
                                 Future.delayed(const Duration(seconds: 1), () {
                                   Navigator.pushReplacementNamed(
                                       context, Routes.signUp);
                                 });
-                              } else if (selectedUserType == 'B') {
+                              } else if (selectedUserType == 'User B') {
                                 Future.delayed(const Duration(seconds: 1), () {
                                   Navigator.pushReplacementNamed(
                                       context, Routes.signUpB);
