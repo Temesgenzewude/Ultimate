@@ -74,6 +74,12 @@
 	<string>This app needs access to location when open.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to location when in the background.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow Ultimate to take Photos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow Ultimate to access your Gallery</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow Ultimate to access your Mic</string>
 </dict>
 
 
