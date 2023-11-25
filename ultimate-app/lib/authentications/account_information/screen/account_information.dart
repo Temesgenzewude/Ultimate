@@ -1,7 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+<<<<<<< HEAD
 import 'package:flutter_ultimate/common/bloc/account_information/account_info_user_b/account_information_bloc_b.dart';
+=======
+>>>>>>> fb6ef12 (add account infro logic for user b)
 import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
 
