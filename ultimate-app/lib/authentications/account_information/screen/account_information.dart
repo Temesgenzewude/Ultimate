@@ -1,7 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/account_information/account_info_user_b/account_information_bloc_b.dart';
 import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
 
@@ -345,19 +344,19 @@ class _AccountInformationState extends State<AccountInformation> {
                 ],
               ),
               const SizedBox(height: 24),
-              BlocConsumer<AccountInfoBloc, AccInfoState>(
+              BlocBuilder<AccountInfoBloc, AccInfoState>(
                 // ignore: unnecessary_parenthesis
-                listener: ((context, state) {
-                  if (state is AccInfoSuccessState) {
-                    Utils.flutterToast('Your profile is successfully updated!');
+                // listener: ((context, state) {
+                //   if (state is AccInfoSuccessState) {
+                //     Utils.flutterToast('Your profile is successfully updated!');
 
-                    Future.delayed(const Duration(seconds: 0), () {
-                      Navigator.of(context).pushNamed(Routes.interest_1);
-                    });
-                  } else if (state is AccFailureState) {
-                    Utils.flutterToast(state.errorMessage);
-                  }
-                }),
+                //     Future.delayed(const Duration(seconds: 3), () {
+                //       Navigator.of(context).pushNamed(Routes.interest_1);
+                //     });
+                //   } else if (state is AccFailureState) {
+                //     Utils.flutterToast(state.errorMessage);
+                //   }
+                // }),
                 builder: (context, state) {
                   if (state is AccInfoLoadingState) {
                     return const Center(
@@ -379,8 +378,8 @@ class _AccountInformationState extends State<AccountInformation> {
                         borderColor: primary,
                         textColor: grey1100);
                   } else if (state is AccInfoSuccessState) {
-                    Utils.flutterToast('Added Information');
-                    Future.delayed(Duration.zero, () {
+                    Utils.flutterToast('Your profile is successfully updated!');
+                    Future.delayed(const Duration(seconds: 3), () {
                       Navigator.pushNamed(context, Routes.interest_1);
                     });
                   } else {
@@ -399,7 +398,20 @@ class _AccountInformationState extends State<AccountInformation> {
                         borderColor: primary,
                         textColor: grey1100);
                   }
-                  return Container();
+                  return AppWidget.typeButtonStartAction2(
+                      context: context,
+                      input: 'Update Profile',
+                      onPressed: () {
+                        BlocProvider.of<AccountInfoBloc>(context).add(
+                            AddAccInfoEvent(
+                                accInfo: AccountInfoModel(
+                                    age: '24',
+                                    gender: 'male',
+                                    profession: 'Student')));
+                      },
+                      bgColor: primary,
+                      borderColor: primary,
+                      textColor: grey1100);
                 },
               ),
             ],

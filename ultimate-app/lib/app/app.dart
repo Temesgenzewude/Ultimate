@@ -123,8 +123,12 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp(
-        initialRoute: prefManager.lastViewedPage ??
-            (_isLoggedIn ? Routes.accountInformation : Routes.onBoarding1),
+        // initialRoute: prefManager.lastViewedPage ??
+        //     (_isLoggedIn ? Routes.accountInformation : Routes.onBoarding1),
+
+        initialRoute: _isLoggedIn
+            ? prefManager.lastViewedPage ?? Routes.accountInformation
+            : prefManager.lastViewedPage ?? Routes.onBoarding1,
 
         // initialRoute: Routes.uploadImages,
         navigatorKey: navigatorKey,
