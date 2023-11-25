@@ -1,4 +1,4 @@
-part of 'account_information_bloc.dart';
+part of 'account_information_bloc_b.dart';
 
 abstract class UserBAccInfoState {
   const UserBAccInfoState();
