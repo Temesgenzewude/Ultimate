@@ -4,6 +4,8 @@ import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.d
 import 'package:flutter_ultimate/data/models/account_info_model.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
+import 'package:flutter_ultimate/data/models/save_user_interests_response_model.dart';
+import 'package:flutter_ultimate/data/models/save_user_interests_request_model.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
 import 'package:image_picker/image_picker.dart';
@@ -483,6 +485,35 @@ class AuthenticationRepository {
         print(' auth repo error: ${e.toString()}');
         rethrow;
         // throw ServerException(message: e.message);
+      } on UnknownException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        //throw UnknownException(message: e.message);
+      }
+    } else {
+      throw const NoInternetException(
+          message:
+              'No Internet Connection! Please check your internet connection and try again.');
+    }
+  }
+
+  Future<SaveUserInterestsResponseModel> saveUserInterests(
+      SaveUserInterestRequest userInterestRequest) async {
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        return remoteDataSource.saveUserInterests(userInterestRequest);
+      } on NoInternetException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        //throw NoInternetException(message: e.message);
+      } on ConnectionTimeOutException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        //throw ConnectionTimeOutException(message: e.message);
+      } on ServerException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        //throw ServerException(message: e.message);
       } on UnknownException catch (e) {
         print(' auth repo error: ${e.toString()}');
         rethrow;
