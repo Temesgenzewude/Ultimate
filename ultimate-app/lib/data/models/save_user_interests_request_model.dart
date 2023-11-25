@@ -1,7 +1,7 @@
-class UserInterestRequest {
-  UserInterestRequest({this.userIntrests});
+class SaveUserInterestRequest {
+  SaveUserInterestRequest({this.userIntrests});
 
-  UserInterestRequest.fromJson(Map<String, dynamic> json) {
+  SaveUserInterestRequest.fromJson(Map<String, dynamic> json) {
     userIntrests = json['userIntrests'];
   }
   String? userIntrests;
