@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/account_information/account_info_user_b/account_information_bloc_b.dart';
+import 'package:flutter_ultimate/common/bloc/account_information/account_information_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/auth/b/authentication_bloc_b.dart';
+import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_b/upload_images_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:responsive_framework/responsive_framework.dart';
@@ -97,11 +100,31 @@ class _MyAppState extends State<MyApp> {
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
           ),
         ),
+        BlocProvider<UserBUploadImagesBloc>(
+          create: (BuildContext context) => UserBUploadImagesBloc(
+            authenticationRepository: AuthenticationRepository(
+                remoteDataSource:
+                    AuthenticationRemoteDataSourceImpl(client: http.Client())),
+          ),
+        ),
+        BlocProvider<UserBAccountInfoBloc>(
+          create: (BuildContext context) => UserBAccountInfoBloc(
+            authenticationRepository: AuthenticationRepository(
+                remoteDataSource:
+                    AuthenticationRemoteDataSourceImpl(client: http.Client())),
+          ),
+        ),
+        BlocProvider<AccountInfoBloc>(
+          create: (BuildContext context) => AccountInfoBloc(
+            authenticationRepository: AuthenticationRepository(
+                remoteDataSource:
+                    AuthenticationRemoteDataSourceImpl(client: http.Client())),
+          ),
+        ),
       ],
       child: MaterialApp(
-        initialRoute: _isLoggedIn
-            ? Routes.accountInformation
-            : prefManager.lastViewedPage?? Routes.onBoarding1,
+        initialRoute: prefManager.lastViewedPage ??
+            (_isLoggedIn ? Routes.accountInformation : Routes.onBoarding1),
 
         // initialRoute: Routes.uploadImages,
         navigatorKey: navigatorKey,

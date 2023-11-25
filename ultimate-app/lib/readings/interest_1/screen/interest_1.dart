@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
+import '../../../common/route/routes.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/gradient_text.dart';
 
@@ -81,6 +83,11 @@ class _Interest1State extends State<Interest1> {
     }
   ];
   List<Map<String, dynamic>> itemsSelected = [];
+  @override
+  void initState() {
+    prefManager.lastViewedPage = Routes.interest_1;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -32,8 +32,7 @@ class AccountInformation extends StatefulWidget {
 class _AccountInformationState extends State<AccountInformation> {
   TextEditingController occupationCtl = TextEditingController();
   FocusNode occupationFn = FocusNode();
-  int _lowerValue = 24;
-  int _upperValue = 40;
+  int _upperValue = 18;
   int min = 0;
   int max = 100;
   bool isMale = true;
@@ -238,7 +237,7 @@ class _AccountInformationState extends State<AccountInformation> {
                         style: title3(color: grey1100),
                       ),
                       Text(
-                        '$_lowerValue - $_upperValue',
+                        '$_upperValue Years old',
                         style: headline(color: corn1),
                       )
                     ],
@@ -251,21 +250,17 @@ class _AccountInformationState extends State<AccountInformation> {
                       inactiveTrackColor: grey200,
                       activeTrackColor: primary,
                       overlayColor: grey1100,
-                      rangeThumbShape: const RoundRangeSliderThumbShape(
-                          enabledThumbRadius: 16),
                     ),
                     child: SizedBox(
                       width: width,
-                      child: RangeSlider(
-                        labels: RangeLabels('$_lowerValue', '$_upperValue'),
+                      child: Slider(
+                        label: '$_upperValue',
                         min: 0,
                         max: 100,
-                        values: RangeValues(
-                            _lowerValue.toDouble(), _upperValue.toDouble()),
-                        onChanged: (RangeValues values) {
+                        value: _upperValue.toDouble(),
+                        onChanged: (double value) {
                           setState(() {
-                            _lowerValue = values.start.round();
-                            _upperValue = values.end.round();
+                            _upperValue = value.round();
                           });
                         },
                       ),
@@ -350,118 +345,67 @@ class _AccountInformationState extends State<AccountInformation> {
                 ],
               ),
               const SizedBox(height: 24),
-              const buildBlocPartForUserAOrUserB(),
-              AppWidget.typeButtonStartAction2(
-                  context: context,
-                  input: 'Update Profile',
-                  onPressed: () {
-                    if (prefManager.userType == 'User B') {
-                      BlocProvider.of<UserBAccountInfoBloc>(context).add(
-                        UserBAddAccInfoEvent(
-                          accInfo: AccountInfoModel(
-                              age: '24', gender: 'male', profession: 'Student'),
-                        ),
-                      );
-                    } else {
-                      BlocProvider.of<AccountInfoBloc>(context).add(
-                        AddAccInfoEvent(
-                          accInfo: AccountInfoModel(
-                              age: '24', gender: 'male', profession: 'Student'),
-                        ),
-                      );
-                    }
-                  },
-                  bgColor: primary,
-                  borderColor: primary,
-                  textColor: grey1100),
+              BlocConsumer<AccountInfoBloc, AccInfoState>(
+                // ignore: unnecessary_parenthesis
+                listener: ((context, state) {
+                  if (state is AccInfoSuccessState) {
+                    Utils.flutterToast('Your profile is successfully updated!');
+
+                    Future.delayed(const Duration(seconds: 0), () {
+                      Navigator.of(context).pushNamed(Routes.interest_1);
+                    });
+                  } else if (state is AccFailureState) {
+                    Utils.flutterToast(state.errorMessage);
+                  }
+                }),
+                builder: (context, state) {
+                  if (state is AccInfoLoadingState) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is AccFailureState) {
+                    return AppWidget.typeButtonStartAction2(
+                        context: context,
+                        input: 'Update Profile',
+                        onPressed: () {
+                          BlocProvider.of<AccountInfoBloc>(context).add(
+                              AddAccInfoEvent(
+                                  accInfo: AccountInfoModel(
+                                      age: '24',
+                                      gender: 'male',
+                                      profession: 'Student')));
+                        },
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100);
+                  } else if (state is AccInfoSuccessState) {
+                    Utils.flutterToast('Added Information');
+                    Future.delayed(Duration.zero, () {
+                      Navigator.pushNamed(context, Routes.interest_1);
+                    });
+                  } else {
+                    return AppWidget.typeButtonStartAction2(
+                        context: context,
+                        input: 'Update Profile',
+                        onPressed: () {
+                          BlocProvider.of<AccountInfoBloc>(context).add(
+                              AddAccInfoEvent(
+                                  accInfo: AccountInfoModel(
+                                      age: '24',
+                                      gender: 'male',
+                                      profession: 'Student')));
+                        },
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100);
+                  }
+                  return Container();
+                },
+              ),
             ],
           ),
         ),
       ),
     );
-  }
-}
-
-class buildBlocPartForUserAOrUserB extends StatelessWidget {
-  const buildBlocPartForUserAOrUserB({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (prefManager.userType == 'User B') {
-      return BlocConsumer<UserBAccountInfoBloc, UserBAccInfoState>(
-          // ignore: unnecessary_parenthesis
-          listener: ((context, state) {
-        if (state is UserBAccInfoSuccessState) {
-          Utils.flutterToast('Your profile is successfully updated!');
-
-          Future.delayed(const Duration(seconds: 3), () {
-            Navigator.of(context).pushNamed(Routes.interest_1);
-          });
-        } else if (state is UserBAccFailureState) {
-          Utils.flutterToast(state.errorMessage);
-        }
-      }), builder: (context, state) {
-        if (state is UserBAccInfoLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is UserBAccFailureState) {
-          return AppWidget.typeButtonStartAction2(
-              context: context,
-              input: 'Update Profile',
-              onPressed: () {
-                BlocProvider.of<UserBAccountInfoBloc>(context).add(
-                    UserBAddAccInfoEvent(
-                        accInfo: AccountInfoModel(
-                            age: '24', gender: 'male', profession: 'Student')));
-              },
-              bgColor: primary,
-              borderColor: primary,
-              textColor: grey1100);
-        } else if (state is UserBAccInfoSuccessState) {
-          return Container();
-        } else {
-          return Container();
-        }
-      });
-    } else {
-      return BlocConsumer<AccountInfoBloc, AccInfoState>(
-          // ignore: unnecessary_parenthesis
-          listener: ((context, state) {
-        if (state is AccInfoSuccessState) {
-          Utils.flutterToast('Your profile is successfully updated!');
-
-          Future.delayed(const Duration(seconds: 3), () {
-            Navigator.of(context).pushNamed(Routes.interest_1);
-          });
-        } else if (state is AccFailureState) {
-          Utils.flutterToast(state.errorMessage);
-        }
-      }), builder: (context, state) {
-        if (state is AccInfoLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is AccFailureState) {
-          return AppWidget.typeButtonStartAction2(
-              context: context,
-              input: 'Update Profile',
-              onPressed: () {
-                BlocProvider.of<AccountInfoBloc>(context).add(AddAccInfoEvent(
-                    accInfo: AccountInfoModel(
-                        age: '24', gender: 'male', profession: 'Student')));
-              },
-              bgColor: primary,
-              borderColor: primary,
-              textColor: grey1100);
-        } else if (state is AccInfoSuccessState) {
-          return Container();
-        } else {
-          return Container();
-        }
-      });
-    }
   }
 }

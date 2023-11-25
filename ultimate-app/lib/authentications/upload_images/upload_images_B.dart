@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_b/upload_images_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,7 +15,7 @@ import '../../../common/constant/styles.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/app_bar_cpn.dart';
 import '../../../common/widget/gradient_text.dart';
-import '../../common/bloc/upload_image/upload_images_b/upload_images_bloc.dart';
+import '../../common/bloc/upload_image/upload_images_bloc.dart';
 import '../../common/route/routes.dart';
 import '../../common/util/show_toast_message.dart';
 import '../../data/datasources/Auth/auth_remote_data_source.dart';
@@ -23,14 +24,15 @@ class UploadImagesB extends StatefulWidget {
   const UploadImagesB({Key? key}) : super(key: key);
 
   @override
-  State<UploadImagesB> createState() => _UploadImagesBState();
+  State<UploadImagesB> createState() => _UploadImagesState();
 }
 
-class _UploadImagesBState extends State<UploadImagesB> {
+class _UploadImagesState extends State<UploadImagesB> {
   File? imageFile;
   List<XFile> imageFileList = [];
 
   void selectImages() async {
+    print('pressed scan because its user B');
     final List<XFile>? selectedImages = await ImagePicker().pickMultiImage();
     if (selectedImages!.isNotEmpty) {
       imageFileList.addAll(selectedImages);
@@ -112,12 +114,6 @@ class _UploadImagesBState extends State<UploadImagesB> {
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    prefManager.lastViewedPage = Routes.uploadImagesB;
-    super.initState();
   }
 
   @override
@@ -226,7 +222,7 @@ class _UploadImagesBState extends State<UploadImagesB> {
                 if (state is UserBUploadImagesLoadingState) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is UserBUploadImagesSuccessState) {
-                  Future.delayed(Duration.zero, () {
+                  Future.delayed(const Duration(seconds: 3), () {
                     Navigator.of(context)
                         .pushReplacementNamed(Routes.accountInformation);
                   });
