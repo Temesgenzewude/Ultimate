@@ -1,31 +1,32 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_bloc.dart';
-import 'package:flutter_ultimate/common/route/routes.dart';
-import 'package:flutter_ultimate/common/util/show_toast_message.dart';
-import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
-
 import '../../../common/constant/styles.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/app_bar_cpn.dart';
 import '../../../common/widget/gradient_text.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
+import '../../common/bloc/upload_image/upload_images_b/upload_images_bloc.dart';
+import '../../common/route/routes.dart';
+import '../../common/util/show_toast_message.dart';
+import '../../data/datasources/Auth/auth_remote_data_source.dart';
 
-class UploadImages extends StatefulWidget {
-  const UploadImages({Key? key}) : super(key: key);
+class UploadImagesB extends StatefulWidget {
+  const UploadImagesB({Key? key}) : super(key: key);
 
   @override
-  State<UploadImages> createState() => _UploadImagesState();
+  State<UploadImagesB> createState() => _UploadImagesBState();
 }
 
-class _UploadImagesState extends State<UploadImages> {
+class _UploadImagesBState extends State<UploadImagesB> {
   File? imageFile;
   List<XFile> imageFileList = [];
 
@@ -111,6 +112,12 @@ class _UploadImagesState extends State<UploadImages> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    prefManager.lastViewedPage = Routes.uploadImagesB;
+    super.initState();
   }
 
   @override
@@ -214,24 +221,24 @@ class _UploadImagesState extends State<UploadImages> {
                     }),
               ),
             const SizedBox(height: 24),
-            BlocBuilder<UploadImagesBloc, UploadImagesState>(
+            BlocBuilder<UserBUploadImagesBloc, UserBUploadImagesState>(
               builder: (context, state) {
-                if (state is UploadImagesLoadingState) {
+                if (state is UserBUploadImagesLoadingState) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is UploadImagesSuccessState) {
+                } else if (state is UserBUploadImagesSuccessState) {
                   Future.delayed(Duration.zero, () {
                     Navigator.of(context)
                         .pushReplacementNamed(Routes.accountInformation);
                   });
-                } else if (state is UploadImagesFailureState) {
+                } else if (state is UserBUploadImagesFailureState) {
                   Utils.flutterToast(state.errorMessage);
                   return AppWidget.typeButtonStartAction2(
                       context: context,
-                      input: 'Continue',
+                      input: 'Upload Images',
                       onPressed: () {
                         print(prefManager.kToken);
                         print('here');
-                        BlocProvider.of<UploadImagesBloc>(context)
+                        BlocProvider.of<UserBUploadImagesBloc>(context)
                             .add(UserBUploadImagesEvent(images: imageFileList));
                       },
                       bgColor: primary,
@@ -240,9 +247,9 @@ class _UploadImagesState extends State<UploadImages> {
                 }
                 return AppWidget.typeButtonStartAction2(
                     context: context,
-                    input: 'Continue',
+                    input: 'Upload Images',
                     onPressed: () {
-                      BlocProvider.of<UploadImagesBloc>(context)
+                      BlocProvider.of<UserBUploadImagesBloc>(context)
                           .add(UserBUploadImagesEvent(images: imageFileList));
                     },
                     bgColor: primary,

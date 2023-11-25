@@ -20,6 +20,7 @@ class Routes {
   static const String forgotPassword = '/forgot_password';
   static const String kyc = '/kyc';
   static const String uploadImages = '/upload_images';
+  static const String uploadImagesB = '/upload_images_b';
   static const String login = '/login';
   static const String register = '/register';
   static const String resetPassword = '/reset_password';
@@ -104,6 +105,8 @@ class Routes {
   static const String foodDelivery = '/food_delivery';
   static const String ecommerce = '/ecommerce';
   static const String reading = '/reading';
+
+  static const String addMobileNumberB = '/add_mobile_b';
 
   static const String signUpB = '/sign_up_b';
 }

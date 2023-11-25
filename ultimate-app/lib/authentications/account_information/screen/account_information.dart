@@ -1,17 +1,20 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/account_information%20/account_information_bloc.dart';
-import 'package:flutter_ultimate/data/models/account_info_model.dart';
+import 'package:flutter_ultimate/common/util/show_toast_message.dart';
+import 'package:flutter_ultimate/data/datasources/Auth/auth_remote_data_source.dart';
 
 import '../../../app/widget_support.dart';
+import '../../../common/bloc/account_information/account_information_bloc.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
+import '../../../common/route/routes.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/app_bar_cpn.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/unfocus_click.dart';
+import '../../../data/models/account_info_model.dart';
 
 final List<String> genderItems = [
   'Student',
@@ -36,6 +39,13 @@ class _AccountInformationState extends State<AccountInformation> {
   bool isFemale = false;
   bool isOther = false;
   String? selectedValue;
+
+  @override
+  void initState() {
+    prefManager.lastViewedPage = Routes.accountInformation;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = AppWidget.getWidthScreen(context);
@@ -58,13 +68,17 @@ class _AccountInformationState extends State<AccountInformation> {
             ),
           ),
           right: AnimationClick(
-              child: Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: Text(
-              'Skip',
-              style: headline(color: corn1),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Text(
+                'Skip',
+                style: headline(color: corn1),
+              ),
             ),
-          )),
+            function: () {
+              Navigator.of(context).pushNamed(Routes.interest_1);
+            },
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -335,8 +349,19 @@ class _AccountInformationState extends State<AccountInformation> {
                 ],
               ),
               const SizedBox(height: 24),
-              BlocBuilder<AccountInfoBloc, AccInfoState>(
-                  builder: (context, state) {
+              BlocConsumer<AccountInfoBloc, AccInfoState>(
+                  // ignore: unnecessary_parenthesis
+                  listener: ((context, state) {
+                if (state is AccInfoSuccessState) {
+                  Utils.flutterToast('Your profile is successfully updated!');
+
+                  Future.delayed(const Duration(seconds: 3), () {
+                    Navigator.of(context).pushNamed(Routes.interest_1);
+                  });
+                } else if (state is AccFailureState) {
+                  Utils.flutterToast(state.messsage);
+                }
+              }), builder: (context, state) {
                 if (state is AccInfoLoadingState) {
                   return const Center(
                     child: CircularProgressIndicator(),
@@ -344,7 +369,7 @@ class _AccountInformationState extends State<AccountInformation> {
                 } else if (state is AccFailureState) {
                   return AppWidget.typeButtonStartAction2(
                       context: context,
-                      input: 'Create Account',
+                      input: 'Update Profile',
                       onPressed: () {
                         BlocProvider.of<AccountInfoBloc>(context).add(
                             AddAccInfoEvent(
@@ -364,7 +389,7 @@ class _AccountInformationState extends State<AccountInformation> {
               }),
               AppWidget.typeButtonStartAction2(
                   context: context,
-                  input: 'Create Account',
+                  input: 'Update Profile',
                   onPressed: () {
                     BlocProvider.of<AccountInfoBloc>(context).add(
                         AddAccInfoEvent(

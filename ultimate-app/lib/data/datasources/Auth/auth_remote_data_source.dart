@@ -30,6 +30,9 @@ abstract class AuthenticationRemoteDataSource {
   Future<AccInfoResponseModel> addAccountInfo(
       AccountInfoModel accountInfoModeladdAccountInfo);
 
+  Future<AccInfoResponseModel> userBAddAccountInfo(
+      AccountInfoModel accountInfoModel);
+
   Future<void> sendOtp();
   Future<LoginResponseModel> verifyOtp(String otp);
   Future<void> sendOTPUserA();
@@ -363,7 +366,7 @@ class AuthenticationRemoteDataSourceImpl
       final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPoint),
           body: jsonEncode(jsonbody),
           headers: {
-            'Authorization': prefManager.token ?? prefManager.testToken ?? '',
+            'Authorization': prefManager.token ?? prefManager.kToken,
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
@@ -534,14 +537,14 @@ class AuthenticationRemoteDataSourceImpl
   @override
   Future<List<dynamic>> uploadImagesB(List<XFile> files) async {
     try {
-      final uri =
-          Uri.parse('${AppUrl.bulkUploadImagesB}${prefManager.kUserID}');
+      final uri = Uri.parse('${AppUrl.bulkUploadImagesB}${prefManager.userID}');
       final request = http.MultipartRequest('POST', uri);
       files.forEach((file) async {
         request.files
             .add(await http.MultipartFile.fromPath('images', file.path));
       });
-      request.headers['Authorization'] = prefManager.kToken;
+      request.headers['Authorization'] =
+          prefManager.token ?? prefManager.kToken;
       // request.headers['Authorization'] = prefManager.kToken;
       // request.files
       //     .add(await http.MultipartFile.fromPath('image', files[0].path));
@@ -678,10 +681,44 @@ class AuthenticationRemoteDataSourceImpl
       Map<String, dynamic> jsonBody = accountInfoModel.toJson();
       jsonBody['userId'] = {'id': '${prefManager.userID}'};
 
-      final response = await client.post(Uri.parse(AppUrl.addAccountInfoUserA),
+      final response = await client.post(Uri.parse(AppUrl.saveUserAProfile),
           body: jsonEncode(jsonBody),
           headers: {
-            'Authorization': prefManager.token ?? prefManager.testToken ?? '',
+            'Authorization': prefManager.token ?? prefManager.kTokenA,
+            'Content-Type': 'application/json',
+          }).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final responseBody = AccInfoResponseModel.fromJson(jsonResponse);
+        return responseBody;
+      } else if (response.statusCode == 403) {
+        final dynamic error = json.decode(response.body);
+        throw ForbiddenResponseException(
+            message: error['message'] ?? 'Failed to send Otp');
+      } else {
+        final dynamic error = json.decode(response.body);
+        throw UnknownException(
+            message: error['message'] ?? 'Failed to send Otp');
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
+    }
+  }
+
+  @override
+  Future<AccInfoResponseModel> userBAddAccountInfo(
+      AccountInfoModel accountInfoModel) async {
+    try {
+      Map<String, dynamic> jsonBody = accountInfoModel.toJson();
+      jsonBody['userId'] = {'id': '${prefManager.userID}'};
+
+      final response = await client.post(Uri.parse(AppUrl.saveUserBProfile),
+          body: jsonEncode(jsonBody),
+          headers: {
+            'Authorization': prefManager.token ?? prefManager.kToken,
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 10));
 

@@ -122,14 +122,18 @@ class _VerifyState extends State<Verify> {
                   BlocConsumer<OtpBloc, OtpState>(
                     listener: (context, state) {
                       if (state is OtpVerifiedSuccess) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('OTP verified successfully!'),
-                          ),
-                        );
-                        Navigator.pushNamed(context, Routes.accountInformation);
-                      }
-                      if (state is OtpVerifiedFailure) {
+                        Utils.flutterToast('OTP verified successfully!');
+
+                        if (prefManager.userType == 'User A') {
+                          Future.delayed(const Duration(seconds: 2), () {
+                            Navigator.pushNamed(context, Routes.uploadImages);
+                          });
+                        } else {
+                          Future.delayed(const Duration(seconds: 2), () {
+                            Navigator.pushNamed(context, Routes.uploadImagesB);
+                          });
+                        }
+                      } else if (state is OtpVerifiedFailure) {
                         Utils.flutterToast(state.message);
                       }
                     },
@@ -251,7 +255,11 @@ class _VerifyState extends State<Verify> {
                   input: 'Change the phone number',
                   onPressed: () {
                     if (_start == 0) {
-                      Navigator.pushNamed(context, Routes.addMobileNumber);
+                      if (prefManager.userType == 'User B') {
+                        Navigator.pushNamed(context, Routes.addMobileNumberB);
+                      } else {
+                        Navigator.pushNamed(context, Routes.addMobileNumber);
+                      }
                     }
                   },
                   bgColor: grey100,

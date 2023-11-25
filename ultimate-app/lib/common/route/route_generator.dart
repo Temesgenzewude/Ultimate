@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ultimate/authentications/sign_up/screen/auth_user_b.dart';
-import 'package:flutter_ultimate/authentications/upload_images/upload_images.dart';
+import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number_B.dart';
+import 'package:flutter_ultimate/authentications/upload_images/upload_images_B.dart';
 
 import '../../authentications/account_information/screen/account_information.dart';
 import '../../authentications/add_mobile_number/screen/add_mobile_number.dart';
@@ -10,8 +10,10 @@ import '../../authentications/login/screen/login.dart';
 import '../../authentications/menu.dart';
 import '../../authentications/register/screen/register.dart';
 import '../../authentications/reset_password/screen/reset_password.dart';
+import '../../authentications/sign_up/screen/auth_user_b.dart';
 import '../../authentications/sign_up/screen/sign_up.dart';
 import '../../authentications/sign_up_social/screen/sign_up_social.dart';
+import '../../authentications/upload_images/upload_images.dart';
 import '../../authentications/verify/screen/verify.dart';
 import '../../ecommerces/card_product/screen/card_product_home.dart';
 import '../../ecommerces/customer_manager/screen/customer_manager.dart';
@@ -58,7 +60,6 @@ import '../../food_delivery/today_food/screen/today_food.dart';
 import '../../food_delivery/tracking_order/screen/tracking_order.dart';
 import '../../onboardings/menu.dart';
 import '../../onboardings/onboarding_1/screen/onboarding_1.dart';
-import '../../profiles/menu.dart';
 import '../../profiles/profile_eight/screen/profile_eight.dart';
 import '../../profiles/profile_elevent/screen/profile_elevent_home.dart';
 import '../../profiles/profile_five/screen/profile_five.dart';
@@ -150,9 +151,17 @@ mixin RouteGenerator {
         return MaterialPageRoute<dynamic>(
           builder: (context) => const UploadImages(),
         );
+      case Routes.uploadImagesB:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const UploadImagesB(),
+        );
       case Routes.addMobileNumber:
         return MaterialPageRoute<dynamic>(
           builder: (context) => AddMobileNumber(),
+        );
+      case Routes.addMobileNumberB:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => AddMobileNumberB(),
         );
       case Routes.forgotPassword:
         return MaterialPageRoute<dynamic>(

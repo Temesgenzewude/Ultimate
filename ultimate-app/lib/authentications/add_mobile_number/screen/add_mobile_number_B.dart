@@ -18,11 +18,11 @@ import '../../../data/models/authentication_model.dart';
 import '../../../dependency_indjection.dart';
 import '../../../sharedPreferences.dart';
 
-class AddMobileNumber extends StatefulWidget {
-  AddMobileNumber({Key? key}) : super(key: key);
+class AddMobileNumberB extends StatefulWidget {
+  AddMobileNumberB({Key? key}) : super(key: key);
 
   @override
-  State<AddMobileNumber> createState() => _AddMobileNumberState();
+  State<AddMobileNumberB> createState() => _AddMobileNumberBState();
 }
 
 final prefManager = sl<PrefManager>();
@@ -34,7 +34,7 @@ final String password = prefManager.password ?? '';
 double latitude = double.tryParse(prefManager.kLatitude) ?? 0.0;
 double longitude = double.tryParse(prefManager.kLongitude) ?? 0.0;
 
-class _AddMobileNumberState extends State<AddMobileNumber> {
+class _AddMobileNumberBState extends State<AddMobileNumberB> {
   void _submitForm(
       {required String name,
       required String email,
@@ -149,7 +149,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
 
   @override
   void initState() {
-    prefManager.lastViewedPage = Routes.addMobileNumber;
+    prefManager.lastViewedPage = Routes.addMobileNumberB;
 
     phoneCtl.text = prefManager.phone ?? '';
     super.initState();
@@ -299,12 +299,12 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                       focusNode: phoneFn,
                     ),
                     getAuthWidget(),
-                    BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                    BlocBuilder<AuthenticationBlocB, AuthenticationBState>(
                       builder: (context, state) {
-                        if (state is AuthenticationLoadingState) {
+                        if (state is AuthenticationLoadingStateB) {
                           return const Center(
                               child: CircularProgressIndicator());
-                        } else if (state is AuthenticationSuccessState) {
+                        } else if (state is AuthenticationSuccessStateB) {
                           return Container();
                         } else {
                           return AppWidget.typeButtonStartAction(

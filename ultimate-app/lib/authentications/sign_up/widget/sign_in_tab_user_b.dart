@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/auth/b/authentication_bloc_b.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../app/widget_support.dart';
-import '../../../common/bloc/auth/authentication_bloc.dart';
+import '../../../common/bloc/auth/b/authentication_bloc_b.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/route/routes.dart';

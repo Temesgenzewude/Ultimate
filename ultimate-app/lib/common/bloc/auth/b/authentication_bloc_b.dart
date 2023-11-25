@@ -20,9 +20,9 @@ class AuthenticationBlocB
 
   AuthenticationBState authenticationSuccessOrFailureB(
       {dynamic result, bool isLogin = false}) {
-    if (result is SingUpResponseModel) {
+    if (result is UserBSingUpResponse) {
       return AuthenticationSuccessStateB(user: result);
-    } else if (result is LoginResponseModel) {
+    } else if (isLogin && result is LoginResponseModel) {
       return LoginSuccessStateB(loginResponse: result);
     } else if (!isLogin && result is String) {
       return AuthenticationFailureStateB(errorMessage: result);
