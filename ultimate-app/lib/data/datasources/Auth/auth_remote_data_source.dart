@@ -678,15 +678,42 @@ class AuthenticationRemoteDataSourceImpl
   Future<AccInfoResponseModel> addAccountInfo(
       AccountInfoModel accountInfoModel) async {
     try {
-      Map<String, dynamic> jsonBody = accountInfoModel.toJson();
-      jsonBody['userId'] = {'id': '${prefManager.userID}'};
+      final tempAccountInfoModel = AccountInfoModel(
+        gender: accountInfoModel.gender,
+        age: accountInfoModel.age,
+        profession: accountInfoModel.profession,
+        about: 'I am test',
+        address: 'US',
+        maritalStatus: 'Single',
+        height: '188cm',
+        lookingFor: 'Friend',
+        child: '2',
+        sect: 'Sunni',
+        healthIssue: 'No',
+        bornReligious: 'Born Muslim',
+        isDrink: false,
+        isSmoke: false,
+        isMadication: false,
+        ethnicity: 'Turkish',
+        nationality: 'turkish',
+        levelOfReligiously: 'Conservative',
+      );
 
-      final response = await client.post(Uri.parse(AppUrl.saveUserAProfile),
-          body: jsonEncode(jsonBody),
-          headers: {
-            'Authorization': prefManager.token ?? prefManager.kTokenA,
-            'Content-Type': 'application/json',
-          }).timeout(const Duration(seconds: 10));
+      Map<String, dynamic> jsonBody = tempAccountInfoModel.toJson();
+      jsonBody['userId'] = '${prefManager.userID}';
+      // jsonBody['userId'] = '654117b9ca01a37d7f8fe2e8';
+      print(jsonBody);
+      print(prefManager.token);
+      final String url = prefManager.userType == 'User A'
+          ? AppUrl.saveUserAProfile
+          : AppUrl.saveUserBProfile;
+
+      print(url);
+      final response = await client
+          .post(Uri.parse(url), body: jsonEncode(jsonBody), headers: {
+        'Authorization': prefManager.token ?? prefManager.kTokenA,
+        'Content-Type': 'application/json',
+      }).timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);

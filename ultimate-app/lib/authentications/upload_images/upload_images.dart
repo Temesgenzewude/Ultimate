@@ -31,6 +31,7 @@ class _UploadImagesState extends State<UploadImages> {
   List<XFile> imageFileList = [];
 
   void selectImages() async {
+    print('pressed scan for user A');
     final List<XFile>? selectedImages = await ImagePicker().pickMultiImage();
     if (selectedImages!.isNotEmpty) {
       imageFileList.addAll(selectedImages);
