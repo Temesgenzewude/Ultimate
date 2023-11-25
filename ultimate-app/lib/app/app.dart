@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/account_information/account_info_user_b/account_information_bloc_b.dart';
 import 'package:flutter_ultimate/common/bloc/account_information/account_information_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/auth/b/authentication_bloc_b.dart';
+import 'package:flutter_ultimate/common/bloc/store_user_interests/store_user_interests_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_b/upload_images_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -116,6 +117,13 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<AccountInfoBloc>(
           create: (BuildContext context) => AccountInfoBloc(
+            authenticationRepository: AuthenticationRepository(
+                remoteDataSource:
+                    AuthenticationRemoteDataSourceImpl(client: http.Client())),
+          ),
+        ),
+        BlocProvider<StoreUserInterestsBloc>(
+          create: (BuildContext context) => StoreUserInterestsBloc(
             authenticationRepository: AuthenticationRepository(
                 remoteDataSource:
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
