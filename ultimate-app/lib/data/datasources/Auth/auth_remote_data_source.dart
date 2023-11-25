@@ -10,6 +10,7 @@ import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
 import 'package:flutter_ultimate/data/models/social_login_request_model.dart';
 import 'package:flutter_ultimate/data/models/social_login_response_model.dart';
+import 'package:flutter_ultimate/data/models/save_user_interests_request_model.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +18,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../common/constant/api_endpoints.dart';
 import '../../models/login_request_model.dart';
+import '../../models/save_user_interests_response_model.dart';
 
 final prefManager = sl<PrefManager>();
 
@@ -40,6 +42,9 @@ abstract class AuthenticationRemoteDataSource {
 
   Future<SocialLoginResponseModel> loginSocial(
       SocialLoginRequestModel socialLoginRequestModel);
+
+  Future<SaveUserInterestsResponseModel> saveUserInterests(
+      SaveUserInterestRequest userInterestRequest);
 }
 
 class AuthenticationRemoteDataSourceImpl
@@ -296,20 +301,6 @@ class AuthenticationRemoteDataSourceImpl
     print(prefManager.userID);
     print(prefManager.token);
 
-    // final jsonbody = {'id': '${prefManager.userID}'};
-    // final response = await client.post(Uri.parse(AppUrl.sendOTPEndPoint),
-    //     body: jsonEncode(jsonbody),
-    //     headers: {
-    //       'Authorization': prefManager.token??"",
-    //       'Content-Type': 'application/json',
-    //     });
-
-    // if (response.statusCode == 200) {
-    //   print('success');
-    // } else {
-    //   throw FetchDataException('Failed to send Otp');
-    // }
-
     try {
       final jsonbody = {'id': '${prefManager.userID}'};
       final response = await client.post(Uri.parse(AppUrl.sendOTPEndPoint),
@@ -339,22 +330,6 @@ class AuthenticationRemoteDataSourceImpl
 
   @override
   Future<LoginResponseModel> verifyOtp(String otp) async {
-    // final jsonbody = {'id': prefManager.kUserID, 'otp': otp};
-    // final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPoint),
-    //     body: jsonEncode(jsonbody),
-    //     headers: {
-    //       'Authorization': '${prefManager.kToken}',
-    //       'Content-Type': 'application/json',
-    //     });
-    // if (response.statusCode == 200) {
-    // } else if (response.statusCode == 403) {
-    //   final dynamic error = json.decode(response.body);
-    //   throw ForbiddenResponseException(
-    //       error['message']); // Update the error message if desired
-    // } else {
-    //   throw FetchDataException('Failed to verify Otp');
-    // }
-
     print("verifying user b otp");
     print('otp: $otp');
     print(prefManager.userID);
@@ -389,22 +364,6 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   Future<LoginResponseModel> verifyOTPUserA(String otp) async {
-    // final jsonbody = {'id': prefManager.kUserID, 'otp': otp};
-    // final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPointA),
-    //     body: jsonEncode(jsonbody),
-    //     headers: {
-    //       'Authorization': '${prefManager.kToken}',
-    //       'Content-Type': 'application/json',
-    //     });
-    // if (response.statusCode == 200) {
-    // } else if (response.statusCode == 403) {
-    //   final dynamic error = json.decode(response.body);
-    //   throw ForbiddenResponseException(
-    //       error['message']); // Update the error message if desired
-    // } else {
-    //   throw FetchDataException('Failed to verify Otp');
-    // }
-
     print("verifying user a otp");
     print('otp: $otp');
     print(prefManager.userID);
@@ -439,24 +398,6 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   Future<void> sendOTPUserA() async {
-    // final jsonbody = {'id': '${prefManager.kUserID}'};
-    // final response = await client.post(Uri.parse(AppUrl.sendOTPEndPointA),
-    //     body: jsonEncode(jsonbody),
-    //     headers: {
-    //       'Authorization': prefManager.kToken,
-    //       'Content-Type': 'application/json',
-    //     });
-
-    // if (response.statusCode == 200) {
-    //   print('success');
-    // } else if (response.statusCode == 403) {
-    //   final dynamic error = json.decode(response.body);
-    //   throw ForbiddenResponseException(
-    //       error['message']); // Update the error message if desired
-    // } else {
-    //   throw FetchDataException('Failed to send Otp');
-    // }
-
     print('sending otp user a');
     print(prefManager.userID);
     print(prefManager.token);
@@ -580,76 +521,59 @@ class AuthenticationRemoteDataSourceImpl
     }
   }
 
-  // @override
-  // Future<UserBSingUpResponse> saveUserBInterest(UserBModel user) async {
-  //   final String url = AppUrl.userBSignUpEndPoint;
-  //   // final Map<String, dynamic> body = <String, dynamic>{
-  //   //   "name": user.name,
-  //   //   "email": user.email,
-  //   //   "phoneNumber": user.phoneNumber,
-  //   //   "birthDate": user.birthDate,
-  //   //   "password": user.password,
-  //   //   "about": user.about,
-  //   //   "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
-  //   //   "age": user.age,
-  //   //   "terms": user.terms,
-  //   //   "gender": user.gender,
-  //   // };
+  @override
+  Future<SaveUserInterestsResponseModel> saveUserInterests(
+      SaveUserInterestRequest userInterestRequest) async {
+    String url = '';
+    String token = '';
+    if (prefManager.userType == 'User B') {
+      url = AppUrl.saveUserBProfile;
+      token = prefManager.token ?? prefManager.kToken;
+    } else {
+      url = AppUrl.saveUserAProfile;
+      token = prefManager.token ?? prefManager.kTokenA;
+    }
 
-  //   // final response = await client.post(
-  //   //   Uri.parse(url),
-  //   //   body: json.encode(body),
-  //   //   headers: {
-  //   //     'Content-Type': 'application/json',
-  //   //   },
-  //   // );
+    try {
+      final body = userInterestRequest.toJson();
+      print('---- saving user ${prefManager.userType} interest body: $body');
 
-  //   // print(response.statusCode);
+      final response = await client.post(
+        Uri.parse(url),
+        body: json.encode(body),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+      ).timeout(const Duration(seconds: 20));
 
-  //   // if (response.statusCode == 200) {
-  //   //   final dynamic data = json.decode(response.body);
-  //   //   return SingUpResponseModel.fromJson(data);
-  //   // } else if (response.statusCode == 403) {
-  //   //   final dynamic error = json.decode(response.body);
-  //   //   throw ForbiddenResponseException(
-  //   //       error['message']); // Update the error message if desired
-  //   // } else {
-  //   //   throw Exception('Failed to create a new user');
-  //   // }
+      print(
+          '--- saving  user ${prefManager.userType}--- response body: ${response.body}');
 
-  //   user.location = '100.536267224296935,34.32805961092151';
-  //   try {
-  //     final body = user.toJson();
-  //     print('---- sign up user b body: $body');
-
-  //     final response = await client.post(
-  //       Uri.parse(url),
-  //       body: json.encode(body),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     ).timeout(const Duration(seconds: 20));
-
-  //     print('--- sign u user b--- response body: ${response.body}');
-
-  //     if (response.statusCode == 201) {
-  //       final dynamic data = json.decode(response.body);
-  //       return UserBSingUpResponse.fromJson(data);
-  //     } else if (response.statusCode == 403) {
-  //       final dynamic data = json.decode(response.body);
-  //       throw ServerException(
-  //           message: data["message"] ?? 'Failed to create a new user');
-  //     } else {
-  //       final dynamic data = json.decode(response.body);
-  //       throw UnknownException(
-  //           message: data["message"] ?? "Error while trying to sign up");
-  //     }
-  //   } on SocketException catch (_) {
-  //     throw const NoInternetException(message: 'No internet connection');
-  //   } on TimeoutException catch (_) {
-  //     throw const ConnectionTimeOutException(message: 'Connection timed out');
-  //   }
-  // }
+      if (response.statusCode == 200) {
+        final dynamic data = json.decode(response.body);
+        return SaveUserInterestsResponseModel.fromJson(data);
+      } else if (response.statusCode == 403 ||
+          response.statusCode == 401 ||
+          response.statusCode == 404) {
+        final dynamic data = json.decode(response.body);
+        throw ServerException(
+            message: data["message"] ??
+                data["error"] ??
+                'Failed to save user interests');
+      } else {
+        final dynamic data = json.decode(response.body);
+        throw UnknownException(
+            message: data["message"] ??
+                data["error"] ??
+                "Error while trying to save user interests");
+      }
+    } on SocketException catch (_) {
+      throw const NoInternetException(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw const ConnectionTimeOutException(message: 'Connection timed out');
+    }
+  }
 
   @override
   Future<SocialLoginResponseModel> loginSocial(
