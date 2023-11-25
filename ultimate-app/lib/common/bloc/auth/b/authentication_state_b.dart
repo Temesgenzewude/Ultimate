@@ -8,11 +8,11 @@ class AuthenticationInitialStateB extends AuthenticationBState {}
 
 class AuthenticationLoadingStateB extends AuthenticationBState {}
 
-class AuthSignUPSuccessB extends AuthenticationBState {}
+
 
 class AuthenticationSuccessStateB extends AuthenticationBState {
   const AuthenticationSuccessStateB({required this.user});
-  final SingUpResponseModel user;
+  final UserBSingUpResponse user;
 }
 
 class LoginSuccessStateB extends AuthenticationBState {

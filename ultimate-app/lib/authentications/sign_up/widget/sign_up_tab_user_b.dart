@@ -313,7 +313,7 @@ class _SignUpTabBState extends State<SignUpTabB> {
     };
 
     Navigator.of(context)
-        .pushNamed(Routes.addMobileNumber, arguments: formData);
+        .pushNamed(Routes.addMobileNumberB, arguments: formData);
   }
 }
 

@@ -14,6 +14,6 @@ class AccInfoSuccessState extends AccInfoState {
 }
 
 class AccFailureState extends AccInfoState {
-  const AccFailureState();
-  // final String errorMessage;
+  const AccFailureState({required this.errorMessage});
+  final String errorMessage;
 }

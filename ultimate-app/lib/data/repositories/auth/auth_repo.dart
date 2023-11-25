@@ -463,4 +463,34 @@ class AuthenticationRepository {
               'No Internet Connection! Please check your internet connection and try again.');
     }
   }
+  Future<AccInfoResponseModel> userBAddAccountInfo(
+      AccountInfoModel accountInfoModel) async {
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        final response =
+            await remoteDataSource.userBAddAccountInfo(accountInfoModel);
+        return response;
+      } on NoInternetException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw NoInternetException(message: e.message);
+      } on ConnectionTimeOutException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw ConnectionTimeOutException(message: e.message);
+      } on ServerException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        // throw ServerException(message: e.message);
+      } on UnknownException catch (e) {
+        print(' auth repo error: ${e.toString()}');
+        rethrow;
+        //throw UnknownException(message: e.message);
+      }
+    } else {
+      throw const NoInternetException(
+          message:
+              'No Internet Connection! Please check your internet connection and try again.');
+    }
+  }
 }

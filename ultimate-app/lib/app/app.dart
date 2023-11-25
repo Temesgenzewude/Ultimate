@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
     prefManager.testToken = '';
     //prefManager.lastViewedPage ??= Routes.onBoarding1;
     super.initState();
-    prefManager.logout();
+    // prefManager.logout();
   }
 
   @override
@@ -99,11 +99,11 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp(
-        // initialRoute: _isLoggedIn
-        //     ? Routes.accountInformation
-        //     : prefManager.lastViewedPage,
+        initialRoute: _isLoggedIn
+            ? Routes.accountInformation
+            : prefManager.lastViewedPage?? Routes.onBoarding1,
 
-        initialRoute: Routes.uploadImages,
+        // initialRoute: Routes.uploadImages,
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'Ultimate',
