@@ -4,8 +4,8 @@ import '../../../../core/error/exception.dart';
 import '../../../../data/models/account_info_model.dart';
 import '../../../../data/repositories/auth/auth_repo.dart';
 
-part 'account_information_event.dart';
-part 'account_information_state.dart';
+part 'account_information_event_b.dart';
+part 'account_information_state_b.dart';
 
 class UserBAccountInfoBloc extends Bloc<UserBAccInfoEvent, UserBAccInfoState> {
   UserBAccountInfoBloc({

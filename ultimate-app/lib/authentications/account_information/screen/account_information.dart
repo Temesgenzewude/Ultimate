@@ -359,7 +359,7 @@ class _AccountInformationState extends State<AccountInformation> {
                     Navigator.of(context).pushNamed(Routes.interest_1);
                   });
                 } else if (state is AccFailureState) {
-                  Utils.flutterToast(state.messsage);
+                  Utils.flutterToast(state.errorMessage);
                 }
               }), builder: (context, state) {
                 if (state is AccInfoLoadingState) {
