@@ -37,7 +37,7 @@ double longitude = double.tryParse(prefManager.kLongitude) ?? 0.0;
 
 class _AddMobileNumberState extends State<AddMobileNumber> {
   Widget getAuthWidget() {
-    if (prefManager.userType == 'A') {
+    if (prefManager.userType == 'User A') {
       return BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state is AuthenticationFailureState) {
