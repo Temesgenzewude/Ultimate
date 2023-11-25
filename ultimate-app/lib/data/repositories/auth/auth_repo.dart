@@ -463,6 +463,7 @@ class AuthenticationRepository {
               'No Internet Connection! Please check your internet connection and try again.');
     }
   }
+
   Future<AccInfoResponseModel> userBAddAccountInfo(
       AccountInfoModel accountInfoModel) async {
     if (await internetConnectionChecker.hasConnection) {
