@@ -494,12 +494,18 @@ class AuthenticationRemoteDataSourceImpl
       token = prefManager.token ?? prefManager.kTokenA;
     }
 
+    String newUrl = '$url/${prefManager.userID}';
+
+    print('saving user ${prefManager.userType} interest url: $newUrl');
+    print('token: $token');
+    print('body: ${userInterestRequest.toJson()}');
+    print('user id: ${prefManager.userID}');
     try {
       final body = userInterestRequest.toJson();
       print('---- saving user ${prefManager.userType} interest body: $body');
 
       final response = await client.post(
-        Uri.parse('$url/${prefManager.userID}'),
+        Uri.parse(newUrl),
         body: json.encode(body),
         headers: {
           'Content-Type': 'application/json',
