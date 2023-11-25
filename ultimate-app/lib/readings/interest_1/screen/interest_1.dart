@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number.dart';
+import 'package:flutter_ultimate/common/bloc/store_user_interests/store_user_interests_bloc.dart';
+import 'package:flutter_ultimate/common/util/show_toast_message.dart';
+import 'package:flutter_ultimate/data/models/save_user_interests_request_model.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
@@ -20,7 +24,7 @@ class _Interest1State extends State<Interest1> {
   List<Map<String, dynamic>> items = [
     <String, dynamic>{
       'id': 1,
-      'title': 'Brainstom',
+      'title': 'Brainstorm',
       'icon': '❤️️',
       'image': reading_interest_1,
       'selected': false
@@ -39,20 +43,7 @@ class _Interest1State extends State<Interest1> {
       'image': reading_interest_3,
       'selected': false
     },
-    <String, dynamic>{
-      'id': 4,
-      'title': 'Lego',
-      'icon': '👻️',
-      'image': reading_interest_4,
-      'selected': false
-    },
-    <String, dynamic>{
-      'id': 5,
-      'title': 'Wave',
-      'icon': '😈️',
-      'image': reading_interest_5,
-      'selected': false
-    },
+
     <String, dynamic>{
       'id': 6,
       'title': 'Technology',
@@ -80,8 +71,66 @@ class _Interest1State extends State<Interest1> {
       'icon': '🎹️',
       'image': reading_interest_9,
       'selected': false
-    }
+    },
+    <String, dynamic>{
+      'id': 10,
+      'title': 'Photography',
+      'icon': '📷',
+      'image': reading_interest_10,
+      'selected': false
+    },
+    <String, dynamic>{
+      'id': 11,
+      'title': 'Cooking',
+      'icon': '🍳',
+      'image': reading_interest_10,
+      'selected': false
+    },
+    <String, dynamic>{
+      'id': 12,
+      'title': 'Travel',
+      'icon': '✈️',
+      'image': reading_interest_9,
+      'selected': false
+    },
+    <String, dynamic>{
+      'id': 13,
+      'title': 'Reading',
+      'icon': '📚',
+      'image': reading_interest_8,
+      'selected': false
+    },
+    <String, dynamic>{
+      'id': 14,
+      'title': 'Volunteering',
+      'icon': '🤝',
+      'image': reading_interest_7,
+      'selected': false
+    },
+    <String, dynamic>{
+      'id': 15,
+      'title': 'Sports',
+      'icon': '⚽️',
+      'image': reading_interest_6,
+      'selected': false
+    },
+    <String, dynamic>{
+      'id': 16,
+      'title': 'Fashion',
+      'icon': '👗',
+      'image': reading_interest_5,
+      'selected': false
+    },
+    <String, dynamic>{
+      'id': 17,
+      'title': 'Writing',
+      'icon': '📝',
+      'image': reading_interest_4,
+      'selected': false
+    },
+    // Add more interests as needed
   ];
+
   List<Map<String, dynamic>> itemsSelected = [];
   @override
   void initState() {
@@ -96,13 +145,61 @@ class _Interest1State extends State<Interest1> {
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24, top: 8),
-        child: AppWidget.typeButtonStartAction(
-            context: context,
-            input: 'Continue Feed',
-            onPressed: () {},
-            bgColor: primary,
-            borderColor: primary,
-            textColor: grey1100),
+        child: BlocConsumer<StoreUserInterestsBloc, StoreUserInterestsState>(
+          listener: (context, state) {
+            if (state is StoreUserInterestsSuccessState) {
+              Utils.flutterToast(
+                  'Your interests have been successfully saved!');
+            } else if (state is StoreUserInterestsFailureState) {
+              Utils.flutterToast(state.errorMessage);
+
+              
+            }
+          },
+          builder: (context, state) {
+            if (state is StoreUserInterestsLoadingState) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is StoreUserInterestsSuccessState) {
+              return AppWidget.typeButtonStartAction(
+                  context: context,
+                  input: 'CONTINUE TO FEEDS',
+                  onPressed: () {
+                    Future.delayed(const Duration(seconds: 2), () {
+                      Navigator.pushNamed(context, Routes.feed);
+                    });
+                  },
+                  bgColor: primary,
+                  borderColor: primary,
+                  textColor: grey1100);
+            } else {
+              return AppWidget.typeButtonStartAction(
+                  context: context,
+                  input: 'SAVE YOUR INTERESTS',
+                  onPressed: () {
+                    if (itemsSelected.length < 5) {
+                      Utils.flutterToast(
+                          'Please select at least 5 interests to continue');
+                      return;
+                    }
+
+                    // Create a string with titles separated by a comma
+                    final String selectedTitles = itemsSelected
+                        .map<String>((item) => item['title'])
+                        .join(', ');
+                    print('Selected interests are: $selectedTitles');
+
+                    final SaveUserInterestRequest saveUserInterestRequest =
+                        SaveUserInterestRequest(userIntrests: selectedTitles);
+                    BlocProvider.of<StoreUserInterestsBloc>(context).add(
+                        StoreUserInterestsEventCall(
+                            saveUserInterestRequest: saveUserInterestRequest));
+                  },
+                  bgColor: primary,
+                  borderColor: primary,
+                  textColor: grey1100);
+            }
+          },
+        ),
       ),
       body: ListView(
         children: [

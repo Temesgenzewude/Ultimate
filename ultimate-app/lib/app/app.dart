@@ -138,7 +138,7 @@ class _MyAppState extends State<MyApp> {
             ? prefManager.lastViewedPage ?? Routes.accountInformation
             : prefManager.lastViewedPage ?? Routes.onBoarding1,
 
-        // initialRoute: Routes.uploadImages,
+        // initialRoute: Routes.feed,
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'Ultimate',
