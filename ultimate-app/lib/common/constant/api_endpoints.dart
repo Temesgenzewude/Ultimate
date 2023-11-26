@@ -16,6 +16,6 @@ class AppUrl {
   static var bulkUploadImagesA = '$baseUrl/uploads-bulk/';
   static var saveUserBProfile = '$baseUrl/save-profile-b';
   static var saveUserAProfile = '$baseUrl/save-profile';
-  static var storeUserBInterests = '$baseUrl/store-user-b-interest';
-  static var storeUserAInterests = '$baseUrl/store-user-interest';
+  static var storeUserBInterests = '$baseUrl/store-user-b-intrest';
+  static var storeUserAInterests = '$baseUrl/store-user-b-intrest';
 }
