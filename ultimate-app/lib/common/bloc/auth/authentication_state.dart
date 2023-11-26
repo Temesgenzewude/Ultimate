@@ -8,8 +8,6 @@ class AuthenticationInitialState extends AuthenticationState {}
 
 class AuthenticationLoadingState extends AuthenticationState {}
 
-
-
 class AuthenticationSuccessState extends AuthenticationState {
   const AuthenticationSuccessState({required this.user});
   final SingUpResponseModel user;
@@ -31,3 +29,12 @@ class AuthenticationFailureState extends AuthenticationState {
   const AuthenticationFailureState({required this.errorMessage});
   final String errorMessage;
 }
+
+class LogoutSuccessState extends AuthenticationState {}
+
+class LogoutFailureState extends AuthenticationState {
+  const LogoutFailureState({required this.errorMessage});
+  final String errorMessage;
+}
+
+class LogoutLoadingState extends AuthenticationState {}

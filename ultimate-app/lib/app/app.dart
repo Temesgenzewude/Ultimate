@@ -157,6 +157,6 @@ class _MyAppState extends State<MyApp> {
             background: Container(color: const Color(0xFFF5F5F5))),
         // home: const OnBoardingOne(),
       ),
-    );
+    ); 
   }
 }

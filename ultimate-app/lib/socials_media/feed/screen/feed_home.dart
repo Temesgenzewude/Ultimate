@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
+import '../../../common/route/routes.dart';
+import '../../../dependency_indjection.dart';
+import '../../../sharedPreferences.dart';
 import 'feed.dart';
 
 class FeedHome extends StatefulWidget {
@@ -15,6 +18,7 @@ class FeedHome extends StatefulWidget {
 class _FeedHomeState extends State<FeedHome> {
   List<Widget> listWidget = [];
   int _currentIndex = 0;
+  final PrefManager prefManager = sl<PrefManager>();
 
   @override
   void initState() {
@@ -24,6 +28,7 @@ class _FeedHomeState extends State<FeedHome> {
       const Scaffold(),
       const Scaffold(),
     ];
+    prefManager.lastViewedPage = Routes.feed;
     super.initState();
   }
 
