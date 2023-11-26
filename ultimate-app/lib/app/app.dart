@@ -39,9 +39,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     prefManager.testToken = '';
     //prefManager.lastViewedPage ??= Routes.onBoarding1;
-    // prefManager.logout();
+    prefManager.logout();
     super.initState();
-    
   }
 
   @override
@@ -136,10 +135,9 @@ class _MyAppState extends State<MyApp> {
         //     (_isLoggedIn ? Routes.accountInformation : Routes.onBoarding1),
 
         initialRoute: _isLoggedIn
-            ? prefManager.lastViewedPage ?? Routes.accountInformation
+            ? prefManager.lastViewedPage ?? Routes.accountInformationOne
             : prefManager.lastViewedPage ?? Routes.onBoarding1,
 
-        // initialRoute: Routes.feed,
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'Ultimate',

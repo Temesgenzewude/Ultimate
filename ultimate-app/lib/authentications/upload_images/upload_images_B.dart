@@ -224,7 +224,7 @@ class _UploadImagesState extends State<UploadImagesB> {
                 } else if (state is UserBUploadImagesSuccessState) {
                   Future.delayed(const Duration(seconds: 3), () {
                     Navigator.of(context)
-                        .pushReplacementNamed(Routes.accountInformation);
+                        .pushReplacementNamed(Routes.accountInformationOne);
                   });
                 } else if (state is UserBUploadImagesFailureState) {
                   Utils.flutterToast(state.errorMessage);
@@ -232,7 +232,7 @@ class _UploadImagesState extends State<UploadImagesB> {
                       context: context,
                       input: 'Upload Images',
                       onPressed: () {
-                        print(prefManager.kToken);
+                        print(prefManager.kTokenB);
                         print('here');
                         BlocProvider.of<UserBUploadImagesBloc>(context)
                             .add(UserBUploadImagesEvent(images: imageFileList));

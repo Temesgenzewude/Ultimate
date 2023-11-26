@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ultimate/authentications/account_information/screen/account_information_2.dart';
+import 'package:flutter_ultimate/authentications/account_information/screen/account_information_3.dart';
 import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number_B.dart';
 import 'package:flutter_ultimate/authentications/upload_images/upload_images_B.dart';
 
-import '../../authentications/account_information/screen/account_information.dart';
+import '../../authentications/account_information/screen/account_information_1.dart';
 import '../../authentications/add_mobile_number/screen/add_mobile_number.dart';
 import '../../authentications/forgot_password/screen/forgot_password.dart';
 import '../../authentications/kyc/screen/kyc.dart';
@@ -107,10 +109,10 @@ mixin RouteGenerator {
         return MaterialPageRoute<dynamic>(
           builder: (context) => const MenuOnboardingNavigation(),
         );
-      case Routes.authentication:
-        return MaterialPageRoute<dynamic>(
-          builder: (context) => const MenuAuthenNavigation(),
-        );
+      // case Routes.authentication:
+      //   return MaterialPageRoute<dynamic>(
+      //     builder: (context) => const MenuAuthenNavigation(),
+      //   );
       // case Routes.profile:
       //   return MaterialPageRoute<dynamic>(
       //     builder: (context) => const MenuProfileNavigation(),
@@ -143,9 +145,17 @@ mixin RouteGenerator {
         );
 
       // / route catalog Authen
-      case Routes.accountInformation:
+      case Routes.accountInformationOne:
         return MaterialPageRoute<dynamic>(
-          builder: (context) => const AccountInformation(),
+          builder: (context) => const AccountInformationOne(),
+        );
+      case Routes.accountInformationTwo:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const AccountInformationTwo(),
+        );
+      case Routes.accountInformationThree:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const AccountInformationThree(),
         );
       case Routes.uploadImages:
         return MaterialPageRoute<dynamic>(
