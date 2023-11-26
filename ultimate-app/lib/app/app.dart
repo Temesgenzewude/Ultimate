@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/account_information/account_info_user_b/account_information_bloc_b.dart';
-import 'package:flutter_ultimate/common/bloc/account_information/account_information_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/auth/b/authentication_bloc_b.dart';
-import 'package:flutter_ultimate/common/bloc/store_user_interests/store_user_interests_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_b/upload_images_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/upload_image/upload_images_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../common/bloc/account_information/account_info_user_b/account_information_bloc_b.dart';
+import '../common/bloc/account_information/account_information_bloc.dart';
 import '../common/bloc/auth/authentication_bloc.dart';
+import '../common/bloc/auth/b/authentication_bloc_b.dart';
 import '../common/bloc/auth_social/auth_social_bloc.dart';
 import '../common/bloc/otp/otp_bloc.dart';
 import '../common/bloc/slider/bloc_slider.dart';
+import '../common/bloc/store_user_interests/store_user_interests_bloc.dart';
+import '../common/bloc/upload_image/upload_images_b/upload_images_bloc.dart';
+import '../common/bloc/upload_image/upload_images_bloc.dart';
 import '../common/constant/dark_mode.dart';
 import '../common/route/route_generator.dart';
 import '../common/route/routes.dart';
@@ -39,8 +39,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     prefManager.testToken = '';
     //prefManager.lastViewedPage ??= Routes.onBoarding1;
-    prefManager.logout();
+    // prefManager.logout();
     super.initState();
+    
   }
 
   @override
