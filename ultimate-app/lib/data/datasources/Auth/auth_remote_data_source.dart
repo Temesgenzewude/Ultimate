@@ -305,7 +305,7 @@ class AuthenticationRemoteDataSourceImpl
       final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPoint),
           body: jsonEncode(jsonbody),
           headers: {
-            'Authorization': prefManager.token ?? prefManager.kToken,
+            'Authorization': prefManager.token ?? prefManager.kTokenB,
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 20));
       if (response.statusCode == 200) {
@@ -396,8 +396,7 @@ class AuthenticationRemoteDataSourceImpl
   @override
   Future<List<dynamic>> uploadImagesA(List<XFile> files) async {
     try {
-      final uri =
-          Uri.parse('${AppUrl.bulkUploadImagesA}${prefManager.kUserIDA}');
+      final uri = Uri.parse('${AppUrl.bulkUploadImagesA}${prefManager.userID}');
       final request = http.MultipartRequest('POST', uri);
       files.forEach((file) async {
         request.files
@@ -447,7 +446,7 @@ class AuthenticationRemoteDataSourceImpl
             .add(await http.MultipartFile.fromPath('images', file.path));
       });
       request.headers['Authorization'] =
-          prefManager.token ?? prefManager.kToken;
+          prefManager.token ?? prefManager.kTokenB;
       final response =
           await request.send().timeout(const Duration(seconds: 20));
       final streamedResponse = await http.Response.fromStream(response);
@@ -488,7 +487,7 @@ class AuthenticationRemoteDataSourceImpl
     String token = '';
     if (prefManager.userType == 'User B') {
       url = AppUrl.storeUserBInterests;
-      token = prefManager.token ?? prefManager.kToken;
+      token = prefManager.token ?? prefManager.kTokenB;
     } else {
       url = AppUrl.storeUserAInterests;
       token = prefManager.token ?? prefManager.kTokenA;
@@ -579,41 +578,53 @@ class AuthenticationRemoteDataSourceImpl
   @override
   Future<AccInfoResponseModel> addAccountInfo(
       AccountInfoModel accountInfoModel) async {
-    try {
-      final tempAccountInfoModel = AccountInfoModel(
-        gender: accountInfoModel.gender,
-        age: accountInfoModel.age,
-        profession: accountInfoModel.profession,
-        about: 'I am test',
-        address: 'US',
-        maritalStatus: 'Single',
-        height: '188cm',
-        lookingFor: 'Friend',
-        child: '2',
-        sect: 'Sunni',
-        healthIssue: 'No',
-        bornReligious: 'Born Muslim',
-        isDrink: false,
-        isSmoke: false,
-        isMadication: false,
-        ethnicity: 'Turkish',
-        nationality: 'turkish',
-        levelOfReligiously: 'Conservative',
-      );
+    String url = '';
+    String token = '';
+    if (prefManager.userType == 'User B') {
+      url = AppUrl.saveUserBProfile;
+      token = prefManager.token ?? prefManager.kTokenB;
+    } else {
+      url = AppUrl.saveUserAProfile;
+      token = prefManager.token ?? prefManager.kTokenA;
+    }
 
-      Map<String, dynamic> jsonBody = tempAccountInfoModel.toJson();
+    // String newUrl = '$url/${prefManager.userID}';
+
+    print('saving user ${prefManager.userType} profile url: $url');
+    print('token: $token');
+    print('body: ${accountInfoModel.toJson()}');
+    print('user id: ${prefManager.userID}');
+    try {
+      // final tempAccountInfoModel = AccountInfoModel(
+      //   gender: accountInfoModel.gender,
+      //   age: accountInfoModel.age,
+      //   profession: accountInfoModel.profession,
+      //   about: 'I am test',
+      //   address: 'US',
+      //   maritalStatus: 'Single',
+      //   height: '188cm',
+      //   lookingFor: 'Friend',
+      //   child: '2',
+      //   sect: 'Sunni',
+      //   healthIssue: 'No',
+      //   bornReligious: 'Born Muslim',
+      //   isDrink: false,
+      //   isSmoke: false,
+      //   isMadication: false,
+      //   ethnicity: 'Turkish',
+      //   nationality: 'turkish',
+      //   levelOfReligiously: 'Conservative',
+      // );
+
+      Map<String, dynamic> jsonBody = accountInfoModel.toJson();
       jsonBody['userId'] = '${prefManager.userID}';
       // jsonBody['userId'] = '654117b9ca01a37d7f8fe2e8';
-      print(jsonBody);
+      print('saving user profile request body $jsonBody');
       print(prefManager.token);
-      final String url = prefManager.userType == 'User A'
-          ? AppUrl.saveUserAProfile
-          : AppUrl.saveUserBProfile;
 
-      print(url);
       final response = await client
           .post(Uri.parse(url), body: jsonEncode(jsonBody), headers: {
-        'Authorization': prefManager.token ?? prefManager.kTokenA,
+        'Authorization': token,
         'Content-Type': 'application/json',
       }).timeout(const Duration(seconds: 10));
 
@@ -621,14 +632,20 @@ class AuthenticationRemoteDataSourceImpl
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         final responseBody = AccInfoResponseModel.fromJson(jsonResponse);
         return responseBody;
-      } else if (response.statusCode == 403) {
+      } else if (response.statusCode == 403 ||
+          response.statusCode == 401 ||
+          response.statusCode == 404) {
         final dynamic error = json.decode(response.body);
         throw ForbiddenResponseException(
-            message: error['message'] ?? 'Failed to send Otp');
+            message: error['message'] ??
+                ['error'] ??
+                'Failed to save user profile!');
       } else {
         final dynamic error = json.decode(response.body);
         throw UnknownException(
-            message: error['message'] ?? 'Failed to send Otp');
+            message: error['message'] ??
+                ['error'] ??
+                'Failed to save user profile!');
       }
     } on SocketException catch (_) {
       throw const NoInternetException(message: 'No internet connection');
@@ -647,7 +664,7 @@ class AuthenticationRemoteDataSourceImpl
       final response = await client.post(Uri.parse(AppUrl.saveUserBProfile),
           body: jsonEncode(jsonBody),
           headers: {
-            'Authorization': prefManager.token ?? prefManager.kToken,
+            'Authorization': prefManager.token ?? prefManager.kTokenB,
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 10));
 

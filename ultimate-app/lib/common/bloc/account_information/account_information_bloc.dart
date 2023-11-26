@@ -21,11 +21,12 @@ class AccountInfoBloc extends Bloc<AccInfoEvent, AccInfoState> {
     } else if (result is String) {
       return AccFailureState(errorMessage: result);
     } else {
-      return const AccFailureState(errorMessage: 'Unexpected error');
+      return const AccFailureState(errorMessage: 'Unexpected Error Occurred');
     }
   }
 
-  void _addAccInfo(AddAccInfoEvent event, Emitter<AccInfoState> emit) async {
+  Future<void> _addAccInfo(
+      AddAccInfoEvent event, Emitter<AccInfoState> emit) async {
     emit(AccInfoLoadingState());
     try {
       final result =
@@ -40,10 +41,6 @@ class AccountInfoBloc extends Bloc<AccInfoEvent, AccInfoState> {
         accInfoSuccessOrFailure(e.message),
       );
     } on ConnectionTimeOutException catch (e) {
-      emit(
-        accInfoSuccessOrFailure(e.message),
-      );
-    } on ServerException catch (e) {
       emit(
         accInfoSuccessOrFailure(e.message),
       );

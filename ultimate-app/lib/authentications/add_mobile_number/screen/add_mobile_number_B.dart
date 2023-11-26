@@ -31,8 +31,8 @@ final String email = prefManager.email ?? '';
 final String address = prefManager.address ?? '';
 final String birthday = prefManager.birthday ?? '';
 final String password = prefManager.password ?? '';
-double latitude = double.tryParse(prefManager.kLatitude) ?? 0.0;
-double longitude = double.tryParse(prefManager.kLongitude) ?? 0.0;
+double latitude = double.tryParse(prefManager.latitude ?? '0.0') ?? 0.0;
+double longitude = double.tryParse(prefManager.longitude ?? '0.0') ?? 0.0;
 
 class _AddMobileNumberBState extends State<AddMobileNumberB> {
   void _submitForm(

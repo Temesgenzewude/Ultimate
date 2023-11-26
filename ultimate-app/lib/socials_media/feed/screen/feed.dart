@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ultimate/app/widget_support.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
@@ -55,19 +56,31 @@ class Feed extends StatelessWidget {
           'Feed',
           style: title4(color: grey1100),
         ),
-        right: AnimationClick(
-          child: Container(
-            margin: const EdgeInsets.only(right: 16),
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                color: grey200, borderRadius: BorderRadius.circular(24)),
-            child: Image.asset(
-              user,
-              width: 24,
-              height: 24,
-              color: grey1100,
+        right: Column(
+          children: [
+            AnimationClick(
+              child: Container(
+                margin: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: grey200, borderRadius: BorderRadius.circular(24)),
+                child: Image.asset(
+                  user,
+                  width: 24,
+                  height: 24,
+                  color: grey1100,
+                ),
+              ),
             ),
-          ),
+            const SizedBox(height: 8),
+            AppWidget.typeButtonStartAction2(
+                context: context,
+                input: 'Logout',
+                onPressed: () {},
+                bgColor: primary,
+                borderColor: primary,
+                textColor: grey1100),
+          ],
         ),
       ),
       body: Column(

@@ -46,7 +46,8 @@ class _SignInTabState extends State<SignInTab> {
       print('user $user');
 
       Future.delayed(const Duration(seconds: 3), () {
-        Navigator.of(context).pushReplacementNamed(Routes.accountInformation);
+        Navigator.of(context)
+            .pushReplacementNamed(Routes.accountInformationOne);
       });
     }
   }
@@ -118,7 +119,7 @@ class _SignInTabState extends State<SignInTab> {
                   Utils.flutterToast('Successfully logged in');
                   Future.delayed(const Duration(seconds: 3), () {
                     Navigator.of(context)
-                        .pushReplacementNamed(Routes.accountInformation);
+                        .pushReplacementNamed(Routes.accountInformationOne);
                   });
                 } else if (state is LoginFailureState) {
                   Utils.flutterToast(state.errorMessage);

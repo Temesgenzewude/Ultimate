@@ -15,7 +15,10 @@ class Routes {
   static const String profile11 = '/profile11';
   static const String profile12 = '/profile12';
 
-  static const String accountInformation = '/account_information';
+  static const String accountInformationOne = '/account_information_one';
+  static const String accountInformationTwo = '/account_information_two';
+  static const String accountInformationThree = '/account_information_three';
+  static const String accountInformationFour = '/account_information_four';
   static const String addMobileNumber = '/add_mobile_number';
   static const String forgotPassword = '/forgot_password';
   static const String kyc = '/kyc';

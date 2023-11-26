@@ -113,7 +113,7 @@ class _SignInTabBState extends State<SignInTabB> {
             } else if (state is LoginSuccessStateB) {
               Future.delayed(Duration.zero, () {
                 Navigator.of(context)
-                    .pushReplacementNamed(Routes.accountInformation);
+                    .pushReplacementNamed(Routes.accountInformationOne);
               });
             } else if (state is LoginFailureStateB) {
               Utils.flutterToast(state.errorMessage);

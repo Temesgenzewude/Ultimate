@@ -3,54 +3,134 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefManager {
   PrefManager(this.preferences);
-  String kToken =
+  String kTokenB =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTYwODlhM2Y5MWE3NDczNDk0Y2RlYTEiLCJpYXQiOjE3MDA4NDE2OTV9.sFORF-J0JsEEYTC3oTtxd1ATiAnSjBkT4IU2TaZ-_sk';
-  String kUserID = '';
+  final String _kUserID = '';
+  final String _kToken = 'token';
   String kTokenA =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTU5ZWExMDNjNTM5OGQ4YWY1NGY4NzQiLCJpYXQiOjE3MDA4NTA5Nzl9.DNMRyqyuxqnrNYqCqYyAMGj7AkZx4gZZOp5D5RQBvOI';
-  String kUserIDA = '';
-  String kLatitude = 'latitude';
-  String kLongitude = 'longitude';
-  String kUserType = 'User B';
-  String kName = 'name';
-  String kEmail = 'email';
-  String kPhone = 'phone';
-  String kAddress = 'address';
-  String kBirthday = 'birthday';
-  String kPassword = 'password';
-  String kTestToken = 'test_token';
-  String kLastViewedPage = Routes.onBoarding1;
+  final String _kLatitude = 'latitude';
+  final String _kLongitude = 'longitude';
+  final String _kUserType = 'User B';
+  final String _kName = 'name';
+  final String _kEmail = 'email';
+  final String _kPhone = 'phone';
+  final String _kAddress = 'address';
+  final String _kBirthday = 'birthday';
+  final String _kPassword = 'password';
+  final String _kTestToken = 'test_token';
+  final String _kGender = 'gender';
+  final String _kAge = 'age';
+  final String _kProfession = 'profession';
+  final String _kAbout = 'about';
+  final String _kHight = 'hight';
+  final String _kChild = 'child';
+  final String _kBornReligious = 'bornReligious';
+  final String _kHealthIssue = 'healthIssue';
+  final String _kMaritalStatus = 'martialStatus';
+  final String _kLevelOfReligiously = 'levelOfReligiously';
+  final String _kIsSmoke = 'isSmoke';
+  final String _kIsDrink = 'isDrink';
+  final String _kIsMedication = 'isMedication';
+  final String _kEthnicity = 'ethnicity';
+  final String _kNationality = 'nationality';
+  final String _kSect = 'sect';
+  final String _kLookingFor = 'lookingFor';
+
+  final String _kLastViewedPage = Routes.onBoarding1;
   SharedPreferences preferences;
-  set token(String? value) => preferences.setString(kToken, value ?? '');
-  String? get token => preferences.getString(kToken);
+  set token(String? value) => preferences.setString(_kToken, value ?? '');
+  String? get token => preferences.getString(_kToken);
   set lastViewedPage(String? value) =>
-      preferences.setString(kLastViewedPage, value ?? Routes.onBoarding1);
-  String? get lastViewedPage => preferences.getString(kLastViewedPage);
-  set userType(String? value) => preferences.setString(kUserType, value ?? '');
-  String? get userType => preferences.getString(kUserType);
-  set userId(String? value) => preferences.setString(kUserID, value ?? '');
-  String? get userID => preferences.getString(kUserID);
-  set latitude(String? value) => preferences.setString(kLatitude, value ?? '');
-  String? get latitude => preferences.getString(kLatitude);
+      preferences.setString(_kLastViewedPage, value ?? Routes.onBoarding1);
+  String? get lastViewedPage => preferences.getString(_kLastViewedPage);
+  set userType(String? value) => preferences.setString(_kUserType, value ?? '');
+  String? get userType => preferences.getString(_kUserType);
+  set userId(String? value) => preferences.setString(_kUserID, value ?? '');
+  String? get userID => preferences.getString(_kUserID);
+  set latitude(String? value) => preferences.setString(_kLatitude, value ?? '');
+  String? get latitude => preferences.getString(_kLatitude);
   set longitude(String? value) =>
-      preferences.setString(kLongitude, value ?? '');
-  String? get longitude => preferences.getString(kLongitude);
+      preferences.setString(_kLongitude, value ?? '');
+  String? get longitude => preferences.getString(_kLongitude);
   void logout() => preferences.clear();
 
-  set name(String? value) => preferences.setString(kName, value ?? '');
-  String? get name => preferences.getString(kName);
-  set email(String? value) => preferences.setString(kEmail, value ?? '');
-  String? get email => preferences.getString(kEmail);
-  set phone(String? value) => preferences.setString(kPhone, value ?? '');
-  String? get phone => preferences.getString(kPhone);
-  set address(String? value) => preferences.setString(kAddress, value ?? '');
-  String? get address => preferences.getString(kAddress);
-  set birthday(String? value) => preferences.setString(kBirthday, value ?? '');
-  String? get birthday => preferences.getString(kBirthday);
-  set password(String? value) => preferences.setString(kPassword, value ?? '');
-  String? get password => preferences.getString(kPassword);
+  set name(String? value) => preferences.setString(_kName, value ?? '');
+  String? get name => preferences.getString(_kName);
+  set email(String? value) => preferences.setString(_kEmail, value ?? '');
+  String? get email => preferences.getString(_kEmail);
+  set phone(String? value) => preferences.setString(_kPhone, value ?? '');
+  String? get phone => preferences.getString(_kPhone);
+  set address(String? value) => preferences.setString(_kAddress, value ?? '');
+  String? get address => preferences.getString(_kAddress);
+  set birthday(String? value) => preferences.setString(_kBirthday, value ?? '');
+  String? get birthday => preferences.getString(_kBirthday);
 
-  set testToken(String? value) => preferences.setString(kTestToken,
+  set password(String? value) => preferences.setString(_kPassword, value ?? '');
+  String? get password => preferences.getString(_kPassword);
+
+  set testToken(String? value) => preferences.setString(_kTestToken,
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDAzNDAxNzZ9.DvWKBxMTWpRLxKjw-YDi_fJWUOLGmPCbhzzqNJzv550');
-  String? get testToken => preferences.getString(kTestToken);
+  String? get testToken => preferences.getString(_kTestToken);
+
+  set gender(String? value) => preferences.setString(_kGender, value ?? '');
+  String? get gender => preferences.getString(_kGender);
+
+  set age(String? value) => preferences.setString(_kAge, value ?? '');
+  String? get age => preferences.getString(_kAge);
+
+  set profession(String? value) =>
+      preferences.setString(_kProfession, value ?? '');
+  String? get profession => preferences.getString(_kProfession);
+
+  set about(String? value) => preferences.setString(_kAbout, value ?? '');
+  String? get about => preferences.getString(_kAbout);
+
+  set hight(String? value) => preferences.setString(_kHight, value ?? '');
+  String? get hight => preferences.getString(_kHight);
+
+  set child(String? value) => preferences.setString(_kChild, value ?? '');
+  String? get child => preferences.getString(_kChild);
+
+  set bornReligious(String? value) =>
+      preferences.setString(_kBornReligious, value ?? '');
+  String? get bornReligious => preferences.getString(_kBornReligious);
+
+  set healthIssue(String? value) =>
+      preferences.setString(_kHealthIssue, value ?? '');
+  String? get healthIssue => preferences.getString(_kHealthIssue);
+
+  set maritalStatus(String? value) =>
+      preferences.setString(_kMaritalStatus, value ?? '');
+  String? get maritalStatus => preferences.getString(_kMaritalStatus);
+
+  set levelOfReligiously(String? value) =>
+      preferences.setString(_kLevelOfReligiously, value ?? '');
+  String? get levelOfReligiously => preferences.getString(_kLevelOfReligiously);
+
+  set isSmoke(bool? value) => preferences.setBool(_kIsSmoke, value ?? false);
+  bool? get isSmoke => preferences.getBool(_kIsSmoke);
+
+  set isDrink(bool? value) => preferences.setBool(_kIsDrink, value ?? false);
+  bool? get isDrink => preferences.getBool(_kIsDrink);
+
+  set isMedication(bool? value) =>
+      preferences.setBool(_kIsMedication, value ?? false);
+  bool? get isMedication => preferences.getBool(_kIsMedication);
+
+  set ethnicity(String? value) =>
+      preferences.setString(_kEthnicity, value ?? '');
+  String? get ethnicity => preferences.getString(_kEthnicity);
+
+  set nationality(String? value) =>
+      preferences.setString(_kNationality, value ?? '');
+  String? get nationality => preferences.getString(_kNationality);
+
+  set sect(String? value) => preferences.setString(_kSect, value ?? '');
+  String? get sect => preferences.getString(_kSect);
+
+  set lookingFor(String? value) =>
+      preferences.setString(_kLookingFor, value ?? '');
+
+  String? get lookingFor => preferences.getString(_kLookingFor);
 }
