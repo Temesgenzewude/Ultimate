@@ -27,29 +27,29 @@ class StoreUserInterestsBloc
       return StoreUserInterestsFailureState(errorMessage: result);
     } else {
       return const StoreUserInterestsFailureState(
-          errorMessage: 'Unexpected error');
+          errorMessage: 'Something went wrong. Please try again later.');
     }
   }
 
   FutureOr<void> _handleStoreUserInterestsEvent(
       StoreUserInterestsEventCall event,
-      Emitter<StoreUserInterestsState> emit) {
+      Emitter<StoreUserInterestsState> emit) async {
     emit(StoreUserInterestsLoadingState());
 
     try {
-      final result = authenticationRepository
+      final result = await authenticationRepository
           .saveUserInterests(event.saveUserInterestRequest);
 
       emit(storeUserInterestsSuccessOrFailure(result: result));
+    } on ServerException catch (e) {
+      emit(
+        storeUserInterestsSuccessOrFailure(result: e.message),
+      );
     } on NoInternetException catch (e) {
       emit(
         storeUserInterestsSuccessOrFailure(result: e.message),
       );
     } on ConnectionTimeOutException catch (e) {
-      emit(
-        storeUserInterestsSuccessOrFailure(result: e.message),
-      );
-    } on ServerException catch (e) {
       emit(
         storeUserInterestsSuccessOrFailure(result: e.message),
       );

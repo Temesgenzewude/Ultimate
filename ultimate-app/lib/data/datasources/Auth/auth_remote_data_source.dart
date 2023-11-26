@@ -516,12 +516,24 @@ class AuthenticationRemoteDataSourceImpl
       print(
           '--- saving  user ${prefManager.userType}--- response body: ${response.body}');
 
+      print('response status code: ${response.statusCode}');
+
       if (response.statusCode == 200) {
         final dynamic data = json.decode(response.body);
         return SaveUserInterestsResponseModel.fromJson(data);
-      } else if (response.statusCode == 403 ||
-          response.statusCode == 401 ||
-          response.statusCode == 404) {
+      } else if (response.statusCode == 404) {
+        final dynamic data = json.decode(response.body);
+        throw ServerException(
+            message: data['message'] ??
+                data['error'] ??
+                'Failed to save user interests');
+      } else if (response.statusCode == 403) {
+        final dynamic data = json.decode(response.body);
+        throw ServerException(
+            message: data['message'] ??
+                data['error'] ??
+                'Failed to save user interests');
+      } else if (response.statusCode == 401) {
         final dynamic data = json.decode(response.body);
         throw ServerException(
             message: data['message'] ??

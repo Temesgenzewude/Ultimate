@@ -39,8 +39,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     prefManager.testToken = '';
     //prefManager.lastViewedPage ??= Routes.onBoarding1;
-    super.initState();
     // prefManager.logout();
+    super.initState();
+    
   }
 
   @override
