@@ -361,7 +361,7 @@ class AuthenticationRepository {
 
     if (await internetConnectionChecker.hasConnection) {
       try {
-        return remoteDataSource.uploadImagesA(files);
+        return await remoteDataSource.uploadImagesA(files);
       } on NoInternetException catch (e) {
         print(' auth repo error: ${e.toString()}');
         rethrow;
@@ -398,7 +398,7 @@ class AuthenticationRepository {
 
     if (await internetConnectionChecker.hasConnection) {
       try {
-        return remoteDataSource.uploadImagesB(files);
+        return await remoteDataSource.uploadImagesB(files);
       } on NoInternetException catch (e) {
         print(' auth repo error: ${e.toString()}');
         rethrow;
