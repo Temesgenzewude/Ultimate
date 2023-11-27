@@ -117,144 +117,155 @@ class _UploadImagesState extends State<UploadImagesB> {
   }
 
   @override
+  void initState() {
+    prefManager.lastViewedPage = Routes.uploadImagesB;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
-    return Scaffold(
-      appBar: AppBarCpn(
-        left: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: AnimationClick(
-            function: () => Navigator.of(context).pop(),
-            child: Image.asset(
-              icArrowLeft,
-              width: 24,
-              height: 24,
-              color: grey1100,
-            ),
-          ),
-        ),
-        right: AnimationClick(
-            child: Padding(
-          padding: const EdgeInsets.only(right: 16),
-          child: Text(
-            'Skip',
-            style: headline(color: corn1),
-          ),
-        )),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 24),
-            Center(
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBarCpn(
+          left: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: AnimationClick(
+              // function: () => Navigator.of(context).pop(),
               child: Image.asset(
-                bg6,
-                height: height / 6,
+                logo,
+                width: 24,
+                height: 24,
+                color: grey1100,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 32, bottom: 8),
-              child: GradientText(
-                'Upload up to 6 Images',
-                style: const TextStyle(
-                    fontSize: 28,
-                    height: 1,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'SpaceGrotesk'),
-                gradient: LinearGradient(colors: [
-                  const Color(0xFFCFE1FD).withOpacity(0.9),
-                  const Color(0xFFFFFDE1).withOpacity(0.9),
-                ]),
+          ),
+          // right: AnimationClick(
+          //     child: Padding(
+          //   padding: const EdgeInsets.only(right: 16),
+          //   child: Text(
+          //     'Skip',
+          //     style: headline(color: corn1),
+          //   ),
+          // )),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 24),
+              Center(
+                child: Image.asset(
+                  bg6,
+                  height: height / 6,
+                ),
               ),
-            ),
-            Text(
-              'Verify your identity as fast as you can',
-              textAlign: TextAlign.center,
-              style: body(color: grey800),
-            ),
-            const SizedBox(height: 32),
-            item(
-              'Scan your ID, Passport',
-              'Take picture of both side card',
-              green,
-              selectImages,
-            ),
-            const SizedBox(height: 24),
-            if (imageFileList.isNotEmpty)
-              Expanded(
-                child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
-                    itemCount: imageFileList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Image.file(File(imageFileList[index].path),
-                                  fit: BoxFit.cover),
-                              Positioned(
-                                  left: 90,
-                                  top: -20,
-                                  child: IconButton(
-                                      icon: const Icon(
-                                        Icons.delete_forever_rounded,
-                                        size: 30,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          imageFileList.removeAt(index);
-                                        });
-                                      }))
-                            ],
-                          ));
-                    }),
+              Padding(
+                padding: const EdgeInsets.only(top: 32, bottom: 8),
+                child: GradientText(
+                  'Upload up to 6 Images',
+                  style: const TextStyle(
+                      fontSize: 28,
+                      height: 1,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'SpaceGrotesk'),
+                  gradient: LinearGradient(colors: [
+                    const Color(0xFFCFE1FD).withOpacity(0.9),
+                    const Color(0xFFFFFDE1).withOpacity(0.9),
+                  ]),
+                ),
               ),
-            const SizedBox(height: 24),
-            BlocBuilder<UserBUploadImagesBloc, UserBUploadImagesState>(
-              builder: (context, state) {
-                if (state is UserBUploadImagesLoadingState) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is UserBUploadImagesSuccessState) {
-                  Future.delayed(const Duration(seconds: 3), () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(Routes.accountInformationOne);
-                  });
-                } else if (state is UserBUploadImagesFailureState) {
-                  Utils.flutterToast(state.errorMessage);
+              Text(
+                'Verify your identity as fast as you can',
+                textAlign: TextAlign.center,
+                style: body(color: grey800),
+              ),
+              const SizedBox(height: 32),
+              item(
+                'Scan your ID, Passport',
+                'Take picture of both side card',
+                green,
+                selectImages,
+              ),
+              const SizedBox(height: 24),
+              if (imageFileList.isNotEmpty)
+                Expanded(
+                  child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3),
+                      itemCount: imageFileList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                            height: 30,
+                            width: 30,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Image.file(File(imageFileList[index].path),
+                                    fit: BoxFit.cover),
+                                Positioned(
+                                    left: 90,
+                                    top: -20,
+                                    child: IconButton(
+                                        icon: const Icon(
+                                          Icons.delete_forever_rounded,
+                                          size: 30,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            imageFileList.removeAt(index);
+                                          });
+                                        }))
+                              ],
+                            ));
+                      }),
+                ),
+              const SizedBox(height: 24),
+              BlocBuilder<UserBUploadImagesBloc, UserBUploadImagesState>(
+                builder: (context, state) {
+                  if (state is UserBUploadImagesLoadingState) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is UserBUploadImagesSuccessState) {
+                    Future.delayed(const Duration(seconds: 3), () {
+                      Navigator.of(context)
+                          .pushReplacementNamed(Routes.accountInformationOne);
+                    });
+                  } else if (state is UserBUploadImagesFailureState) {
+                    Utils.flutterToast(state.errorMessage);
+                    return AppWidget.typeButtonStartAction2(
+                        context: context,
+                        input: 'Upload Images',
+                        onPressed: () {
+                          print(prefManager.kTokenB);
+                          print('here');
+                          BlocProvider.of<UserBUploadImagesBloc>(context).add(
+                              UserBUploadImagesEvent(images: imageFileList));
+                        },
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100);
+                  }
                   return AppWidget.typeButtonStartAction2(
                       context: context,
                       input: 'Upload Images',
                       onPressed: () {
-                        print(prefManager.kTokenB);
-                        print('here');
                         BlocProvider.of<UserBUploadImagesBloc>(context)
                             .add(UserBUploadImagesEvent(images: imageFileList));
                       },
                       bgColor: primary,
                       borderColor: primary,
                       textColor: grey1100);
-                }
-                return AppWidget.typeButtonStartAction2(
-                    context: context,
-                    input: 'Upload Images',
-                    onPressed: () {
-                      BlocProvider.of<UserBUploadImagesBloc>(context)
-                          .add(UserBUploadImagesEvent(images: imageFileList));
-                    },
-                    bgColor: primary,
-                    borderColor: primary,
-                    textColor: grey1100);
-              },
-            ),
-            const SizedBox(height: 48)
-          ],
+                },
+              ),
+              const SizedBox(height: 48)
+            ],
+          ),
         ),
       ),
     );
