@@ -37,6 +37,10 @@ class UploadImagesBloc extends Bloc<UploadImagesEvent, UploadImagesState> {
       emit(
         userAUploadImagesSuccessOrFailure(result: e.message),
       );
+    } on ForbiddenResponseException catch (e) {
+      emit(
+        userAUploadImagesSuccessOrFailure(result: e.message),
+      );
     } on ServerException catch (e) {
       emit(
         userAUploadImagesSuccessOrFailure(result: e.message),
