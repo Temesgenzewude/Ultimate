@@ -37,6 +37,10 @@ class UserBUploadImagesBloc
       emit(
         userBUploadImagesSuccessOrFailure(result: e.message),
       );
+    } on ForbiddenResponseException catch (e) {
+      emit(
+        userBUploadImagesSuccessOrFailure(result: e.message),
+      );
     } on ServerException catch (e) {
       emit(
         userBUploadImagesSuccessOrFailure(result: e.message),
