@@ -402,7 +402,8 @@ class AuthenticationRemoteDataSourceImpl
         request.files
             .add(await http.MultipartFile.fromPath('images', file.path));
       });
-      request.headers['Authorization'] = prefManager.kTokenA;
+      request.headers['Authorization'] =
+          prefManager.token ?? prefManager.kTokenA;
       final response =
           await request.send().timeout(const Duration(seconds: 20));
       final streamedResponse = await http.Response.fromStream(response);
