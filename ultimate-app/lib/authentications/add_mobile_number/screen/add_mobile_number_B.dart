@@ -12,6 +12,7 @@ import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
 import '../../../common/util/form_validator.dart';
 import '../../../common/util/show_toast_message.dart';
+import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/gradient_text.dart';
 import '../../../common/widget/unfocus_click.dart';
 import '../../../data/models/authentication_model.dart';
@@ -116,7 +117,7 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
             Utils.flutterToast(
                 'You have successfully registered. OTP is sent to +${languageCode}${phoneCtl.text} Please verify your account!');
             Future.delayed(const Duration(seconds: 5), () {
-              Navigator.of(context).pushNamed(Routes.verify,
+              Navigator.of(context).pushReplacementNamed(Routes.verify,
                   arguments: '+${languageCode}${phoneCtl.text}');
             });
           }
@@ -189,6 +190,21 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
                         BorderRadius.vertical(bottom: Radius.circular(16))),
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16),
+                      child: AnimationClick(
+                        function: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Image.asset(
+                          icArrowLeft,
+                          width: 24,
+                          height: 24,
+                          color: grey1100,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
