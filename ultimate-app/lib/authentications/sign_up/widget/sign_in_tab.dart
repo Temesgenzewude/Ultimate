@@ -76,7 +76,7 @@ class _SignInTabState extends State<SignInTab> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           GradientText(
-            'Welcome to  Ultimate!',
+            'Welcome to  Ultimate! Login As User A!',
             style: const TextStyle(
                 fontSize: 32,
                 height: 1,
@@ -87,6 +87,7 @@ class _SignInTabState extends State<SignInTab> {
               const Color(0xFFFFFDE1).withOpacity(0.9),
             ]),
           ),
+          const SizedBox(height: 16),
           Column(
             children: [
               TextFieldCpn(
