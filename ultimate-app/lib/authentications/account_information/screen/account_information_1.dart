@@ -134,7 +134,6 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
                               setState(() {
                                 isMale = true;
                                 isFemale = false;
-
                                 _selectedGender = 'Male';
                               });
                             },
@@ -167,7 +166,6 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
                               setState(() {
                                 isMale = false;
                                 isFemale = true;
-
                                 _selectedGender = 'Female';
                               });
                             },
