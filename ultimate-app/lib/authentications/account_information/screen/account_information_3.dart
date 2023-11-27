@@ -432,7 +432,8 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                           input: 'CONTINUE TO ADD YOUR INTERESTS',
                           onPressed: () {
                             Future.delayed(const Duration(seconds: 1), () {
-                              Navigator.pushNamed(context, Routes.interest_1);
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.interest_1);
                             });
                           },
                           bgColor: primary,
