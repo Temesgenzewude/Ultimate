@@ -28,6 +28,7 @@ Widget addImageWidget(dynamic picture, Function onAddImage) {
                     ),
                     Container(
                       width: 100,
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           color: primary),
