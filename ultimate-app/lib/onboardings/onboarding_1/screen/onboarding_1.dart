@@ -196,10 +196,67 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                 ),
               ),
             ),
+            Container(
+              color: primary,
+              padding: const EdgeInsets.all(8),
+              child: Container(
+                height: 30.0,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: Colors.white),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    isDense: true,
+                    icon: const Icon(
+                      Icons.arrow_drop_down_outlined,
+                      color: Colors.black87,
+                      size: 30,
+                    ),
+                    dropdownColor: Colors.white,
+                    style: const TextStyle(
+                        color: primary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500),
+                    hint: const Text(
+                      'Select User Type',
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    items: userTypes.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: const TextStyle(
+                              color: Colors.black87,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      );
+                    }).toList(),
+                    value: selectedUserType,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedUserType = value;
+                        prefManager.userType = selectedUserType;
+                        print(prefManager.userType);
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Container(
-                  height: 55,
+                  height: 45,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   decoration: BoxDecoration(
@@ -231,68 +288,14 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                             }
                           },
                           child: SizedBox(
-                            height: 55,
+                            height: 45,
                             child: Text(
-                              'Continue As'.toUpperCase(),
+                              'Continue'.toUpperCase(),
                               style: const TextStyle(
                                   color: grey1100, fontSize: 20),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Container(
-                          height: 60.0,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(5.0),
-                              color: Colors.white),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              isDense: true,
-                              icon: const Icon(
-                                Icons.arrow_drop_down_outlined,
-                                color: Colors.black87,
-                                size: 30,
-                              ),
-                              dropdownColor: Colors.white,
-                              style: const TextStyle(
-                                  color: primary,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500),
-                              hint: const Text(
-                                'Select User Type',
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              items: userTypes.map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: const TextStyle(
-                                        color: Colors.black87,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                );
-                              }).toList(),
-                              value: selectedUserType,
-                              onChanged: (String? value) {
-                                setState(() {
-                                  selectedUserType = value;
-                                  prefManager.userType = selectedUserType;
-                                  print(prefManager.userType);
-                                });
-                              },
-                            ),
-                          ),
-                        )
                       ]),
                 ))
           ],
@@ -301,46 +304,3 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
     );
   }
 }
-
-/*
-
-Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: const SizedBox(
-                              width: 200,
-                              height: 55,
-                              child: Text(
-                                'Continue As',
-                                style: TextStyle(color: grey1100),
-                              ),
-                            ),
-                          ),
-                          
-                        ])
-
-
- AppWidget.typeButtonStartAction(
-                  context: context,
-                  input: 'Continue z',
-                  onPressed: () {
-
-                    Future.delayed(const Duration(seconds: 3), () {
-                      Navigator.pushReplacementNamed(context, Routes.signUp);
-                    });
-
-
-                  
-                  },
-                  bgColor: primary,
-                  icon: icArrowRight,
-                  colorAsset: grey1100,
-                  borderColor: primary,
-                  textColor: grey1100),
-
-*/
-
-
