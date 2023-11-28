@@ -6,5 +6,5 @@ abstract class UploadImagesEvent {
 
 class UserAUploadImagesEvent extends UploadImagesEvent {
   UserAUploadImagesEvent({required this.images});
-  final List<XFile> images;
+  final List<XFile?> images;
 }

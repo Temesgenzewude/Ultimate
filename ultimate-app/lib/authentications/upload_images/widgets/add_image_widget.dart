@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_ultimate/common/constant/colors.dart';
+import 'package:image_picker/image_picker.dart';
 
-Widget addImageWidget(dynamic picture, Function onAddImage) {
+Widget addImageWidget(dynamic picture, Function onAddImage,
+    List<XFile> selectedImages, int index) {
   return MouseRegion(
     cursor: SystemMouseCursors.click,
     child: GestureDetector(
       onTap: () {
         onAddImage();
+        print(selectedImages);
+        print('Heree==========================');
       },
       child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -28,7 +34,7 @@ Widget addImageWidget(dynamic picture, Function onAddImage) {
                     ),
                     Container(
                       width: 100,
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           color: primary),
@@ -37,7 +43,7 @@ Widget addImageWidget(dynamic picture, Function onAddImage) {
                         children: [
                           Icon(
                             Icons.add,
-                            size: 40,
+                            size: 25,
                           ),
                           Text(
                             'Add',
@@ -51,8 +57,8 @@ Widget addImageWidget(dynamic picture, Function onAddImage) {
                     )
                   ],
                 )
-              : Image.asset(
-                  picture,
+              : Image.file(
+                  File(selectedImages[index].path),
                   fit: BoxFit.cover,
                 )),
     ),

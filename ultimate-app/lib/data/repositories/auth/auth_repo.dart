@@ -352,7 +352,7 @@ class AuthenticationRepository {
     }
   }
 
-  Future<List<dynamic>> uploadImagesA(List<XFile> files) async {
+  Future<List<dynamic>> uploadImagesA(List<XFile?> files) async {
     // try {
     //   return remoteDataSource.verifyOTPUserA(otp);
     // } catch (e) {
