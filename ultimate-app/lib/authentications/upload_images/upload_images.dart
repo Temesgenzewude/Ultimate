@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -72,49 +73,6 @@ class _UploadImagesState extends State<UploadImages> {
     return File(imagePath).copy(image.path);
   }
 
-  Widget item(String title, String subTitle, Color bgColor, Function() onTap) {
-    return AnimationClick(
-      function: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-            color: grey200, borderRadius: BorderRadius.circular(16)),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: bgColor, borderRadius: BorderRadius.circular(16)),
-              child: Image.asset(newPaper, width: 28, height: 28),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: headline(color: grey1100),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    subTitle,
-                    style: subhead(color: grey800),
-                  )
-                ],
-              ),
-            ),
-            const Icon(
-              Icons.keyboard_arrow_right_rounded,
-              size: 28,
-              color: grey500,
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   void initState() {
     prefManager.lastViewedPage = Routes.uploadImages;
@@ -142,14 +100,6 @@ class _UploadImagesState extends State<UploadImages> {
               ),
             ),
           ),
-          // right: AnimationClick(
-          //     child: Padding(
-          //   padding: const EdgeInsets.only(right: 16),
-          //   child: Text(
-          //     '1 of 1',
-          //     style: headline(color: corn1),
-          //   ),
-          // )),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -166,7 +116,7 @@ class _UploadImagesState extends State<UploadImages> {
               Padding(
                 padding: const EdgeInsets.only(top: 32, bottom: 8),
                 child: GradientText(
-                  'Upload up to 6 Images',
+                  'Upload your images',
                   style: const TextStyle(
                       fontSize: 28,
                       height: 1,
@@ -183,86 +133,72 @@ class _UploadImagesState extends State<UploadImages> {
                 textAlign: TextAlign.center,
                 style: body(color: grey800),
               ),
-              const SizedBox(height: 32),
-              item(
-                'Scan your ID, Passport',
-                'Take picture of both side card',
-                green,
-                selectImages,
-              ),
-              const SizedBox(height: 24),
-              if (imageFileList.isNotEmpty)
-                Expanded(
-                  child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3),
-                      itemCount: imageFileList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                            height: 30,
-                            width: 30,
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Image.file(File(imageFileList[index].path),
-                                    fit: BoxFit.cover),
-                                Positioned(
-                                    left: 90,
-                                    top: -20,
-                                    child: IconButton(
-                                        icon: const Icon(
-                                          Icons.delete_forever_rounded,
-                                          size: 30,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            imageFileList.removeAt(index);
-                                          });
-                                        }))
-                              ],
-                            ));
-                      }),
+              StaggeredGrid.count(crossAxisCount: 3, children: [
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 2,
+                  mainAxisCellCount: 2,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    color: Colors.red,
+                  ),
                 ),
-              const SizedBox(height: 24),
-              BlocBuilder<UploadImagesBloc, UploadImagesState>(
-                builder: (context, state) {
-                  if (state is UploadImagesLoadingState) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is UploadImagesSuccessState) {
-                    Future.delayed(const Duration(seconds: 3), () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(Routes.accountInformationOne);
-                    });
-                  } else if (state is UploadImagesFailureState) {
-                    Utils.flutterToast(state.errorMessage);
-                    return AppWidget.typeButtonStartAction2(
-                        context: context,
-                        input: 'Upload Images',
-                        onPressed: () {
-                          print(prefManager.kTokenA);
-                          print('here');
-                          BlocProvider.of<UploadImagesBloc>(context).add(
-                              UserAUploadImagesEvent(images: imageFileList));
-                        },
-                        bgColor: primary,
-                        borderColor: primary,
-                        textColor: grey1100);
-                  }
-                  return AppWidget.typeButtonStartAction2(
-                      context: context,
-                      input: 'Upload Images',
-                      onPressed: () {
-                        BlocProvider.of<UploadImagesBloc>(context)
-                            .add(UserAUploadImagesEvent(images: imageFileList));
-                      },
-                      bgColor: primary,
-                      borderColor: primary,
-                      textColor: grey1100);
-                },
-              ),
-              const SizedBox(height: 48)
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 1,
+                  mainAxisCellCount: 1,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    color: Colors.blue,
+                  ),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 1,
+                  mainAxisCellCount: 1,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    color: Colors.blue,
+                  ),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 1,
+                  mainAxisCellCount: 1,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    color: Colors.blue,
+                  ),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 1,
+                  mainAxisCellCount: 1,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    color: Colors.blue,
+                  ),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 1,
+                  mainAxisCellCount: 1,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    color: Colors.blue,
+                  ),
+                ),
+              ]),
+              AppWidget.typeButtonStartAction2(
+                  context: context,
+                  input: 'Upload Images',
+                  onPressed: () {
+                    BlocProvider.of<UploadImagesBloc>(context)
+                        .add(UserAUploadImagesEvent(images: imageFileList));
+                  },
+                  bgColor: primary,
+                  borderColor: primary,
+                  textColor: grey1100),
             ],
           ),
         ),
