@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -55,40 +57,30 @@ class _SignInTabBState extends State<SignInTabB> {
           const SizedBox(
             height: 20,
           ),
-          IntlPhoneField(
-            onCountryChanged: (value) {
-              setState(() {
-                languageCode = value.dialCode;
-              });
-            },
-            style: const TextStyle(color: Colors.white),
-            dropdownTextStyle: const TextStyle(
-              color: Colors.white,
-            ),
-            decoration: const InputDecoration(
-              hintStyle: TextStyle(color: Colors.white),
-              floatingLabelStyle: TextStyle(
-                color: Colors.white,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Phone Number',
+                style: TextStyle(color: Colors.white),
               ),
-              counterStyle: TextStyle(color: Colors.white),
-              suffixIconColor: Colors.white,
-              fillColor: Colors.white,
-              labelStyle: TextStyle(color: Colors.white),
-              prefixIconColor: Colors.white,
-              prefixStyle: TextStyle(color: Colors.white),
-              suffixStyle: TextStyle(color: Colors.white),
-              labelText: 'Phone Number',
-              iconColor: Colors.white,
-              border: OutlineInputBorder(
-                borderSide: BorderSide(),
+              SizedBox(
+                height: 5,
               ),
-            ),
-            initialCountryCode: countryCode.toString(),
-            // languageCode: countryCode.toString(),
-            keyboardType: const TextInputType.numberWithOptions(
-                signed: true, decimal: true),
-            controller: phoneNumberCtl,
-            focusNode: phoneNumberFn,
+              TextField(
+                controller: phoneNumberCtl,
+                decoration: const InputDecoration(
+                    fillColor: Colors.grey,
+                    hintStyle: TextStyle(
+                      color: Color.fromARGB(255, 149, 144, 144),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(),
+                    ),
+                    hintText: '+251 903193236'),
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 24, bottom: 32),
@@ -112,10 +104,10 @@ class _SignInTabBState extends State<SignInTabB> {
               return const Center(child: CircularProgressIndicator());
             } else if (state is LoginSuccessStateB) {
               Future.delayed(Duration.zero, () {
-                Navigator.of(context)
-                    .pushReplacementNamed(Routes.accountInformationOne);
+                Navigator.of(context).pushReplacementNamed(Routes.feed);
               });
             } else if (state is LoginFailureStateB) {
+              print(" Error message: ${state.errorMessage}");
               Utils.flutterToast(state.errorMessage);
               return Column(
                 children: [
@@ -169,8 +161,8 @@ class _SignInTabBState extends State<SignInTabB> {
       return;
     }
 
-    String phoneNumber = '+' + languageCode! + phoneNumberCtl.text;
-    print(phoneNumber);
+    String phoneNumber = phoneNumberCtl.text;
+
     if (!FormValidator.validatePhoneNumber(phoneNumber)) {
       Utils.flutterToast(
           'Invalid Phone number:Please enter a valid phone number!');

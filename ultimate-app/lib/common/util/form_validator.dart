@@ -28,7 +28,9 @@ mixin FormValidator {
   static bool validatePhoneNumber(String phone) {
     const String pattern = r'(^(\+[0-9]{1,3}[- ]?)?\d{10}$)';
     final RegExp regExp = RegExp(pattern);
+
     if (!regExp.hasMatch(phone)) {
+      print("NOOO");
       return false;
     }
     return true;
