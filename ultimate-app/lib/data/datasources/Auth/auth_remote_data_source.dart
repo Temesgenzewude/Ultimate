@@ -25,8 +25,8 @@ abstract class AuthenticationRemoteDataSource {
   Future<LoginResponseModel> signInUserA(UserALoginRequestModel user);
   Future<UserBSingUpResponse> signUpUserB(UserBModel newuser);
   Future<LoginResponseModel> signInUserB(UserBLoginRequestModel user);
-  Future<List<dynamic>> uploadImagesA(List<XFile> files);
-  Future<List<dynamic>> uploadImagesB(List<XFile> files);
+  Future<List<dynamic>> uploadImagesA(List<XFile?> files);
+  Future<List<dynamic>> uploadImagesB(List<XFile?> files);
   Future<AccInfoResponseModel> addAccountInfo(
       AccountInfoModel accountInfoModeladdAccountInfo);
 
@@ -394,13 +394,13 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<List<dynamic>> uploadImagesA(List<XFile> files) async {
+  Future<List<dynamic>> uploadImagesA(List<XFile?> files) async {
     try {
       final uri = Uri.parse('${AppUrl.bulkUploadImagesA}${prefManager.userID}');
       final request = http.MultipartRequest('POST', uri);
       files.forEach((file) async {
         request.files
-            .add(await http.MultipartFile.fromPath('images', file.path));
+            .add(await http.MultipartFile.fromPath('images', file!.path));
       });
       request.headers['Authorization'] =
           prefManager.token ?? prefManager.kTokenA;
@@ -438,13 +438,13 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<List<dynamic>> uploadImagesB(List<XFile> files) async {
+  Future<List<dynamic>> uploadImagesB(List<XFile?> files) async {
     try {
       final uri = Uri.parse('${AppUrl.bulkUploadImagesB}${prefManager.userID}');
       final request = http.MultipartRequest('POST', uri);
       files.forEach((file) async {
         request.files
-            .add(await http.MultipartFile.fromPath('images', file.path));
+            .add(await http.MultipartFile.fromPath('images', file!.path));
       });
       request.headers['Authorization'] =
           prefManager.token ?? prefManager.kTokenB;
