@@ -1,11 +1,7 @@
-import 'package:country_picker/country_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/data/models/account_info_model.dart';
 
 import '../../../app/widget_support.dart';
-import '../../../common/bloc/account_information/account_information_bloc.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
@@ -18,17 +14,13 @@ import '../../../common/widget/textfield.dart';
 import '../../../common/widget/unfocus_click.dart';
 import '../../../data/datasources/Auth/auth_remote_data_source.dart';
 
-final List<String> ethnicities = [
-  'African',
-  'African American',
-  'Asian',
-  'Caucasian',
-  'Hispanic',
-  'Indian',
-  'Middle Eastern',
-  'Native American',
-  'Pacific Islander',
-  'Other'
+final List<String> maritalStatus = ['Single', 'Married', 'Divorced', 'Widowed'];
+final List<String> levelOfReligiously = [
+  'Conservative',
+  'Non-Conservative',
+  'Not Religious',
+  'Somewhat Religious',
+  'Very Religious'
 ];
 
 class AccountInformationThree extends StatefulWidget {
@@ -40,36 +32,35 @@ class AccountInformationThree extends StatefulWidget {
 }
 
 class _AccountInformationThreeState extends State<AccountInformationThree> {
+  TextEditingController occupationCtl = TextEditingController();
+
+  TextEditingController aboutCtl = TextEditingController();
+  TextEditingController healthIssueCtl = TextEditingController();
+  FocusNode aboutFn = FocusNode();
+  TextEditingController sectCtl = TextEditingController();
+  FocusNode sectFn = FocusNode();
   TextEditingController bornReligiousCtl = TextEditingController();
   FocusNode bornReligiousFn = FocusNode();
+  FocusNode healthIssueFn = FocusNode();
 
-  double _upperValueHeight = 100.50;
-  final double _minHeight = 0.0;
-  final double _maxHeight = 200.50;
+  FocusNode occupationFn = FocusNode();
+  int _upperValueChild = 0;
+  final int _minChild = 0;
+  final int _maxChild = 20;
 
-  String? _selectedNationality;
-  String? _selectedEthnicity;
-
-  bool isSmoke = false;
-  bool isDrink = false;
-  bool isMedication = false;
-  bool isSmokeClicked = false;
-  bool isDrinkClicked = false;
-  bool isMedicationClicked = false;
+  String? _selectedMaritalStatus;
+  String? _selectedLevelOfReligiously;
 
   @override
   void initState() {
     prefManager.lastViewedPage = Routes.accountInformationThree;
 
-    bornReligiousCtl.text = prefManager.bornReligious ?? '';
-    _upperValueHeight = double.tryParse(prefManager.hight ?? '0.0') ?? 0.0;
+    aboutCtl.text = prefManager.about ?? '';
+    sectCtl.text = prefManager.sect ?? '';
 
-    _selectedEthnicity = prefManager.ethnicity;
-    _selectedNationality = prefManager.nationality;
-
-    isMedication = prefManager.isMedication ?? false;
-    isDrink = prefManager.isDrink ?? false;
-    isSmoke = prefManager.isSmoke ?? false;
+    _upperValueChild = int.parse(prefManager.child ?? '0');
+    _selectedMaritalStatus = prefManager.maritalStatus;
+    _selectedLevelOfReligiously = prefManager.levelOfReligiously;
 
     super.initState();
   }
@@ -99,13 +90,10 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
             child: Padding(
               padding: const EdgeInsets.only(right: 16),
               child: Text(
-                '3 of 3',
+                '2 of 3',
                 style: headline(color: corn1),
               ),
             ),
-            // function: () {
-            //   Navigator.of(context).pushNamed(Routes.interest_1);
-            // },
           ),
         ),
         body: Padding(
@@ -134,10 +122,12 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                 ),
                 const SizedBox(height: 16),
                 TextFieldCpn(
-                  controller: bornReligiousCtl,
-                  focusNode: bornReligiousFn,
-                  labelText: 'Born Religious',
-                  type: 'born religious',
+                  controller: aboutCtl,
+                  focusNode: aboutFn,
+                  labelText: 'About',
+                  maxLines: 3,
+                  hasMutilLine: true,
+                  type: 'about',
                 ),
                 const SizedBox(height: 16),
                 Column(
@@ -147,11 +137,11 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Height',
+                          'Children',
                           style: title3(color: grey1100),
                         ),
                         Text(
-                          '${_upperValueHeight.toStringAsFixed(2)} cm',
+                          '$_upperValueChild Children',
                           style: headline(color: corn1),
                         )
                       ],
@@ -168,15 +158,13 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                       child: SizedBox(
                         width: width,
                         child: Slider(
-                          label: '$_upperValueHeight',
-                          min: _minHeight,
-                          max: _maxHeight,
-                          value: double.tryParse(
-                                  _upperValueHeight.toStringAsFixed(2)) ??
-                              0.0,
+                          label: '$_upperValueChild',
+                          min: 0,
+                          max: 20,
+                          value: _upperValueChild.toDouble(),
                           onChanged: (double value) {
                             setState(() {
-                              _upperValueHeight = value;
+                              _upperValueChild = value.round();
                             });
                           },
                         ),
@@ -186,11 +174,11 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '$_minHeight cm',
+                          '$_minChild',
                           style: footnote(color: grey500),
                         ),
                         Text(
-                          '$_maxHeight cm',
+                          '$_maxChild',
                           style: footnote(color: grey500),
                         )
                       ],
@@ -202,12 +190,12 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Ethnicity',
+                      'Marital Status',
                       style: title3(color: grey1100),
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField2(
-                      value: _selectedEthnicity,
+                      value: _selectedMaritalStatus,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: grey200,
@@ -219,7 +207,7 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                       ),
                       isExpanded: true,
                       hint: Text(
-                        'Select Your Ethnicity',
+                        'Select Your Marital Status',
                         style: body(color: grey500),
                       ),
                       icon: const Icon(
@@ -233,7 +221,7 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                         color: grey200,
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      items: ethnicities
+                      items: maritalStatus
                           .map((item) => DropdownMenuItem<String>(
                                 value: item,
                                 child: Text(
@@ -244,18 +232,18 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                           .toList(),
                       validator: (value) {
                         if (value == null) {
-                          return 'Please select your ethnicity.';
+                          return 'Please select your marital status.';
                         }
                         return null;
                       },
                       onChanged: (value) {
                         setState(() {
-                          _selectedEthnicity = value;
+                          _selectedMaritalStatus = value;
                         });
                       },
                       onSaved: (value) {
                         setState(() {
-                          _selectedEthnicity = value;
+                          _selectedMaritalStatus = value;
                         });
                       },
                     ),
@@ -263,195 +251,86 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                 ),
                 const SizedBox(height: 16),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppWidget.typeButtonStartAction2(
-                        context: context,
-                        input: 'Select Your Nationality',
-                        onPressed: () {
-                          showCountryPicker(
-                              context: context,
-                              countryListTheme: CountryListThemeData(
-                                flagSize: 25,
-                                backgroundColor: Colors.white,
-                                textStyle: const TextStyle(
-                                    fontSize: 16, color: Colors.blueGrey),
-                                bottomSheetHeight:
-                                    500, // Optional. Country list modal height
-                                //Optional. Sets the border radius for the bottomsheet.
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(20.0),
-                                  topRight: Radius.circular(20.0),
+                    Text(
+                      'Level of Religiously',
+                      style: title3(color: grey1100),
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField2(
+                      value: _selectedLevelOfReligiously,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: grey200,
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      isExpanded: true,
+                      hint: Text(
+                        'Select Your Level of Religiously',
+                        style: body(color: grey500),
+                      ),
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: grey500,
+                      ),
+                      iconSize: 30,
+                      buttonHeight: 60,
+                      buttonPadding: const EdgeInsets.only(right: 16),
+                      dropdownDecoration: BoxDecoration(
+                        color: grey200,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      items: levelOfReligiously
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: body(color: grey600),
                                 ),
-                                //Optional. Styles the search field.
-                                inputDecoration: InputDecoration(
-                                  labelText: 'Search',
-                                  hintText: 'Start typing to search',
-                                  prefixIcon: const Icon(Icons.search),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: const Color(0xFF8C98A8)
-                                          .withOpacity(0.2),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onSelect: (Country country) {
-                                setState(() {
-                                  _selectedNationality = country.name;
-                                });
-                                print('Select country: ${country.displayName}');
-                              });
-                        },
-                        bgColor: grey200,
-                        borderColor: grey200,
-                        textColor: Colors.white),
-                    Text('${_selectedNationality ?? 'No Nationality Selected'}',
-                        style: body(color: grey1100, fontWeight: '600')),
+                              ))
+                          .toList(),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select your level of religiously.';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedLevelOfReligiously = value;
+                        });
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          _selectedLevelOfReligiously = value;
+                        });
+                      },
+                    ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Container(
-                      height: 100,
-                      child: Row(
-                        children: [
-                          Checkbox(
-                            tristate: true,
-                            value: isSmoke,
-                            fillColor:
-                                MaterialStateProperty.all(Colors.blueGrey),
-                            side: const BorderSide(
-                                width: 1.0, color: Colors.white),
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isSmoke = value ?? false;
-
-                                isSmokeClicked = true;
-                              });
-                            },
-                          ),
-                          Text(
-                            'isSmoke',
-                            style: body(color: grey1100, fontWeight: '600'),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 100,
-                      child: Row(
-                        children: [
-                          Checkbox(
-                            isError: true,
-                            tristate: true,
-                            fillColor:
-                                MaterialStateProperty.all(Colors.blueGrey),
-                            side: const BorderSide(
-                                width: 1.0, color: Colors.white),
-                            value: isDrink,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isDrink = value ?? false;
-
-                                isDrinkClicked = true;
-                              });
-                            },
-                          ),
-                          Text(
-                            'isDrink',
-                            style: body(color: grey1100, fontWeight: '600'),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 100,
-                      child: Row(
-                        children: [
-                          Checkbox(
-                            isError: true,
-                            tristate: true,
-                            fillColor:
-                                MaterialStateProperty.all(Colors.blueGrey),
-                            side: const BorderSide(
-                                width: 1.0, color: Colors.white),
-                            value: isMedication,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isMedication = value ?? false;
-
-                                isMedicationClicked = true;
-                              });
-                            },
-                          ),
-                          Text(
-                            'isMedication',
-                            style: body(color: grey1100, fontWeight: '600'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                TextFieldCpn(
+                  controller: sectCtl,
+                  focusNode: sectFn,
+                  labelText: 'Sect',
+                  type: 'sect',
                 ),
                 const SizedBox(
                   height: 32,
                 ),
-                BlocConsumer<AccountInfoBloc, AccInfoState>(
-                  listener: (context, state) {
-                    if (state is AccInfoSuccessState) {
-                      Utils.flutterToast(
-                          'Your profile is successfully updated!');
-
-                      // Future.delayed(const Duration(seconds: 2), () {
-                      //   Navigator.of(context).pushNamed(Routes.interest_1);
-                      // });
-                    } else if (state is AccFailureState) {
-                      Utils.flutterToast(state.errorMessage);
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state is AccInfoLoadingState) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (state is AccFailureState) {
-                      return AppWidget.typeButtonStartAction2(
-                          context: context,
-                          input: 'UPDATE YOUR PROFILE',
-                          onPressed: () {
-                            _validateForm();
-                          },
-                          bgColor: primary,
-                          borderColor: primary,
-                          textColor: grey1100);
-                    } else if (state is AccInfoSuccessState) {
-                      return AppWidget.typeButtonStartAction2(
-                          context: context,
-                          input: 'CONTINUE TO ADD YOUR INTERESTS',
-                          onPressed: () {
-                            Future.delayed(const Duration(seconds: 1), () {
-                              Navigator.pushReplacementNamed(
-                                  context, Routes.interest_1);
-                            });
-                          },
-                          bgColor: primary,
-                          borderColor: primary,
-                          textColor: grey1100);
-                    } else {
-                      return AppWidget.typeButtonStartAction2(
-                          context: context,
-                          input: 'UPDATE YOUR PROFILE',
-                          onPressed: () {
-                            _validateForm();
-                          },
-                          bgColor: primary,
-                          borderColor: primary,
-                          textColor: grey1100);
-                    }
-                  },
-                ),
+                AppWidget.typeButtonStartAction2(
+                    context: context,
+                    input: 'NEXT',
+                    onPressed: () {
+                      _validateForm();
+                    },
+                    bgColor: primary,
+                    borderColor: primary,
+                    textColor: grey1100)
               ],
             ),
           ),
@@ -461,79 +340,43 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
   }
 
   void _validateForm() {
-    if (bornReligiousCtl.text.isEmpty) {
-      Utils.flutterToast(
-          ' Born religious is required . Please your born religious!');
+    if (aboutCtl.text.isEmpty) {
+      Utils.flutterToast('About is required. Please your about!');
       return;
     }
 
-    if (_upperValueHeight == 0.0) {
-      Utils.flutterToast(
-          'Valid Height is required. Please select your valid height!');
+    if (aboutCtl.text.length < 10) {
+      Utils.flutterToast('About must be at least 10 characters!');
       return;
     }
 
-    if (_selectedEthnicity == null || _selectedEthnicity!.isEmpty) {
+    if (_selectedMaritalStatus == null || _selectedMaritalStatus!.isEmpty) {
       Utils.flutterToast(
-          'Ethnicity is required. Please select your ethnicity!');
-      return;
-    }
-    if (_selectedNationality == null || _selectedNationality!.isEmpty) {
-      Utils.flutterToast(
-          'Nationality is required. Please select your nationality!');
+          'Marital status is required. Please select your marital status!');
       return;
     }
 
-    // if (isSmokeClicked == false) {
-    //   Utils.flutterToast('isSmoke is required. Please select your isSmoke!');
-    //   return;
-    // }
+    if (_selectedLevelOfReligiously == null ||
+        _selectedLevelOfReligiously!.isEmpty) {
+      Utils.flutterToast(
+          'Level of religiously is required. Please select your level of religiously!');
+      return;
+    }
 
-    // if (isDrinkClicked == false) {
-    //   Utils.flutterToast('isDrink is required. Please select your isDrink!');
-    //   return;
-    // }
+    if (sectCtl.text.isEmpty) {
+      Utils.flutterToast('Sect is required. Please your sect!');
+      return;
+    }
 
-    // if (isMedicationClicked == false) {
-    //   Utils.flutterToast(
-    //       'isMedication is required. Please select your isMedication!');
-    //   return;
-    // }
+    prefManager.about = aboutCtl.text;
+    prefManager.child = _upperValueChild.toString();
 
-    prefManager.bornReligious = bornReligiousCtl.text;
+    prefManager.maritalStatus = _selectedMaritalStatus;
+    prefManager.levelOfReligiously = _selectedLevelOfReligiously;
+    prefManager.sect = sectCtl.text;
 
-    prefManager.hight = _upperValueHeight.toStringAsFixed(2);
-    prefManager.ethnicity = _selectedEthnicity;
-    prefManager.nationality = _selectedNationality;
-    prefManager.isDrink = isDrink;
-    prefManager.isMedication = isMedication;
-    prefManager.isSmoke = isSmoke;
-
-    final AccountInfoModel accountInfoModel = AccountInfoModel(
-      about: prefManager.about ?? 'About me',
-      address: prefManager.address ?? 'Address',
-      age: prefManager.age ?? '21',
-      bornReligious: prefManager.bornReligious ?? 'Born Religious',
-      nationality: _selectedNationality ?? 'Nationality',
-      ethnicity: _selectedEthnicity ?? 'Black American',
-      height: _upperValueHeight.toStringAsFixed(2),
-      isDrink: isDrink,
-      isMadication: isMedication,
-      isSmoke: isSmoke,
-      profession: prefManager.profession ?? 'Doctor',
-      levelOfReligiously: prefManager.levelOfReligiously ?? 'Non Conservative',
-      maritalStatus: prefManager.maritalStatus ?? 'Single',
-      gender: prefManager.gender ?? 'Male',
-      healthIssue: prefManager.healthIssue ?? 'No',
-      child: prefManager.child ?? '0',
-      lookingFor: prefManager.lookingFor ?? 'Friendship',
-      sect: prefManager.sect ?? 'Sunni',
-      userId: prefManager.userID ?? '0',
-    );
-
-    print('accountInfoModel: ${accountInfoModel.toJson()}');
-
-    BlocProvider.of<AccountInfoBloc>(context)
-        .add(AddAccInfoEvent(accInfo: accountInfoModel));
+    Future.delayed(const Duration(seconds: 1), () {
+      Navigator.of(context).pushNamed(Routes.accountInformationFour);
+    });
   }
 }

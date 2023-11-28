@@ -157,6 +157,56 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
   //   super.initState();
   // }
 
+  AlertDialog alertDialog() {
+    return AlertDialog(
+      content: const Text(
+          'To continue you first need to add permission to location!'),
+      title: const Text('Location'),
+      actions: [
+        actionButton(primary, 'Allow Location', Colors.white, () async {
+          await _getCurrentPosition();
+        }),
+        actionButton(
+          Colors.white,
+          'Cancel',
+          Colors.black,
+          () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+  }
+
+  TextButton actionButton(
+    Color backgroundcolor,
+    String text,
+    Color textColor,
+    void Function() onPressed,
+  ) {
+    return TextButton(
+      style: ButtonStyle(
+        elevation: MaterialStateProperty.all<double>(12.0),
+        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          const EdgeInsets.all(15.0),
+        ),
+        backgroundColor: MaterialStateColor.resolveWith(
+          (states) {
+            return backgroundcolor; // Default color
+          },
+        ),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 16,
+          color: textColor,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
@@ -239,7 +289,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       height: 60.0,
@@ -329,11 +379,13 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                           GestureDetector(
                             onTap: () async {
                               if (!_isLocationEnabledAndShared) {
-                                Utils.flutterToast(
-                                    'Please allow this app to access you location!');
+                                Utils.flutterToast('Please allow location!');
+
                                 await _getCurrentPosition();
                               }
                               if (_isLocationEnabledAndShared) {
+                                print(
+                                    '.....location services enabled and shared...');
                                 if (selectedUserType == null) {
                                   Utils.flutterToast(
                                       'Please select user type to continue!');
@@ -354,6 +406,8 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                                   }
                                 }
                               } else {
+                                print(
+                                    '.....location services not enabled and shared...');
                                 Utils.flutterToast(
                                     'Please enable location services in your settings and allow this app to access your location!');
                                 return;

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ultimate/authentications/account_information/screen/account_information_2.dart';
 import 'package:flutter_ultimate/authentications/account_information/screen/account_information_3.dart';
+import 'package:flutter_ultimate/authentications/account_information/screen/account_information_4.dart';
 import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number_B.dart';
 import 'package:flutter_ultimate/authentications/upload_images/upload_images_B.dart';
 
 import '../../authentications/account_information/screen/account_information_1.dart';
+import '../../authentications/account_information/screen/account_information_2.dart';
 import '../../authentications/add_mobile_number/screen/add_mobile_number.dart';
 import '../../authentications/forgot_password/screen/forgot_password.dart';
 import '../../authentications/kyc/screen/kyc.dart';
 import '../../authentications/login/screen/login.dart';
-import '../../authentications/menu.dart';
+
 import '../../authentications/register/screen/register.dart';
 import '../../authentications/reset_password/screen/reset_password.dart';
 import '../../authentications/sign_up/screen/auth_user_b.dart';
@@ -156,6 +157,10 @@ mixin RouteGenerator {
       case Routes.accountInformationThree:
         return MaterialPageRoute<dynamic>(
           builder: (context) => const AccountInformationThree(),
+        );
+      case Routes.accountInformationFour:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const AccountInformationFour(),
         );
       case Routes.uploadImages:
         return MaterialPageRoute<dynamic>(

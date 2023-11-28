@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/bloc/auth/authentication_bloc.dart';
@@ -14,6 +12,7 @@ import '../../../common/util/form_validator.dart';
 import '../../../common/util/show_toast_message.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/gradient_text.dart';
+import '../../../common/widget/textfield.dart';
 import '../../../common/widget/unfocus_click.dart';
 import '../../../data/models/authentication_model.dart';
 import '../../../dependency_indjection.dart';
@@ -36,18 +35,17 @@ double latitude = double.tryParse(prefManager.latitude ?? '0.0') ?? 0.0;
 double longitude = double.tryParse(prefManager.longitude ?? '0.0') ?? 0.0;
 
 class _AddMobileNumberBState extends State<AddMobileNumberB> {
-  void _submitForm(
-      {required String name,
-      required String email,
-      required String address,
-      required String password,
-      required String birthDate}) {
+  void _submitForm({
+    required String name,
+    required String email,
+    required String password,
+  }) {
     if (phoneCtl.text.isEmpty) {
       Utils.flutterToast('Please enter phone number');
       return;
     }
 
-    String phoneNumber = '+' + languageCode! + phoneCtl.text;
+    String phoneNumber = phoneCtl.text;
     print(phoneNumber);
     if (!FormValidator.validatePhoneNumber(phoneNumber)) {
       Utils.flutterToast(
@@ -65,7 +63,7 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
       address: address,
       phoneNumber: phoneNumber,
       coordinates: '10,10',
-      birthDate: birthDate,
+      birthDate: '12/12/2015',
     );
 
     final UserBModel userB = UserBModel(
@@ -74,7 +72,7 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
         name: name,
         phoneNumber: phoneNumber,
         location: '10,10',
-        birthDate: birthDate,
+        birthDate: '12/12/2015',
         about: '',
         terms: true,
         age: '21');
@@ -92,60 +90,21 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
   }
 
   Widget getAuthWidget() {
-    if (prefManager.userType == 'User A') {
-      return BlocListener<AuthenticationBloc, AuthenticationState>(
-        listener: (context, state) {
-          if (state is AuthenticationFailureState) {
-            Utils.flutterToast(state.errorMessage);
-          } else if (state is AuthenticationSuccessState) {
-            Utils.flutterToast(
-                'You have successfully registered. OTP is sent to +${languageCode}${phoneCtl.text} Please verify your account!');
-            Future.delayed(const Duration(seconds: 5), () {
-              Navigator.of(context).pushNamed(Routes.verify,
-                  arguments: '+${languageCode}${phoneCtl.text}');
-            });
-          }
-        },
-        child: Container(),
-      );
-    } else {
-      return BlocListener<AuthenticationBlocB, AuthenticationBState>(
-        listener: (context, state) {
-          if (state is AuthenticationFailureStateB) {
-            Utils.flutterToast(state.errorMessage);
-          } else if (state is AuthenticationSuccessStateB) {
-            Utils.flutterToast(
-                'You have successfully registered. OTP is sent to +${languageCode}${phoneCtl.text} Please verify your account!');
-            Future.delayed(const Duration(seconds: 5), () {
-              Navigator.of(context).pushReplacementNamed(Routes.verify,
-                  arguments: '+${languageCode}${phoneCtl.text}');
-            });
-          }
-        },
-        child: Container(),
-      );
-    }
-  }
-
-  String? countryCode = 'US';
-  Future<void> getCountryCode() async {
-    print('here=================================');
-    // print(prefManager);
-
-    // print(latitude);
-    // print(longitude);
-    try {
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(latitude, longitude);
-      print(placemarks);
-      print('=======================================');
-      setState(() {
-        countryCode = placemarks[0].isoCountryCode;
-      });
-      print(countryCode);
-    } catch (e) {
-      print(e);
-    }
+    return BlocListener<AuthenticationBlocB, AuthenticationBState>(
+      listener: (context, state) {
+        if (state is AuthenticationFailureStateB) {
+          Utils.flutterToast(state.errorMessage);
+        } else if (state is AuthenticationSuccessStateB) {
+          Utils.flutterToast(
+              'You have successfully registered. OTP is sent to ${phoneCtl.text} Please verify your account!');
+          Future.delayed(const Duration(seconds: 5), () {
+            Navigator.of(context).pushReplacementNamed(Routes.verify,
+                arguments: '${phoneCtl.text}');
+          });
+        }
+      },
+      child: Container(),
+    );
   }
 
   @override
@@ -156,7 +115,6 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
     super.initState();
   }
 
-  String? languageCode = '+1';
   TextEditingController phoneCtl = TextEditingController();
   FocusNode phoneFn = FocusNode();
 
@@ -276,44 +234,18 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
                         ],
                       ),
                     ),
-                    // TextFieldCpn(
-                    //   controller: phoneCtl,
-                    //   focusNode: phoneFn,
-                    // ),
-                    IntlPhoneField(
-                      style: const TextStyle(color: Colors.white),
-                      dropdownTextStyle: const TextStyle(
-                        color: Colors.white,
-                      ),
-                      onCountryChanged: (value) {
-                        setState(() {
-                          languageCode = value.dialCode;
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        hintStyle: TextStyle(color: Colors.white),
-                        floatingLabelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        counterStyle: TextStyle(color: Colors.white),
-                        suffixIconColor: Colors.white,
-                        fillColor: Colors.white,
-                        labelStyle: TextStyle(color: Colors.white),
-                        prefixIconColor: Colors.white,
-                        prefixStyle: TextStyle(color: Colors.white),
-                        suffixStyle: TextStyle(color: Colors.white),
-                        labelText: 'Phone Number',
-                        iconColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(),
-                        ),
-                      ),
-                      initialCountryCode: countryCode.toString(),
-                      keyboardType: const TextInputType.numberWithOptions(
-                          signed: true, decimal: true),
+
+                    const SizedBox(height: 24),
+
+                    TextFieldCpn(
+                      labelText: 'Phone number',
                       controller: phoneCtl,
                       focusNode: phoneFn,
+                      type: 'phone',
+                      keyboardType: TextInputType.phone,
+                      hintText: '+2519 123 456 7890',
                     ),
+
                     getAuthWidget(),
                     BlocBuilder<AuthenticationBlocB, AuthenticationBState>(
                       builder: (context, state) {
@@ -325,14 +257,13 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
                         } else {
                           return AppWidget.typeButtonStartAction(
                               context: context,
-                              input: 'CONTINUE',
+                              input: 'SIGN UP NOW',
                               onPressed: () {
                                 _submitForm(
-                                    name: name,
-                                    email: email,
-                                    address: address,
-                                    password: password,
-                                    birthDate: birthday);
+                                  name: name,
+                                  email: email,
+                                  password: password,
+                                );
                                 // if (prefManager.userType == 'User A') {
                                 //   context.read<OtpBloc>().add(OTPSendUserA());
                                 // } else {

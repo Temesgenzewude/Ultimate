@@ -20,6 +20,7 @@ class AccountInfoModel {
   String? ethnicity = 'Turkish';
   String? nationality = 'turkish';
   String? levelOfReligiously = 'Conservative';
+  String? birthDate;
 
   AccountInfoModel({
     this.about,
@@ -41,6 +42,7 @@ class AccountInfoModel {
     this.profession,
     this.sect,
     this.userId,
+    this.birthDate,
   });
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -63,6 +65,7 @@ class AccountInfoModel {
         'ethnicity': ethnicity,
         'nationality': nationality,
         'levelOfReligiously': levelOfReligiously,
+        'birthDate': birthDate,
       };
 }
 

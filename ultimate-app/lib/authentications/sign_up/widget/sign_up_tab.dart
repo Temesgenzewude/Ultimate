@@ -31,11 +31,9 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
   FocusNode nameFn = FocusNode();
   TextEditingController phoneCtl = TextEditingController();
   FocusNode phoneFn = FocusNode();
-  TextEditingController addressCtl = TextEditingController();
-  FocusNode addressFn = FocusNode();
+
   FocusNode repasswordFn = FocusNode();
-  TextEditingController birthdayCtl = TextEditingController();
-  FocusNode birthdayFn = FocusNode();
+
   bool showPass = false;
   bool showRePass = false;
   String? countryCode = 'US';
@@ -68,8 +66,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
     prefManager.lastViewedPage = Routes.signUp;
     usernameCtl.text = prefManager.email ?? '';
     nameCtl.text = prefManager.name ?? '';
-    addressCtl.text = prefManager.address ?? '';
-    birthdayCtl.text = prefManager.birthday ?? '';
+
     passwordCtl.text = prefManager.password ?? '';
     repasswordCtl.text = prefManager.password ?? '';
 
@@ -119,20 +116,6 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                       labelText: 'Email',
                       type: 'email',
                     ),
-                  ),
-                  TextFieldCpn(
-                    controller: addressCtl,
-                    focusNode: addressFn,
-                    labelText: 'Address',
-                    type: 'address',
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  TextFieldCpn(
-                    controller: birthdayCtl,
-                    focusNode: birthdayFn,
-                    labelText: 'Birthday',
                   ),
 
                   TextFieldPassCpn(
@@ -268,22 +251,14 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
       return;
     }
 
-    if (addressCtl.text.isEmpty) {
-      Utils.flutterToast('Please enter address');
-      return;
-    }
-
     prefManager.name = nameCtl.text;
     prefManager.email = usernameCtl.text;
-    prefManager.address = addressCtl.text;
-    prefManager.birthday = birthdayCtl.text;
+
     prefManager.password = passwordCtl.text;
 
     final formData = {
       'name': nameCtl.text,
       'email': usernameCtl.text,
-      'address': addressCtl.text,
-      'birthday': birthdayCtl.text,
       'password': passwordCtl.text,
     };
 

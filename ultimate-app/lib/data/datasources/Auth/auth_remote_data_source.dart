@@ -395,6 +395,8 @@ class AuthenticationRemoteDataSourceImpl
 
   @override
   Future<List<dynamic>> uploadImagesA(List<XFile> files) async {
+    print('uploading images for user a remote data sources... ');
+    print('upload url ${AppUrl.bulkUploadImagesA}${prefManager.userID}');
     try {
       final uri = Uri.parse('${AppUrl.bulkUploadImagesA}${prefManager.userID}');
       final request = http.MultipartRequest('POST', uri);
