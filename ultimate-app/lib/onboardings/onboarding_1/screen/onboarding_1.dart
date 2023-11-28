@@ -66,26 +66,6 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
 
     permission = await Geolocator.checkPermission();
 
-    // if (permission == LocationPermission.denied) {
-    //   Utils.flutterToast('Please allow this app to access your location!');
-
-    //   permission = await Geolocator.requestPermission();
-    //   // consider opening settings directly
-    //   // permission = await Geolocator.checkPermission();
-    // }
-
-    // if (permission == LocationPermission.deniedForever) {
-    //   Utils.flutterToast('Please allow this app to access your location!');
-    //   final result = await Geolocator.openAppSettings();
-    //   if (result) {
-    //     permission = await Geolocator.requestPermission();
-    //   }
-
-    //   // permission = await Geolocator.requestPermission();
-    //   // consider opening settings directly
-    //   // permission = await Geolocator.checkPermission();
-    // }
-
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
 
@@ -171,11 +151,11 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
     );
   }
 
-  @override
-  void initState() {
-    // _getCurrentPosition();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   // _getCurrentPosition();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -312,22 +292,22 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(150, 63),
-                        backgroundColor: primary,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                      ),
-                      onPressed: () async {
-                        if (!_isLocationEnabledAndShared) {
-                          await _getCurrentPosition();
-                        }
-                      },
-                      child: Text(_isLocationEnabledAndShared
-                          ? 'Location Shared!'
-                          : 'Allow Location!'),
-                    ),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //     fixedSize: const Size(150, 63),
+                    //     backgroundColor: primary,
+                    //     shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(20)),
+                    //   ),
+                    //   onPressed: () async {
+                    //     if (!_isLocationEnabledAndShared) {
+                    //       await _getCurrentPosition();
+                    //     }
+                    //   },
+                    //   child: Text(_isLocationEnabledAndShared
+                    //       ? 'Location Shared!'
+                    //       : 'Allow Location!'),
+                    // ),
                   ],
                 ),
               ),
@@ -347,11 +327,17 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              if (!_isLocationEnabledAndShared) {
+                                Utils.flutterToast(
+                                    'Please allow this app to access you location!');
+                                await _getCurrentPosition();
+                              }
                               if (_isLocationEnabledAndShared) {
                                 if (selectedUserType == null) {
                                   Utils.flutterToast(
                                       'Please select user type to continue!');
+                                  return;
                                 } else {
                                   if (selectedUserType == 'User A') {
                                     Future.delayed(const Duration(seconds: 1),
@@ -370,6 +356,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                               } else {
                                 Utils.flutterToast(
                                     'Please enable location services in your settings and allow this app to access your location!');
+                                return;
                               }
                             },
                             child: SizedBox(
