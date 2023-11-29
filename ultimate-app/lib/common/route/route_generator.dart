@@ -3,6 +3,7 @@ import 'package:flutter_ultimate/authentications/account_information/screen/acco
 import 'package:flutter_ultimate/authentications/account_information/screen/account_information_4.dart';
 import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number_B.dart';
 import 'package:flutter_ultimate/authentications/upload_images/upload_images_B.dart';
+import 'package:flutter_ultimate/onboardings/terms_and_conditions.dart';
 
 import '../../authentications/account_information/screen/account_information_1.dart';
 import '../../authentications/account_information/screen/account_information_2.dart';
@@ -532,6 +533,10 @@ mixin RouteGenerator {
       case Routes.bookmark_1:
         return MaterialPageRoute<dynamic>(
           builder: (context) => const Bookmark1Home(),
+        );
+      case Routes.termsAndConditions:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => TermsAndConditionsPage(),
         );
       default:
         return _errorRoute();

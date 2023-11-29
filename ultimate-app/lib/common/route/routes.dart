@@ -113,4 +113,6 @@ class Routes {
   static const String addMobileNumberB = '/add_mobile_b';
 
   static const String signUpB = '/sign_up_b';
+
+  static const String termsAndConditions = '/terms_and_conditions';
 }

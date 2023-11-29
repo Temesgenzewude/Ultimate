@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ultimate/common/constant/colors.dart';
 import 'package:flutter_ultimate/common/route/routes.dart';
 
+import '../dependency_indjection.dart';
+import '../sharedPreferences.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -22,6 +25,8 @@ class TermsAndConditionsPage extends StatefulWidget {
 
 class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
   bool agree = false;
+
+  final prefManager = sl<PrefManager>();
 
   List<String> termTitles = [
     '1. Acceptance of Terms',
@@ -46,122 +51,133 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
 
   // This function is triggered when the button is clicked
   void onAccept() {
-    Navigator.pushReplacementNamed(context, Routes.signUp);
+    if (prefManager.userType == 'User A') {
+      Navigator.pushReplacementNamed(context, Routes.signUp);
+    } else if (prefManager.userType == 'User B') {
+      Navigator.pushReplacementNamed(context, Routes.signUpB);
+    }
+  }
+
+  void initState() {
+    prefManager.lastViewedPage = Routes.termsAndConditions;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 13,
-            ),
-            const Text(
-              'Terms and Ccondtions',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 13,
               ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            const Text(
-              'Last updated on June 23, 2023',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
+              const Text(
+                'Terms and Ccondtions',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 13,
-            ),
-            Container(
-              height: 0.5,
-              color: Colors.white,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: termTitles
-                    .length, // Specify the number of items in the list
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              const SizedBox(
+                height: 5,
+              ),
+              const Text(
+                'Last updated on June 23, 2023',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(
+                height: 13,
+              ),
+              Container(
+                height: 0.5,
+                color: Colors.white,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: termTitles
+                      .length, // Specify the number of items in the list
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          termTitle(termTitles[index]),
+                          const SizedBox(height: 5),
+                          termDescription(termDescriptions[index]),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Row(
                       children: [
-                        termTitle(termTitles[index]),
-                        const SizedBox(height: 5),
-                        termDescription(termDescriptions[index]),
+                        Checkbox(
+                          value: agree,
+                          fillColor: MaterialStateColor.resolveWith(
+                            (states) {
+                              return agree ? primary! : Colors.transparent!;
+                            },
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              agree = value ?? false;
+                            });
+                          },
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        const Text(
+                          'I have read and accept terms and conditions',
+                          // overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.white,
+                          ),
+                        )
                       ],
                     ),
-                  );
-                },
+                    ElevatedButton(
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.all(20.0),
+                          ),
+                          backgroundColor: MaterialStateColor.resolveWith(
+                            (states) {
+                              if (agree) {
+                                return primary;
+                              }
+                              // Default color
+                              return Colors.grey;
+                            },
+                          ),
+                        ),
+                        onPressed: agree ? onAccept : null,
+                        child: const Text(
+                          'Continue',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ))
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: agree,
-                        fillColor: MaterialStateColor.resolveWith(
-                          (states) {
-                            return agree ? primary! : Colors.transparent!;
-                          },
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            agree = value ?? false;
-                          });
-                        },
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      const Text(
-                        'I have read and accept terms and conditions',
-                        // overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
-                  ),
-                  ElevatedButton(
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.all(20.0),
-                        ),
-                        backgroundColor: MaterialStateColor.resolveWith(
-                          (states) {
-                            if (agree) {
-                              return primary;
-                            }
-                            // Default color
-                            return Colors.grey;
-                          },
-                        ),
-                      ),
-                      onPressed: agree ? onAccept : null,
-                      child: const Text(
-                        'Continue',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ))
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
