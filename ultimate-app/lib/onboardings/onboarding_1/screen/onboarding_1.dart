@@ -391,19 +391,24 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                                       'Please select user type to continue!');
                                   return;
                                 } else {
-                                  if (selectedUserType == 'User A') {
-                                    Future.delayed(const Duration(seconds: 1),
-                                        () {
-                                      Navigator.pushReplacementNamed(
-                                          context, Routes.signUp);
-                                    });
-                                  } else if (selectedUserType == 'User B') {
-                                    Future.delayed(const Duration(seconds: 1),
-                                        () {
-                                      Navigator.pushReplacementNamed(
-                                          context, Routes.signUpB);
-                                    });
-                                  }
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
+                                    Navigator.pushReplacementNamed(
+                                        context, Routes.termsAndConditions);
+                                  });
+                                  // if (selectedUserType == 'User A') {
+                                  //   Future.delayed(const Duration(seconds: 1),
+                                  //       () {
+                                  //     Navigator.pushReplacementNamed(
+                                  //         context, Routes.signUp);
+                                  //   });
+                                  // } else if (selectedUserType == 'User B') {
+                                  //   Future.delayed(const Duration(seconds: 1),
+                                  //       () {
+                                  //     Navigator.pushReplacementNamed(
+                                  //         context, Routes.signUpB);
+                                  //   });
+                                  // }
                                 }
                               } else {
                                 print(
