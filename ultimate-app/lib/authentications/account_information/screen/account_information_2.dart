@@ -125,7 +125,7 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
                   controller: birthdayCtl,
                   focusNode: birthdayFn,
                   labelText: 'Birthday(Required)',
-                  hintText: 'dd-mm-year',
+                  hintText: 'mm-dd-year',
                 ),
                 const SizedBox(height: 16),
                 TextFieldCpn(
