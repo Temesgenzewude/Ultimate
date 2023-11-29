@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app/widget_support.dart';
-import '../../../common/bloc/auth/authentication_bloc.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
@@ -30,28 +28,11 @@ class _SignUpTabBState extends State<SignUpTabB> {
   TextEditingController repasswordCtl = TextEditingController();
   TextEditingController nameCtl = TextEditingController();
   FocusNode nameFn = FocusNode();
-  TextEditingController phoneCtl = TextEditingController();
-  FocusNode phoneFn = FocusNode();
-  TextEditingController locationCtl = TextEditingController();
-  FocusNode locationFn = FocusNode();
-  FocusNode repasswordFn = FocusNode();
-  TextEditingController birthdayCtl = TextEditingController();
-  FocusNode birthdayFn = FocusNode();
 
-  TextEditingController addressCtl = TextEditingController();
-  FocusNode addressFn = FocusNode();
+  FocusNode repasswordFn = FocusNode();
+
   bool showPass = false;
   bool showRePass = false;
-  String? countryCode = 'US';
-  String? languageCode = '+1';
-
-  TextEditingController aboutCtl = TextEditingController();
-  FocusNode aboutFn = FocusNode();
-
-  TextEditingController ageCtl = TextEditingController();
-  FocusNode ageFn = FocusNode();
-
-  List<String> genders = ['Male', 'Female'];
 
   final prefManager = sl<PrefManager>();
 
@@ -62,8 +43,7 @@ class _SignUpTabBState extends State<SignUpTabB> {
     prefManager.lastViewedPage = Routes.signUpB;
     usernameCtl.text = prefManager.email ?? '';
     nameCtl.text = prefManager.name ?? '';
-    addressCtl.text = prefManager.address ?? '';
-    birthdayCtl.text = prefManager.birthday ?? '';
+
     passwordCtl.text = prefManager.password ?? '';
     repasswordCtl.text = prefManager.password ?? '';
 
@@ -111,23 +91,6 @@ class _SignUpTabBState extends State<SignUpTabB> {
                 const SizedBox(
                   height: 16,
                 ),
-                TextFieldCpn(
-                  controller: birthdayCtl,
-                  focusNode: birthdayFn,
-                  labelText: 'Birthday',
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                TextFieldCpn(
-                  controller: addressCtl,
-                  focusNode: addressFn,
-                  labelText: 'Address',
-                  type: 'address',
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
                 TextFieldPassCpn(
                     controller: passwordCtl,
                     focusNode: passwordFn,
@@ -155,56 +118,21 @@ class _SignUpTabBState extends State<SignUpTabB> {
                       });
                     }),
                 const SizedBox(height: 32),
-                BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                  builder: (context, state) {
-                    if (state is AuthenticationLoadingState) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state is AuthenticationSuccessState) {
-                      Utils.flutterToast('''You have successfully registered. 
-                             OTP is sent to ${usernameCtl.value.text}
-                             Please verify your email address and login!''');
+                AppWidget.typeButtonStartAction(
+                  context: context,
+                  input: 'Sign Up Now',
+                  onPressed: () {
+                    _submitForm();
+                    // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
 
-                      Future.delayed(const Duration(seconds: 5), () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(Routes.signUp);
-                      });
-                    } else if (state is AuthenticationFailureState) {
-                      Utils.flutterToast(state.errorMessage);
-                      return Column(
-                        children: [
-                          AppWidget.typeButtonStartAction(
-                            context: context,
-                            input: 'Sign Up Now',
-                            onPressed: () {
-                              _submitForm();
-                            },
-                            colorAsset: grey1100,
-                            icon: icKeyboardRight,
-                            sizeAsset: 24,
-                            bgColor: primary,
-                            borderColor: primary,
-                            textColor: grey1100,
-                          ),
-                        ],
-                      );
-                    }
-                    return AppWidget.typeButtonStartAction(
-                      context: context,
-                      input: 'Sign Up Now',
-                      onPressed: () {
-                        _submitForm();
-                        // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
-
-                        // Navigator.of(context).pushNamed(Routes.signUp);
-                      },
-                      colorAsset: grey1100,
-                      icon: icKeyboardRight,
-                      sizeAsset: 24,
-                      bgColor: primary,
-                      borderColor: primary,
-                      textColor: grey1100,
-                    );
+                    // Navigator.of(context).pushNamed(Routes.signUp);
                   },
+                  colorAsset: grey1100,
+                  icon: icKeyboardRight,
+                  sizeAsset: 24,
+                  bgColor: primary,
+                  borderColor: primary,
+                  textColor: grey1100,
                 ),
               ],
             ),
@@ -255,16 +183,6 @@ class _SignUpTabBState extends State<SignUpTabB> {
       return;
     }
 
-    if (addressCtl.text.isEmpty) {
-      Utils.flutterToast('Please enter address');
-      return;
-    }
-
-    if (birthdayCtl.text.isEmpty) {
-      Utils.flutterToast('Please enter birthday');
-      return;
-    }
-
     // if (_selectedGender == null) {
     //   Utils.flutterToast('Please select gender!');
     //   return;
@@ -300,15 +218,12 @@ class _SignUpTabBState extends State<SignUpTabB> {
 
     prefManager.name = nameCtl.text;
     prefManager.email = usernameCtl.text;
-    prefManager.address = addressCtl.text;
-    prefManager.birthday = birthdayCtl.text;
+
     prefManager.password = passwordCtl.text;
 
     final formData = {
       'name': nameCtl.text,
       'email': usernameCtl.text,
-      'address': addressCtl.text,
-      'birthday': birthdayCtl.text,
       'password': passwordCtl.text,
     };
 

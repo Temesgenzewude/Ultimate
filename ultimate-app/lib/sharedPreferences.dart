@@ -36,6 +36,12 @@ class PrefManager {
   final String _kNationality = 'nationality';
   final String _kSect = 'sect';
   final String _kLookingFor = 'lookingFor';
+  final String _kAddress2 = 'address2';
+  final String _kAddress3 = 'address3';
+  final String _kTown = 'town';
+  final String _kState = 'state';
+  final String _kCountry = 'country';
+  final String _kPostCode = 'postCode';
 
   final String _kLastViewedPage = Routes.onBoarding1;
   SharedPreferences preferences;
@@ -133,4 +139,22 @@ class PrefManager {
       preferences.setString(_kLookingFor, value ?? '');
 
   String? get lookingFor => preferences.getString(_kLookingFor);
+
+  set address2(String? value) => preferences.setString(_kAddress2, value ?? '');
+  String? get address2 => preferences.getString(_kAddress2);
+
+  set address3(String? value) => preferences.setString(_kAddress3, value ?? '');
+  String? get address3 => preferences.getString(_kAddress3);
+
+  set town(String? value) => preferences.setString(_kTown, value ?? '');
+  String? get town => preferences.getString(_kTown);
+
+  set state(String? value) => preferences.setString(_kState, value ?? '');
+  String? get state => preferences.getString(_kState);
+
+  set country(String? value) => preferences.setString(_kCountry, value ?? '');
+  String? get country => preferences.getString(_kCountry);
+
+  set postCode(String? value) => preferences.setString(_kPostCode, value ?? '');
+  String? get postCode => preferences.getString(_kPostCode);
 }

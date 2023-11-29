@@ -29,9 +29,8 @@ class AccountInformationOne extends StatefulWidget {
 class _AccountInformationOneState extends State<AccountInformationOne> {
   TextEditingController occupationCtl = TextEditingController();
 
-  TextEditingController addressCtl = TextEditingController();
   TextEditingController healthIssueCtl = TextEditingController();
-  FocusNode addressFn = FocusNode();
+
   FocusNode healthIssueFn = FocusNode();
 
   FocusNode occupationFn = FocusNode();
@@ -40,7 +39,7 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
   int max = 100;
   bool isMale = true;
   bool isFemale = false;
-  bool isOther = false;
+
   String? selectedProfession;
 
   String? _selectedGender;
@@ -49,7 +48,6 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
   void initState() {
     prefManager.lastViewedPage = Routes.accountInformationOne;
 
-    addressCtl.text = prefManager.address ?? '';
     _upperValue = int.tryParse(prefManager.age ?? '18') ?? 18;
     _selectedGender = prefManager.gender;
     selectedProfession = prefManager.profession;
@@ -86,7 +84,7 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 16),
                 child: Text(
-                  '1 of 3',
+                  '1 of 4',
                   style: headline(color: corn1),
                 ),
               ),
@@ -136,7 +134,7 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
                               setState(() {
                                 isMale = true;
                                 isFemale = false;
-                                isOther = false;
+
                                 _selectedGender = 'Male';
                               });
                             },
@@ -169,7 +167,7 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
                               setState(() {
                                 isMale = false;
                                 isFemale = true;
-                                isOther = false;
+
                                 _selectedGender = 'Female';
                               });
                             },
@@ -193,39 +191,6 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
                                   'Female',
                                   style: subhead(
                                       color: isFemale ? grey1100 : grey600),
-                                )
-                              ],
-                            ),
-                          ),
-                          AnimationClick(
-                            function: () {
-                              setState(() {
-                                isMale = false;
-                                isFemale = false;
-                                isOther = true;
-                                _selectedGender = 'Other';
-                              });
-                            },
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(14),
-                                  margin: const EdgeInsets.only(bottom: 8),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: isOther ? grey1100 : grey200),
-                                      borderRadius: BorderRadius.circular(60)),
-                                  child: Image.asset(
-                                    smiley,
-                                    width: 30,
-                                    height: 30,
-                                  ),
-                                ),
-                                Text(
-                                  'Other',
-                                  style: subhead(
-                                      color: isOther ? grey1100 : grey600),
                                 )
                               ],
                             ),
@@ -356,13 +321,6 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
                   ),
                   const SizedBox(height: 16),
                   TextFieldCpn(
-                    controller: addressCtl,
-                    focusNode: addressFn,
-                    labelText: 'Address',
-                    type: 'address',
-                  ),
-                  const SizedBox(height: 16),
-                  TextFieldCpn(
                     controller: healthIssueCtl,
                     focusNode: healthIssueFn,
                     labelText: 'Health Issue',
@@ -400,17 +358,11 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
       return;
     }
 
-    if (addressCtl.text.isEmpty) {
-      Utils.flutterToast('Address is required. Please your address!');
-      return;
-    }
-
     if (healthIssueCtl.text.isEmpty) {
       Utils.flutterToast('Health issue is required. Please your health issue!');
       return;
     }
 
-    prefManager.address = addressCtl.text;
     prefManager.age = _upperValue.toString();
     prefManager.gender = _selectedGender;
     prefManager.profession = selectedProfession;

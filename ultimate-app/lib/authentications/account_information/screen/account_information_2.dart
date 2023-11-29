@@ -1,5 +1,5 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ultimate/common/util/form_validator.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
@@ -14,13 +14,9 @@ import '../../../common/widget/textfield.dart';
 import '../../../common/widget/unfocus_click.dart';
 import '../../../data/datasources/Auth/auth_remote_data_source.dart';
 
-final List<String> maritalStatus = ['Single', 'Married', 'Divorced', 'Widowed'];
-final List<String> levelOfReligiously = [
-  'Conservative',
-  'Non-Conservative',
-  'Not Religious',
-  'Somewhat Religious',
-  'Very Religious'
+final List<String> professions = [
+  'Student',
+  'Professional',
 ];
 
 class AccountInformationTwo extends StatefulWidget {
@@ -31,42 +27,45 @@ class AccountInformationTwo extends StatefulWidget {
 }
 
 class _AccountInformationTwoState extends State<AccountInformationTwo> {
-  TextEditingController occupationCtl = TextEditingController();
+  TextEditingController address1Ctl = TextEditingController();
+  TextEditingController address2Ctl = TextEditingController();
+  TextEditingController address3Ctl = TextEditingController();
+  TextEditingController townCtl = TextEditingController();
+  TextEditingController stateCtl = TextEditingController();
+  TextEditingController postalCodeCtl = TextEditingController();
+  TextEditingController countryCtl = TextEditingController();
 
-  TextEditingController aboutCtl = TextEditingController();
-  TextEditingController healthIssueCtl = TextEditingController();
-  FocusNode aboutFn = FocusNode();
-  TextEditingController sectCtl = TextEditingController();
-  FocusNode sectFn = FocusNode();
-  TextEditingController bornReligiousCtl = TextEditingController();
-  FocusNode bornReligiousFn = FocusNode();
+  FocusNode address1Fn = FocusNode();
+  FocusNode address2Fn = FocusNode();
+  FocusNode address3Fn = FocusNode();
+  FocusNode townFn = FocusNode();
+  FocusNode stateFn = FocusNode();
+  FocusNode postalCodeFn = FocusNode();
+  FocusNode countryFn = FocusNode();
+
+  TextEditingController birthdayCtl = TextEditingController();
+  FocusNode birthdayFn = FocusNode();
+
   FocusNode healthIssueFn = FocusNode();
-
-  FocusNode occupationFn = FocusNode();
-  int _upperValueChild = 0;
-  final int _minChild = 0;
-  final int _maxChild = 20;
-
-  String? _selectedMaritalStatus;
-  String? _selectedLevelOfReligiously;
 
   @override
   void initState() {
-    prefManager.lastViewedPage = Routes.accountInformationTwo;
+    prefManager.lastViewedPage = Routes.accountInformationOne;
 
-    aboutCtl.text = prefManager.about ?? '';
-    sectCtl.text = prefManager.sect ?? '';
-
-    _upperValueChild = int.parse(prefManager.child ?? '0');
-    _selectedMaritalStatus = prefManager.maritalStatus;
-    _selectedLevelOfReligiously = prefManager.levelOfReligiously;
+    birthdayCtl.text = prefManager.birthday ?? '';
+    address1Ctl.text = prefManager.address ?? '';
+    address2Ctl.text = prefManager.address2 ?? '';
+    address3Ctl.text = prefManager.address3 ?? '';
+    townCtl.text = prefManager.town ?? '';
+    stateCtl.text = prefManager.state ?? '';
+    postalCodeCtl.text = prefManager.postCode ?? '';
+    countryCtl.text = prefManager.country ?? '';
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final width = AppWidget.getWidthScreen(context);
     return UnfocusClick(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -89,10 +88,13 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
             child: Padding(
               padding: const EdgeInsets.only(right: 16),
               child: Text(
-                '2 of 3',
+                '2 of 4',
                 style: headline(color: corn1),
               ),
             ),
+            // function: () {
+            //   Navigator.of(context).pushNamed(Routes.interest_1);
+            // },
           ),
         ),
         body: Padding(
@@ -119,204 +121,59 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
                     ),
                   ],
                 ),
+                TextFieldCpn(
+                  controller: birthdayCtl,
+                  focusNode: birthdayFn,
+                  labelText: 'Birthday(Required)',
+                  hintText: '12-12-2000',
+                ),
                 const SizedBox(height: 16),
                 TextFieldCpn(
-                  controller: aboutCtl,
-                  focusNode: aboutFn,
-                  labelText: 'About',
-                  maxLines: 3,
-                  hasMutilLine: true,
-                  type: 'about',
+                  controller: address1Ctl,
+                  focusNode: address1Fn,
+                  labelText: 'Address 1(Required)',
+                  type: 'address',
                 ),
                 const SizedBox(height: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Children',
-                          style: title3(color: grey1100),
-                        ),
-                        Text(
-                          '$_upperValueChild Children',
-                          style: headline(color: corn1),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    SliderTheme(
-                      data: SliderThemeData(
-                        overlayShape: SliderComponentShape.noOverlay,
-                        thumbColor: grey1100,
-                        inactiveTrackColor: grey200,
-                        activeTrackColor: primary,
-                        overlayColor: grey1100,
-                      ),
-                      child: SizedBox(
-                        width: width,
-                        child: Slider(
-                          label: '$_upperValueChild',
-                          min: 0,
-                          max: 20,
-                          value: _upperValueChild.toDouble(),
-                          onChanged: (double value) {
-                            setState(() {
-                              _upperValueChild = value.round();
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '$_minChild',
-                          style: footnote(color: grey500),
-                        ),
-                        Text(
-                          '$_maxChild',
-                          style: footnote(color: grey500),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Marital Status',
-                      style: title3(color: grey1100),
-                    ),
-                    const SizedBox(height: 16),
-                    DropdownButtonFormField2(
-                      value: _selectedMaritalStatus,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: grey200,
-                        isDense: true,
-                        contentPadding: EdgeInsets.zero,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      isExpanded: true,
-                      hint: Text(
-                        'Select Your Marital Status',
-                        style: body(color: grey500),
-                      ),
-                      icon: const Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        color: grey500,
-                      ),
-                      iconSize: 30,
-                      buttonHeight: 60,
-                      buttonPadding: const EdgeInsets.only(right: 16),
-                      dropdownDecoration: BoxDecoration(
-                        color: grey200,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      items: maritalStatus
-                          .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: body(color: grey600),
-                                ),
-                              ))
-                          .toList(),
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select your marital status.';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedMaritalStatus = value;
-                        });
-                      },
-                      onSaved: (value) {
-                        setState(() {
-                          _selectedMaritalStatus = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Level of Religiously',
-                      style: title3(color: grey1100),
-                    ),
-                    const SizedBox(height: 16),
-                    DropdownButtonFormField2(
-                      value: _selectedLevelOfReligiously,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: grey200,
-                        isDense: true,
-                        contentPadding: EdgeInsets.zero,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      isExpanded: true,
-                      hint: Text(
-                        'Select Your Level of Religiously',
-                        style: body(color: grey500),
-                      ),
-                      icon: const Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        color: grey500,
-                      ),
-                      iconSize: 30,
-                      buttonHeight: 60,
-                      buttonPadding: const EdgeInsets.only(right: 16),
-                      dropdownDecoration: BoxDecoration(
-                        color: grey200,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      items: levelOfReligiously
-                          .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: body(color: grey600),
-                                ),
-                              ))
-                          .toList(),
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select your level of religiously.';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedLevelOfReligiously = value;
-                        });
-                      },
-                      onSaved: (value) {
-                        setState(() {
-                          _selectedLevelOfReligiously = value;
-                        });
-                      },
-                    ),
-                  ],
+                TextFieldCpn(
+                  controller: address2Ctl,
+                  focusNode: address2Fn,
+                  labelText: 'Address 2(Optional)',
+                  type: 'address 2',
                 ),
                 TextFieldCpn(
-                  controller: sectCtl,
-                  focusNode: sectFn,
-                  labelText: 'Sect',
-                  type: 'sect',
+                  controller: address3Ctl,
+                  focusNode: address3Fn,
+                  labelText: 'Address 3(Optional)',
+                  type: 'address 3',
+                ),
+                TextFieldCpn(
+                  controller: townCtl,
+                  focusNode: townFn,
+                  labelText: 'Town/City(Required)',
+                  hintText: 'London',
+                  type: 'town/city',
+                ),
+                TextFieldCpn(
+                  controller: stateCtl,
+                  focusNode: stateFn,
+                  labelText: 'State/Country(Required)',
+                  hintText: 'London',
+                  type: 'state/country',
+                ),
+                TextFieldCpn(
+                  controller: postalCodeCtl,
+                  focusNode: postalCodeFn,
+                  labelText: 'Postal Code(Required)',
+                  hintText: '1000',
+                  type: 'postal code',
+                ),
+                TextFieldCpn(
+                  controller: countryCtl,
+                  focusNode: countryFn,
+                  hintText: 'United Kingdom',
+                  labelText: 'Country(Required)',
+                  type: 'country',
                 ),
                 const SizedBox(
                   height: 32,
@@ -339,43 +196,126 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
   }
 
   void _validateForm() {
-    if (aboutCtl.text.isEmpty) {
-      Utils.flutterToast('About is required. Please your about!');
+    if (birthdayCtl.text.isEmpty) {
+      Utils.flutterToast('Birthday is required. Please enter your birthday!');
       return;
     }
 
-    if (aboutCtl.text.length < 10) {
-      Utils.flutterToast('About must be at least 10 characters!');
+    if (!FormValidator.validateBirthDate(birthdayCtl.text)) {
+      Utils.flutterToast('Invalid Birthday: Please enter a valid birthday!');
       return;
     }
 
-    if (_selectedMaritalStatus == null || _selectedMaritalStatus!.isEmpty) {
-      Utils.flutterToast(
-          'Marital status is required. Please select your marital status!');
+    if (address1Ctl.text.isEmpty) {
+      Utils.flutterToast('Address is required. Please enter your address!');
       return;
     }
 
-    if (_selectedLevelOfReligiously == null ||
-        _selectedLevelOfReligiously!.isEmpty) {
-      Utils.flutterToast(
-          'Level of religiously is required. Please select your level of religiously!');
+    if (townCtl.text.isEmpty) {
+      Utils.flutterToast('Town/City is required. Please enter your town!');
       return;
     }
 
-    if (sectCtl.text.isEmpty) {
-      Utils.flutterToast('Sect is required. Please your sect!');
+    if (stateCtl.text.isEmpty) {
+      Utils.flutterToast('State/Country is required. Please enter your state!');
       return;
     }
 
-    prefManager.about = aboutCtl.text;
-    prefManager.child = _upperValueChild.toString();
+    if (postalCodeCtl.text.isEmpty) {
+      Utils.flutterToast('Postal Code is required. Please enter your code!');
+      return;
+    }
 
-    prefManager.maritalStatus = _selectedMaritalStatus;
-    prefManager.levelOfReligiously = _selectedLevelOfReligiously;
-    prefManager.sect = sectCtl.text;
+    if (countryCtl.text.isEmpty) {
+      Utils.flutterToast('Country is required. Please enter your country!');
+      return;
+    }
+
+    prefManager.address = address1Ctl.text;
+    prefManager.address2 = address2Ctl.text;
+    prefManager.address3 = address3Ctl.text;
+    prefManager.town = townCtl.text;
+    prefManager.state = stateCtl.text;
+    prefManager.postCode = postalCodeCtl.text;
+    prefManager.country = countryCtl.text;
+    prefManager.birthday = birthdayCtl.text;
 
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pushNamed(Routes.accountInformationThree);
     });
   }
 }
+
+/*
+
+BlocBuilder<AccountInfoBloc, AccInfoState>(
+                // ignore: unnecessary_parenthesis
+                // listener: ((context, state) {
+                //   if (state is AccInfoSuccessState) {
+                //     Utils.flutterToast('Your profile is successfully updated!');
+
+                //     Future.delayed(const Duration(seconds: 3), () {
+                //       Navigator.of(context).pushNamed(Routes.interest_1);
+                //     });
+                //   } else if (state is AccFailureState) {
+                //     Utils.flutterToast(state.errorMessage);
+                //   }
+                // }),
+                builder: (context, state) {
+                  if (state is AccInfoLoadingState) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is AccFailureState) {
+                    return AppWidget.typeButtonStartAction2(
+                        context: context,
+                        input: 'Update Profile',
+                        onPressed: () {
+                          BlocProvider.of<AccountInfoBloc>(context).add(
+                              AddAccInfoEvent(
+                                  accInfo: AccountInfoModel(
+                                      age: '24',
+                                      gender: 'male',
+                                      profession: 'Student')));
+                        },
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100);
+                  } else if (state is AccInfoSuccessState) {
+                    Utils.flutterToast('Your profile is successfully updated!');
+                    Future.delayed(const Duration(seconds: 3), () {
+                      Navigator.pushNamed(context, Routes.interest_1);
+                    });
+                  } else {
+                    return AppWidget.typeButtonStartAction2(
+                        context: context,
+                        input: 'Update Profile',
+                        onPressed: () {
+                          BlocProvider.of<AccountInfoBloc>(context).add(
+                              AddAccInfoEvent(
+                                  accInfo: AccountInfoModel(
+                                      age: '24',
+                                      gender: 'male',
+                                      profession: 'Student')));
+                        },
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100);
+                  }
+                  return AppWidget.typeButtonStartAction2(
+                      context: context,
+                      input: 'Update Profile',
+                      onPressed: () {
+                        BlocProvider.of<AccountInfoBloc>(context).add(
+                            AddAccInfoEvent(
+                                accInfo: AccountInfoModel(
+                                    age: '24',
+                                    gender: 'male',
+                                    profession: 'Student')));
+                      },
+                      bgColor: primary,
+                      borderColor: primary,
+                      textColor: grey1100);
+                },
+              ),
+*/

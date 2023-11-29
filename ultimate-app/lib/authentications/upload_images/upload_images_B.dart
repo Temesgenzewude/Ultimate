@@ -16,7 +16,7 @@ import '../../../common/constant/styles.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../../common/widget/app_bar_cpn.dart';
 import '../../../common/widget/gradient_text.dart';
-import '../../common/bloc/upload_image/upload_images_bloc.dart';
+import '../../common/bloc/upload_image/upload_images_b/upload_images_bloc.dart';
 import '../../common/route/routes.dart';
 import '../../common/util/show_toast_message.dart';
 import '../../data/datasources/Auth/auth_remote_data_source.dart';
