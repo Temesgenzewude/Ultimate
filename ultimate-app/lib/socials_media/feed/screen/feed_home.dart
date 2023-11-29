@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ultimate/socials_media/feed/screen/feed_user_b.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
@@ -23,7 +24,7 @@ class _FeedHomeState extends State<FeedHome> {
   @override
   void initState() {
     listWidget = [
-      const Feed(),
+      prefManager.userType == 'User A' ? const Feed() : const FeedUserB(),
       const Scaffold(),
       const Scaffold(),
       const Scaffold(),

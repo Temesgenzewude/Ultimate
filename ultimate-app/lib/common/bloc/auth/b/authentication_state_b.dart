@@ -31,3 +31,12 @@ class AuthenticationFailureStateB extends AuthenticationBState {
   const AuthenticationFailureStateB({required this.errorMessage});
   final String errorMessage;
 }
+
+class UserBLogoutSuccessState extends AuthenticationBState {}
+
+class UserBLogoutFailureState extends AuthenticationBState {
+  const UserBLogoutFailureState({required this.errorMessage});
+  final String errorMessage;
+}
+
+class UserBLogoutLoadingState extends AuthenticationBState {}
