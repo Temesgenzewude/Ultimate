@@ -121,6 +121,18 @@ class _SignInTabState extends State<SignInTab> {
                   Future.delayed(const Duration(seconds: 3), () {
                     Navigator.of(context).pushReplacementNamed(Routes.feed);
                   });
+                  return AppWidget.typeButtonStartAction(
+                    context: context,
+                    input: 'Sign In Now',
+                    onPressed: () {},
+                    colorAsset: grey1100,
+                    icon: icKeyboardRight,
+                    sizeAsset: 24,
+                    bgColor: state is LoginSuccessState ? Colors.grey : primary,
+                    borderColor:
+                        state is LoginSuccessState ? Colors.grey : primary,
+                    textColor: grey1100,
+                  );
                 } else if (state is LoginFailureState) {
                   Utils.flutterToast(state.errorMessage);
                   return Column(
@@ -140,20 +152,21 @@ class _SignInTabState extends State<SignInTab> {
                       ),
                     ],
                   );
+                } else {
+                  return AppWidget.typeButtonStartAction(
+                    context: context,
+                    input: 'Sign In Now',
+                    onPressed: () {
+                      _submitForm();
+                    },
+                    colorAsset: grey1100,
+                    icon: icKeyboardRight,
+                    sizeAsset: 24,
+                    bgColor: primary,
+                    borderColor: primary,
+                    textColor: grey1100,
+                  );
                 }
-                return AppWidget.typeButtonStartAction(
-                  context: context,
-                  input: 'Sign In Now',
-                  onPressed: () {
-                    _submitForm();
-                  },
-                  colorAsset: grey1100,
-                  icon: icKeyboardRight,
-                  sizeAsset: 24,
-                  bgColor: primary,
-                  borderColor: primary,
-                  textColor: grey1100,
-                );
               }),
             ],
           ),

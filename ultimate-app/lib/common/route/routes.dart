@@ -53,6 +53,7 @@ class Routes {
   static const String dashboardFullNopremium = '/dashboard_full_nopremium';
 
   static const String feed = '/feed';
+  static const String feedB = '/feedB';
   static const String postDetails = '/postDetails';
   static const String homeSocial = '/home_social';
   static const String achievements = '/achievements';

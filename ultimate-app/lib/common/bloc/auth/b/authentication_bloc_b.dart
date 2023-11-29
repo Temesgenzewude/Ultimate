@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/core/error/exception.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
@@ -15,6 +17,7 @@ class AuthenticationBlocB
   }) : super(AuthenticationInitialStateB()) {
     on<UserBSignInEvent>(_signInUserB);
     on<UserBSignUpEvent>(_signUpUserB);
+    on<UserBLogoutEvent>(_handleLogoutEvent);
   }
   final AuthenticationRepository authenticationRepository;
 
@@ -80,6 +83,31 @@ class AuthenticationBlocB
     } on UnknownException catch (e) {
       emit(
         authenticationSuccessOrFailureB(result: e.message, isLogin: false),
+      );
+    }
+  }
+
+  FutureOr<void> _handleLogoutEvent(
+      UserBLogoutEvent event, Emitter<AuthenticationBState> emit) async {
+    emit(UserBLogoutLoadingState());
+    try {
+      await authenticationRepository.logout();
+      emit(UserBLogoutSuccessState());
+    } on NoInternetException catch (e) {
+      emit(
+        UserBLogoutFailureState(errorMessage: e.message),
+      );
+    } on ConnectionTimeOutException catch (e) {
+      emit(
+        UserBLogoutFailureState(errorMessage: e.message),
+      );
+    } on ServerException catch (e) {
+      emit(
+        UserBLogoutFailureState(errorMessage: e.message),
+      );
+    } on UnknownException catch (e) {
+      emit(
+        UserBLogoutFailureState(errorMessage: e.message),
       );
     }
   }

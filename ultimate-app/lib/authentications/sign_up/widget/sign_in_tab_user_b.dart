@@ -68,7 +68,9 @@ class _SignInTabBState extends State<SignInTabB> {
                 height: 5,
               ),
               TextField(
+                style: TextStyle(color: Colors.white),
                 controller: phoneNumberCtl,
+                keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
                     fillColor: Colors.grey,
                     hintStyle: TextStyle(
@@ -77,7 +79,7 @@ class _SignInTabBState extends State<SignInTabB> {
                     border: OutlineInputBorder(
                       borderSide: BorderSide(),
                     ),
-                    hintText: '+251 903193236'),
+                    hintText: '+441172345678'),
               ),
             ],
           ),
@@ -106,44 +108,32 @@ class _SignInTabBState extends State<SignInTabB> {
               Future.delayed(Duration.zero, () {
                 Navigator.of(context).pushReplacementNamed(Routes.feed);
               });
-            } else if (state is LoginFailureStateB) {
-              print(" Error message: ${state.errorMessage}");
-              Utils.flutterToast(state.errorMessage);
-              return Column(
-                children: [
-                  AppWidget.typeButtonStartAction(
-                    context: context,
-                    input: 'Sign In Now',
-                    onPressed: () {
-                      _submitForm();
-                    },
-                    colorAsset: grey1100,
-                    icon: icKeyboardRight,
-                    sizeAsset: 24,
-                    bgColor: primary,
-                    borderColor: primary,
-                    textColor: grey1100,
-                  ),
-                ],
+              return AppWidget.typeButtonStartAction(
+                context: context,
+                input: 'SIGNED IN',
+                onPressed: null,
+                colorAsset: grey1100,
+                icon: icKeyboardRight,
+                sizeAsset: 24,
+                bgColor: Colors.grey,
+                borderColor: Colors.grey,
+                textColor: grey1100,
+              );
+            } else {
+              return AppWidget.typeButtonStartAction(
+                context: context,
+                input: 'Sign In Now',
+                onPressed: () {
+                  _submitForm();
+                },
+                colorAsset: grey1100,
+                icon: icKeyboardRight,
+                sizeAsset: 24,
+                bgColor: primary,
+                borderColor: primary,
+                textColor: grey1100,
               );
             }
-            return Column(
-              children: [
-                AppWidget.typeButtonStartAction(
-                  context: context,
-                  input: 'Sign In Now',
-                  onPressed: () {
-                    _submitForm();
-                  },
-                  colorAsset: grey1100,
-                  icon: icKeyboardRight,
-                  sizeAsset: 24,
-                  bgColor: primary,
-                  borderColor: primary,
-                  textColor: grey1100,
-                ),
-              ],
-            );
           }),
         ],
       ),
