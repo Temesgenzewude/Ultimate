@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_ultimate/authentications/upload_images/widgets/add_image_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,8 +29,17 @@ class UploadImages extends StatefulWidget {
 }
 
 class _UploadImagesState extends State<UploadImages> {
+  bool _isUploadReady = false;
   File? imageFile;
   List<XFile> imageFileList = [];
+  Map<int, XFile?> indexToImage = {
+    0: null,
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+  };
 
   void selectImages() async {
     print('pressed scan for user A');
@@ -39,14 +50,25 @@ class _UploadImagesState extends State<UploadImages> {
     setState(() {});
   }
 
-  Future _pickImage() async {
+  void _pickImage(int index) async {
     try {
+      print(imageFileList);
+      print(indexToImage);
+      print("===============================================");
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
-      // File imgFile = File(image.path);
       setState(() {
-        this.imageFile = File(image.path);
+        this.indexToImage[index] = image;
       });
+      bool temp_bool = true;
+      indexToImage.forEach((key, value) {
+        if (value == null) {
+          temp_bool = false;
+        }
+      });
+      _isUploadReady = temp_bool;
+      print("=====================================Got here");
+      print(_isUploadReady);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -70,49 +92,6 @@ class _UploadImagesState extends State<UploadImages> {
     final name = basename(imagePath);
     final image = File('${directory.path}/$name');
     return File(imagePath).copy(image.path);
-  }
-
-  Widget item(String title, String subTitle, Color bgColor, Function() onTap) {
-    return AnimationClick(
-      function: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-            color: grey200, borderRadius: BorderRadius.circular(16)),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: bgColor, borderRadius: BorderRadius.circular(16)),
-              child: Image.asset(newPaper, width: 28, height: 28),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: headline(color: grey1100),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    subTitle,
-                    style: subhead(color: grey800),
-                  )
-                ],
-              ),
-            ),
-            const Icon(
-              Icons.keyboard_arrow_right_rounded,
-              size: 28,
-              color: grey500,
-            )
-          ],
-        ),
-      ),
-    );
   }
 
   @override
@@ -142,14 +121,6 @@ class _UploadImagesState extends State<UploadImages> {
               ),
             ),
           ),
-          // right: AnimationClick(
-          //     child: Padding(
-          //   padding: const EdgeInsets.only(right: 16),
-          //   child: Text(
-          //     '1 of 1',
-          //     style: headline(color: corn1),
-          //   ),
-          // )),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -166,7 +137,7 @@ class _UploadImagesState extends State<UploadImages> {
               Padding(
                 padding: const EdgeInsets.only(top: 32, bottom: 8),
                 child: GradientText(
-                  'Upload up to 6 Images',
+                  'Upload your images',
                   style: const TextStyle(
                       fontSize: 28,
                       height: 1,
@@ -183,49 +154,45 @@ class _UploadImagesState extends State<UploadImages> {
                 textAlign: TextAlign.center,
                 style: body(color: grey800),
               ),
-              const SizedBox(height: 32),
-              item(
-                'Scan your ID, Passport',
-                'Take picture of both side card',
-                green,
-                selectImages,
+              StaggeredGrid.count(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                  children: [
+                    StaggeredGridTile.count(
+                      crossAxisCellCount: 2,
+                      mainAxisCellCount: 2,
+                      child: addImageWidget(indexToImage[0], 0),
+                    ),
+                    StaggeredGridTile.count(
+                      crossAxisCellCount: 1,
+                      mainAxisCellCount: 1,
+                      child: addImageWidget(indexToImage[1], 1),
+                    ),
+                    StaggeredGridTile.count(
+                      crossAxisCellCount: 1,
+                      mainAxisCellCount: 1,
+                      child: addImageWidget(indexToImage[2], 2),
+                    ),
+                    StaggeredGridTile.count(
+                      crossAxisCellCount: 1,
+                      mainAxisCellCount: 1,
+                      child: addImageWidget(indexToImage[3], 3),
+                    ),
+                    StaggeredGridTile.count(
+                      crossAxisCellCount: 1,
+                      mainAxisCellCount: 1,
+                      child: addImageWidget(indexToImage[4], 4),
+                    ),
+                    StaggeredGridTile.count(
+                      crossAxisCellCount: 1,
+                      mainAxisCellCount: 1,
+                      child: addImageWidget(indexToImage[5], 5),
+                    ),
+                  ]),
+              SizedBox(
+                height: 20,
               ),
-              const SizedBox(height: 24),
-              if (imageFileList.isNotEmpty)
-                Expanded(
-                  child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3),
-                      itemCount: imageFileList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                            height: 30,
-                            width: 30,
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Image.file(File(imageFileList[index].path),
-                                    fit: BoxFit.cover),
-                                Positioned(
-                                    left: 90,
-                                    top: -20,
-                                    child: IconButton(
-                                        icon: const Icon(
-                                          Icons.delete_forever_rounded,
-                                          size: 30,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            imageFileList.removeAt(index);
-                                          });
-                                        }))
-                              ],
-                            ));
-                      }),
-                ),
-              const SizedBox(height: 24),
               BlocBuilder<UploadImagesBloc, UploadImagesState>(
                 builder: (context, state) {
                   if (state is UploadImagesLoadingState) {
@@ -241,31 +208,139 @@ class _UploadImagesState extends State<UploadImages> {
                         context: context,
                         input: 'Upload Images',
                         onPressed: () {
-                          print(prefManager.kTokenA);
+                          print(prefManager.kTokenB);
                           print('here');
-                          BlocProvider.of<UploadImagesBloc>(context).add(
-                              UserAUploadImagesEvent(images: imageFileList));
+                          indexToImage.forEach((key, value) {
+                            if (value != null) {
+                              imageFileList.add(value);
+                            }
+                          });
+                          if (imageFileList.length == 6) {
+                            BlocProvider.of<UploadImagesBloc>(context).add(
+                                UserAUploadImagesEvent(images: imageFileList));
+                          }
                         },
-                        bgColor: primary,
-                        borderColor: primary,
+                        bgColor: _isUploadReady ? primary : Colors.grey,
+                        borderColor: _isUploadReady ? primary : Colors.grey,
                         textColor: grey1100);
                   }
                   return AppWidget.typeButtonStartAction2(
                       context: context,
                       input: 'Upload Images',
                       onPressed: () {
-                        BlocProvider.of<UploadImagesBloc>(context)
-                            .add(UserAUploadImagesEvent(images: imageFileList));
+                        indexToImage.forEach((key, value) {
+                          if (value != null) {
+                            imageFileList.add(value);
+                          }
+                        });
+                        print(imageFileList);
+                        print("============================");
+                        if (imageFileList.length == 6) {
+                          BlocProvider.of<UploadImagesBloc>(context).add(
+                              UserAUploadImagesEvent(images: imageFileList));
+                        }
                       },
-                      bgColor: primary,
-                      borderColor: primary,
+                      bgColor: _isUploadReady ? primary : Colors.grey,
+                      borderColor: _isUploadReady ? primary : Colors.grey,
                       textColor: grey1100);
                 },
               ),
-              const SizedBox(height: 48)
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget addImageWidget(dynamic picture, int index) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          _pickImage(index);
+          // setState(() {
+          //   indexToImage[index] = image;
+          // });
+        },
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+            width: 200,
+            height: 200,
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+                color: Color.fromARGB(255, 84, 82, 82)),
+            child: picture == null
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.camera_alt,
+                        size: 50,
+                      ),
+                      Container(
+                        width: 100,
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: primary),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add,
+                              size: 25,
+                            ),
+                            Text(
+                              'Add',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                : Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Image.file(
+                          File(indexToImage[index]!.path),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: 100,
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: primary),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add,
+                                size: 25,
+                              ),
+                              Text(
+                                'Add',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
       ),
     );
   }
