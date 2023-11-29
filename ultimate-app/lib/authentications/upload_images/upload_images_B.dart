@@ -198,6 +198,8 @@ class _UploadImagesState extends State<UploadImagesB> {
                   if (state is UserBUploadImagesLoadingState) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is UserBUploadImagesSuccessState) {
+                    Utils.flutterToast(
+                        "Your images have been successfully uploaded");
                     Future.delayed(const Duration(seconds: 3), () {
                       Navigator.of(context)
                           .pushReplacementNamed(Routes.accountInformationOne);
@@ -208,8 +210,11 @@ class _UploadImagesState extends State<UploadImagesB> {
                         context: context,
                         input: 'Upload Images',
                         onPressed: () {
+                          imageFileList = [];
+
                           print(prefManager.kTokenB);
                           print('here');
+
                           indexToImage.forEach((key, value) {
                             if (value != null) {
                               imageFileList.add(value);
@@ -228,6 +233,7 @@ class _UploadImagesState extends State<UploadImagesB> {
                       context: context,
                       input: 'Upload Images',
                       onPressed: () {
+                        imageFileList = [];
                         indexToImage.forEach((key, value) {
                           if (value != null) {
                             imageFileList.add(value);
