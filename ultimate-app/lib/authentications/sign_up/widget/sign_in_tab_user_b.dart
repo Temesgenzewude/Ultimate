@@ -102,6 +102,7 @@ class _SignInTabBState extends State<SignInTabB> {
             if (state is LoginLoadingStateB) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is LoginSuccessStateB) {
+              Utils.flutterToast('Successfully logged in');
               Future.delayed(Duration.zero, () {
                 Navigator.of(context).pushReplacementNamed(Routes.feed);
               });

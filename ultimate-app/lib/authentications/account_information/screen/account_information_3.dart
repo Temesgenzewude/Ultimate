@@ -90,7 +90,7 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
             child: Padding(
               padding: const EdgeInsets.only(right: 16),
               child: Text(
-                '2 of 3',
+                '3 of 4',
                 style: headline(color: corn1),
               ),
             ),

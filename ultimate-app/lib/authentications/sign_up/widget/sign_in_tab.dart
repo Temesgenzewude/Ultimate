@@ -119,8 +119,7 @@ class _SignInTabState extends State<SignInTab> {
                 } else if (state is LoginSuccessState) {
                   Utils.flutterToast('Successfully logged in');
                   Future.delayed(const Duration(seconds: 3), () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(Routes.accountInformationOne);
+                    Navigator.of(context).pushReplacementNamed(Routes.feed);
                   });
                 } else if (state is LoginFailureState) {
                   Utils.flutterToast(state.errorMessage);

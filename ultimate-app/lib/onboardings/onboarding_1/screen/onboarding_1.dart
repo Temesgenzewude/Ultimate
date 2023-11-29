@@ -17,7 +17,7 @@ final List<Color> colors = [
   green,
   stPatricksBlue,
   corn1,
-  lightSalmon,
+  lightSalmon,  
   emerald1,
   primary
 ];

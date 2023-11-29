@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     prefManager.testToken = '';
     //prefManager.lastViewedPage ??= Routes.onBoarding1;
-    prefManager.logout();
+    // prefManager.logout();
     super.initState();
   }
 
@@ -156,6 +156,6 @@ class _MyAppState extends State<MyApp> {
             background: Container(color: const Color(0xFFF5F5F5))),
         // home: const OnBoardingOne(),
       ),
-    ); 
+    );
   }
 }
