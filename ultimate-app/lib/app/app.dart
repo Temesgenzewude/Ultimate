@@ -138,6 +138,8 @@ class _MyAppState extends State<MyApp> {
             ? prefManager.lastViewedPage ?? Routes.accountInformationOne
             : prefManager.lastViewedPage ?? Routes.onBoarding1,
 
+        // initialRoute: Routes.customer_manager,
+
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'Ultimate',

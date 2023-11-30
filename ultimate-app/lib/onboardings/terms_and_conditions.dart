@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ultimate/app/widget_support.dart';
 import 'package:flutter_ultimate/common/constant/colors.dart';
 import 'package:flutter_ultimate/common/route/routes.dart';
 
@@ -65,6 +66,9 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final prevRoute = ModalRoute.of(context)?.settings.arguments;
+    print("prevRoute $prevRoute");
+    double width = AppWidget.getWidthScreen(context);
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -75,22 +79,43 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
               const SizedBox(
                 height: 13,
               ),
-              const Text(
-                'Terms and Ccondtions',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              const Text(
-                'Last updated on June 23, 2023',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          size: 30,
+                          color: Colors.white,
+                        )),
+                  ),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Terms and Ccondtions',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Last updated on June 23, 2023',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
               const SizedBox(
                 height: 13,
@@ -138,11 +163,8 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                             });
                           },
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ),
                         const Text(
-                          'I have read and accept terms and conditions',
+                          'I have read and agreed to the terms and conditions.',
                           // overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 17,
@@ -151,28 +173,37 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                         )
                       ],
                     ),
-                    ElevatedButton(
-                        style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.all(20.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                            // padding:
+                            //     MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            //   const EdgeInsets.all(20.0),
+                            // ),
+                            fixedSize: MaterialStateProperty.all<Size>(
+                              Size(width, 55),
+                            ),
+
+                            backgroundColor: MaterialStateColor.resolveWith(
+                              (states) {
+                                if (agree) {
+                                  return primary;
+                                }
+                                // Default color
+                                return Colors.grey;
+                              },
+                            ),
                           ),
-                          backgroundColor: MaterialStateColor.resolveWith(
-                            (states) {
-                              if (agree) {
-                                return primary;
-                              }
-                              // Default color
-                              return Colors.grey;
-                            },
-                          ),
-                        ),
-                        onPressed: agree ? onAccept : null,
-                        child: const Text(
-                          'Continue',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ))
+                          onPressed: agree ? onAccept : null,
+                          child: Text(
+                            'Continue',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: agree ? Colors.white : grey200),
+                          )),
+                    )
                   ],
                 ),
               ),

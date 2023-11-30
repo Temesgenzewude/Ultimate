@@ -10,6 +10,7 @@ import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
 import '../../../dependency_indjection.dart';
+import '../../../persisted_shared_pref.dart';
 import '../../../sharedPreferences.dart';
 import '../widget/onboarding_widget.dart';
 
@@ -44,9 +45,30 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
   List<String> userTypes = ['User B', 'User A'];
   String? selectedUserType;
   final prefManager = sl<PrefManager>();
+  final _persistentPrefs = sl<PersistedSharePrefManager>();
   bool _isLocationEnabledAndShared = false;
 
+  Future<void> _checkLocationServiceStatus() async {
+    final bool isLocationServiceEnabled =
+        await Geolocator.isLocationServiceEnabled();
+    if (!isLocationServiceEnabled) {
+      // If location service is disabled, reset the variable in persistent shared preferences
+      _persistentPrefs.isLocationEnableAndShared = false;
+    }
+  }
+
   Future<bool> _handleLocationPermission() async {
+    bool locationPermissionAsked =
+        _persistentPrefs.isLocationEnableAndShared ?? false;
+    if (locationPermissionAsked) {
+      // Recheck location service status each time user logs in
+      bool isLocationServiceEnabled =
+          await Geolocator.isLocationServiceEnabled();
+      if (!isLocationServiceEnabled) {
+        return false;
+      }
+      return true;
+    }
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -89,6 +111,8 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
       }
     }
 
+    _persistentPrefs.isLocationEnableAndShared = true;
+
     return true;
   }
 
@@ -102,6 +126,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
         setState(() {
           _isLocationEnabledAndShared = false;
         });
+
         return false;
       }
 
@@ -117,6 +142,8 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
 
       debugPrint('latitude: ${_currentPosition?.latitude}');
       debugPrint('longitude: ${_currentPosition?.longitude}');
+      _persistentPrefs.isLocationEnableAndShared = true;
+
       return true;
     } catch (e) {
       debugPrint('Error getting current position: $e');
@@ -145,66 +172,17 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
               child: Image.asset(
                 landings[index],
                 height: height / 2.4,
+                fit: BoxFit.cover,
               )),
         ],
       ),
     );
   }
 
-  // @override
-  // void initState() {
-  //   // _getCurrentPosition();
-  //   super.initState();
-  // }
-
-  AlertDialog alertDialog() {
-    return AlertDialog(
-      content: const Text(
-          'To continue you first need to add permission to location!'),
-      title: const Text('Location'),
-      actions: [
-        actionButton(primary, 'Allow Location', Colors.white, () async {
-          await _getCurrentPosition();
-        }),
-        actionButton(
-          Colors.white,
-          'Cancel',
-          Colors.black,
-          () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
-  }
-
-  TextButton actionButton(
-    Color backgroundcolor,
-    String text,
-    Color textColor,
-    void Function() onPressed,
-  ) {
-    return TextButton(
-      style: ButtonStyle(
-        elevation: MaterialStateProperty.all<double>(12.0),
-        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-          const EdgeInsets.all(15.0),
-        ),
-        backgroundColor: MaterialStateColor.resolveWith(
-          (states) {
-            return backgroundcolor; // Default color
-          },
-        ),
-      ),
-      onPressed: onPressed,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 16,
-          color: textColor,
-        ),
-      ),
-    );
+  @override
+  void initState() {
+    _checkLocationServiceStatus();
+    super.initState();
   }
 
   @override
@@ -212,10 +190,8 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
     final height = AppWidget.getHeightScreen(context);
     final width = AppWidget.getWidthScreen(context);
     final SliderBloc sliderBloc = BlocProvider.of<SliderBloc>(context);
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         body: SafeArea(
           child: Column(
@@ -240,7 +216,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                 ),
               ),
               SizedBox(
-                height: height / 2,
+                height: height / 2.09,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   child: BlocBuilder<SliderBloc, int>(
@@ -285,156 +261,173 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                   ),
                 ),
               ),
+              // Padding(
+              //   padding:
+              //       const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       Container(
+              //         height: 60.0,
+              //         decoration: BoxDecoration(
+              //             border: Border.all(color: Colors.grey),
+              //             borderRadius: BorderRadius.circular(20.0),
+              //             color: grey900),
+              //         child: DropdownButtonHideUnderline(
+              //           child: DropdownButton<String>(
+              //             padding: const EdgeInsets.symmetric(horizontal: 16),
+              //             isDense: true,
+              //             // isExpanded: true,
+              //             icon: const Icon(
+              //               Icons.arrow_drop_down_outlined,
+              //               color: Colors.black87,
+              //               size: 30,
+              //             ),
+              //             dropdownColor: grey900,
+              //             style: const TextStyle(
+              //                 color: primary,
+              //                 fontSize: 20,
+              //                 fontWeight: FontWeight.w500),
+              //             hint: const Text(
+              //               'Select User Type',
+              //               style: TextStyle(
+              //                   color: Colors.black87,
+              //                   fontSize: 20,
+              //                   fontWeight: FontWeight.w500),
+              //             ),
+              //             items: userTypes.map((String value) {
+              //               return DropdownMenuItem<String>(
+              //                 value: value,
+              //                 child: Text(
+              //                   value,
+              //                   style: const TextStyle(
+              //                       color: Colors.black87,
+              //                       fontSize: 20,
+              //                       fontWeight: FontWeight.w500),
+              //                 ),
+              //               );
+              //             }).toList(),
+              //             value: selectedUserType,
+              //             onChanged: (String? value) {
+              //               setState(() {
+              //                 selectedUserType = value;
+              //                 prefManager.userType = selectedUserType;
+              //                 print(prefManager.userType);
+              //               });
+              //             },
+              //           ),
+              //         ),
+              //       ),
+              //       // ElevatedButton(
+              //       //   style: ElevatedButton.styleFrom(
+              //       //     fixedSize: const Size(150, 63),
+              //       //     backgroundColor: primary,
+              //       //     shape: RoundedRectangleBorder(
+              //       //         borderRadius: BorderRadius.circular(20)),
+              //       //   ),
+              //       //   onPressed: () async {
+              //       //     if (!_isLocationEnabledAndShared) {
+              //       //       await _getCurrentPosition();
+              //       //     }
+              //       //   },
+              //       //   child: Text(_isLocationEnabledAndShared
+              //       //       ? 'Location Shared!'
+              //       //       : 'Allow Location!'),
+              //       // ),
+              //     ],
+              //   ),
+              // ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 60.0,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(20.0),
-                          color: grey900),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          isDense: true,
-                          // isExpanded: true,
-                          icon: const Icon(
-                            Icons.arrow_drop_down_outlined,
-                            color: Colors.black87,
-                            size: 30,
-                          ),
-                          dropdownColor: grey900,
-                          style: const TextStyle(
-                              color: primary,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500),
-                          hint: const Text(
-                            'Select User Type',
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          items: userTypes.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            );
-                          }).toList(),
-                          value: selectedUserType,
-                          onChanged: (String? value) {
-                            setState(() {
-                              selectedUserType = value;
-                              prefManager.userType = selectedUserType;
-                              print(prefManager.userType);
-                            });
+                child: Container(
+                  height: 55,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: primary,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: primary),
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            await _getCurrentPosition();
+
+                            if (_persistentPrefs.isLocationEnableAndShared ==
+                                true) {
+                              prefManager.userType = 'User A';
+
+                              Future.delayed(const Duration(seconds: 1), () {
+                                Navigator.pushNamed(
+                                    context, Routes.termsAndConditions,
+                                    arguments: Routes.onBoarding1);
+                              });
+                            }
                           },
+                          child: SizedBox(
+                            height: 55,
+                            child: Text(
+                              'Continue as user A'.toUpperCase(),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 20),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(
-                    //     fixedSize: const Size(150, 63),
-                    //     backgroundColor: primary,
-                    //     shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(20)),
-                    //   ),
-                    //   onPressed: () async {
-                    //     if (!_isLocationEnabledAndShared) {
-                    //       await _getCurrentPosition();
-                    //     }
-                    //   },
-                    //   child: Text(_isLocationEnabledAndShared
-                    //       ? 'Location Shared!'
-                    //       : 'Allow Location!'),
-                    // ),
-                  ],
+                        const SizedBox(
+                          width: 20,
+                        ),
+                      ]),
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Container(
-                    height: 55,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: primary,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: primary),
-                    ),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              if (!_isLocationEnabledAndShared) {
-                                Utils.flutterToast('Please allow location!');
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                child: Container(
+                  height: 55,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.green),
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            await _getCurrentPosition();
 
-                                await _getCurrentPosition();
-                              }
-                              if (_isLocationEnabledAndShared) {
-                                print(
-                                    '.....location services enabled and shared...');
-                                if (selectedUserType == null) {
-                                  Utils.flutterToast(
-                                      'Please select user type to continue!');
-                                  return;
-                                } else {
-                                  Future.delayed(const Duration(seconds: 1),
-                                      () {
-                                    Navigator.pushReplacementNamed(
-                                        context, Routes.termsAndConditions);
-                                  });
-                                  // if (selectedUserType == 'User A') {
-                                  //   Future.delayed(const Duration(seconds: 1),
-                                  //       () {
-                                  //     Navigator.pushReplacementNamed(
-                                  //         context, Routes.signUp);
-                                  //   });
-                                  // } else if (selectedUserType == 'User B') {
-                                  //   Future.delayed(const Duration(seconds: 1),
-                                  //       () {
-                                  //     Navigator.pushReplacementNamed(
-                                  //         context, Routes.signUpB);
-                                  //   });
-                                  // }
-                                }
-                              } else {
-                                print(
-                                    '.....location services not enabled and shared...');
-                                Utils.flutterToast(
-                                    'Please enable location services in your settings and allow this app to access your location!');
-                                return;
-                              }
-                            },
-                            child: SizedBox(
-                              height: 55,
-                              child: Text(
-                                selectedUserType == null
-                                    ? 'Continue'.toUpperCase()
-                                    : 'Continue as $selectedUserType'
-                                        .toUpperCase(),
-                                style: const TextStyle(
-                                    color: grey1100, fontSize: 20),
-                              ),
+                            if (_persistentPrefs.isLocationEnableAndShared ==
+                                true) {
+                              prefManager.userType = 'User B';
+
+                              Future.delayed(const Duration(seconds: 1), () {
+                                Navigator.pushNamed(
+                                    context, Routes.termsAndConditions,
+                                    arguments: Routes.onBoarding1);
+                              });
+                            }
+                          },
+                          child: SizedBox(
+                            height: 55,
+                            child: Text(
+                              'Continue as User B'.toUpperCase(),
+                              style: const TextStyle(
+                                  color: grey1100, fontSize: 20),
                             ),
                           ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                        ]),
-                  ))
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                      ]),
+                ),
+              ),
             ],
           ),
         ),
@@ -442,3 +435,46 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
     );
   }
 }
+
+
+/*
+
+ if (!_isLocationEnabledAndShared) {
+                              Utils.flutterToast('Please allow location!');
+
+                              await _getCurrentPosition();
+                            }
+                            if (_isLocationEnabledAndShared) {
+                              print(
+                                  '.....location services enabled and shared...');
+                              if (selectedUserType == null) {
+                                Utils.flutterToast(
+                                    'Please select user type to continue!');
+                                return;
+                              } else {
+                                Future.delayed(const Duration(seconds: 1), () {
+                                  Navigator.pushReplacementNamed(
+                                      context, Routes.termsAndConditions);
+                                });
+                                // if (selectedUserType == 'User A') {
+                                //   Future.delayed(const Duration(seconds: 1),
+                                //       () {
+                                //     Navigator.pushReplacementNamed(
+                                //         context, Routes.signUp);
+                                //   });
+                                // } else if (selectedUserType == 'User B') {
+                                //   Future.delayed(const Duration(seconds: 1),
+                                //       () {
+                                //     Navigator.pushReplacementNamed(
+                                //         context, Routes.signUpB);
+                                //   });
+                                // }
+                              }
+                            } else {
+                              print(
+                                  '.....location services not enabled and shared...');
+                              Utils.flutterToast(
+                                  'Please enable location services in your settings and allow this app to access your location!');
+                              return;
+                            }
+*/
