@@ -59,10 +59,8 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
   Widget build(BuildContext context) {
     final width = AppWidget.getWidthScreen(context);
     return UnfocusClick(
-      child: WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
+      child: PopScope(
+        canPop: false,
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBarCpn(

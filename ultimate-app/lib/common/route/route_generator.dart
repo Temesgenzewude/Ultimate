@@ -535,9 +535,10 @@ mixin RouteGenerator {
           builder: (context) => const Bookmark1Home(),
         );
       case Routes.termsAndConditions:
+        final args = settings.arguments;
         return MaterialPageRoute<dynamic>(
-          builder: (context) => TermsAndConditionsPage(),
-        );
+            builder: (context) => TermsAndConditionsPage(),
+            settings: RouteSettings(arguments: args));
       default:
         return _errorRoute();
     }
