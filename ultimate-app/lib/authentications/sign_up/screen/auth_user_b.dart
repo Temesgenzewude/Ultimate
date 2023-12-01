@@ -7,6 +7,7 @@ import '../../../common/constant/styles.dart';
 import '../widget/sign_in_tab_user_b.dart';
 import '../widget/sign_up_tab_user_b.dart';
 
+
 class AuthPageB extends StatefulWidget {
   const AuthPageB({Key? key}) : super(key: key);
 
