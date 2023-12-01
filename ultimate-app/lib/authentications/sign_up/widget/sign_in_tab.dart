@@ -23,11 +23,15 @@ class SignInTab extends StatefulWidget {
 }
 
 class _SignInTabState extends State<SignInTab> {
-  TextEditingController usernameCtl = TextEditingController();
-  FocusNode usernameFn = FocusNode();
+  TextEditingController emailCtl = TextEditingController();
+  FocusNode emailFn = FocusNode();
   TextEditingController passwordCtl = TextEditingController();
   FocusNode passwordFn = FocusNode();
+  TextEditingController phoneNumberCtl = TextEditingController();
+  FocusNode phoneNumberFn = FocusNode();
   bool showPass = false;
+  bool _logInWithEmail = true;
+  bool _logInWithPhone = false;
 
   Future<void> _handleGoogleSignIn() async {
     final user = await SocialLoginApi.googleSignIn();
@@ -75,6 +79,9 @@ class _SignInTabState extends State<SignInTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          const SizedBox(
+            height: 20,
+          ),
           GradientText(
             'Welcome to  Ultimate! Login As User A!',
             style: const TextStyle(
@@ -87,15 +94,85 @@ class _SignInTabState extends State<SignInTab> {
               const Color(0xFFFFFDE1).withOpacity(0.9),
             ]),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                height: 60,
+                child: Row(
+                  children: [
+                    Checkbox(
+                      isError: true,
+                      tristate: true,
+                      fillColor: MaterialStateProperty.all(Colors.blueGrey),
+                      side: const BorderSide(width: 1.0, color: Colors.white),
+                      value: _logInWithEmail,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _logInWithEmail = value ?? false;
+
+                          _logInWithPhone = !_logInWithEmail;
+                        });
+                      },
+                    ),
+                    Text(
+                      'With Email',
+                      style: body(color: grey1100, fontWeight: '600'),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 60,
+                child: Row(
+                  children: [
+                    Checkbox(
+                      isError: true,
+                      tristate: true,
+                      fillColor: MaterialStateProperty.all(Colors.blueGrey),
+                      side: const BorderSide(width: 1.0, color: Colors.white),
+                      value: _logInWithPhone,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _logInWithPhone = value ?? false;
+
+                          _logInWithEmail = !_logInWithPhone;
+                        });
+                      },
+                    ),
+                    Text(
+                      'With Phone Number',
+                      style: body(color: grey1100, fontWeight: '600'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           Column(
             children: [
-              TextFieldCpn(
-                controller: usernameCtl,
-                focusNode: usernameFn,
-                labelText: 'Email',
-                type: 'email',
-              ),
+              _logInWithEmail
+                  ? TextFieldCpn(
+                      controller: emailCtl,
+                      focusNode: emailFn,
+                      labelText: 'Email',
+                      type: 'email',
+                      hintText: 'example123@gmail.com',
+                    )
+                  : TextFieldCpn(
+                      labelText: 'Phone number',
+                      controller: phoneNumberCtl,
+                      focusNode: phoneNumberFn,
+                      type: 'phone',
+                      keyboardType: TextInputType.phone,
+                      hintText: '+25191234567890',
+                    ),
               Padding(
                 padding: const EdgeInsets.only(top: 24, bottom: 32),
                 child: TextFieldPassCpn(
@@ -184,7 +261,7 @@ class _SignInTabState extends State<SignInTab> {
                     context: context,
                     input: 'Facebook',
                     onPressed: () {
-                      _handleFacebookSignIn();
+                      // _handleFacebookSignIn();
                     },
                     icon: icFacebook,
                     sizeAsset: 24,
@@ -198,7 +275,7 @@ class _SignInTabState extends State<SignInTab> {
                     context: context,
                     input: 'Google',
                     onPressed: () {
-                      _handleGoogleSignIn();
+                      // _handleGoogleSignIn();
                     },
                     icon: google,
                     sizeAsset: 24,
@@ -226,23 +303,44 @@ class _SignInTabState extends State<SignInTab> {
   }
 
   void _submitForm() {
-    if (usernameCtl.text.isEmpty || passwordCtl.text.isEmpty) {
-      Utils.flutterToast('Please fill all fields');
-      return;
+    String phoneNumberB = phoneNumberCtl.text;
+    if (_logInWithPhone) {
+      if (phoneNumberCtl.text.isEmpty) {
+        Utils.flutterToast(
+            'Phone number is required. Please enter your phone number!');
+        return;
+      }
+
+      if (!FormValidator.validatePhoneNumber(phoneNumberB)) {
+        Utils.flutterToast(
+            'Invalid Phone number:Please enter a valid phone number!');
+        return;
+      }
+    } else if (_logInWithEmail) {
+      if (emailCtl.text.isEmpty) {
+        Utils.flutterToast('Email is required. Please enter your email!');
+        return;
+      }
+      if (!FormValidator.validateEmail(emailCtl.text)) {
+        Utils.flutterToast('Invalid Email. Please enter valid email!');
+        return;
+      }
     }
-    if (!FormValidator.validateEmail(usernameCtl.text)) {
-      Utils.flutterToast('Invalid Email');
+
+    if (passwordCtl.text.isEmpty) {
+      Utils.flutterToast('Password is required. Please enter password!');
       return;
     }
 
     if (!FormValidator.validatePassword(passwordCtl.text)) {
-      Utils.flutterToast('Invalid Password');
+      Utils.flutterToast('Invalid Password. Please enter valid password!');
       return;
     }
     // If all validation passes
     final UserALoginRequestModel user = UserALoginRequestModel(
-      email: usernameCtl.text,
+      email: emailCtl.text,
       password: passwordCtl.text,
+      phoneNumber: phoneNumberCtl.text,
     );
     BlocProvider.of<AuthenticationBloc>(context).add(
       UserASignInEvent(

@@ -4,6 +4,7 @@ import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
+import '../../../common/widget/animation_click.dart';
 import '../widget/sign_in_tab.dart';
 import '../widget/sign_up_tab.dart';
 
@@ -29,21 +30,39 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
     final width = AppWidget.getWidthScreen(context);
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: true,
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Image.asset(
-                  bg10,
-                  width: width,
-                  height: height / 3.5,
-                  fit: BoxFit.fill,
-                ),
+                Stack(children: [
+                  Image.asset(
+                    bg10,
+                    width: width,
+                    height: height / 3.5,
+                    fit: BoxFit.fill,
+                  ),
+                  Positioned(
+                    top: 65,
+                    left: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: AnimationClick(
+                        function: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Image.asset(
+                          icArrowLeft,
+                          width: 80,
+                          height: 80,
+                          color: grey1100,
+                        ),
+                      ),
+                    ),
+                  )
+                ]),
                 Container(
                   width: width,
                   height: height / 1.25,
@@ -68,6 +87,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                               _currentIndex = index;
                             });
                           },
+                          indicatorSize: TabBarIndicatorSize.tab,
                           controller: _controller,
                           indicator: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),

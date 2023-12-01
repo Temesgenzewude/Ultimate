@@ -17,5 +17,5 @@ class AppUrl {
   static var saveUserBProfile = '$baseUrl/save-profile-b';
   static var saveUserAProfile = '$baseUrl/save-profile';
   static var storeUserBInterests = '$baseUrl/store-user-b-intrest';
-  static var storeUserAInterests = '$baseUrl/store-user-b-intrest';
+  static var storeUserAInterests = '$baseUrl/store-user-intrest';
 }

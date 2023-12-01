@@ -16,11 +16,15 @@ import '../../../data/datasources/Auth/auth_remote_data_source.dart';
 
 final List<String> maritalStatus = ['Single', 'Married', 'Divorced', 'Widowed'];
 final List<String> levelOfReligiously = [
-  'Conservative',
-  'Non-Conservative',
-  'Not Religious',
-  'Somewhat Religious',
-  'Very Religious'
+  'Liberal',
+  'Moderate',
+  'Conservative'
+];
+
+final List<String> sects = [
+  'Sunni',
+  'Shia',
+  'Other',
 ];
 
 class AccountInformationThree extends StatefulWidget {
@@ -50,6 +54,7 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
 
   String? _selectedMaritalStatus;
   String? _selectedLevelOfReligiously;
+  String? _selectedSect;
 
   @override
   void initState() {
@@ -313,11 +318,69 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                     ),
                   ],
                 ),
-                TextFieldCpn(
-                  controller: sectCtl,
-                  focusNode: sectFn,
-                  labelText: 'Sect',
-                  type: 'sect',
+                const SizedBox(height: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Sect',
+                      style: title3(color: grey1100),
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField2(
+                      value: _selectedSect,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: grey200,
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      isExpanded: true,
+                      hint: Text(
+                        'Select Your Sect',
+                        style: body(color: grey500),
+                      ),
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: grey500,
+                      ),
+                      iconSize: 30,
+                      buttonHeight: 60,
+                      buttonPadding: const EdgeInsets.only(right: 16),
+                      dropdownDecoration: BoxDecoration(
+                        color: grey200,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      items: sects
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: body(color: grey600),
+                                ),
+                              ))
+                          .toList(),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select your sect.';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedSect = value;
+                        });
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          _selectedSect = value;
+                        });
+                      },
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 32,
@@ -363,8 +426,8 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
       return;
     }
 
-    if (sectCtl.text.isEmpty) {
-      Utils.flutterToast('Sect is required. Please your sect!');
+    if (_selectedSect == null || _selectedSect!.isEmpty) {
+      Utils.flutterToast('Sect is required. Please select sect!');
       return;
     }
 
@@ -373,7 +436,7 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
 
     prefManager.maritalStatus = _selectedMaritalStatus;
     prefManager.levelOfReligiously = _selectedLevelOfReligiously;
-    prefManager.sect = sectCtl.text;
+    prefManager.sect = _selectedSect;
 
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pushNamed(Routes.accountInformationFour);

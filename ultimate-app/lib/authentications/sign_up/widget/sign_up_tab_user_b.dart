@@ -227,6 +227,16 @@ class _SignUpTabBState extends State<SignUpTabB> {
       'password': passwordCtl.text,
     };
 
+    final fromPref = {
+      'name': prefManager.name,
+      'email': prefManager.email,
+      'password': prefManager.password,
+    };
+
+    print('sign up user b data from pref mngr: $fromPref');
+
+    print('sign up user b data: $formData');
+
     Navigator.of(context)
         .pushNamed(Routes.addMobileNumberB, arguments: formData);
   }

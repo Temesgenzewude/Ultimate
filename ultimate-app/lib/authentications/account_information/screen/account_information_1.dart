@@ -30,6 +30,8 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
   TextEditingController occupationCtl = TextEditingController();
 
   TextEditingController healthIssueCtl = TextEditingController();
+  TextEditingController professionCtl = TextEditingController();
+  FocusNode professionFn = FocusNode();
 
   FocusNode healthIssueFn = FocusNode();
 
@@ -50,7 +52,7 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
 
     _upperValue = int.tryParse(prefManager.age ?? '18') ?? 18;
     _selectedGender = prefManager.gender;
-    selectedProfession = prefManager.profession;
+    professionCtl.text = prefManager.profession ?? '';
     healthIssueCtl.text = prefManager.healthIssue ?? '';
     super.initState();
   }
@@ -252,68 +254,11 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Profession',
-                        style: title3(color: grey1100),
-                      ),
-                      const SizedBox(height: 16),
-                      DropdownButtonFormField2(
-                        value: selectedProfession,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: grey200,
-                          isDense: true,
-                          contentPadding: EdgeInsets.zero,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        isExpanded: true,
-                        hint: Text(
-                          'Select Your Occupation',
-                          style: body(color: grey500),
-                        ),
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down_rounded,
-                          color: grey500,
-                        ),
-                        iconSize: 30,
-                        buttonHeight: 60,
-                        buttonPadding: const EdgeInsets.only(right: 16),
-                        dropdownDecoration: BoxDecoration(
-                          color: grey200,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        items: professions
-                            .map((item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(
-                                    item,
-                                    style: body(color: grey600),
-                                  ),
-                                ))
-                            .toList(),
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Please select occupation.';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            selectedProfession = value;
-                          });
-                        },
-                        onSaved: (value) {
-                          setState(() {
-                            selectedProfession = value;
-                          });
-                        },
-                      ),
-                    ],
+                  TextFieldCpn(
+                    controller: professionCtl,
+                    focusNode: professionFn,
+                    labelText: 'Profession',
+                    type: 'profession',
                   ),
                   const SizedBox(height: 16),
                   TextFieldCpn(
@@ -348,9 +293,9 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
       Utils.flutterToast('Gender is required. Please select your gender!');
       return;
     }
-    if (selectedProfession == null || selectedProfession!.isEmpty) {
+    if (professionCtl.text.isEmpty) {
       Utils.flutterToast(
-          'Profession is required. Please select your profession!');
+          'Profession is required. Please enter your profession!');
       return;
     }
 
@@ -361,7 +306,7 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
 
     prefManager.age = _upperValue.toString();
     prefManager.gender = _selectedGender;
-    prefManager.profession = selectedProfession;
+    prefManager.profession = professionCtl.text;
     prefManager.healthIssue = healthIssueCtl.text;
 
     Future.delayed(const Duration(seconds: 1), () {
