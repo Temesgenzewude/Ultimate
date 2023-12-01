@@ -79,10 +79,8 @@ class _VerifyState extends State<Verify> {
     final height = AppWidget.getHeightScreen(context);
     final width = AppWidget.getWidthScreen(context);
     return UnfocusClick(
-      child: WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
+      child: PopScope(
+        canPop: false,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           // appBar: AppWidget.createSimpleAppBar(
@@ -130,12 +128,13 @@ class _VerifyState extends State<Verify> {
 
                           if (prefManager.userType == 'User A') {
                             Future.delayed(const Duration(seconds: 2), () {
-                              Navigator.pushNamed(context, Routes.uploadImages);
+                              Navigator.pushNamed(
+                                  context, Routes.newUploadImages);
                             });
                           } else {
                             Future.delayed(const Duration(seconds: 2), () {
                               Navigator.pushNamed(
-                                  context, Routes.uploadImagesB);
+                                  context, Routes.newUploadImagesB);
                             });
                           }
                         } else if (state is OtpVerifiedFailure) {

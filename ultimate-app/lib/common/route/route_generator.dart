@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ultimate/authentications/account_information/screen/account_information_3.dart';
 import 'package:flutter_ultimate/authentications/account_information/screen/account_information_4.dart';
 import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number_B.dart';
+import 'package:flutter_ultimate/authentications/upload_images/new_upload_images_screen.dart';
 import 'package:flutter_ultimate/authentications/upload_images/upload_images_B.dart';
 import 'package:flutter_ultimate/onboardings/terms_and_conditions.dart';
 
@@ -17,6 +18,7 @@ import '../../authentications/reset_password/screen/reset_password.dart';
 import '../../authentications/sign_up/screen/auth_user_b.dart';
 import '../../authentications/sign_up/screen/sign_up.dart';
 import '../../authentications/sign_up_social/screen/sign_up_social.dart';
+import '../../authentications/upload_images/new_upload_images_screen_b.dart';
 import '../../authentications/upload_images/upload_images.dart';
 import '../../authentications/verify/screen/verify.dart';
 import '../../ecommerces/card_product/screen/card_product_home.dart';
@@ -166,6 +168,14 @@ mixin RouteGenerator {
       case Routes.uploadImages:
         return MaterialPageRoute<dynamic>(
           builder: (context) => const UploadImages(),
+        );
+      case Routes.newUploadImages:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const NewUploadImageScreen(),
+        );
+      case Routes.newUploadImagesB:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const NewUploadImageBScreen(),
         );
       case Routes.uploadImagesB:
         return MaterialPageRoute<dynamic>(

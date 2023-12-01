@@ -148,17 +148,20 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
                         BorderRadius.vertical(bottom: Radius.circular(16))),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: AnimationClick(
-                        function: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Image.asset(
-                          icArrowLeft,
-                          width: 24,
-                          height: 24,
-                          color: grey1100,
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: AnimationClick(
+                          function: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Image.asset(
+                            icArrowLeft,
+                            width: 24,
+                            height: 24,
+                            color: grey1100,
+                          ),
                         ),
                       ),
                     ),
@@ -247,6 +250,8 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
                     ),
 
                     getAuthWidget(),
+                    const SizedBox(height: 32),
+
                     BlocBuilder<AuthenticationBlocB, AuthenticationBState>(
                       builder: (context, state) {
                         if (state is AuthenticationLoadingStateB) {

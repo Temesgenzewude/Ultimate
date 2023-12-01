@@ -51,13 +51,6 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
   ];
 
   // This function is triggered when the button is clicked
-  void onAccept() {
-    if (prefManager.userType == 'User A') {
-      Navigator.pushReplacementNamed(context, Routes.signUp);
-    } else if (prefManager.userType == 'User B') {
-      Navigator.pushReplacementNamed(context, Routes.signUpB);
-    }
-  }
 
   void initState() {
     prefManager.lastViewedPage = Routes.termsAndConditions;
@@ -66,8 +59,17 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final prevRoute = ModalRoute.of(context)?.settings.arguments;
+    final prevRoute = ModalRoute.of(context)?.settings.arguments as String?;
     print("prevRoute $prevRoute");
+
+    void onAccept() {
+      if (prefManager.userType == 'User A') {
+        Navigator.pushReplacementNamed(context, Routes.signUp);
+      } else if (prefManager.userType == 'User B') {
+        Navigator.pushReplacementNamed(context, Routes.signUpB);
+      }
+    }
+
     double width = AppWidget.getWidthScreen(context);
     return SafeArea(
       child: Scaffold(

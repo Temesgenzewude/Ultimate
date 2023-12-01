@@ -23,6 +23,8 @@ class Routes {
   static const String forgotPassword = '/forgot_password';
   static const String kyc = '/kyc';
   static const String uploadImages = '/upload_images';
+  static const String newUploadImages = '/new_upload_images';
+  static const String newUploadImagesB = '/new_upload_images_b';
   static const String uploadImagesB = '/upload_images_b';
   static const String login = '/login';
   static const String register = '/register';

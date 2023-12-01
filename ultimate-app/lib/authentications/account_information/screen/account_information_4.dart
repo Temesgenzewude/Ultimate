@@ -44,7 +44,7 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
 
   double _upperValueHeight = 100.50;
   final double _minHeight = 0.0;
-  final double _maxHeight = 200.50;
+  final double _maxHeight = 300.50;
 
   String? _selectedNationality;
   String? _selectedEthnicity;
@@ -132,13 +132,13 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                TextFieldCpn(
-                  controller: bornReligiousCtl,
-                  focusNode: bornReligiousFn,
-                  labelText: 'Born Religious',
-                  type: 'born religious',
-                ),
-                const SizedBox(height: 16),
+                // TextFieldCpn(
+                //   controller: bornReligiousCtl,
+                //   focusNode: bornReligiousFn,
+                //   labelText: 'Born Religious',
+                //   type: 'born religious',
+                // ),
+                // const SizedBox(height: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -415,25 +415,19 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else if (state is AccFailureState) {
-                      return AppWidget.typeButtonStartAction2(
-                          context: context,
-                          input: 'UPDATE YOUR PROFILE',
-                          onPressed: () {
-                            _validateForm();
-                          },
-                          bgColor: primary,
-                          borderColor: primary,
-                          textColor: grey1100);
                     } else if (state is AccInfoSuccessState) {
                       return AppWidget.typeButtonStartAction2(
                           context: context,
-                          input: 'CONTINUE TO ADD YOUR INTERESTS',
+                          input: prefManager.userType == 'User A'
+                              ? 'CONTINUE TO ADD YOUR INTERESTS'
+                              : 'CONTINUE TO FEEDS',
                           onPressed: () {
-                            Future.delayed(const Duration(seconds: 1), () {
-                              Navigator.pushReplacementNamed(
-                                  context, Routes.interest_1);
-                            });
+                            if (prefManager.userType == 'User A') {
+                              Navigator.of(context)
+                                  .pushNamed(Routes.interest_1);
+                            } else if (prefManager.userType == 'User B') {
+                              Navigator.of(context).pushNamed(Routes.feed);
+                            }
                           },
                           bgColor: primary,
                           borderColor: primary,
@@ -460,11 +454,11 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
   }
 
   void _validateForm() {
-    if (bornReligiousCtl.text.isEmpty) {
-      Utils.flutterToast(
-          ' Born religious is required . Please your born religious!');
-      return;
-    }
+    // if (bornReligiousCtl.text.isEmpty) {
+    //   Utils.flutterToast(
+    //       ' Born religious is required . Please your born religious!');
+    //   return;
+    // }
 
     if (_upperValueHeight == 0.0) {
       Utils.flutterToast(
@@ -492,11 +486,16 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
     prefManager.isMedication = isMedication;
     prefManager.isSmoke = isSmoke;
 
+    String address =
+        '${prefManager.address}, ${prefManager.address2},${prefManager.address3}, ${prefManager.town}, ${prefManager.state}, ${prefManager.postCode}, ${prefManager.country}';
+
+    print('The address is $address');
+
     final AccountInfoModel accountInfoModel = AccountInfoModel(
       about: prefManager.about ?? 'About me',
-      address: prefManager.address ?? 'Address',
+      address: address,
       age: prefManager.age ?? '21',
-      bornReligious: prefManager.bornReligious ?? 'Born Religious',
+      bornReligious: 'Born Religious',
       nationality: _selectedNationality ?? 'Nationality',
       ethnicity: _selectedEthnicity ?? 'Black American',
       height: _upperValueHeight.toStringAsFixed(2),
@@ -512,7 +511,7 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
       lookingFor: prefManager.lookingFor ?? 'Friendship',
       sect: prefManager.sect ?? 'Sunni',
       userId: prefManager.userID ?? '0',
-      birthDate: prefManager.birthday ?? '01/01/2000',
+      birthDate: prefManager.birthday ?? '01-01-2000',
     );
 
     print('accountInfoModel: ${accountInfoModel.toJson()}');

@@ -142,10 +142,8 @@ class _Interest1State extends State<Interest1> {
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
     final width = AppWidget.getWidthScreen(context);
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         bottomNavigationBar: Padding(
           padding:

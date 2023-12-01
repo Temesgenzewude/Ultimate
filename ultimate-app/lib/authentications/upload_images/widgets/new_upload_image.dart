@@ -34,7 +34,7 @@ class UploadImage {
                 ),
               ),
               Text(
-                '( 1-6 images )',
+                '(1-6 images)',
                 style: subhead(color: grey600),
               )
             ],
