@@ -16,6 +16,8 @@ import '../../common/bloc/upload_image/upload_images_bloc.dart';
 import '../../common/constant/colors.dart';
 import '../../common/route/routes.dart';
 import '../../common/util/show_toast_message.dart';
+import '../../dependency_indjection.dart';
+import '../../sharedPreferences.dart';
 import 'widgets/new_upload_image.dart';
 
 class NewUploadImageScreen extends StatefulWidget {
@@ -28,6 +30,7 @@ class NewUploadImageScreen extends StatefulWidget {
 class _NewUploadImageScreenState extends State<NewUploadImageScreen> {
   File? imageFile;
   List<XFile> imageFileList = [];
+  final prefManager = sl<PrefManager>();
 
   Future<void> selectImages() async {
     try {
@@ -63,6 +66,11 @@ class _NewUploadImageScreenState extends State<NewUploadImageScreen> {
       }
     }
 
+    @override
+    void initState() {
+      prefManager.lastViewedPage = Routes.newUploadImagesB;
+      super.initState();
+    }
     return PopScope(
       canPop: false,
       child: Scaffold(

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,6 +14,8 @@ import '../../common/bloc/upload_image/upload_images_b/upload_images_bloc.dart';
 import '../../common/constant/colors.dart';
 import '../../common/route/routes.dart';
 import '../../common/util/show_toast_message.dart';
+import '../../dependency_indjection.dart';
+import '../../sharedPreferences.dart';
 import 'widgets/new_upload_image.dart';
 
 class NewUploadImageBScreen extends StatefulWidget {
@@ -25,7 +28,7 @@ class NewUploadImageBScreen extends StatefulWidget {
 class _NewUploadImageBScreenState extends State<NewUploadImageBScreen> {
   File? imageFile;
   List<XFile> imageFileList = [];
-
+  final prefManager = sl<PrefManager>();
   Future<void> selectImages() async {
     try {
       final XFile? selectedImage =
@@ -44,6 +47,12 @@ class _NewUploadImageBScreenState extends State<NewUploadImageBScreen> {
     final name = basename(imagePath);
     final image = File('${directory.path}/$name');
     return File(imagePath).copy(image.path);
+  }
+
+  @override
+  void initState() {
+    prefManager.lastViewedPage = Routes.newUploadImagesB;
+    super.initState();
   }
 
   @override

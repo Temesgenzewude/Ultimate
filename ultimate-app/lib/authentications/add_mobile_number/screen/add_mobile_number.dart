@@ -99,8 +99,8 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
           Utils.flutterToast(
               'You have successfully registered. OTP is sent to ${phoneCtl.text} Please verify your account!');
           Future.delayed(const Duration(seconds: 5), () {
-            Navigator.of(context)
-                .pushNamed(Routes.verify, arguments: '${phoneCtl.text}');
+            Navigator.of(context).pushReplacementNamed(Routes.verify,
+                arguments: '${phoneCtl.text}');
           });
         }
       },

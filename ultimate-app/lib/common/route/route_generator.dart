@@ -4,6 +4,7 @@ import 'package:flutter_ultimate/authentications/account_information/screen/acco
 import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number_B.dart';
 import 'package:flutter_ultimate/authentications/upload_images/new_upload_images_screen.dart';
 import 'package:flutter_ultimate/authentications/upload_images/upload_images_B.dart';
+import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/onboardings/terms_and_conditions.dart';
 
 import '../../authentications/account_information/screen/account_information_1.dart';
@@ -89,6 +90,7 @@ import '../../readings/main_seller_2/screen/main_seller_2_home.dart';
 import '../../readings/menu.dart';
 import '../../readings/post_details/screen/post_detail.dart';
 import '../../readings/reading_habit/screen/reading_habit_home.dart';
+import '../../sharedPreferences.dart';
 import '../../socials_media/achievements/screen/achievements.dart';
 import '../../socials_media/activity/screen/activity_home.dart';
 import '../../socials_media/comments/screen/comments.dart';
@@ -550,7 +552,18 @@ mixin RouteGenerator {
             builder: (context) => TermsAndConditionsPage(),
             settings: RouteSettings(arguments: args));
       default:
-        return _errorRoute();
+        final prefManager = sl<PrefManager>();
+        bool _isLoggedIn = prefManager.token != 'token' &&
+            prefManager.token != null &&
+            prefManager.token!.isNotEmpty;
+        if (_isLoggedIn) {
+          return MaterialPageRoute<dynamic>(
+            builder: (context) => const FeedHome(),
+          );
+        } else {
+          return MaterialPageRoute<dynamic>(
+              builder: (context) => const OnBoardingOne());
+        }
     }
   }
 
