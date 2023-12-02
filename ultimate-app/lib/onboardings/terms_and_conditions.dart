@@ -25,7 +25,7 @@ class TermsAndConditionsPage extends StatefulWidget {
 }
 
 class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
-  bool agree = false;
+  // bool agree = false;
 
   final prefManager = sl<PrefManager>();
 
@@ -99,7 +99,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Terms and Ccondtions',
+                        'Terms and Conditions',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,
@@ -150,31 +150,6 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: agree,
-                          fillColor: MaterialStateColor.resolveWith(
-                            (states) {
-                              return agree ? primary! : Colors.transparent!;
-                            },
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              agree = value ?? false;
-                            });
-                          },
-                        ),
-                        const Text(
-                          'I have read and agreed to the terms and conditions.',
-                          // overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 10),
@@ -190,20 +165,16 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
 
                             backgroundColor: MaterialStateColor.resolveWith(
                               (states) {
-                                if (agree) {
-                                  return primary;
-                                }
+                                return primary;
+
                                 // Default color
-                                return Colors.grey;
                               },
                             ),
                           ),
-                          onPressed: agree ? onAccept : null,
-                          child: Text(
+                          onPressed: onAccept,
+                          child: const Text(
                             'Continue',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: agree ? Colors.white : grey200),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           )),
                     )
                   ],

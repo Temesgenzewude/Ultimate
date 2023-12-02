@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/widget_support.dart';
@@ -33,6 +34,7 @@ class _SignUpTabBState extends State<SignUpTabB> {
 
   bool showPass = false;
   bool showRePass = false;
+  bool agree = false;
 
   final prefManager = sl<PrefManager>();
 
@@ -117,6 +119,34 @@ class _SignUpTabBState extends State<SignUpTabB> {
                         showRePass = !showRePass;
                       });
                     }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        value: agree,
+                        fillColor: MaterialStateColor.resolveWith(
+                          (states) {
+                            return agree ? primary : Colors.transparent;
+                          },
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            agree = value ?? false;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Agree to the terms and conditions',
+                        // overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 32),
                 AppWidget.typeButtonStartAction(
                   context: context,
@@ -140,10 +170,22 @@ class _SignUpTabBState extends State<SignUpTabB> {
               alignment: Alignment.center,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
-                child: Text(
-                  'By clicking Sign Up you are agreeing to the Terms of Use and the Privacy Policy',
-                  textAlign: TextAlign.center,
-                  style: subhead(color: grey600),
+                child: RichText(
+                  text: TextSpan(
+                      text: 'By clicking Sign Up you are agreeing to the ',
+                      style: subhead(color: grey600),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: ' Terms of Service and Conditions of Use',
+                            style: const TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: grey900),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.of(context)
+                                    .pushNamed(Routes.termsAndConditions);
+                              })
+                      ]),
                 ),
               ),
             ),
@@ -154,6 +196,10 @@ class _SignUpTabBState extends State<SignUpTabB> {
   }
 
   void _submitForm() {
+    if (!agree) {
+      Utils.flutterToast('Please agree to the terms and conditions');
+      return;
+    }
     if (!FormValidator.validateName(nameCtl.text)) {
       Utils.flutterToast('Name can not be empty');
       return;
