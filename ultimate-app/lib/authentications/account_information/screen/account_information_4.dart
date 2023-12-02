@@ -31,6 +31,8 @@ final List<String> ethnicities = [
   'Other'
 ];
 
+final List<String> bornReligions = ['Muslim', 'Revert', 'Other'];
+
 class AccountInformationFour extends StatefulWidget {
   const AccountInformationFour({Key? key}) : super(key: key);
 
@@ -48,6 +50,7 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
 
   String? _selectedNationality;
   String? _selectedEthnicity;
+  String? _selectedBornReligion;
 
   bool isSmoke = false;
   bool isDrink = false;
@@ -65,6 +68,7 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
 
     _selectedEthnicity = prefManager.ethnicity;
     _selectedNationality = prefManager.nationality;
+    _selectedBornReligion = prefManager.bornReligious;
 
     isMedication = prefManager.isMedication ?? false;
     isDrink = prefManager.isDrink ?? false;
@@ -131,14 +135,72 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 20),
                 const SizedBox(height: 16),
-                // TextFieldCpn(
-                //   controller: bornReligiousCtl,
-                //   focusNode: bornReligiousFn,
-                //   labelText: 'Born Religious',
-                //   type: 'born religious',
-                // ),
-                // const SizedBox(height: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Born Religion',
+                      style: title3(color: grey1100),
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField2(
+                      value: _selectedBornReligion,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: grey200,
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      isExpanded: true,
+                      hint: Text(
+                        'Select Your Born Religion',
+                        style: body(color: grey500),
+                      ),
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: grey500,
+                      ),
+                      iconSize: 30,
+                      buttonHeight: 60,
+                      buttonPadding: const EdgeInsets.only(right: 16),
+                      dropdownDecoration: BoxDecoration(
+                        color: grey200,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      items: bornReligions
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: body(color: grey600),
+                                ),
+                              ))
+                          .toList(),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select your born religion .';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedBornReligion = value;
+                        });
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          _selectedBornReligion = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -460,6 +522,12 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
     //   return;
     // }
 
+    if (_selectedBornReligion == null || _selectedBornReligion!.isEmpty) {
+      Utils.flutterToast(
+          'Born religion is required . Please select your born religion!');
+      return;
+    }
+
     if (_upperValueHeight == 0.0) {
       Utils.flutterToast(
           'Valid Height is required. Please select your valid height!');
@@ -477,7 +545,7 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
       return;
     }
 
-    prefManager.bornReligious = bornReligiousCtl.text;
+    prefManager.bornReligious = _selectedBornReligion;
 
     prefManager.hight = _upperValueHeight.toStringAsFixed(2);
     prefManager.ethnicity = _selectedEthnicity;
@@ -495,7 +563,7 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
       about: prefManager.about ?? 'About me',
       address: address,
       age: prefManager.age ?? '21',
-      bornReligious: 'Born Religious',
+      bornReligious: _selectedBornReligion ?? 'Muslim',
       nationality: _selectedNationality ?? 'Nationality',
       ethnicity: _selectedEthnicity ?? 'Black American',
       height: _upperValueHeight.toStringAsFixed(2),

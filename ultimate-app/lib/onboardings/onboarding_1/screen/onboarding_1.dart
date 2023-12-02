@@ -18,7 +18,7 @@ final List<Color> colors = [
   green,
   stPatricksBlue,
   corn1,
-  lightSalmon,  
+  lightSalmon,
   emerald1,
   primary
 ];
@@ -42,12 +42,14 @@ class OnBoardingOne extends StatefulWidget {
 class _OnBoardingOneState extends State<OnBoardingOne> {
   Position? _currentPosition;
 
+  // User types for selection
   List<String> userTypes = ['User B', 'User A'];
   String? selectedUserType;
   final prefManager = sl<PrefManager>();
   final _persistentPrefs = sl<PersistedSharePrefManager>();
   bool _isLocationEnabledAndShared = false;
 
+  // Check if location service is enabled and update preferences accordingly
   Future<void> _checkLocationServiceStatus() async {
     final bool isLocationServiceEnabled =
         await Geolocator.isLocationServiceEnabled();
@@ -57,7 +59,9 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
     }
   }
 
+  // Handle location permission logic
   Future<bool> _handleLocationPermission() async {
+    // Check if location permission has already been asked
     bool locationPermissionAsked =
         _persistentPrefs.isLocationEnableAndShared ?? false;
     if (locationPermissionAsked) {
@@ -89,6 +93,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
     permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.denied) {
+      // Request location service and permission
       permission = await Geolocator.requestPermission();
 
       if (permission == LocationPermission.denied) {
@@ -116,6 +121,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
     return true;
   }
 
+  // Get the current position
   Future<bool> _getCurrentPosition() async {
     try {
       final hasPermission = await _handleLocationPermission();
@@ -181,6 +187,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
 
   @override
   void initState() {
+    // Check and update location service status on initialization
     _checkLocationServiceStatus();
     super.initState();
   }
@@ -261,82 +268,6 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                   ),
                 ),
               ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              //       Container(
-              //         height: 60.0,
-              //         decoration: BoxDecoration(
-              //             border: Border.all(color: Colors.grey),
-              //             borderRadius: BorderRadius.circular(20.0),
-              //             color: grey900),
-              //         child: DropdownButtonHideUnderline(
-              //           child: DropdownButton<String>(
-              //             padding: const EdgeInsets.symmetric(horizontal: 16),
-              //             isDense: true,
-              //             // isExpanded: true,
-              //             icon: const Icon(
-              //               Icons.arrow_drop_down_outlined,
-              //               color: Colors.black87,
-              //               size: 30,
-              //             ),
-              //             dropdownColor: grey900,
-              //             style: const TextStyle(
-              //                 color: primary,
-              //                 fontSize: 20,
-              //                 fontWeight: FontWeight.w500),
-              //             hint: const Text(
-              //               'Select User Type',
-              //               style: TextStyle(
-              //                   color: Colors.black87,
-              //                   fontSize: 20,
-              //                   fontWeight: FontWeight.w500),
-              //             ),
-              //             items: userTypes.map((String value) {
-              //               return DropdownMenuItem<String>(
-              //                 value: value,
-              //                 child: Text(
-              //                   value,
-              //                   style: const TextStyle(
-              //                       color: Colors.black87,
-              //                       fontSize: 20,
-              //                       fontWeight: FontWeight.w500),
-              //                 ),
-              //               );
-              //             }).toList(),
-              //             value: selectedUserType,
-              //             onChanged: (String? value) {
-              //               setState(() {
-              //                 selectedUserType = value;
-              //                 prefManager.userType = selectedUserType;
-              //                 print(prefManager.userType);
-              //               });
-              //             },
-              //           ),
-              //         ),
-              //       ),
-              //       // ElevatedButton(
-              //       //   style: ElevatedButton.styleFrom(
-              //       //     fixedSize: const Size(150, 63),
-              //       //     backgroundColor: primary,
-              //       //     shape: RoundedRectangleBorder(
-              //       //         borderRadius: BorderRadius.circular(20)),
-              //       //   ),
-              //       //   onPressed: () async {
-              //       //     if (!_isLocationEnabledAndShared) {
-              //       //       await _getCurrentPosition();
-              //       //     }
-              //       //   },
-              //       //   child: Text(_isLocationEnabledAndShared
-              //       //       ? 'Location Shared!'
-              //       //       : 'Allow Location!'),
-              //       // ),
-              //     ],
-              //   ),
-              // ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -363,8 +294,9 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
 
                               Future.delayed(const Duration(seconds: 1), () {
                                 Navigator.pushNamed(
-                                    context, Routes.termsAndConditions,
-                                    arguments: Routes.onBoarding1);
+                                  context,
+                                  Routes.signUp,
+                                );
                               });
                             }
                           },
@@ -408,8 +340,9 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
 
                               Future.delayed(const Duration(seconds: 1), () {
                                 Navigator.pushNamed(
-                                    context, Routes.termsAndConditions,
-                                    arguments: Routes.onBoarding1);
+                                  context,
+                                  Routes.signUpB,
+                                );
                               });
                             }
                           },
@@ -437,44 +370,3 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
 }
 
 
-/*
-
- if (!_isLocationEnabledAndShared) {
-                              Utils.flutterToast('Please allow location!');
-
-                              await _getCurrentPosition();
-                            }
-                            if (_isLocationEnabledAndShared) {
-                              print(
-                                  '.....location services enabled and shared...');
-                              if (selectedUserType == null) {
-                                Utils.flutterToast(
-                                    'Please select user type to continue!');
-                                return;
-                              } else {
-                                Future.delayed(const Duration(seconds: 1), () {
-                                  Navigator.pushReplacementNamed(
-                                      context, Routes.termsAndConditions);
-                                });
-                                // if (selectedUserType == 'User A') {
-                                //   Future.delayed(const Duration(seconds: 1),
-                                //       () {
-                                //     Navigator.pushReplacementNamed(
-                                //         context, Routes.signUp);
-                                //   });
-                                // } else if (selectedUserType == 'User B') {
-                                //   Future.delayed(const Duration(seconds: 1),
-                                //       () {
-                                //     Navigator.pushReplacementNamed(
-                                //         context, Routes.signUpB);
-                                //   });
-                                // }
-                              }
-                            } else {
-                              print(
-                                  '.....location services not enabled and shared...');
-                              Utils.flutterToast(
-                                  'Please enable location services in your settings and allow this app to access your location!');
-                              return;
-                            }
-*/

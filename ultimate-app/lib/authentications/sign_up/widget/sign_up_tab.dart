@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
 
@@ -38,6 +39,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
   bool showRePass = false;
   String? countryCode = 'US';
   String? languageCode = '+1';
+  bool agree = false;
 
   Future<void> _handleGoogleSignIn() async {
     final user = await SocialLoginApi.googleSignIn();
@@ -113,7 +115,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                     type: 'email',
                   ),
                 ),
-    
+
                 TextFieldPassCpn(
                     controller: passwordCtl,
                     focusNode: passwordFn,
@@ -140,15 +142,44 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
                         showRePass = !showRePass;
                       });
                     }),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        value: agree,
+                        fillColor: MaterialStateColor.resolveWith(
+                          (states) {
+                            return agree ? primary : Colors.transparent;
+                          },
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            agree = value ?? false;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Agree to the terms and conditions',
+                        // overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 32),
-    
+
                 AppWidget.typeButtonStartAction(
                   context: context,
                   input: 'Sign Up Now',
                   onPressed: () {
                     _verifyForm();
                     // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
-    
+
                     // Navigator.of(context).pushNamed(Routes.signUp);
                   },
                   colorAsset: grey1100,
@@ -164,9 +195,13 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
             ),
             Align(
               alignment: Alignment.center,
-              child: Text(
-                'or Sign Up with social account',
-                style: subhead(color: grey600),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  'or Sign Up with social account',
+                  style: subhead(color: grey600),
+                ),
               ),
             ),
             Row(
@@ -202,11 +237,23 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
               alignment: Alignment.center,
               child: Padding(
                 padding:
-                    const EdgeInsets.only(bottom: 8, left: 16, right: 16),
-                child: Text(
-                  'By clicking Sign Up you are agreeing to the Terms of Use and the Privacy Policy',
-                  textAlign: TextAlign.center,
-                  style: subhead(color: grey600),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: RichText(
+                  text: TextSpan(
+                      text: 'By clicking Sign Up you are agreeing to the ',
+                      style: subhead(color: grey600),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: ' Terms of Service and Conditions of Use',
+                            style: const TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: grey900),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.of(context)
+                                    .pushNamed(Routes.termsAndConditions);
+                              })
+                      ]),
                 ),
               ),
             ),
@@ -217,6 +264,11 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
   }
 
   void _verifyForm() {
+    if (!agree) {
+      Utils.flutterToast('Please agree to the terms and conditions');
+      return;
+    }
+
     if (!FormValidator.validateName(nameCtl.text)) {
       Utils.flutterToast('Name can not be empty');
       return;

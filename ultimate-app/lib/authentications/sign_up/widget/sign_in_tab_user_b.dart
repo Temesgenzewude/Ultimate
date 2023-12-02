@@ -33,8 +33,8 @@ class _SignInTabBState extends State<SignInTabB> {
   bool showPass = false;
   String? countryCode = 'US';
   String? languageCode = '+1';
-  bool _logInWithEmail = true;
-  bool _logInWithPhone = false;
+  // bool _logInWithEmail = true;
+  // bool _logInWithPhone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,82 +60,74 @@ class _SignInTabBState extends State<SignInTabB> {
             ]),
           ),
           const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                height: 60,
-                child: Row(
-                  children: [
-                    Checkbox(
-                      isError: true,
-                      tristate: true,
-                      fillColor: MaterialStateProperty.all(Colors.blueGrey),
-                      side: const BorderSide(width: 1.0, color: Colors.white),
-                      value: _logInWithEmail,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _logInWithEmail = value ?? false;
-
-                          _logInWithPhone = !_logInWithEmail;
-                        });
-                      },
-                    ),
-                    Text(
-                      'With Email',
-                      style: body(color: grey1100, fontWeight: '600'),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: 60,
-                child: Row(
-                  children: [
-                    Checkbox(
-                      isError: true,
-                      tristate: true,
-                      fillColor: MaterialStateProperty.all(Colors.blueGrey),
-                      side: const BorderSide(width: 1.0, color: Colors.white),
-                      value: _logInWithPhone,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _logInWithPhone = value ?? false;
-
-                          _logInWithEmail = !_logInWithPhone;
-                        });
-                      },
-                    ),
-                    Text(
-                      'With Phone Number',
-                      style: body(color: grey1100, fontWeight: '600'),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
             height: 20,
           ),
-          _logInWithEmail
-              ? TextFieldCpn(
-                  controller: emailCtl,
-                  focusNode: emailFn,
-                  labelText: 'Email',
-                  type: 'email',
-                  hintText: 'example123@gmail.com',
-                )
-              : TextFieldCpn(
-                  labelText: 'Phone number',
-                  controller: phoneNumberBCtl,
-                  focusNode: phoneNumberBFn,
-                  type: 'phone',
-                  keyboardType: TextInputType.phone,
-                  hintText: '+25191234567890',
-                ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //   children: <Widget>[
+          //     Container(
+          //       height: 60,
+          //       child: Row(
+          //         children: [
+          //           Checkbox(
+          //             isError: true,
+          //             tristate: true,
+          //             fillColor: MaterialStateProperty.all(Colors.blueGrey),
+          //             side: const BorderSide(width: 1.0, color: Colors.white),
+          //             value: _logInWithEmail,
+          //             onChanged: (bool? value) {
+          //               setState(() {
+          //                 _logInWithEmail = value ?? false;
+
+          //                 _logInWithPhone = !_logInWithEmail;
+          //               });
+          //             },
+          //           ),
+          //           Text(
+          //             'With Email',
+          //             style: body(color: grey1100, fontWeight: '600'),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     Container(
+          //       height: 60,
+          //       child: Row(
+          //         children: [
+          //           Checkbox(
+          //             isError: true,
+          //             tristate: true,
+          //             fillColor: MaterialStateProperty.all(Colors.blueGrey),
+          //             side: const BorderSide(width: 1.0, color: Colors.white),
+          //             value: _logInWithPhone,
+          //             onChanged: (bool? value) {
+          //               setState(() {
+          //                 _logInWithPhone = value ?? false;
+
+          //                 _logInWithEmail = !_logInWithPhone;
+          //               });
+          //             },
+          //           ),
+          //           Text(
+          //             'With Phone Number',
+          //             style: body(color: grey1100, fontWeight: '600'),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(
+          //   height: 20,
+          // ),
+          TextFieldCpn(
+            controller: emailCtl,
+            focusNode: emailFn,
+            labelText: 'Email Or Phone Number',
+            type: 'email',
+            hintText: 'email or phone Number',
+          ),
+
           Padding(
             padding: const EdgeInsets.only(top: 24, bottom: 32),
             child: TextFieldPassCpn(
@@ -194,27 +186,28 @@ class _SignInTabBState extends State<SignInTabB> {
   }
 
   void _submitForm() {
-    String phoneNumberB = phoneNumberBCtl.text;
-    if (_logInWithPhone) {
-      if (phoneNumberBCtl.text.isEmpty) {
-        Utils.flutterToast('Phone number is required');
-        return;
-      }
+    String phoneNumberB = '';
+    String email = '';
 
-      if (!FormValidator.validatePhoneNumber(phoneNumberB)) {
+    if (emailCtl.text.isEmpty) {
+      Utils.flutterToast(
+          'Email or Phone Number is required. Please enter your email or phone number!');
+      return;
+    }
+
+    if (emailCtl.text.startsWith('+')) {
+      if (!FormValidator.validatePhoneNumber(emailCtl.text)) {
         Utils.flutterToast(
             'Invalid Phone number:Please enter a valid phone number!');
         return;
       }
-    } else if (_logInWithEmail) {
-      if (emailCtl.text.isEmpty) {
-        Utils.flutterToast('Email is required. Please enter your email!');
-        return;
-      }
+      phoneNumberB = emailCtl.text;
+    } else {
       if (!FormValidator.validateEmail(emailCtl.text)) {
         Utils.flutterToast('Invalid Email. Please enter valid email!');
         return;
       }
+      email = emailCtl.text;
     }
 
     if (passwordCtl.text.isEmpty) {
@@ -228,9 +221,15 @@ class _SignInTabBState extends State<SignInTabB> {
     }
     // If all validation passes
     final UserBLoginRequestModel user = UserBLoginRequestModel(
-        phoneNumber: phoneNumberB,
-        password: passwordCtl.text,
-        email: emailCtl.text);
+      phoneNumber: phoneNumberB,
+      password: passwordCtl.text,
+      email: email,
+    );
+
+    print('user b login request model: $user');
+    print('email: ${user.email}');
+    print('password: ${user.password}');
+    print('phone number: ${user.phoneNumber}');
     BlocProvider.of<AuthenticationBlocB>(context).add(
       UserBSignInEvent(
         user: user,

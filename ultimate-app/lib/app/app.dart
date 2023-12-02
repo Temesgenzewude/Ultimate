@@ -25,6 +25,7 @@ import '../sharedPreferences.dart';
 final GlobalKey<NavigatorState> navigatorKey =
     GlobalKey(debugLabel: 'Main Navigator');
 
+/// This file contains the definition of the [MyApp] class, which is the main entry point of the application.
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
@@ -57,6 +58,8 @@ class _MyAppState extends State<MyApp> {
         prefManager.token!.isNotEmpty;
 
     print('Is the User Logged in?: $_isLoggedIn');
+
+    
     return MultiBlocProvider(
       providers: [
         BlocProvider<SliderBloc>(
@@ -137,6 +140,7 @@ class _MyAppState extends State<MyApp> {
         initialRoute: _isLoggedIn
             ? prefManager.lastViewedPage ?? Routes.accountInformationOne
             : prefManager.lastViewedPage ?? Routes.onBoarding1,
+        // initialRoute: Routes.newUploadImages,
 
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,
