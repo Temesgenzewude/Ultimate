@@ -6,19 +6,6 @@ import 'package:flutter_ultimate/common/route/routes.dart';
 import '../dependency_indjection.dart';
 import '../sharedPreferences.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: TermsAndConditionsPage(),
-    );
-  }
-}
-
 class TermsAndConditionsPage extends StatefulWidget {
   @override
   State<TermsAndConditionsPage> createState() => _TermsAndConditionsPageState();
@@ -50,8 +37,6 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
     'If you have any questions about these terms and conditions, please contact us at [Your Contact Email].'
   ];
 
-  // This function is triggered when the button is clicked
-
   void initState() {
     prefManager.lastViewedPage = Routes.termsAndConditions;
     super.initState();
@@ -62,7 +47,9 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
     final prevRoute = ModalRoute.of(context)?.settings.arguments as String?;
     print("prevRoute $prevRoute");
 
+    // This function is triggered when the accept button is clicked
     void onAccept() {
+      // Check the user type and navigate accordingly
       if (prefManager.userType == 'User A') {
         Navigator.pushNamed(context, Routes.signUp);
       } else if (prefManager.userType == 'User B') {

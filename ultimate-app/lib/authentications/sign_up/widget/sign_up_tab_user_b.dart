@@ -40,13 +40,19 @@ class _SignUpTabBState extends State<SignUpTabB> {
 
   @override
   void initState() {
-    // update the initial page in the shared preferences
-
+    // Update the initial page in the shared preferences
     prefManager.lastViewedPage = Routes.signUpB;
+
+    // Set the text of the username field to the saved email in shared preferences
     usernameCtl.text = prefManager.email ?? '';
+
+    // Set the text of the name field to the saved name in shared preferences
     nameCtl.text = prefManager.name ?? '';
 
+    // Set the text of the password field to the saved password in shared preferences
     passwordCtl.text = prefManager.password ?? '';
+
+    // Set the text of the re-password field to the saved password in shared preferences
     repasswordCtl.text = prefManager.password ?? '';
 
     super.initState();
@@ -195,193 +201,76 @@ class _SignUpTabBState extends State<SignUpTabB> {
     );
   }
 
+  // Function to submit the form
   void _submitForm() {
+    // Check if the user has agreed to the terms and conditions
     if (!agree) {
       Utils.flutterToast('Please agree to the terms and conditions');
       return;
     }
+
+    // Validate the name field
     if (!FormValidator.validateName(nameCtl.text)) {
       Utils.flutterToast('Name can not be empty');
       return;
     }
 
+    // Check if the email field is empty
     if (usernameCtl.text.isEmpty) {
       Utils.flutterToast('Please enter your email!');
       return;
     }
 
+    // Validate the email format
     if (!FormValidator.validateEmail(usernameCtl.text)) {
       Utils.flutterToast('Invalid Email');
       return;
     }
 
+    // Check if the password field is empty
     if (passwordCtl.text.isEmpty) {
       Utils.flutterToast('Please enter password');
       return;
     }
 
+    // Validate the password format
     if (!FormValidator.validatePassword(passwordCtl.text)) {
       Utils.flutterToast('Invalid Password');
       return;
     }
+
+    // Check if the password and re-entered password match
     if (passwordCtl.text != repasswordCtl.text) {
       Utils.flutterToast('Passwords do not match');
       return;
     }
 
-    // if (_selectedGender == null) {
-    //   Utils.flutterToast('Please select gender!');
-    //   return;
-    // }
-    // if (phoneCtl.text == '') {
-    //   Utils.flutterToast('Please provide a phone number');
-    //   return;
-    // }
-    // String phoneNumber = '+' + languageCode! + phoneCtl.text;
-    // print(phoneNumber);
-    // if (!FormValidator.validatePhoneNumber(phoneNumber)) {
-    //   Utils.flutterToast(
-    //       'Invalid Phone number:Please enter a valid phone number!');
-    //   return;
-    // }
-
-    // If all validation passes
-    // final UserBModel user = UserBModel(
-    //   email: usernameCtl.value.text,
-    //   password: passwordCtl.value.text,
-    //   name: nameCtl.value.text,
-    //   phoneNumber: phoneNumber,
-    //   birthDate: birthdayCtl.value.text,
-    //   age: ageCtl.value.text,
-    //   gender: _selectedGender ?? 'Male',
-    //   location: '10,10',
-    //   about: aboutCtl.value.text,
-    // );
-
-    // BlocProvider.of<AuthenticationBloc>(context).add(
-    //   UserBSignUpEvent(newUser: user),
-    // );
-
+    // Save the user's name, email, and password in shared preferences
     prefManager.name = nameCtl.text;
     prefManager.email = usernameCtl.text;
-
     prefManager.password = passwordCtl.text;
 
+    // Create a form data object with the user's information
     final formData = {
       'name': nameCtl.text,
       'email': usernameCtl.text,
       'password': passwordCtl.text,
     };
 
+    // Create a form data object with the user's information from shared preferences
     final fromPref = {
       'name': prefManager.name,
       'email': prefManager.email,
       'password': prefManager.password,
     };
 
+    // Print the user's information from shared preferences
     print('sign up user b data from pref mngr: $fromPref');
 
+    // Print the user's information from the form
     print('sign up user b data: $formData');
 
-    Navigator.of(context)
-        .pushNamed(Routes.addMobileNumberB, arguments: formData);
+    // Navigate to the next screen with the form data as arguments
+    Navigator.of(context).pushNamed(Routes.addMobileNumberB, arguments: formData);
   }
 }
-
-
-/*
-
-   BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                  builder: (context, state) {
-                    if (state is AuthenticationLoadingState) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state is AuthenticationSuccessState) {
-                      Utils.flutterToast('''You have successfully registered. 
-                             Verification email is sent to ${usernameCtl.value.text}
-                             Please verify your email location and login!''');
-
-
-                AppWidget.typeButtonStartAction(
-                  context: context,
-                  input: 'Sign Up Now',
-                  onPressed: () {
-                    _submitForm();
-
-                      Future.delayed(const Duration(seconds: 5), () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(Routes.signUp);
-                      });
-                    } else if (state is AuthenticationFailureState) {
-                      return Column(
-                        children: [
-                          AppWidget.typeButtonStartAction(
-                            context: context,
-                            input: 'Sign Up Now',
-                            onPressed: () {
-                              final UserBModel user = UserBModel(
-                                  email: usernameCtl.value.text,
-                                  password: passwordCtl.value.text,
-                                  name: nameCtl.value.text,
-                                  about: aboutCtl.value.text,
-                                  phoneNumber: phoneCtl.value.text,
-                                  location: '10,10',
-                                  birthDate: birthdayCtl.value.text,
-                                  age: ageCtl.value.text,
-                                  gender: _selectedGender!);
-                              // Dispatch SignUpEvent to Authentication Bloc with AuthenticationModel
-                              BlocProvider.of<AuthenticationBloc>(context).add(
-                                UserBSignUpEvent(newUser: user),
-                              );
-                            },
-                            colorAsset: grey1100,
-                            icon: icKeyboardRight,
-                            sizeAsset: 24,
-                            bgColor: primary,
-                            borderColor: primary,
-                            textColor: grey1100,
-                          ),
-                          Center(
-                            child: Text(
-                              state.errorMessage,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                    return AppWidget.typeButtonStartAction(
-                      context: context,
-                      input: 'Sign Up Now',
-                      onPressed: () {
-                        final UserBModel user = UserBModel(
-                            email: usernameCtl.value.text,
-                            password: passwordCtl.value.text,
-                            name: nameCtl.value.text,
-                            about: aboutCtl.value.text,
-                            phoneNumber: phoneCtl.value.text,
-                            location: '10,10',
-                            birthDate: birthdayCtl.value.text,
-                            age: ageCtl.value.text,
-                            gender: _selectedGender!);
-                        BlocProvider.of<AuthenticationBloc>(context).add(
-                          UserBSignUpEvent(newUser: user),
-                        );
-                      },
-                      colorAsset: grey1100,
-                      icon: icKeyboardRight,
-                      sizeAsset: 24,
-                      bgColor: primary,
-                      borderColor: primary,
-                      textColor: grey1100,
-                    );
-
-                  },
-                ),
-             
-             
-             
-             
-*/ 

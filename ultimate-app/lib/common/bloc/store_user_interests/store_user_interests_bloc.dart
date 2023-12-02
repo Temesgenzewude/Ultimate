@@ -11,6 +11,7 @@ import '../../../data/repositories/auth/auth_repo.dart';
 part 'store_user_interests_event.dart';
 part 'store_user_interests_state.dart';
 
+/// The BLoC responsible for handling user interests storage.
 class StoreUserInterestsBloc
     extends Bloc<StoreUserInterestsEvent, StoreUserInterestsState> {
   StoreUserInterestsBloc({required this.authenticationRepository})
@@ -20,6 +21,7 @@ class StoreUserInterestsBloc
 
   final AuthenticationRepository authenticationRepository;
 
+  /// Determines the success or failure state based on the result.
   StoreUserInterestsState storeUserInterestsSuccessOrFailure({dynamic result}) {
     if (result is SaveUserInterestsResponseModel) {
       return StoreUserInterestsSuccessState(result: result);
@@ -31,6 +33,7 @@ class StoreUserInterestsBloc
     }
   }
 
+  /// Handles the store user interests event.
   FutureOr<void> _handleStoreUserInterestsEvent(
       StoreUserInterestsEventCall event,
       Emitter<StoreUserInterestsState> emit) async {

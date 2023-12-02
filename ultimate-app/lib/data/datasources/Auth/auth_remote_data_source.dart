@@ -86,44 +86,16 @@ class AuthenticationRemoteDataSourceImpl
     }
   }
 
+  // This method is responsible for signing up User A.
+  // It takes a UserAModel object as a parameter and returns a Future of SingUpResponseModel.
+  // It sends a POST request to the user A sign up endpoint with the user's JSON body.
+  // If the response status code is 200, it decodes the response body and returns a SingUpResponseModel.
+  // If the response status code is 403, it throws a ServerException with the error message from the response body.
+  // Otherwise, it throws an UnknownException with a default error message.
+  // It also handles SocketException and TimeoutException by throwing appropriate exceptions.
   @override
   Future<SingUpResponseModel> signUpUserA(UserAModel user) async {
     final String url = AppUrl.userASignUpEndPoint;
-    // final Map<String, dynamic> body = <String, dynamic>{
-    //   "name": user.name,
-    //   "email": user.email,
-    //   "phoneNumber": user.phoneNumber,
-    //   "birthDate": user.birthDate,
-    //   "password": user.password,
-    //   "address": user.address,
-    //   "coordinates": "${prefManager.kLatitude}, ${prefManager.kLongitude}",
-    //   "user_type": user.user_type,
-    //   "terms": user.terms,
-    // };
-    user.coordinates = '31.536267224296935,74.32805961092151';
-
-    // final body = user.toJson();
-    // print('---- sign up user a body: $body');
-
-    // final response = await client.post(
-    //   Uri.parse(url),
-    //   body: json.encode(body),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // );
-
-    // print('--- sign u user a--- response body: ${response.body}');
-
-    // if (response.statusCode == 200) {
-    //   final dynamic data = json.decode(response.body);
-    //   return SingUpResponseModel.fromJson(data);
-    // } else if (response.statusCode == 403) {
-    //   final dynamic error = json.decode(response.body);
-    //   throw ForbiddenResponseException(error);
-    // } else {
-    //   throw Exception('Failed to create a new user');
-    // }
 
     try {
       final body = user.toJson();
@@ -166,28 +138,7 @@ class AuthenticationRemoteDataSourceImpl
 
     print('user b sign in request body: $jsonBody');
 
-    // final response = await client.post(
-    //   Uri.parse(url),
-    //   body: jsonBody,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // );
-
-    // print(response.body);
-    // print("user b sign in response code: ${response.statusCode}");
-
-    // if (response.statusCode == 200) {
-    //   final dynamic data = json.decode(response.body);
-    //   final jsonData = LoginResponseModel.fromJson(data);
-    //   return jsonData;
-    // } else if (response.statusCode == 403) {
-    //   final dynamic error = json.decode(response.body);
-    //   throw ForbiddenResponseException(
-    //       error['message']); // Update the error message if desired
-    // } else {
-    //   throw Exception("Error while trying to sing in");
-    // }
+   
 
     try {
       final body = user.toJson();

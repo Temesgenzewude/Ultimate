@@ -22,6 +22,12 @@ class AuthenticationRepository {
   final InternetConnectionChecker internetConnectionChecker =
       InternetConnectionChecker();
 
+  /// Signs in User A with the provided login credentials.
+  /// Returns a [LoginResponseModel] containing the user's authentication token and ID.
+  /// Throws [NoInternetException] if there is no internet connection.
+  /// Throws [ConnectionTimeOutException] if the connection times out.
+  /// Throws [ServerException] if there is an error on the server.
+  /// Throws [UnknownException] if an unknown error occurs.
   Future<LoginResponseModel> signInUserA(UserALoginRequestModel user) async {
     if (await internetConnectionChecker.hasConnection) {
       try {

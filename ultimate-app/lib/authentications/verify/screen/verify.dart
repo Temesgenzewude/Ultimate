@@ -121,20 +121,21 @@ class _VerifyState extends State<Verify> {
                         style: body(color: grey800),
                       ),
                     ),
+                    // BlocConsumer to listen for OtpBloc state changes
                     BlocConsumer<OtpBloc, OtpState>(
                       listener: (context, state) {
                         if (state is OtpVerifiedSuccess) {
                           Utils.flutterToast('OTP verified successfully!');
 
                           if (prefManager.userType == 'User A') {
+                            // Navigate to newUploadImages screen for User A
                             Future.delayed(const Duration(seconds: 2), () {
-                              Navigator.pushReplacementNamed(
-                                  context, Routes.newUploadImages);
+                              Navigator.pushReplacementNamed(context, Routes.newUploadImages);
                             });
                           } else {
+                            // Navigate to newUploadImagesB screen for User B
                             Future.delayed(const Duration(seconds: 2), () {
-                              Navigator.pushReplacementNamed(
-                                  context, Routes.newUploadImagesB);
+                              Navigator.pushReplacementNamed(context, Routes.newUploadImagesB);
                             });
                           }
                         } else if (state is OtpVerifiedFailure) {
@@ -143,9 +144,9 @@ class _VerifyState extends State<Verify> {
                       },
                       builder: (context, state) {
                         if (state is OtpVerifiedLoading) {
+                          // Show loading indicator while verifying OTP
                           return const Center(
-                            child:
-                                Stack(children: [CircularProgressIndicator()]),
+                            child: Stack(children: [CircularProgressIndicator()]),
                           );
                         } else {
                           return Container();

@@ -90,27 +90,35 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
   }
 
   Widget getAuthWidget() {
+    // Listen to the authentication bloc for state changes
     return BlocListener<AuthenticationBlocB, AuthenticationBState>(
       listener: (context, state) {
+        // If authentication fails, display the error message
         if (state is AuthenticationFailureStateB) {
           Utils.flutterToast(state.errorMessage);
-        } else if (state is AuthenticationSuccessStateB) {
+        }
+        // If authentication is successful, display a success message and navigate to the verification screen
+        else if (state is AuthenticationSuccessStateB) {
           Utils.flutterToast(
               'You have successfully registered. OTP is sent to ${phoneCtl.text} Please verify your account!');
+          // Delay the navigation to the verification screen for 5 seconds
           Future.delayed(const Duration(seconds: 5), () {
             Navigator.of(context).pushReplacementNamed(Routes.verify,
                 arguments: '${phoneCtl.text}');
           });
         }
       },
+      // An empty container is returned as the child widget
       child: Container(),
     );
   }
 
   @override
   void initState() {
+    // Set the last viewed page in the preference manager
     prefManager.lastViewedPage = Routes.addMobileNumberB;
 
+    // Set the text of the phone controller to the saved phone number in the preference manager
     phoneCtl.text = prefManager.phone ?? '';
     super.initState();
   }

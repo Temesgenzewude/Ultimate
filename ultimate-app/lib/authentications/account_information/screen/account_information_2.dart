@@ -50,8 +50,10 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
 
   @override
   void initState() {
+    // Set the last viewed page to accountInformationOne
     prefManager.lastViewedPage = Routes.accountInformationOne;
 
+    // Initialize text controllers with saved values
     birthdayCtl.text = prefManager.birthday ?? '';
     address1Ctl.text = prefManager.address ?? '';
     address2Ctl.text = prefManager.address2 ?? '';
@@ -195,6 +197,7 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
     );
   }
 
+  // Function to validate the form before proceeding to the next step
   void _validateForm() {
     if (birthdayCtl.text.isEmpty) {
       Utils.flutterToast('Birthday is required. Please enter your birthday!');
@@ -231,6 +234,7 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
       return;
     }
 
+    // Save the form data to shared preferences
     prefManager.address = address1Ctl.text;
     prefManager.address2 = address2Ctl.text;
     prefManager.address3 = address3Ctl.text;
@@ -240,82 +244,10 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
     prefManager.country = countryCtl.text;
     prefManager.birthday = birthdayCtl.text;
 
+    // Delay the navigation to the next screen for 1 second
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pushNamed(Routes.accountInformationThree);
     });
   }
 }
 
-/*
-
-BlocBuilder<AccountInfoBloc, AccInfoState>(
-                // ignore: unnecessary_parenthesis
-                // listener: ((context, state) {
-                //   if (state is AccInfoSuccessState) {
-                //     Utils.flutterToast('Your profile is successfully updated!');
-
-                //     Future.delayed(const Duration(seconds: 3), () {
-                //       Navigator.of(context).pushNamed(Routes.interest_1);
-                //     });
-                //   } else if (state is AccFailureState) {
-                //     Utils.flutterToast(state.errorMessage);
-                //   }
-                // }),
-                builder: (context, state) {
-                  if (state is AccInfoLoadingState) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state is AccFailureState) {
-                    return AppWidget.typeButtonStartAction2(
-                        context: context,
-                        input: 'Update Profile',
-                        onPressed: () {
-                          BlocProvider.of<AccountInfoBloc>(context).add(
-                              AddAccInfoEvent(
-                                  accInfo: AccountInfoModel(
-                                      age: '24',
-                                      gender: 'male',
-                                      profession: 'Student')));
-                        },
-                        bgColor: primary,
-                        borderColor: primary,
-                        textColor: grey1100);
-                  } else if (state is AccInfoSuccessState) {
-                    Utils.flutterToast('Your profile is successfully updated!');
-                    Future.delayed(const Duration(seconds: 3), () {
-                      Navigator.pushNamed(context, Routes.interest_1);
-                    });
-                  } else {
-                    return AppWidget.typeButtonStartAction2(
-                        context: context,
-                        input: 'Update Profile',
-                        onPressed: () {
-                          BlocProvider.of<AccountInfoBloc>(context).add(
-                              AddAccInfoEvent(
-                                  accInfo: AccountInfoModel(
-                                      age: '24',
-                                      gender: 'male',
-                                      profession: 'Student')));
-                        },
-                        bgColor: primary,
-                        borderColor: primary,
-                        textColor: grey1100);
-                  }
-                  return AppWidget.typeButtonStartAction2(
-                      context: context,
-                      input: 'Update Profile',
-                      onPressed: () {
-                        BlocProvider.of<AccountInfoBloc>(context).add(
-                            AddAccInfoEvent(
-                                accInfo: AccountInfoModel(
-                                    age: '24',
-                                    gender: 'male',
-                                    profession: 'Student')));
-                      },
-                      bgColor: primary,
-                      borderColor: primary,
-                      textColor: grey1100);
-                },
-              ),
-*/
