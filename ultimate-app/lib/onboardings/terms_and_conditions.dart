@@ -64,9 +64,9 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
 
     void onAccept() {
       if (prefManager.userType == 'User A') {
-        Navigator.pushReplacementNamed(context, Routes.signUp);
+        Navigator.pushNamed(context, Routes.signUp);
       } else if (prefManager.userType == 'User B') {
-        Navigator.pushReplacementNamed(context, Routes.signUpB);
+        Navigator.pushNamed(context, Routes.signUpB);
       }
     }
 

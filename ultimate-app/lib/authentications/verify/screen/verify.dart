@@ -78,9 +78,9 @@ class _VerifyState extends State<Verify> {
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
     final width = AppWidget.getWidthScreen(context);
-    return UnfocusClick(
-      child: PopScope(
-        canPop: false,
+    return PopScope(
+      canPop: false,
+      child: UnfocusClick(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           // appBar: AppWidget.createSimpleAppBar(
@@ -128,12 +128,12 @@ class _VerifyState extends State<Verify> {
 
                           if (prefManager.userType == 'User A') {
                             Future.delayed(const Duration(seconds: 2), () {
-                              Navigator.pushNamed(
+                              Navigator.pushReplacementNamed(
                                   context, Routes.newUploadImages);
                             });
                           } else {
                             Future.delayed(const Duration(seconds: 2), () {
-                              Navigator.pushNamed(
+                              Navigator.pushReplacementNamed(
                                   context, Routes.newUploadImagesB);
                             });
                           }

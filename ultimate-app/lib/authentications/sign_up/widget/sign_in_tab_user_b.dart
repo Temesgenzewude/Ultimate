@@ -62,27 +62,6 @@ class _SignInTabBState extends State<SignInTabB> {
           const SizedBox(
             height: 10,
           ),
-<<<<<<< HEAD
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Phone Number',
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextField(
-                style: TextStyle(color: Colors.white),
-                controller: phoneNumberCtl,
-                keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                    fillColor: Colors.grey,
-                    hintStyle: TextStyle(
-                      color: Color.fromARGB(255, 149, 144, 144),
-=======
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -103,15 +82,11 @@ class _SignInTabBState extends State<SignInTabB> {
                           _logInWithPhone = !_logInWithEmail;
                         });
                       },
->>>>>>> 19bd3d8 (fix the issues raised so far)
                     ),
                     Text(
                       'With Email',
                       style: body(color: grey1100, fontWeight: '600'),
                     ),
-<<<<<<< HEAD
-                    hintText: '+441172345678'),
-=======
                   ],
                 ),
               ),
@@ -139,7 +114,6 @@ class _SignInTabBState extends State<SignInTabB> {
                     ),
                   ],
                 ),
->>>>>>> 19bd3d8 (fix the issues raised so far)
               ),
             ],
           ),
