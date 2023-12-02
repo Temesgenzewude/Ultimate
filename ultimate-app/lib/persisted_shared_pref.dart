@@ -6,9 +6,11 @@ class PersistedSharePrefManager {
 
   final String _kIsLocationEnableAndShared = 'isLocationEnableAndShared';
 
+  // Setter for isLocationEnableAndShared
   set isLocationEnableAndShared(bool? value) =>
-      sharedPreferences.setBool(_kIsLocationEnableAndShared, value ?? false);
+    sharedPreferences.setBool(_kIsLocationEnableAndShared, value ?? false);
 
+  // Getter for isLocationEnableAndShared
   bool? get isLocationEnableAndShared =>
-      sharedPreferences.getBool(_kIsLocationEnableAndShared);
+    sharedPreferences.getBool(_kIsLocationEnableAndShared);
 }

@@ -226,6 +226,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                 height: height / 2.09,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),
+                  // Build a PageView widget that displays the onboarding screens
                   child: BlocBuilder<SliderBloc, int>(
                     builder: (context, state) {
                       return PageView.builder(
@@ -234,6 +235,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                         scrollDirection: Axis.horizontal,
                         itemCount: landings.length,
                         onPageChanged: (value) {
+                          // Update the state of the SliderBloc based on the current page
                           if (value > state) {
                             sliderBloc.add(SwipeRight());
                           } else {
@@ -241,6 +243,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                           }
                         },
                         itemBuilder: (context, index) {
+                          // Build the individual onboarding screen
                           return landing(context, index, width, height);
                         },
                       );
@@ -285,13 +288,16 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         GestureDetector(
+                          // Handle onTap event for the "Continue as user A" button
                           onTap: () async {
                             await _getCurrentPosition();
 
+                            // Check if location is enabled and shared
                             if (_persistentPrefs.isLocationEnableAndShared ==
                                 true) {
                               prefManager.userType = 'User A';
 
+                              // Delay navigation to the sign up screen for 1 second
                               Future.delayed(const Duration(seconds: 1), () {
                                 Navigator.pushNamed(
                                   context,
@@ -331,6 +337,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         GestureDetector(
+                          // Handle onTap event for "Continue as User B" button
                           onTap: () async {
                             await _getCurrentPosition();
 
@@ -338,6 +345,7 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
                                 true) {
                               prefManager.userType = 'User B';
 
+                              // Delay navigation to the sign up page by 1 second
                               Future.delayed(const Duration(seconds: 1), () {
                                 Navigator.pushNamed(
                                   context,
@@ -368,5 +376,3 @@ class _OnBoardingOneState extends State<OnBoardingOne> {
     );
   }
 }
-
-

@@ -15,6 +15,7 @@ class AccountInfoBloc extends Bloc<AccInfoEvent, AccInfoState> {
   }
   final AuthenticationRepository authenticationRepository;
 
+  // Maps the result of adding account information to the corresponding state
   AccInfoState accInfoSuccessOrFailure(dynamic result) {
     if (result is AccInfoResponseModel) {
       return const AccInfoSuccessState();
@@ -25,6 +26,7 @@ class AccountInfoBloc extends Bloc<AccInfoEvent, AccInfoState> {
     }
   }
 
+  // Adds account information
   Future<void> _addAccInfo(
       AddAccInfoEvent event, Emitter<AccInfoState> emit) async {
     emit(AccInfoLoadingState());

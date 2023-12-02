@@ -59,15 +59,19 @@ class _NewUploadImageBScreenState extends State<NewUploadImageBScreen> {
   Widget build(BuildContext context) {
     final width = AppWidget.getWidthScreen(context);
 
+
+    // Validate the selected images
     void _validateSelectedImages() {
       if (imageFileList.isNotEmpty && imageFileList.length <= 6) {
+        // Dispatch an event to upload the selected images
         BlocProvider.of<UserBUploadImagesBloc>(context)
             .add(UserBUploadImagesEvent(images: imageFileList));
       } else {
-        Utils.flutterToast(
-            'Please select at least 1 image and maximum 6 images');
+        // Show a toast message if the number of selected images is invalid
+        Utils.flutterToast('Please select at least 1 image and maximum 6 images');
       }
     }
+
 
     return PopScope(
       canPop: false,
@@ -137,67 +141,52 @@ class _NewUploadImageBScreenState extends State<NewUploadImageBScreen> {
                     }),
               ),
             const SizedBox(height: 24),
+            // BlocConsumer to listen for state changes in UserBUploadImagesBloc
             BlocConsumer<UserBUploadImagesBloc, UserBUploadImagesState>(
               listener: (context, state) {
                 if (state is UserBUploadImagesSuccessState) {
+                  // Show success message and navigate to account information page
                   Utils.flutterToast('Images Uploaded successfully!');
                   Future.delayed(const Duration(seconds: 3), () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(Routes.accountInformationOne);
+                    Navigator.of(context).pushReplacementNamed(Routes.accountInformationOne);
                   });
                 } else if (state is UserBUploadImagesFailureState) {
+                  // Show error message if image upload fails
                   Utils.flutterToast(state.errorMessage);
                 }
               },
               builder: (context, state) {
                 if (state is UserBUploadImagesLoadingState) {
+                  // Show loading indicator while uploading images
                   return const Center(
-                      child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                    child: CircularProgressIndicator(),
-                  ));
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
                 } else if (state is UserBUploadImagesSuccessState) {
+                  // Return an empty container if image upload is successful
                   return Container();
                 } else {
+                  // Show upload button if no images are selected or maximum limit is reached
                   return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 30),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                     child: AppWidget.typeButtonStartAction2(
-                        context: context,
-                        input: 'Upload Images',
-                        onPressed: () {
-                          _validateSelectedImages();
-                        },
-                        bgColor: imageFileList.isNotEmpty &&
-                                imageFileList.length <= 6
-                            ? primary
-                            : Colors.grey,
-                        borderColor: imageFileList.isNotEmpty &&
-                                imageFileList.length <= 6
-                            ? primary
-                            : Colors.grey,
-                        textColor: grey1100),
+                      context: context,
+                      input: 'Upload Images',
+                      onPressed: () {
+                        _validateSelectedImages();
+                      },
+                      bgColor: imageFileList.isNotEmpty && imageFileList.length <= 6
+                          ? primary
+                          : Colors.grey,
+                      borderColor: imageFileList.isNotEmpty && imageFileList.length <= 6
+                          ? primary
+                          : Colors.grey,
+                      textColor: grey1100,
+                    ),
                   );
                 }
-                // return AppWidget.typeButtonStartAction2(
-                //     context: context,
-                //     input: 'Upload Images',
-                //     onPressed: () {
-                //       indexToImage.forEach((key, value) {
-                //         if (value != null) {
-                //           imageFileList.add(value);
-                //         }
-                //       });
-                //       print(imageFileList);
-                //       print("============================");
-                //       if (imageFileList.length == 6) {
-                //         BlocProvider.of<UploadImagesBloc>(context)
-                //             .add(UserAUploadImagesEvent(images: imageFileList));
-                //       }
-                //     },
-                //     bgColor: _isUploadReady ? primary : Colors.grey,
-                //     borderColor: _isUploadReady ? primary : Colors.grey,
-                //     textColor: grey1100);
               },
             ),
           ],

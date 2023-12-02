@@ -64,9 +64,11 @@ class _MyAppState extends State<MyApp> {
 
     return MultiBlocProvider(
       providers: [
+        // Slider Bloc
         BlocProvider<SliderBloc>(
           create: (BuildContext context) => SliderBloc(),
         ),
+        // Authentication Bloc
         BlocProvider<AuthenticationBloc>(
           create: (BuildContext context) => AuthenticationBloc(
             authenticationRepository: AuthenticationRepository(
@@ -76,6 +78,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         ),
+        // Authentication Bloc B
         BlocProvider<AuthenticationBlocB>(
           create: (BuildContext context) => AuthenticationBlocB(
             authenticationRepository: AuthenticationRepository(
@@ -85,6 +88,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         ),
+        // OTP Bloc
         BlocProvider<OtpBloc>(
           create: (BuildContext context) => OtpBloc(
             authRepository: AuthenticationRepository(
@@ -92,6 +96,7 @@ class _MyAppState extends State<MyApp> {
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
           ),
         ),
+        // Auth Social Bloc
         BlocProvider<AuthSocialBloc>(
           create: (BuildContext context) => AuthSocialBloc(
             authenticationRepository: AuthenticationRepository(
@@ -99,6 +104,7 @@ class _MyAppState extends State<MyApp> {
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
           ),
         ),
+        // Upload Images Bloc
         BlocProvider<UploadImagesBloc>(
           create: (BuildContext context) => UploadImagesBloc(
             authenticationRepository: AuthenticationRepository(
@@ -106,6 +112,7 @@ class _MyAppState extends State<MyApp> {
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
           ),
         ),
+        // User B Upload Images Bloc
         BlocProvider<UserBUploadImagesBloc>(
           create: (BuildContext context) => UserBUploadImagesBloc(
             authenticationRepository: AuthenticationRepository(
@@ -113,6 +120,7 @@ class _MyAppState extends State<MyApp> {
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
           ),
         ),
+        // User B Account Info Bloc
         BlocProvider<UserBAccountInfoBloc>(
           create: (BuildContext context) => UserBAccountInfoBloc(
             authenticationRepository: AuthenticationRepository(
@@ -120,6 +128,7 @@ class _MyAppState extends State<MyApp> {
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
           ),
         ),
+        // Account Info Bloc
         BlocProvider<AccountInfoBloc>(
           create: (BuildContext context) => AccountInfoBloc(
             authenticationRepository: AuthenticationRepository(
@@ -127,6 +136,7 @@ class _MyAppState extends State<MyApp> {
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
           ),
         ),
+        // Store User Interests Bloc
         BlocProvider<StoreUserInterestsBloc>(
           create: (BuildContext context) => StoreUserInterestsBloc(
             authenticationRepository: AuthenticationRepository(

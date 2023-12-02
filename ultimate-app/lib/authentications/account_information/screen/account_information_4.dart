@@ -459,11 +459,11 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
                 const SizedBox(
                   height: 32,
                 ),
+                // Widget that listens to the AccountInfoBloc state and displays different UI based on the state
                 BlocConsumer<AccountInfoBloc, AccInfoState>(
                   listener: (context, state) {
                     if (state is AccInfoSuccessState) {
-                      Utils.flutterToast(
-                          'Your profile is successfully updated!');
+                      Utils.flutterToast('Your profile is successfully updated!');
 
                       // Future.delayed(const Duration(seconds: 2), () {
                       //   Navigator.of(context).pushNamed(Routes.interest_1);
@@ -474,36 +474,40 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
                   },
                   builder: (context, state) {
                     if (state is AccInfoLoadingState) {
+                      // Display a loading indicator if the state is AccInfoLoadingState
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else if (state is AccInfoSuccessState) {
+                      // Display a button to continue to interests or feeds if the state is AccInfoSuccessState
                       return AppWidget.typeButtonStartAction2(
-                          context: context,
-                          input: prefManager.userType == 'User A'
-                              ? 'CONTINUE TO ADD YOUR INTERESTS'
-                              : 'CONTINUE TO FEEDS',
-                          onPressed: () {
-                            if (prefManager.userType == 'User A') {
-                              Navigator.of(context)
-                                  .pushNamed(Routes.interest_1);
-                            } else if (prefManager.userType == 'User B') {
-                              Navigator.of(context).pushNamed(Routes.feed);
-                            }
-                          },
-                          bgColor: primary,
-                          borderColor: primary,
-                          textColor: grey1100);
+                        context: context,
+                        input: prefManager.userType == 'User A'
+                            ? 'CONTINUE TO ADD YOUR INTERESTS'
+                            : 'CONTINUE TO FEEDS',
+                        onPressed: () {
+                          if (prefManager.userType == 'User A') {
+                            Navigator.of(context).pushNamed(Routes.interest_1);
+                          } else if (prefManager.userType == 'User B') {
+                            Navigator.of(context).pushNamed(Routes.feed);
+                          }
+                        },
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100,
+                      );
                     } else {
+                      // Display a button to update the profile if the state is neither AccInfoLoadingState nor AccInfoSuccessState
                       return AppWidget.typeButtonStartAction2(
-                          context: context,
-                          input: 'UPDATE YOUR PROFILE',
-                          onPressed: () {
-                            _validateForm();
-                          },
-                          bgColor: primary,
-                          borderColor: primary,
-                          textColor: grey1100);
+                        context: context,
+                        input: 'UPDATE YOUR PROFILE',
+                        onPressed: () {
+                          _validateForm();
+                        },
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100,
+                      );
                     }
                   },
                 ),
@@ -515,38 +519,45 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
     );
   }
 
+  // Function to validate the form before submitting
   void _validateForm() {
+    // Check if born religious is empty
     // if (bornReligiousCtl.text.isEmpty) {
     //   Utils.flutterToast(
     //       ' Born religious is required . Please your born religious!');
     //   return;
     // }
 
+    // Check if born religion is selected
     if (_selectedBornReligion == null || _selectedBornReligion!.isEmpty) {
       Utils.flutterToast(
           'Born religion is required . Please select your born religion!');
       return;
     }
 
+    // Check if valid height is selected
     if (_upperValueHeight == 0.0) {
       Utils.flutterToast(
           'Valid Height is required. Please select your valid height!');
       return;
     }
 
+    // Check if ethnicity is selected
     if (_selectedEthnicity == null || _selectedEthnicity!.isEmpty) {
       Utils.flutterToast(
           'Ethnicity is required. Please select your ethnicity!');
       return;
     }
+
+    // Check if nationality is selected
     if (_selectedNationality == null || _selectedNationality!.isEmpty) {
       Utils.flutterToast(
           'Nationality is required. Please select your nationality!');
       return;
     }
 
+    // Save the selected values to preference manager
     prefManager.bornReligious = _selectedBornReligion;
-
     prefManager.hight = _upperValueHeight.toStringAsFixed(2);
     prefManager.ethnicity = _selectedEthnicity;
     prefManager.nationality = _selectedNationality;
@@ -554,11 +565,13 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
     prefManager.isMedication = isMedication;
     prefManager.isSmoke = isSmoke;
 
+    // Create the address string
     String address =
         '${prefManager.address}, ${prefManager.address2},${prefManager.address3}, ${prefManager.town}, ${prefManager.state}, ${prefManager.postCode}, ${prefManager.country}';
 
     print('The address is $address');
 
+    // Create an instance of AccountInfoModel with the selected values
     final AccountInfoModel accountInfoModel = AccountInfoModel(
       about: prefManager.about ?? 'About me',
       address: address,
@@ -584,6 +597,7 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
 
     print('accountInfoModel: ${accountInfoModel.toJson()}');
 
+    // Add the account info event to the AccountInfoBloc
     BlocProvider.of<AccountInfoBloc>(context)
         .add(AddAccInfoEvent(accInfo: accountInfoModel));
   }

@@ -1,15 +1,15 @@
 // ignore_for_file: sort_constructors_first
 
 class UserAModel {
-  String name;
-  String password;
-  String email;
-  String phoneNumber;
-  String birthDate;
-  String address;
-  String coordinates;
-  String? user_type;
-  bool terms;
+  String name; // User's name
+  String password; // User's password
+  String email; // User's email
+  String phoneNumber; // User's phone number
+  String birthDate; // User's birth date
+  String address; // User's address
+  String coordinates; // User's coordinates
+  String? user_type; // User's type (optional)
+  bool terms; // User's acceptance of terms
 
   UserAModel({
     required this.name,
@@ -48,16 +48,16 @@ class UserAModel {
 }
 
 class UserBModel {
-  String name;
-  String password;
-  String email;
-  String? age;
-  String? gender;
-  String phoneNumber;
-  String birthDate;
-  String location;
-  String? about;
-  bool terms;
+  String name; // User's name
+  String password; // User's password
+  String email; // User's email
+  String? age; // User's age (optional)
+  String? gender; // User's gender (optional)
+  String phoneNumber; // User's phone number
+  String birthDate; // User's birth date
+  String location; // User's location
+  String? about; // User's description (optional)
+  bool terms; // User's acceptance of terms
 
   UserBModel({
     required this.name,
@@ -99,8 +99,8 @@ class UserBModel {
 }
 
 class SingUpResponseModel {
-  String? message;
-  String? userId;
+  String? message; // Response message
+  String? userId; // User ID
 
   SingUpResponseModel({
     this.message,
@@ -114,12 +114,12 @@ class SingUpResponseModel {
 }
 
 class UserBSingUpResponse {
-  String? name;
+  String? name; // User's name
 
-  String? email;
-  String? userId;
+  String? email; // User's email
+  String? userId; // User ID
 
-  String? phoneNumber;
+  String? phoneNumber; // User's phone number
 
   UserBSingUpResponse({
     this.name,
