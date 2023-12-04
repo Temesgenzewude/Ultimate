@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_ultimate/profile_injection.dart' as injection;
 import 'package:http/http.dart' as http;
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -59,7 +61,6 @@ class _MyAppState extends State<MyApp> {
 
     print('Is the User Logged in?: $_isLoggedIn');
 
-    
     return MultiBlocProvider(
       providers: [
         BlocProvider<SliderBloc>(
@@ -132,10 +133,18 @@ class _MyAppState extends State<MyApp> {
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
           ),
         ),
+        // BlocProvider<ProfileBloc>(
+        //   create: (BuildContext contex) => sl<ProfileBloc>(),
+        // ),
+        BlocProvider(
+          create: (BuildContext context) => injection.sl<ProfileBloc>(),
+        )
       ],
       child: MaterialApp(
         // initialRoute: prefManager.lastViewedPage ??
         //     (_isLoggedIn ? Routes.accountInformation : Routes.onBoarding1),
+
+        // initialRoute: Routes.profile,
 
         initialRoute: _isLoggedIn
             ? prefManager.lastViewedPage ?? Routes.accountInformationOne
