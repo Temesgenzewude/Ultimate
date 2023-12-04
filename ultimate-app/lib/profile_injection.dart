@@ -6,16 +6,18 @@ import 'package:flutter_ultimate/features/profiles/domain/usecases/getUserB.dart
 import 'package:flutter_ultimate/features/profiles/domain/usecases/getUserBProfiles.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
-Future<void> articleInjectionInit() async {
+Future<void> profileInjectionInit() async {
   // Bloc
-
   sl.registerFactory(
-    () => ProfileBloc(getUserBProfile: sl(), getUserBProfiles: sl()),
+    () => ProfileBloc(
+      getUserBProfile: sl(),
+      getUserBProfiles: sl(),
+    ),
   );
 
   // usecases

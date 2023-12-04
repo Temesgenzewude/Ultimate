@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
+import 'package:flutter_ultimate/profile_injection.dart' as injection;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
@@ -12,6 +13,7 @@ Future<void> main() async {
   final persistedSharedPrefs = await SharedPreferences.getInstance();
   initPrefManager(prefs);
   initPersistedSharePrefManager(persistedSharedPrefs);
+  await injection.profileInjectionInit();
 
   runApp(const MyApp());
 }

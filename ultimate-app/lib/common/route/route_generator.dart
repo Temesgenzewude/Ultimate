@@ -6,6 +6,7 @@ import 'package:flutter_ultimate/authentications/upload_images/new_upload_images
 import 'package:flutter_ultimate/authentications/upload_images/upload_images_B.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/onboardings/terms_and_conditions.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/screens/profile_screen.dart';
 
 import '../../authentications/account_information/screen/account_information_1.dart';
 import '../../authentications/account_information/screen/account_information_2.dart';
@@ -67,18 +68,18 @@ import '../../food_delivery/today_food/screen/today_food.dart';
 import '../../food_delivery/tracking_order/screen/tracking_order.dart';
 import '../../onboardings/menu.dart';
 import '../../onboardings/onboarding_1/screen/onboarding_1.dart';
-import '../../profiles/profile_eight/screen/profile_eight.dart';
-import '../../profiles/profile_elevent/screen/profile_elevent_home.dart';
-import '../../profiles/profile_five/screen/profile_five.dart';
-import '../../profiles/profile_four/screen/profile_four.dart';
-import '../../profiles/profile_nine/screen/profile_nine.dart';
-import '../../profiles/profile_one/screen/profile_one_home.dart';
-import '../../profiles/profile_seven/screen/profile_seven_home.dart';
-import '../../profiles/profile_six/screen/profile_six_home.dart';
-import '../../profiles/profile_ten/screen/profile_ten.dart';
-import '../../profiles/profile_three/screen/profile_three.dart';
-import '../../profiles/profile_twenty/screen/profile_twenty.dart';
-import '../../profiles/profile_two/screen/profile_two_home.dart';
+import '../../features/profiles/profile_eight/screen/profile_eight.dart';
+import '../../features/profiles/profile_elevent/screen/profile_elevent_home.dart';
+import '../../features/profiles/profile_five/screen/profile_five.dart';
+import '../../features/profiles/profile_four/screen/profile_four.dart';
+import '../../features/profiles/profile_nine/screen/profile_nine.dart';
+import '../../features/profiles/profile_one/screen/profile_one_home.dart';
+import '../../features/profiles/profile_seven/screen/profile_seven_home.dart';
+import '../../features/profiles/profile_six/screen/profile_six_home.dart';
+import '../../features/profiles/profile_ten/screen/profile_ten.dart';
+import '../../features/profiles/profile_three/screen/profile_three.dart';
+import '../../features/profiles/profile_twenty/screen/profile_twenty.dart';
+import '../../features/profiles/profile_two/screen/profile_two_home.dart';
 import '../../readings/book_detail/screen/book_detail.dart';
 import '../../readings/bookmark_1/screen/bookmark_1_home.dart';
 import '../../readings/bookmark_2/screen/bookmark_2_home.dart';
@@ -119,10 +120,10 @@ mixin RouteGenerator {
       //   return MaterialPageRoute<dynamic>(
       //     builder: (context) => const MenuAuthenNavigation(),
       //   );
-      // case Routes.profile:
-      //   return MaterialPageRoute<dynamic>(
-      //     builder: (context) => const MenuProfileNavigation(),
-      //   );
+      case Routes.profile:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const ProfileScreen(),
+        );
       case Routes.finance:
         return MaterialPageRoute<dynamic>(
           builder: (context) => const MenuFinanceNavigation(),
