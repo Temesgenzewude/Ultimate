@@ -41,6 +41,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileLoadingState());
 
     final result = await getUserBProfile(event.userId);
+    print('-------------- result ---------------');
+    print(result);
+    print('--------------- result');
     emit(profileBSuccessOrFailure(result));
   }
 

@@ -33,19 +33,19 @@ class UserBProfileModel extends UserBProfile {
 
   factory UserBProfileModel.fromJson(Map<String, dynamic> json) {
     return UserBProfileModel(
-      id: json['id'],
-      name: json['name'],
-      about: json['about'],
-      address: json['address'],
-      age: json['age'],
-      country: json['country'],
-      ethnicity: json['ethnicity'],
-      gender: json['gender'],
-      height: json['height'],
-      imageUrls: json['imageUrls'],
-      interest: json['interest'],
-      nationality: json['natinality'],
-      reviewScore: json['reviewScore'],
+      id: json['id'] != null ? json['id'] : '',
+      name: json['name'] != null ? json['name'] : '',
+      about: json['about'] != null ? json['about'] : '',
+      address: json['address'] != null ? json['address'] : '',
+      age: json['age'] != null ? json['age'] : '',
+      country: json['country'] != null ? json['country'] : '',
+      ethnicity: json['ethnicity'] != null ? json['ethnicity'] : '',
+      gender: json['gender'] != null ? json['gender'] : '',
+      height: json['height'] != null ? json['height'] : '',
+      imageUrls: json['imageUrl'] != null ? [json['imageUrl']] : [],
+      interest: json['interest'] != null ? json['interest'] : [],
+      nationality: json['nationality'] != null ? json['nationality'] : '',
+      reviewScore: json['reviewScore'] != null ? json['reviewScore'] : '',
     );
   }
 }
