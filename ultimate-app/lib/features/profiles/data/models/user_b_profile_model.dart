@@ -43,7 +43,9 @@ class UserBProfileModel extends UserBProfile {
       gender: json['gender'] != null ? json['gender'] : '',
       height: json['height'] != null ? json['height'] : '',
       imageUrls: json['imageUrl'] != null ? [json['imageUrl']] : [],
-      interest: json['interest'] != null ? json['interest'] : [],
+      interest: json['intrest'] != null
+          ? json['intrest'].cast<String>().toList()
+          : [],
       nationality: json['nationality'] != null ? json['nationality'] : '',
       reviewScore: json['reviewScore'] != null ? json['reviewScore'] : '',
     );
