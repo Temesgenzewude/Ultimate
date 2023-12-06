@@ -203,6 +203,7 @@ class _FeedScreenState extends State<FeedScreen> {
     final width = AppWidget.getWidthScreen(context);
     final height = AppWidget.getHeightScreen(context);
     return BlocBuilder<FeedBloc, FeedState>(
+      
       builder: (context, state) {
         if (state is FeedLoadingState) {
           return const Scaffold(
@@ -216,7 +217,7 @@ class _FeedScreenState extends State<FeedScreen> {
               child: Text(state.error.toString()),
             ),
           );
-        } else if (state is FeedSuccessState) {
+        } else if (state is FeedsSuccessState) {
           return Scaffold(
             appBar: AppBarCpn(
               left: AnimationClick(
