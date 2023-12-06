@@ -66,6 +66,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           body: Text('Succcess'),
         );
       } else if (state is UserBProfileSuccessState) {
+        print("Thisis state ");
+        print(state);
         return Scaffold(
           body: NestedScrollView(
             headerSliverBuilder:
@@ -99,22 +101,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   },
                                   itemBuilder: (context, index) {
                                     return
-                                        // Image.asset(
-                                        //   item['bgImage'][index],
-                                        // );
-                                        ColorFiltered(
-                                      colorFilter: ColorFilter.mode(
-                                        const Color.fromARGB(255, 0, 0, 0)
-                                            .withOpacity(
-                                                0.5), // Adjust opacity and color as needed
-                                        BlendMode.srcOver,
-                                      ),
-                                      child: Image.network(
-                                        state.userBProfile.imageUrls[0],
-                                        fit: BoxFit.fill,
-                                        // opacity: ,
-                                      ),
-                                    );
+                                        Image.asset(
+                                          item['bgImage'][index],
+                                        );
+                                    //     ColorFiltered(
+                                    //   colorFilter: ColorFilter.mode(
+                                    //     const Color.fromARGB(255, 0, 0, 0)
+                                    //         .withOpacity(
+                                    //             0.5), // Adjust opacity and color as needed
+                                    //     BlendMode.srcOver,
+                                    //   ),
+                                    //   child: Image.network(
+                                    //     state.userBProfile.imageUrls[0],
+                                    //     fit: BoxFit.fill,
+                                    //     // opacity: ,
+                                    //   ),
+                                    // );
                                   },
                                 );
                               },
@@ -180,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      // "alfja;ldfjafadadf",
+                                      // "Samuel Kifle",
                                       state.userBProfile.name,
                                       style: title3(color: grey1100),
                                     ),
@@ -208,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     width: 10,
                                   ),
                                   Text(
-                                    state.userBProfile.height,
+                                    '${state.userBProfile.height} cm',
                                     style: body(color: grey800),
                                   ),
                                 ],
@@ -217,7 +219,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 5,
                               ),
                               Text(
-                                state.userBProfile.address.substring(0, 27),
+                                'Newyork, United States',
+                                // state.userBProfile.address.length > 27
+                                //     ? state.userBProfile.address
+                                //         .substring(0, 27)
+                                //     : state.userBProfile.address,
                                 style: body(color: grey800),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
@@ -226,7 +232,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 5,
                               ),
                               Text(
-                                state.userBProfile.country,
+                                'United States',
+                                // state.userBProfile.country,
                                 style: body(color: grey800),
                               ),
                             ],

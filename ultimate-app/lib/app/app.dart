@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_ultimate/profile_injection.dart' as injection;
 import 'package:http/http.dart' as http;
@@ -133,18 +134,18 @@ class _MyAppState extends State<MyApp> {
                     AuthenticationRemoteDataSourceImpl(client: http.Client())),
           ),
         ),
-        // BlocProvider<ProfileBloc>(
-        //   create: (BuildContext contex) => sl<ProfileBloc>(),
-        // ),
         BlocProvider(
           create: (BuildContext context) => injection.sl<ProfileBloc>(),
-        )
+        ),
+        BlocProvider(
+          create: (BuildContext context) => injection.sl<FeedBloc>(),
+        ),
       ],
       child: MaterialApp(
         // initialRoute: prefManager.lastViewedPage ??
         //     (_isLoggedIn ? Routes.accountInformation : Routes.onBoarding1),
 
-        initialRoute: Routes.profile,
+        initialRoute: Routes.feedPage,
 
         // initialRoute: _isLoggedIn
         //     ? prefManager.lastViewedPage ?? Routes.accountInformationOne

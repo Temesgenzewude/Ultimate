@@ -12,7 +12,7 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
   FeedRemoteDataSourceImpl({required this.client});
 
   final http.Client client;
-  final uriString = 'http://13.48.221.106:5001/api/get-news/';
+  final uriString = 'http://13.48.221.106:5001/api/get-all-news';
 
   @override
   Future<List<FeedModel>> getAllNews() async {
@@ -21,6 +21,8 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
       'Authorization':
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMjE4MDB9.FjFHfuJ96OuCl_V67oICPZqZ1XyGsSEkaYkFtO0H5-Y'
     });
+    print('------------------------ response in datasource');
+    print(response.body);
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       final feedNewsJsonList = List<Map<String, dynamic>>.from(jsonResponse);
