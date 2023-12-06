@@ -1,6 +1,8 @@
 class Routes {
   static const String onBoarding1 = '/onBoarding1';
   static const String TempHoem = '/Temp';
+  static const String feedPage = '/feedpage';
+
 
   static const String profile1 = '/profile1';
   static const String profile2 = '/profile2';
@@ -50,7 +52,7 @@ class Routes {
   static const String goalDetail = '/goal_detail';
   static const String deleteGoal = '/deleteGoal';
   static const String chart_saving = '/chart_saving';
-  static const String friendTransaction = '/friend_transaction';
+  static const String friendTransaction = '/friend_transacStion';
   static const String dashboardAssetNone = '/dashboard_asset_none';
   static const String dashboardFullNopremium = '/dashboard_full_nopremium';
 
