@@ -132,24 +132,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                           ),
                         ),
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: AnimationClick(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              decoration: BoxDecoration(
-                                color: grey100,
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                              child: Text(
-                                '1 - 13',
-                                style: subhead(color: grey600),
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Positioned(
+                        //   top: 8,
+                        //   right: 8,
+                        //   child: AnimationClick(
+                        //     child: Container(
+                        //       padding: const EdgeInsets.symmetric(
+                        //           horizontal: 16, vertical: 8),
+                        //       decoration: BoxDecoration(
+                        //         color: grey100,
+                        //         borderRadius: BorderRadius.circular(24),
+                        //       ),
+                        //       child: Text(
+
+                        //         '1 - 13',
+                        //         style: subhead(color: grey600),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
