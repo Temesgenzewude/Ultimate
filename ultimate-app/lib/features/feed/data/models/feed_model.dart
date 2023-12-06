@@ -17,11 +17,11 @@ class FeedModel extends FeedEntity {
 
   factory FeedModel.fromJson(Map<String, dynamic> json) {
     return FeedModel(
-      id: json['id'],
-      authorName: json['authorName'],
-      newsExcerpt: json['newsExcerpt'],
-      dateAuthorered: json['dateAuthorered'],
-      newsContent: json['newsContent'],
+      id: json['id'] != null ? json['id' ]: '',
+      authorName: json['authorName'] != null ? json['authorName']: '',
+      newsExcerpt: json['newsExcerpt'] != null ? json['newsExcerpt'] : '',
+      dateAuthorered: json['dateAuthorered'] != null ? json['dateAuthorered']: '',
+      newsContent: json['newsContent'] != null ? json['newsContent'] : '',
     );
   }
   Map<String, dynamic> toJson() {
