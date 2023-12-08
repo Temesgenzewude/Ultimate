@@ -145,7 +145,7 @@ class _MyAppState extends State<MyApp> {
         // initialRoute: prefManager.lastViewedPage ??
         //     (_isLoggedIn ? Routes.accountInformation : Routes.onBoarding1),
 
-        initialRoute: Routes.feedPage,
+        initialRoute: Routes.settingsScreen,
 
         // initialRoute: _isLoggedIn
         //     ? prefManager.lastViewedPage ?? Routes.accountInformationOne
