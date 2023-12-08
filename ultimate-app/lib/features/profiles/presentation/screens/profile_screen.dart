@@ -480,8 +480,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Text('Failure'),
           ),
         );
-      } else {
+      } else if (state is UserBProfileSuccessState) {
+        print('------------------');
         print(state);
+        print('------------------');
         return Scaffold(
           body: Stack(
             children: [
@@ -532,13 +534,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 32,
                           ),
                         ),
-                        AnimationClick(
-                          child: Image.asset(
-                            heart,
-                            width: 32,
-                            height: 32,
-                          ),
-                        )
+
+                        // Commented Heart Button
+
+                        // AnimationClick(
+                        //   child: Image.asset(
+                        //     heart,
+                        //     width: 32,
+                        //     height: 32,
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
@@ -554,6 +559,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: grey200,
                             borderRadius: BorderRadius.circular(16)),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Padding(
@@ -567,8 +573,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+
+                                      //  Name of the user here, you can access it using state.userBProfile.name
                                       Text(
-                                        'Albert Flores',
+                                        state.userBProfile.name,
+                                        // 'Albert Flores',
                                         style: title3(color: grey1100),
                                       ),
                                       const SizedBox(height: 8),
@@ -664,7 +673,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 24),
                               child: Text(
-                                'Utilmate – UI KIT Mobile App is an unique & creative with high quality & modern design. This package included 1000+ iOS screens.',
+                                state.userBProfile.about,
+                                // 'Utilmate – UI KIT Mobile App is an unique & creative with high quality & modern design. This package included 1000+ iOS screens.',
                                 style:
                                     subhead(color: grey800, fontWeight: '400'),
                               ),
@@ -738,6 +748,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
         );
+      } else {
+        return Container();
       }
     });
   }

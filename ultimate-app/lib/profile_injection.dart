@@ -1,6 +1,6 @@
 import 'package:flutter_ultimate/core/network/network_info.dart';
 import 'package:flutter_ultimate/features/profiles/data/datasources/profile_remote_data_source.dart';
-import 'package:flutter_ultimate/features/profiles/data/repositories%20/profile_repo_impl.dart';
+import 'package:flutter_ultimate/features/profiles/data/repositories/profile_repo_impl.dart';
 import 'package:flutter_ultimate/features/profiles/domain/repositories/profile_repository.dart';
 import 'package:flutter_ultimate/features/profiles/domain/usecases/getUserB.dart';
 import 'package:flutter_ultimate/features/profiles/domain/usecases/getUserBProfiles.dart';
