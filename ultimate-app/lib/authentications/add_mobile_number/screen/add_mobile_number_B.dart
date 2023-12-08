@@ -63,7 +63,7 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
       address: address,
       phoneNumber: phoneNumber,
       coordinates: '10,10',
-      birthDate: '12/12/2015',
+      birthDate: '12-12-2015',
     );
 
     final UserBModel userB = UserBModel(
@@ -72,8 +72,8 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
         name: name,
         phoneNumber: phoneNumber,
         location: '10,10',
-        birthDate: '12/12/2015',
-        about: '',
+        birthDate: '12-12-2015',
+        about: 'About me',
         terms: true,
         age: '21');
 

@@ -39,13 +39,13 @@ class _MyAppState extends State<MyApp> {
   final prefManager = sl<PrefManager>();
   // String? token = prefManager.token;
 
-  @override
-  void initState() {
-    prefManager.testToken = '';
-    //prefManager.lastViewedPage ??= Routes.onBoarding1;
-    // prefManager.logout();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   prefManager.testToken = '';
+  //   //prefManager.lastViewedPage ??= Routes.onBoarding1;
+  //   prefManager.logout();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
