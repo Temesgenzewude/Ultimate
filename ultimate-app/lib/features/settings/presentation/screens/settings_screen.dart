@@ -18,9 +18,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool otherMode = false;
 
   Map<String, bool> switchStates = {
-    'messageMode': false,
-    'newsMode': false,
-    'otherMode': false,
+    'messageMode': true,
+    'newsMode': true,
+    'otherMode': true,
   };
 
   Widget item(
