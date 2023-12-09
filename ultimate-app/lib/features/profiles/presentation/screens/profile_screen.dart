@@ -81,48 +81,48 @@
 //                     background: Stack(
 //                       alignment: Alignment.bottomCenter,
 //                       children: [
-//                         AnimationClick(
-//                           child: Container(
-//                             margin: const EdgeInsets.symmetric(horizontal: 4),
-//                             decoration: BoxDecoration(
-//                                 color: item['bgColor'],
-//                                 borderRadius: BorderRadius.circular(16)),
-//                             child: BlocBuilder<SliderBloc, int>(
-//                               builder: (context, sliderState) {
-//                                 return PageView.builder(
-//                                   scrollDirection: Axis.horizontal,
-//                                   itemCount: item['bgImage'].length,
-//                                   onPageChanged: (value) {
-//                                     if (value > sliderState) {
-//                                       sliderBloc.add(SwipeRight());
-//                                     } else {
-//                                       sliderBloc.add(SwipeLeft());
-//                                     }
-//                                   },
-//                                   itemBuilder: (context, index) {
-//                                     return
-//                                         Image.asset(
-//                                           item['bgImage'][index],
-//                                         );
-//                                     //     ColorFiltered(
-//                                     //   colorFilter: ColorFilter.mode(
-//                                     //     const Color.fromARGB(255, 0, 0, 0)
-//                                     //         .withOpacity(
-//                                     //             0.5), // Adjust opacity and color as needed
-//                                     //     BlendMode.srcOver,
-//                                     //   ),
-//                                     //   child: Image.network(
-//                                     //     state.userBProfile.imageUrls[0],
-//                                     //     fit: BoxFit.fill,
-//                                     //     // opacity: ,
-//                                     //   ),
-//                                     // );
-//                                   },
-//                                 );
-//                               },
-//                             ),
-//                           ),
-//                         ),
+// AnimationClick(
+//   child: Container(
+//     margin: const EdgeInsets.symmetric(horizontal: 4),
+//     decoration: BoxDecoration(
+//         color: item['bgColor'],
+//         borderRadius: BorderRadius.circular(16)),
+//     child: BlocBuilder<SliderBloc, int>(
+//       builder: (context, sliderState) {
+//         return PageView.builder(
+//           scrollDirection: Axis.horizontal,
+//           itemCount: item['bgImage'].length,
+//           onPageChanged: (value) {
+//             if (value > sliderState) {
+//               sliderBloc.add(SwipeRight());
+//             } else {
+//               sliderBloc.add(SwipeLeft());
+//             }
+//           },
+//           itemBuilder: (context, index) {
+//             return
+//                 Image.asset(
+//                   item['bgImage'][index],
+//                 );
+//             //     ColorFiltered(
+//             //   colorFilter: ColorFilter.mode(
+//             //     const Color.fromARGB(255, 0, 0, 0)
+//             //         .withOpacity(
+//             //             0.5), // Adjust opacity and color as needed
+//             //     BlendMode.srcOver,
+//             //   ),
+//             //   child: Image.network(
+//             //     state.userBProfile.imageUrls[0],
+//             //     fit: BoxFit.fill,
+//             //     // opacity: ,
+//             //   ),
+//             // );
+//           },
+//         );
+//       },
+//     ),
+//   ),
+// ),
 //                         Positioned(
 //                           bottom: 16,
 //                           child: BlocBuilder<SliderBloc, int>(
@@ -437,6 +437,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/slider/slider_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/slider/slider_event.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc.dart';
 
 import '../../../../app/widget_support.dart';
@@ -489,15 +490,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Column(
                 children: [
-                  const SizedBox(height: 64),
+                  // const SizedBox(height: 64),
                   Stack(
                     children: [
-                      Image.asset(
-                        bgProfile8,
+
+                      // Image Slider Widget
+                      Container(
                         height: height / 1.5,
-                        width: width,
-                        fit: BoxFit.fill,
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                            color: grey200,
+                            borderRadius: BorderRadius.circular(16)),
+                        child: BlocBuilder<SliderBloc, int>(
+                          builder: (context, sliderState) {
+                            return PageView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 3,
+                              onPageChanged: (value) {
+                                if (value > sliderState) {
+                                  sliderBloc.add(SwipeRight());
+                                } else {
+                                  sliderBloc.add(SwipeLeft());
+                                }
+                              },
+                              itemBuilder: (context, index) {
+                                return
+                                    Image.asset(
+                                      bgProfile8,
+                                    height: height / 1.5,
+                                    width: width,
+                                    fit: BoxFit.fill,
+                                    );
+                                //     Image.network(
+                                //   state.userBProfile.imageUrls[0],
+                                //   height: height / 1.5,
+                                //   width: width,
+                                //   fit: BoxFit.fill,
+                                // );
+                                // );
+                              },
+                            );
+                          },
+                        ),
                       ),
+                      // Image.asset(
+                      //   bgProfile8,
+                      //   height: height / 1.5,
+                      //   width: width,
+                      //   fit: BoxFit.fill,
+                      // ),
                       Positioned(
                         bottom: 0,
                         child: Container(
@@ -564,7 +605,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                  left: 24, right: 24, top: 48),
+                                  left: 24, right: 24, top: 28),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -573,7 +614,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-
                                       //  Name of the user here, you can access it using state.userBProfile.name
                                       Text(
                                         state.userBProfile.name,
@@ -582,9 +622,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
+                                        // state.userBProfile.address,
                                         'UI/UX Designer',
                                         style: body(color: grey800),
-                                      )
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
                                     ],
                                   ),
                                   Row(
@@ -627,51 +671,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ],
                               ),
                             ),
+
+                            // User's Address goes here
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 24.0, vertical: 10),
+                              child: Text(
+                                state.userBProfile.address,
+                                style: body(color: grey800),
+                              ),
+                            ),
                             AppWidget.divider(context,
-                                color: grey1100.withOpacity(0.1), vertical: 16),
+                                color: grey1100.withOpacity(0.1), vertical: 6),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 24),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '230K',
-                                        style: headline(color: grey1100),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        'Following',
-                                        style: subhead(
-                                            color: grey800, fontWeight: '400'),
-                                      ),
-                                    ],
+                                  Text(
+                                    // User's age Section { access it using state.userBProfile.age}
+                                    state.userBProfile.age,
+                                    style:
+                                        body(color: grey800, fontWeight: '400'),
                                   ),
                                   const SizedBox(
                                     width: 16,
                                   ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '230K',
-                                        style: headline(color: grey1100),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        'Follower',
-                                        style: subhead(
-                                            color: grey800, fontWeight: '400'),
-                                      ),
-                                    ],
-                                  )
+                                  // User's gender Section { access it using state.userBProfile.gender}
+
+                                  Text(
+                                    state.userBProfile.gender,
+                                    style: subhead(
+                                      color: grey800,
+                                      fontWeight: '400',
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Text(
+                                    '${state.userBProfile.height} cm',
+                                    style: subhead(
+                                      color: grey800,
+                                      fontWeight: '400',
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
+
+                            // User's About Section { access it using state.userBProfile.about}
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 24),
+                                  vertical: 10, horizontal: 24),
                               child: Text(
                                 state.userBProfile.about,
                                 // 'Utilmate – UI KIT Mobile App is an unique & creative with high quality & modern design. This package included 1000+ iOS screens.',
@@ -698,19 +749,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: grey1100,
-                                        borderRadius:
-                                            BorderRadius.circular(32)),
-                                    child: Image.asset(
-                                      checkbox,
-                                      width: 24,
-                                      height: 24,
-                                    ),
-                                  ))
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: grey1100,
+                                      borderRadius: BorderRadius.circular(32)),
+                                  child: Image.asset(
+                                    checkbox,
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -718,7 +769,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                   Container(
-                    height: height / 4,
+                    // height: height / 4,
                     decoration: BoxDecoration(
                         color: grey200,
                         borderRadius: BorderRadius.circular(16)),
@@ -726,18 +777,97 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     margin: const EdgeInsets.all(8),
                     padding: const EdgeInsets.symmetric(
                         vertical: 24, horizontal: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'User Details',
+                              style: title4(color: grey1100),
+                            ),
+
+                            // commented animation clilck
+                            // AnimationClick(
+                            //   child: Image.asset(
+                            //     caretRight,
+                            //     width: 40,
+                            //     height: 40,
+                            //   ),
+                            // )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 14,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'country: ${state.userBProfile.country}',
+                              style: subhead(
+                                color: grey800,
+                                fontWeight: '400',
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 18,
+                            ),
+                            Text(
+                              'nationality: ${state.userBProfile.nationality}',
+                              style: subhead(
+                                color: grey800,
+                                fontWeight: '400',
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Ethinicity: ${state.userBProfile.ethnicity}',
+                              style: subhead(
+                                color: grey800,
+                                fontWeight: '400',
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
                         Text(
-                          'Experience',
+                          'Interests',
                           style: title4(color: grey1100),
                         ),
-                        AnimationClick(
-                          child: Image.asset(
-                            caretRight,
-                            width: 40,
-                            height: 40,
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: List.generate(
+                            state.userBProfile.interest.length,
+                            (index) => Chip(
+                              label: Text(state.userBProfile.interest[index]),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              backgroundColor: const Color.fromARGB(
+                                255,
+                                87,
+                                163,
+                                198,
+                              ),
+                              labelStyle: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
                           ),
                         )
                       ],
