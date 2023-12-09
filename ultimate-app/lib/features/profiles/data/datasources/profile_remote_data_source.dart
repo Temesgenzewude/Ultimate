@@ -21,9 +21,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
       'Authorization':
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMjE4MDB9.FjFHfuJ96OuCl_V67oICPZqZ1XyGsSEkaYkFtO0H5-Y'
     });
-    print("------------Response Body -------------");
-    print(response.body);
-    print("-------------------");
+
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       final userBProfile = UserBProfileModel.fromJson(jsonResponse);
@@ -35,17 +33,19 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   @override
   Future<List<UserBProfileModel>> getUserBProfiles() async {
-    final response = await client.get(Uri.parse(uriString), headers: {
-      'Content-Type': 'application/json',
-      'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMjE4MDB9.FjFHfuJ96OuCl_V67oICPZqZ1XyGsSEkaYkFtO0H5-Y'
-    });
+    final response = await client.get(
+        Uri.parse('http://13.48.221.106:5001/api/get-all-user-b'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMjE4MDB9.FjFHfuJ96OuCl_V67oICPZqZ1XyGsSEkaYkFtO0H5-Y'
+        });
+
     if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
-      final profileList = List<Map<String, dynamic>>.from(jsonResponse);
-      final userBProfiles = profileList
-          .map((json) => UserBProfileModel.fromJson(jsonResponse))
-          .toList();
+      final List<dynamic>jsonResponse = json.decode(response.body);
+      final userBProfiles = await 
+          jsonResponse.map((json) => UserBProfileModel.fromJson(json)).toList();
+
       return userBProfiles;
     } else {
       throw const ServerException();

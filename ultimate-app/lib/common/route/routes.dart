@@ -3,6 +3,7 @@ class Routes {
   static const String TempHoem = '/Temp';
   static const String feedPage = '/feedpage';
   static const String settingsScreen = '/settingsScreen';
+  static const String profilesLanding = '/profilesLandingPage';
 
 
   static const String profile1 = '/profile1';

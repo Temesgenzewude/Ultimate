@@ -6,6 +6,7 @@ import 'package:flutter_ultimate/authentications/upload_images/new_upload_images
 import 'package:flutter_ultimate/authentications/upload_images/upload_images_B.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/features/feed/presentation/screens/feed_screen.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/screens/profiles_landing_screen.dart';
 import 'package:flutter_ultimate/features/settings/presentation/screens/settings_screen.dart';
 import 'package:flutter_ultimate/onboardings/terms_and_conditions.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/screens/profile_screen.dart';
@@ -118,10 +119,10 @@ mixin RouteGenerator {
         return MaterialPageRoute<dynamic>(
           builder: (context) => const MenuOnboardingNavigation(),
         );
-      // case Routes.authentication:
-      //   return MaterialPageRoute<dynamic>(
-      //     builder: (context) => const MenuAuthenNavigation(),
-      //   );
+      case Routes.profilesLanding:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const ProfileLanding(),
+        );
       case Routes.profile:
         return MaterialPageRoute<dynamic>(
           builder: (context) => const ProfileScreen(),
@@ -519,7 +520,7 @@ mixin RouteGenerator {
         );
       case Routes.settingsScreen:
         return MaterialPageRoute<dynamic>(
-          builder: (context) => SettingsScreen(),
+          builder: (context) => const SettingsScreen(),
         );
       case Routes.main_seller_2:
         return MaterialPageRoute<dynamic>(

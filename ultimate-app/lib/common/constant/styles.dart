@@ -166,7 +166,7 @@ TextStyle subhead(
     String fontFamily = 'SpaceGrotesk',
     double? letterSpacing,
     Color? color}) {
-  return grotesk(15, 20,
+  return grotesk(18, 20,
       context: context,
       fontWeight: fontWeight,
       letterSpacing: letterSpacing,
