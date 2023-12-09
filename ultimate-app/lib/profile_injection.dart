@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'features/profiles/data/repositories/profile_repo_impl.dart';
+
 final sl = GetIt.instance;
 Future<void> profileInjectionInit() async {
   // Bloc
