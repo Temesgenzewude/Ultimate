@@ -112,7 +112,8 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     GradientText(
-                      'Update your personal information!',
+                     // 'Update your personal information!',
+                       'Enter your personal information!',
                       style: const TextStyle(
                           fontSize: 28,
                           height: 1,

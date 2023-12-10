@@ -14,8 +14,11 @@ import '../../../common/widget/animation_click.dart';
 
 import '../../common/bloc/upload_image/upload_images_bloc.dart';
 import '../../common/constant/colors.dart';
+import '../../common/constant/images.dart';
+import '../../common/constant/styles.dart';
 import '../../common/route/routes.dart';
 import '../../common/util/show_toast_message.dart';
+import '../../common/widget/app_bar_cpn.dart';
 import '../../dependency_indjection.dart';
 import '../../sharedPreferences.dart';
 import 'widgets/new_upload_image.dart';
@@ -68,17 +71,45 @@ class _NewUploadImageScreenState extends State<NewUploadImageScreen> {
 
     @override
     void initState() {
-      prefManager.lastViewedPage = Routes.newUploadImagesB;
+      // prefManager.lastViewedPage = Routes.newUploadImagesB;
       super.initState();
     }
+
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: AppWidget.createSimpleAppBar(
-            context: context,
-            hasLeading: false,
-            hasPop: true,
-            title: 'Upload Images'),
+        appBar: AppBarCpn(
+          left: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: AnimationClick(
+              // function: () {
+              //   Navigator.of(context).pop();
+              // },
+              child: Image.asset(
+                logo,
+                width: 24,
+                height: 24,
+                color: grey1100,
+              ),
+            ),
+          ),
+          center: Text(
+            'Upload Images',
+            style: headline(color: grey1100),
+          ),
+          right: AnimationClick(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Text(
+                'Skip',
+                style: headline(color: corn1),
+              ),
+            ),
+            function: () {
+              Navigator.of(context).pushNamed(Routes.interest_1);
+            },
+          ),
+        ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,7 +176,7 @@ class _NewUploadImageScreenState extends State<NewUploadImageScreen> {
                   Utils.flutterToast('Images Uploaded successfully!');
                   Future.delayed(const Duration(seconds: 3), () {
                     Navigator.of(context)
-                        .pushReplacementNamed(Routes.accountInformationOne);
+                        .pushReplacementNamed(Routes.interest_1);
                   });
                 } else if (state is UploadImagesFailureState) {
                   Utils.flutterToast(state.errorMessage);

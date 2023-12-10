@@ -1,14 +1,14 @@
 class UserAOrBSignUpRequestModel {
   UserAOrBSignUpRequestModel(
-      {this.name,
-      this.email,
-      this.password,
-      this.phoneNumber,
+      {required this.name,
+      required this.email,
+      required this.password,
+      required this.phoneNumber,
       this.birthDate,
       this.address,
-      this.coordinates,
-      this.userRole,
-      this.terms,
+      required this.coordinates,
+      required this.userRole,
+      required this.terms,
       this.gender,
       this.age,
       this.about,
@@ -29,45 +29,24 @@ class UserAOrBSignUpRequestModel {
       this.postalCode,
       this.country});
 
-  UserAOrBSignUpRequestModel.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    email = json['email'];
-    password = json['password'];
-    phoneNumber = json['phoneNumber'];
-    birthDate = json['birthDate'];
-    address = json['address'];
-    coordinates = json['coordinates'];
-    userRole = json['user_role'];
-    terms = json['terms'];
-    gender = json['gender'];
-    age = json['age'];
-    about = json['about'];
-    maritalStatus = json['maritalStatus'];
-    height = json['height'];
-    profession = json['profession'];
-    lookingFor = json['lookingFor'];
-    child = json['child'];
-    sect = json['sect'];
-    healthIssue = json['healthIssue'];
-    bornReligious = json['bornReligious'];
-    isDrink = json['isDrink'];
-    isSmoke = json['isSmoke'];
-    isMadication = json['isMadication'];
-    ethnicity = json['ethnicity'];
-    nationality = json['nationality'];
-    levelOfReligiously = json['levelOfReligiously'];
-    postalCode = json['postalCode'];
-    country = json['country'];
-  }
-  String? name;
-  String? email;
-  String? password;
-  String? phoneNumber;
+  UserAOrBSignUpRequestModel.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        email = json['email'],
+        phoneNumber = json['phoneNumber'],
+        coordinates = json['coordinates'],
+        password = json['password'] ?? '12345678',
+        terms = json['terms'],
+        userRole = json['user_role'];
+
+  String name;
+  String email;
+  String password;
+  String phoneNumber;
   String? birthDate;
   String? address;
-  String? coordinates;
-  String? userRole;
-  String? terms;
+  String coordinates;
+  String userRole;
+  String terms;
   String? gender;
   String? age;
   String? about;

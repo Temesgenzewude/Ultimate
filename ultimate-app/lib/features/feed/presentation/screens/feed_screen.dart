@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/app/widget_support.dart';
+import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number.dart';
 import 'package:flutter_ultimate/common/constant/colors.dart';
 import 'package:flutter_ultimate/common/constant/images.dart';
 import 'package:flutter_ultimate/common/constant/styles.dart';
+import 'package:flutter_ultimate/common/route/routes.dart';
 import 'package:flutter_ultimate/common/widget/animation_click.dart';
 import 'package:flutter_ultimate/common/widget/app_bar_cpn.dart';
 import 'package:flutter_ultimate/common/widget/gradient_text.dart';
 import 'package:flutter_ultimate/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:flutter_ultimate/readings/main_seller_1/widget/podcast.dart';
+
+import '../../../../common/bloc/auth/authentication_bloc.dart';
+import '../../../../common/bloc/auth/b/authentication_bloc_b.dart';
+import '../../../../common/util/show_toast_message.dart';
 
 List<Map<String, dynamic>> hotToday = [
   <String, dynamic>{
@@ -192,181 +198,313 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget build(BuildContext context) {
     final width = AppWidget.getWidthScreen(context);
     final height = AppWidget.getHeightScreen(context);
-    return BlocBuilder<FeedBloc, FeedState>(
-      builder: (context, state) {
-        if (state is FeedLoadingState || state is FeedInitialState) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else if (state is FeedFailureState) {
-          return Scaffold(
-            body: Center(
-              child: Text(state.error.toString()),
-            ),
-          );
-        } else if (state is FeedsSuccessState) {
-          return Scaffold(
-            appBar: AppBarCpn(
-              left: AnimationClick(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(24),
-                    child: Image.asset(
-                      equals,
-                      width: 28,
-                      height: 28,
-                      color: grey1100,
+    return PopScope(
+      canPop: false,
+      child: BlocBuilder<FeedBloc, FeedState>(
+        builder: (context, state) {
+          if (state is FeedLoadingState || state is FeedInitialState) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else if (state is FeedFailureState) {
+            return Scaffold(
+              body: Center(
+                child: Text(state.error.toString()),
+              ),
+            );
+          } else if (state is FeedsSuccessState) {
+            return Scaffold(
+              appBar: AppBarCpn(
+                left: AnimationClick(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: Image.asset(
+                        equals,
+                        width: 28,
+                        height: 28,
+                        color: grey1100,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              center: Image.asset(logo, width: 40, height: 40),
-              right: Row(
-                children: [
-                  AnimationClick(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 24),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24),
-                        child: Image.asset(
-                          bookmark_simple,
-                          width: 28,
-                          height: 28,
-                          color: grey1100,
+                center: Image.asset(logo, width: 40, height: 40),
+                right: Row(
+                  children: [
+                    AnimationClick(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 24),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: Image.asset(
+                            bookmark_simple,
+                            width: 28,
+                            height: 28,
+                            color: grey1100,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  AnimationClick(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24),
-                        child: Image.asset(
-                          icSearch,
-                          width: 28,
-                          height: 28,
-                          color: grey1100,
+                    AnimationClick(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: Image.asset(
+                            icSearch,
+                            width: 28,
+                            height: 28,
+                            color: grey1100,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AppWidget.divider(context, color: grey200, vertical: 0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                            child: itemCoin(coin1, '5.23', '+0.18%', green)),
-                        Expanded(
-                            child: itemCoin(coin2, '1.46', '+0.1%', green)),
-                        Expanded(
-                            child:
-                                itemCoin(coin3, '0.004', '-0.8%', radicalRed1)),
-                      ],
+              body: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AppWidget.divider(context, color: grey200, vertical: 0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 16),
+                      child: Column(
+                        children: [
+                          //TODO: TO BE REMOVED LATER WHEN THE CORRECT USER FLOW IS DONE
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                if (prefManager.userType == 'User A')
+                                  Expanded(child: userALogoutBloc()),
+                                if (prefManager.userType == 'User B')
+                                  Expanded(child: userBLogoutBloc()),
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pushNamed(Routes.settingsScreen);
+                                  },
+                                  icon: const Icon(
+                                    Icons.settings,
+                                    color: grey1100,
+                                    size: 30,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushNamed(Routes.profilesLanding);
+                                    },
+                                    icon: const Icon(
+                                      Icons.people_outline,
+                                      color: grey1100,
+                                      size: 30,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child:
+                                      itemCoin(coin1, '5.23', '+0.18%', green)),
+                              Expanded(
+                                  child:
+                                      itemCoin(coin2, '1.46', '+0.1%', green)),
+                              Expanded(
+                                  child: itemCoin(
+                                      coin3, '0.004', '-0.8%', radicalRed1)),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  AppWidget.divider(context, color: grey200, vertical: 0),
-                  item('An Introduction to the Art of the Future',
-                      'February 29, 2012', reading_interest_2),
-                  const SizedBox(height: 4),
-                  item('Art Should Be Seen.', 'February 29, 2012',
-                      main_seller_2),
-                  const SizedBox(height: 24),
-                  buildTabBar(),
-                  //TODO: THIS IS CAUSING ISSUE WITH THE LAYOUT
-                  SizedBox(
-                    height: 500,
-                    child: ListView.builder(
-                      // physics: const NeverScrollableScrollPhysics(),
-                      // shrinkWrap: true,
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: AnimationClick(
-                            child: Container(
-                              height: 400,
-                              width: width - 24,
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                  color: grey200,
-                                  borderRadius: BorderRadius.circular(16)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: Image.asset(
-                                        main_seller_1,
-                                        width: width - 24,
-                                        fit: BoxFit.cover,
+                    AppWidget.divider(context, color: grey200, vertical: 0),
+                    item('An Introduction to the Art of the Future',
+                        'February 29, 2012', reading_interest_2),
+                    const SizedBox(height: 4),
+                    item('Art Should Be Seen.', 'February 29, 2012',
+                        main_seller_2),
+                    const SizedBox(height: 24),
+                    buildTabBar(),
+                    //TODO: THIS IS CAUSING ISSUE WITH THE LAYOUT
+                    SizedBox(
+                      height: state.feeds.isEmpty ? 100 : 500,
+                      child: state.feeds.isEmpty
+                          ? Text(
+                              'There is no feed right now',
+                              style: headline(color: grey1100),
+                            )
+                          : ListView.builder(
+                              // physics: const NeverScrollableScrollPhysics(),
+                              // shrinkWrap: true,
+                              itemCount: state.feeds.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: AnimationClick(
+                                    child: Container(
+                                      height: 400,
+                                      width: width - 24,
+                                      padding: const EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                          color: grey200,
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              child: Image.asset(
+                                                main_seller_1,
+                                                width: width - 24,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 16),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8,
+                                                        horizontal: 12),
+                                                decoration: BoxDecoration(
+                                                    color: primary,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12)),
+                                                child: Text(
+                                                  'Tag',
+                                                  style:
+                                                      caption1(color: grey1100),
+                                                ),
+                                              ),
+                                              Text(
+                                                state.feeds[index].newsExcerpt,
+                                                style:
+                                                    headline(color: grey1100),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                state.feeds[index]
+                                                    .dateAuthorered,
+                                                style: subhead(color: grey400),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                state.feeds[index].newsContent,
+                                                style: body(color: grey1100),
+                                              )
+                                            ],
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 16),
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 12),
-                                        decoration: BoxDecoration(
-                                            color: primary,
-                                            borderRadius:
-                                                BorderRadius.circular(12)),
-                                        child: Text(
-                                          'Tag',
-                                          style: caption1(color: grey1100),
-                                        ),
-                                      ),
-                                      Text(
-                                        state.feeds[index].newsExcerpt,
-                                        style: headline(color: grey1100),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        state.feeds[index].dateAuthorered,
-                                        style: subhead(color: grey400),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        state.feeds[index].newsContent,
-                                        style: body(color: grey1100),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
+                                );
+                              },
                             ),
-                          ),
-                        );
-                      },
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Podcast()
-                ],
+                    const SizedBox(height: 8),
+                    const Podcast()
+                  ],
+                ),
               ),
-            ),
-          );
-        } else {
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
+    );
+  }
+
+  BlocConsumer<AuthenticationBlocB, AuthenticationBState> userBLogoutBloc() {
+    return BlocConsumer<AuthenticationBlocB, AuthenticationBState>(
+      listener: (context, state) {
+        if (state is UserBLogoutSuccessState) {
+          Utils.snackBar(context, message: 'Logout Success');
+
+          Future.delayed(const Duration(seconds: 1), () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, Routes.onBoarding1, (route) => false);
+          });
+        } else if (state is UserBLogoutFailureState) {
+          Utils.snackBar(context, message: state.errorMessage);
+        }
+      },
+      builder: (context, state) {
+        if (state is UserBLogoutLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is UserBLogoutSuccessState) {
           return Container();
+        } else {
+          return AppWidget.typeButtonStartAction2(
+              context: context,
+              input: 'Logout',
+              onPressed: () {
+                BlocProvider.of<AuthenticationBlocB>(context)
+                    .add(UserBLogoutEvent());
+              },
+              bgColor: primary,
+              borderColor: primary,
+              textColor: grey1100);
+        }
+      },
+    );
+  }
+
+  BlocConsumer<AuthenticationBloc, AuthenticationState> userALogoutBloc() {
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+      listener: (context, state) {
+        if (state is LogoutSuccessState) {
+          Utils.snackBar(context, message: 'Logout Success');
+
+          Future.delayed(const Duration(seconds: 1), () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, Routes.onBoarding1, (route) => false);
+          });
+        } else if (state is LogoutFailureState) {
+          Utils.snackBar(context, message: state.errorMessage);
+        }
+      },
+      builder: (context, state) {
+        if (state is LogoutLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is LogoutSuccessState) {
+          return Container();
+        } else {
+          return AppWidget.typeButtonStartAction2(
+              context: context,
+              input: 'Logout',
+              onPressed: () {
+                BlocProvider.of<AuthenticationBloc>(context).add(LogoutEvent());
+              },
+              bgColor: primary,
+              borderColor: primary,
+              textColor: grey1100);
         }
       },
     );

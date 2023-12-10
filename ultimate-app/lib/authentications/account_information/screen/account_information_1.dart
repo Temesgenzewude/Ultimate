@@ -46,12 +46,11 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
 
   String? _selectedGender;
 
-
   // Initialize the state of the widget
   @override
   void initState() {
     // Set the last viewed page in the preference manager
-    prefManager.lastViewedPage = Routes.accountInformationOne;
+    // prefManager.lastViewedPage = Routes.accountInformationOne;
 
     // Set the initial values for the upper value, selected gender, profession, and health issue
     _upperValue = int.tryParse(prefManager.age ?? '18') ?? 18;
@@ -62,231 +61,228 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final width = AppWidget.getWidthScreen(context);
     return UnfocusClick(
-      child: PopScope(
-        canPop: false,
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          appBar: AppBarCpn(
-            left: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: AnimationClick(
-                // function: () {
-                //   Navigator.of(context).pop();
-                // },
-                child: Image.asset(
-                  logo,
-                  width: 24,
-                  height: 24,
-                  color: grey1100,
-                ),
-              ),
-            ),
-            right: AnimationClick(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 16),
-                child: Text(
-                  '1 of 4',
-                  style: headline(color: corn1),
-                ),
-              ),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBarCpn(
+          left: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: AnimationClick(
               // function: () {
-              //   Navigator.of(context).pushNamed(Routes.interest_1);
+              //   Navigator.of(context).pop();
               // },
+              child: Image.asset(
+                logo,
+                width: 24,
+                height: 24,
+                color: grey1100,
+              ),
             ),
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GradientText(
-                        'Update your personal information!',
-                        style: const TextStyle(
-                            fontSize: 28,
-                            height: 1,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'SpaceGrotesk'),
-                        gradient: LinearGradient(colors: [
-                          const Color(0xFFCFE1FD).withOpacity(0.9),
-                          const Color(0xFFFFFDE1).withOpacity(0.9),
-                        ]),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Gender',
-                        style: title3(color: grey1100),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          AnimationClick(
-                            function: () {
-                              setState(() {
-                                isMale = true;
-                                isFemale = false;
-                                _selectedGender = 'Male';
-                              });
-                            },
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  margin: const EdgeInsets.only(bottom: 8),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: isMale ? grey1100 : grey200),
-                                      borderRadius: BorderRadius.circular(60)),
-                                  child: Image.asset(
-                                    male,
-                                    width: 30,
-                                    height: 30,
-                                  ),
-                                ),
-                                Text(
-                                  'Male',
-                                  style: subhead(
-                                      color: isMale ? grey1100 : grey600),
-                                )
-                              ],
-                            ),
-                          ),
-                          AnimationClick(
-                            function: () {
-                              setState(() {
-                                isMale = false;
-                                isFemale = true;
-                                _selectedGender = 'Female';
-                              });
-                            },
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  margin: const EdgeInsets.only(bottom: 8),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: isFemale ? grey1100 : grey200),
-                                      borderRadius: BorderRadius.circular(60)),
-                                  child: Image.asset(
-                                    female,
-                                    width: 30,
-                                    height: 30,
-                                  ),
-                                ),
-                                Text(
-                                  'Female',
-                                  style: subhead(
-                                      color: isFemale ? grey1100 : grey600),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Age',
-                            style: title3(color: grey1100),
-                          ),
-                          Text(
-                            '$_upperValue Years old',
-                            style: headline(color: corn1),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      SliderTheme(
-                        data: SliderThemeData(
-                          overlayShape: SliderComponentShape.noOverlay,
-                          thumbColor: grey1100,
-                          inactiveTrackColor: grey200,
-                          activeTrackColor: primary,
-                          overlayColor: grey1100,
-                        ),
-                        child: SizedBox(
-                          width: width,
-                          child: Slider(
-                            label: '$_upperValue',
-                            min: 18,
-                            max: 100,
-                            value: _upperValue.toDouble(),
-                            onChanged: (double value) {
-                              setState(() {
-                                _upperValue = value.round();
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '$min',
-                            style: footnote(color: grey500),
-                          ),
-                          Text(
-                            '$max',
-                            style: footnote(color: grey500),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  TextFieldCpn(
-                    controller: professionCtl,
-                    focusNode: professionFn,
-                    labelText: 'Profession',
-                    type: 'profession',
-                  ),
-                  const SizedBox(height: 16),
-                  TextFieldCpn(
-                    controller: healthIssueCtl,
-                    focusNode: healthIssueFn,
-                    labelText: 'Health Issue',
-                    type: 'health issue',
-                  ),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  AppWidget.typeButtonStartAction2(
-                      context: context,
-                      input: 'NEXT',
-                      onPressed: () {
-                        _validateForm();
-                      },
-                      bgColor: primary,
-                      borderColor: primary,
-                      textColor: grey1100)
-                ],
+          right: AnimationClick(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Text(
+                '1 of 4',
+                style: headline(color: corn1),
               ),
+            ),
+            // function: () {
+            //   Navigator.of(context).pushNamed(Routes.interest_1);
+            // },
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GradientText(
+                      // 'Update your personal information!',
+                      'Enter your personal information!',
+                      style: const TextStyle(
+                          fontSize: 28,
+                          height: 1,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'SpaceGrotesk'),
+                      gradient: LinearGradient(colors: [
+                        const Color(0xFFCFE1FD).withOpacity(0.9),
+                        const Color(0xFFFFFDE1).withOpacity(0.9),
+                      ]),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Gender',
+                      style: title3(color: grey1100),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        AnimationClick(
+                          function: () {
+                            setState(() {
+                              isMale = true;
+                              isFemale = false;
+                              _selectedGender = 'Male';
+                            });
+                          },
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(4),
+                                margin: const EdgeInsets.only(bottom: 8),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: isMale ? grey1100 : grey200),
+                                    borderRadius: BorderRadius.circular(60)),
+                                child: Image.asset(
+                                  male,
+                                  width: 30,
+                                  height: 30,
+                                ),
+                              ),
+                              Text(
+                                'Male',
+                                style:
+                                    subhead(color: isMale ? grey1100 : grey600),
+                              )
+                            ],
+                          ),
+                        ),
+                        AnimationClick(
+                          function: () {
+                            setState(() {
+                              isMale = false;
+                              isFemale = true;
+                              _selectedGender = 'Female';
+                            });
+                          },
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(4),
+                                margin: const EdgeInsets.only(bottom: 8),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: isFemale ? grey1100 : grey200),
+                                    borderRadius: BorderRadius.circular(60)),
+                                child: Image.asset(
+                                  female,
+                                  width: 30,
+                                  height: 30,
+                                ),
+                              ),
+                              Text(
+                                'Female',
+                                style: subhead(
+                                    color: isFemale ? grey1100 : grey600),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Age',
+                          style: title3(color: grey1100),
+                        ),
+                        Text(
+                          '$_upperValue Years old',
+                          style: headline(color: corn1),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    SliderTheme(
+                      data: SliderThemeData(
+                        overlayShape: SliderComponentShape.noOverlay,
+                        thumbColor: grey1100,
+                        inactiveTrackColor: grey200,
+                        activeTrackColor: primary,
+                        overlayColor: grey1100,
+                      ),
+                      child: SizedBox(
+                        width: width,
+                        child: Slider(
+                          label: '$_upperValue',
+                          min: 18,
+                          max: 100,
+                          value: _upperValue.toDouble(),
+                          onChanged: (double value) {
+                            setState(() {
+                              _upperValue = value.round();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '$min',
+                          style: footnote(color: grey500),
+                        ),
+                        Text(
+                          '$max',
+                          style: footnote(color: grey500),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                TextFieldCpn(
+                  controller: professionCtl,
+                  focusNode: professionFn,
+                  labelText: 'Profession',
+                  type: 'profession',
+                ),
+                const SizedBox(height: 16),
+                TextFieldCpn(
+                  controller: healthIssueCtl,
+                  focusNode: healthIssueFn,
+                  labelText: 'Health Issue',
+                  type: 'health issue',
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                AppWidget.typeButtonStartAction2(
+                    context: context,
+                    input: 'NEXT',
+                    onPressed: () {
+                      _validateForm();
+                    },
+                    bgColor: primary,
+                    borderColor: primary,
+                    textColor: grey1100)
+              ],
             ),
           ),
         ),
@@ -304,13 +300,15 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
 
     // Check if profession is entered
     if (professionCtl.text.isEmpty) {
-      Utils.flutterToast('Profession is required. Please enter your profession!');
+      Utils.flutterToast(
+          'Profession is required. Please enter your profession!');
       return;
     }
 
     // Check if health issue is entered
     if (healthIssueCtl.text.isEmpty) {
-      Utils.flutterToast('Health issue is required. Please enter your health issue!');
+      Utils.flutterToast(
+          'Health issue is required. Please enter your health issue!');
       return;
     }
 
@@ -326,5 +324,3 @@ class _AccountInformationOneState extends State<AccountInformationOne> {
     });
   }
 }
-
-

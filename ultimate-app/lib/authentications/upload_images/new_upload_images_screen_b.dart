@@ -12,8 +12,11 @@ import '../../../app/widget_support.dart';
 import '../../../common/widget/animation_click.dart';
 import '../../common/bloc/upload_image/upload_images_b/upload_images_bloc.dart';
 import '../../common/constant/colors.dart';
+import '../../common/constant/images.dart';
+import '../../common/constant/styles.dart';
 import '../../common/route/routes.dart';
 import '../../common/util/show_toast_message.dart';
+import '../../common/widget/app_bar_cpn.dart';
 import '../../dependency_indjection.dart';
 import '../../sharedPreferences.dart';
 import 'widgets/new_upload_image.dart';
@@ -51,14 +54,13 @@ class _NewUploadImageBScreenState extends State<NewUploadImageBScreen> {
 
   @override
   void initState() {
-    prefManager.lastViewedPage = Routes.newUploadImagesB;
+    // prefManager.lastViewedPage = Routes.newUploadImagesB;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final width = AppWidget.getWidthScreen(context);
-
 
     // Validate the selected images
     void _validateSelectedImages() {
@@ -68,19 +70,51 @@ class _NewUploadImageBScreenState extends State<NewUploadImageBScreen> {
             .add(UserBUploadImagesEvent(images: imageFileList));
       } else {
         // Show a toast message if the number of selected images is invalid
-        Utils.flutterToast('Please select at least 1 image and maximum 6 images');
+        Utils.flutterToast(
+            'Please select at least 1 image and maximum 6 images');
       }
     }
-
 
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: AppWidget.createSimpleAppBar(
-            context: context,
-            hasLeading: false,
-            hasPop: true,
-            title: 'Upload Images'),
+        appBar: AppBarCpn(
+          left: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: AnimationClick(
+              // function: () {
+              //   Navigator.of(context).pop();
+              // },
+              child: Image.asset(
+                logo,
+                width: 24,
+                height: 24,
+                color: grey1100,
+              ),
+            ),
+          ),
+          center: Text(
+            'Upload Images',
+            style: headline(color: grey1100),
+          ),
+          right: AnimationClick(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Text(
+                'Skip',
+                style: headline(color: corn1),
+              ),
+            ),
+            function: () {
+              Navigator.of(context).pushNamed(Routes.feedPage);
+            },
+          ),
+        ),
+        // appBar: AppWidget.createSimpleAppBar(
+        //     context: context,
+        //     hasLeading: false,
+        //     hasPop: true,
+        //     title: 'Upload Images'),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -148,7 +182,7 @@ class _NewUploadImageBScreenState extends State<NewUploadImageBScreen> {
                   // Show success message and navigate to account information page
                   Utils.flutterToast('Images Uploaded successfully!');
                   Future.delayed(const Duration(seconds: 3), () {
-                    Navigator.of(context).pushReplacementNamed(Routes.accountInformationOne);
+                    Navigator.of(context).pushReplacementNamed(Routes.feedPage);
                   });
                 } else if (state is UserBUploadImagesFailureState) {
                   // Show error message if image upload fails
@@ -160,7 +194,8 @@ class _NewUploadImageBScreenState extends State<NewUploadImageBScreen> {
                   // Show loading indicator while uploading images
                   return const Center(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                       child: CircularProgressIndicator(),
                     ),
                   );
@@ -170,19 +205,22 @@ class _NewUploadImageBScreenState extends State<NewUploadImageBScreen> {
                 } else {
                   // Show upload button if no images are selected or maximum limit is reached
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 30),
                     child: AppWidget.typeButtonStartAction2(
                       context: context,
                       input: 'Upload Images',
                       onPressed: () {
                         _validateSelectedImages();
                       },
-                      bgColor: imageFileList.isNotEmpty && imageFileList.length <= 6
-                          ? primary
-                          : Colors.grey,
-                      borderColor: imageFileList.isNotEmpty && imageFileList.length <= 6
-                          ? primary
-                          : Colors.grey,
+                      bgColor:
+                          imageFileList.isNotEmpty && imageFileList.length <= 6
+                              ? primary
+                              : Colors.grey,
+                      borderColor:
+                          imageFileList.isNotEmpty && imageFileList.length <= 6
+                              ? primary
+                              : Colors.grey,
                       textColor: grey1100,
                     ),
                   );

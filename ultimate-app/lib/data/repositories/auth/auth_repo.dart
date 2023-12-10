@@ -6,6 +6,7 @@ import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
 import 'package:flutter_ultimate/data/models/save_user_interests_response_model.dart';
 import 'package:flutter_ultimate/data/models/save_user_interests_request_model.dart';
+import 'package:flutter_ultimate/data/models/user_sign_up_request_model.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
 import 'package:image_picker/image_picker.dart';
@@ -65,7 +66,8 @@ class AuthenticationRepository {
     }
   }
 
-  Future<SingUpResponseModel> signUpUserA(UserAModel newUser) async {
+  Future<SingUpResponseModel> signUpUserA(
+      UserAOrBSignUpRequestModel newUser) async {
     if (await internetConnectionChecker.hasConnection) {
       try {
         final response = await remoteDataSource.signUpUserA(newUser);
@@ -146,7 +148,7 @@ class AuthenticationRepository {
     }
   }
 
-  Future<UserBSingUpResponse> signUpUserB(UserBModel newUser) async {
+  Future<UserBSingUpResponse> signUpUserB(UserAOrBSignUpRequestModel newUser) async {
     // try {
     //   return await remoteDataSource.signUpUserB(newUser);
     // } catch (e) {

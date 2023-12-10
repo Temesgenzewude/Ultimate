@@ -51,7 +51,7 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
   @override
   void initState() {
     // Set the last viewed page to accountInformationOne
-    prefManager.lastViewedPage = Routes.accountInformationOne;
+    // prefManager.lastViewedPage = Routes.accountInformationOne;
 
     // Initialize text controllers with saved values
     birthdayCtl.text = prefManager.birthday ?? '';
@@ -110,7 +110,8 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     GradientText(
-                      'Update your personal information!',
+                      // 'Update your personal information!',
+                       'Enter your personal information!',
                       style: const TextStyle(
                           fontSize: 28,
                           height: 1,

@@ -17,13 +17,14 @@ import '../../models/save_user_interests_request_model.dart';
 import '../../models/save_user_interests_response_model.dart';
 import '../../models/social_login_request_model.dart';
 import '../../models/social_login_response_model.dart';
+import '../../models/user_sign_up_request_model.dart';
 
 final prefManager = sl<PrefManager>();
 
 abstract class AuthenticationRemoteDataSource {
-  Future<SingUpResponseModel> signUpUserA(UserAModel newuser);
+  Future<SingUpResponseModel> signUpUserA(UserAOrBSignUpRequestModel newuser);
   Future<LoginResponseModel> signInUserA(UserALoginRequestModel user);
-  Future<UserBSingUpResponse> signUpUserB(UserBModel newuser);
+  Future<UserBSingUpResponse> signUpUserB(UserAOrBSignUpRequestModel newuser);
   Future<LoginResponseModel> signInUserB(UserBLoginRequestModel user);
   Future<List<dynamic>> uploadImagesA(List<XFile?> files);
   Future<List<dynamic>> uploadImagesB(List<XFile?> files);
@@ -94,10 +95,13 @@ class AuthenticationRemoteDataSourceImpl
   // Otherwise, it throws an UnknownException with a default error message.
   // It also handles SocketException and TimeoutException by throwing appropriate exceptions.
   @override
-  Future<SingUpResponseModel> signUpUserA(UserAModel user) async {
+  Future<SingUpResponseModel> signUpUserA(
+      UserAOrBSignUpRequestModel user) async {
     final String url = AppUrl.userASignUpEndPoint;
 
     try {
+      user.coordinates = '31.536267224296935, 74.32805961092151';
+
       final body = user.toJson();
       print('---- sign up user a body: $body');
 
@@ -138,8 +142,6 @@ class AuthenticationRemoteDataSourceImpl
 
     print('user b sign in request body: $jsonBody');
 
-   
-
     try {
       final body = user.toJson();
       final response = await client.post(
@@ -174,9 +176,12 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<UserBSingUpResponse> signUpUserB(UserBModel user) async {
+  Future<UserBSingUpResponse> signUpUserB(
+      UserAOrBSignUpRequestModel user) async {
     final String url = AppUrl.userBSignUpEndPoint;
-    user.location = '100.536267224296935,34.32805961092151';
+    
+    user.coordinates = '31.536267224296935, 74.32805961092151';
+
     try {
       final body = user.toJson();
       print('---- sign up user b body: $body');
@@ -221,7 +226,7 @@ class AuthenticationRemoteDataSourceImpl
       final response = await client.post(Uri.parse(AppUrl.sendOTPEndPoint),
           body: jsonEncode(jsonbody),
           headers: {
-            'Authorization': prefManager.token ?? prefManager.testToken ?? '',
+            'Authorization': prefManager.token ?? prefManager.kTokenB,
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 20));
 
@@ -290,7 +295,7 @@ class AuthenticationRemoteDataSourceImpl
       final response = await client.post(Uri.parse(AppUrl.verifyOTPEndPointA),
           body: jsonEncode(jsonbody),
           headers: {
-            'Authorization': prefManager.token ?? prefManager.testToken ?? '',
+            'Authorization': prefManager.token ?? prefManager.kTokenA,
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 20));
       if (response.statusCode == 200) {
@@ -322,7 +327,7 @@ class AuthenticationRemoteDataSourceImpl
       final response = await client.post(Uri.parse(AppUrl.sendOTPEndPointA),
           body: jsonEncode(jsonbody),
           headers: {
-            'Authorization': prefManager.token ?? prefManager.testToken ?? '',
+            'Authorization': prefManager.token ?? prefManager.kTokenA,
             'Content-Type': 'application/json',
           }).timeout(const Duration(seconds: 20));
 

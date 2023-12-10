@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/bloc_observer.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/feed_injection.dart' as feed_injection;
 import 'package:flutter_ultimate/profile_injection.dart' as profile_injection;
@@ -16,6 +18,8 @@ Future<void> main() async {
   initPersistedSharePrefManager(persistedSharedPrefs);
   await profile_injection.profileInjectionInit();
   await feed_injection.feedInjectionInit();
+
+  Bloc.observer = SimpleBlocObserver();
 
   runApp(const MyApp());
 }

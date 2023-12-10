@@ -62,7 +62,7 @@ class _VerifyState extends State<Verify> {
     startTimer();
 
     phoneNumber = prefManager.phone ?? '';
-    prefManager.lastViewedPage = Routes.verify;
+    // prefManager.lastViewedPage = Routes.verify;
     super.initState();
   }
 
@@ -130,12 +130,14 @@ class _VerifyState extends State<Verify> {
                           if (prefManager.userType == 'User A') {
                             // Navigate to newUploadImages screen for User A
                             Future.delayed(const Duration(seconds: 2), () {
-                              Navigator.pushReplacementNamed(context, Routes.newUploadImages);
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.newUploadImages);
                             });
                           } else {
                             // Navigate to newUploadImagesB screen for User B
                             Future.delayed(const Duration(seconds: 2), () {
-                              Navigator.pushReplacementNamed(context, Routes.newUploadImagesB);
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.newUploadImagesB);
                             });
                           }
                         } else if (state is OtpVerifiedFailure) {
@@ -146,7 +148,8 @@ class _VerifyState extends State<Verify> {
                         if (state is OtpVerifiedLoading) {
                           // Show loading indicator while verifying OTP
                           return const Center(
-                            child: Stack(children: [CircularProgressIndicator()]),
+                            child:
+                                Stack(children: [CircularProgressIndicator()]),
                           );
                         } else {
                           return Container();

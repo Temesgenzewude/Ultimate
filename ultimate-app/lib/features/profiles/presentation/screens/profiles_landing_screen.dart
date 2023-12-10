@@ -48,6 +48,7 @@ class _ProfileLandingState extends State<ProfileLanding> {
           ),
         );
       } else if (state is UserBProfilesSuccessState) {
+        print('.........' + state.userBProfiles.length.toString());
         return Scaffold(
           appBar: AppBarCpn(
             left: Row(
@@ -57,6 +58,16 @@ class _ProfileLandingState extends State<ProfileLanding> {
                   padding: const EdgeInsets.only(left: 16),
                   child: Row(
                     children: [
+                      AnimationClick(
+                        function: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Image.asset(
+                          careLeft,
+                          width: 32,
+                          height: 32,
+                        ),
+                      ),
                       AnimationClick(
                         child: Container(
                           padding: const EdgeInsets.all(8),

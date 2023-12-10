@@ -211,6 +211,7 @@ import 'package:flutter_ultimate/app/widget_support.dart';
 import 'package:flutter_ultimate/common/constant/colors.dart';
 import 'package:flutter_ultimate/common/constant/images.dart';
 import 'package:flutter_ultimate/common/constant/styles.dart';
+import 'package:flutter_ultimate/common/route/routes.dart';
 import 'package:flutter_ultimate/common/widget/animation_click.dart';
 import 'package:flutter_ultimate/features/profiles/domain/entities/user_b_profile_entity.dart';
 
@@ -266,6 +267,10 @@ class Yesterday extends StatelessWidget {
       // itemCount: items.length,
       separatorBuilder: (context, index) => const SizedBox(height: 4),
       itemBuilder: (context, index) => AnimationClick(
+        function: () {
+          Navigator.of(context)
+              .pushNamed(Routes.profile, arguments: userBProfiels[index]);
+        },
         child: Stack(
           children: [
             Container(

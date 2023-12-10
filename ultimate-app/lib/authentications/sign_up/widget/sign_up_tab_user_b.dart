@@ -41,7 +41,7 @@ class _SignUpTabBState extends State<SignUpTabB> {
   @override
   void initState() {
     // Update the initial page in the shared preferences
-    prefManager.lastViewedPage = Routes.signUpB;
+    // prefManager.lastViewedPage = Routes.signUpB;
 
     // Set the text of the username field to the saved email in shared preferences
     usernameCtl.text = prefManager.email ?? '';
