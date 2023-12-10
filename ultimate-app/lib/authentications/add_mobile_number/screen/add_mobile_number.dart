@@ -35,12 +35,7 @@ double latitude = double.tryParse(prefManager.latitude ?? '0.0') ?? 0.0;
 double longitude = double.tryParse(prefManager.longitude ?? '0.0') ?? 0.0;
 
 class _AddMobileNumberState extends State<AddMobileNumber> {
-  void _submitForm(
-      {required String name,
-      required String email,
-      required String address,
-      required String password,
-      required String birthDate}) {
+  void _validatePhoneNumber() {
     if (phoneCtl.text.isEmpty) {
       Utils.flutterToast('Please enter phone number');
       return;
@@ -53,41 +48,48 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
           'Invalid Phone number:Please enter a valid phone number!');
       return;
     }
-
+//  If all validation passes
+// Save the phone number in the shared preferences
     prefManager.phone = phoneNumber;
 
+// Navigate to the account information one page
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pushNamed(Routes.accountInformationOne,
+          arguments: '${phoneCtl.text}');
+    });
+
     //  If all validation passes
-    final UserAModel user = UserAModel(
-      email: email,
-      password: password,
-      name: name,
-      address: 'Test Address',
-      phoneNumber: phoneNumber,
-      coordinates: '10,10',
-      birthDate: '12-12-2000',
-    );
+    // final UserAModel user = UserAModel(
+    //   email: email,
+    //   password: password,
+    //   name: name,
+    //   address: 'Test Address',
+    //   phoneNumber: phoneNumber,
+    //   coordinates: '10,10',
+    //   birthDate: '12-12-2000',
+    // );
 
-    final UserBModel userB = UserBModel(
-        email: email,
-        password: password,
-        name: name,
-        phoneNumber: phoneNumber,
-        location: '10,10',
-        birthDate: '10-10-2000',
-        about: '',
-        terms: true,
-        age: '21');
+    // final UserBModel userB = UserBModel(
+    //     email: email,
+    //     password: password,
+    //     name: name,
+    //     phoneNumber: phoneNumber,
+    //     location: '10,10',
+    //     birthDate: '10-10-2000',
+    //     about: '',
+    //     terms: true,
+    //     age: '21');
 
-    print(prefManager.userType);
-    if (prefManager.userType == 'User B') {
-      BlocProvider.of<AuthenticationBlocB>(context).add(
-        UserBSignUpEvent(newUser: userB),
-      );
-    } else {
-      BlocProvider.of<AuthenticationBloc>(context).add(
-        UserASignUpEvent(newUser: user),
-      );
-    }
+    // print(prefManager.userType);
+    // if (prefManager.userType == 'User B') {
+    //   BlocProvider.of<AuthenticationBlocB>(context).add(
+    //     UserBSignUpEvent(newUser: userB),
+    //   );
+    // } else {
+    //   BlocProvider.of<AuthenticationBloc>(context).add(
+    //     UserASignUpEvent(newUser: user),
+    //   );
+    // }
   }
 
   Widget getAuthWidget() {
@@ -110,7 +112,7 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
 
   @override
   void initState() {
-    prefManager.lastViewedPage = Routes.addMobileNumber;
+    // prefManager.lastViewedPage = Routes.addMobileNumber;
 
     phoneCtl.text = prefManager.phone ?? '';
     super.initState();
@@ -247,39 +249,57 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
 
                     const SizedBox(height: 32),
 
-                    getAuthWidget(),
-                    BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                      builder: (context, state) {
-                        if (state is AuthenticationLoadingState) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (state is AuthenticationSuccessState) {
-                          return Container();
-                        } else {
-                          return AppWidget.typeButtonStartAction(
-                              context: context,
-                              input: 'SIGN UP NOW',
-                              onPressed: () {
-                                _submitForm(
-                                    name: name,
-                                    email: email,
-                                    address: address,
-                                    password: password,
-                                    birthDate: birthday);
-                                // if (prefManager.userType == 'User A') {
-                                //   context.read<OtpBloc>().add(OTPSendUserA());
-                                // } else {
-                                //   context.read<OtpBloc>().add(OtpSent());
-                                // }
-                              },
-                              bgColor: primary,
-                              icon: icArrowRight,
-                              colorAsset: grey1100,
-                              borderColor: primary,
-                              textColor: grey1100);
-                        }
-                      },
-                    ),
+                    // getAuthWidget(),
+                    AppWidget.typeButtonStartAction(
+                        context: context,
+                        input: 'CONTINUE',
+                        onPressed: () {
+                          _validatePhoneNumber();
+                          // if (prefManager.userType == 'User A') {
+                          //   context.read<OtpBloc>().add(OTPSendUserA());
+                          // } else {
+                          //   context.read<OtpBloc>().add(OtpSent());
+                          // }
+                        },
+                        bgColor: primary,
+                        icon: icArrowRight,
+                        colorAsset: grey1100,
+                        borderColor: primary,
+                        textColor: grey1100),
+
+                    /*  MOVE SIGN UP BLOC TO THE LAST PAGE OF THE ACCOUNT INFORMATION PAGES */
+                    // BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                    //   builder: (context, state) {
+                    //     if (state is AuthenticationLoadingState) {
+                    //       return const Center(
+                    //           child: CircularProgressIndicator());
+                    //     } else if (state is AuthenticationSuccessState) {
+                    //       return Container();
+                    //     } else {
+                    //       return AppWidget.typeButtonStartAction(
+                    //           context: context,
+                    //           input: 'SIGN UP NOW',
+                    //           onPressed: () {
+                    //             _submitForm(
+                    //                 name: name,
+                    //                 email: email,
+                    //                 address: address,
+                    //                 password: password,
+                    //                 birthDate: birthday);
+                    //             // if (prefManager.userType == 'User A') {
+                    //             //   context.read<OtpBloc>().add(OTPSendUserA());
+                    //             // } else {
+                    //             //   context.read<OtpBloc>().add(OtpSent());
+                    //             // }
+                    //           },
+                    //           bgColor: primary,
+                    //           icon: icArrowRight,
+                    //           colorAsset: grey1100,
+                    //           borderColor: primary,
+                    //           textColor: grey1100);
+                    //     }
+                    //   },
+                    // ),
                     // AnimationClick(
                     //   child: Align(
                     //     alignment: Alignment.center,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ultimate/common/constant/colors.dart';
 import 'package:flutter_ultimate/common/constant/images.dart';
 import 'package:flutter_ultimate/common/constant/styles.dart';
+import 'package:flutter_ultimate/common/route/routes.dart';
 import 'package:flutter_ultimate/common/widget/animation_click.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -75,6 +76,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: AnimationClick(
+          function: () {
+            Navigator.of(context).pop();
+          },
+          child: Image.asset(
+            careLeft,
+            width: 32,
+            height: 32,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,32 +166,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Expanded(
                       child: Column(
                         children: [
-                          item(
-                            'Message notification',
-                            grey300,
-                            bellRinging,
-                            isSwitch: true,
-                            valueUsed: 'messageMode',
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 24.0),
-                            child: item(
-                              'News notification',
-                              grey300,
-                              bellRinging,
-                              isSwitch: true,
-                              valueUsed: 'newsMode',
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(Routes.notificationSetting);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 26.0),
+                              child: item(
+                                'Notifications Settings',
+                                grey300,
+                                gearSix,
+                                onToggle: (value) {},
+                                valueUsed: 'null',
+                                isSwitch: false,
+                              ),
                             ),
                           ),
-                          item(
-                            'All notification',
-                            grey300,
-                            bellRinging,
-                            isSwitch: true,
-                            valueUsed: 'otherMode',
-                          ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 24),
+                            padding: const EdgeInsets.symmetric(vertical: 17),
                             child: item(
                               'Gerenal Settings',
                               grey300,

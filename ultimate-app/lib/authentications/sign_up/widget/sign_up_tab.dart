@@ -65,7 +65,7 @@ class _SignUpTabState extends State<SignUpTab> with FormValidator {
   void initState() {
     // update the initial page in the shared preferences
 
-    prefManager.lastViewedPage = Routes.signUp;
+    // prefManager.lastViewedPage = Routes.signUp;
     usernameCtl.text = prefManager.email ?? '';
     nameCtl.text = prefManager.name ?? '';
 

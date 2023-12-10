@@ -11,6 +11,7 @@ import '../../../common/constant/images.dart';
 import '../../../common/constant/styles.dart';
 import '../../../common/route/routes.dart';
 import '../../../common/widget/animation_click.dart';
+import '../../../common/widget/app_bar_cpn.dart';
 import '../../../common/widget/gradient_text.dart';
 
 class Interest1 extends StatefulWidget {
@@ -134,7 +135,7 @@ class _Interest1State extends State<Interest1> {
   List<Map<String, dynamic>> itemsSelected = [];
   @override
   void initState() {
-    prefManager.lastViewedPage = Routes.interest_1;
+    // prefManager.lastViewedPage = Routes.interest_1;
     super.initState();
   }
 
@@ -145,6 +146,20 @@ class _Interest1State extends State<Interest1> {
     return PopScope(
       canPop: false,
       child: Scaffold(
+        appBar: AppBarCpn(
+          right: AnimationClick(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Text(
+                'Skip',
+                style: headline(color: corn1),
+              ),
+            ),
+            function: () {
+              Navigator.of(context).pushNamed(Routes.feedPage);
+            },
+          ),
+        ),
         bottomNavigationBar: Padding(
           padding:
               const EdgeInsets.only(left: 16, right: 16, bottom: 24, top: 8),
@@ -166,7 +181,7 @@ class _Interest1State extends State<Interest1> {
                     input: 'CONTINUE TO FEEDS',
                     onPressed: () {
                       Future.delayed(const Duration(seconds: 2), () {
-                        Navigator.pushNamed(context, Routes.feed);
+                        Navigator.pushNamed(context, Routes.feedPage);
                       });
                     },
                     bgColor: primary,

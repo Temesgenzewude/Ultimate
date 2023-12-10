@@ -87,49 +87,7 @@ class FeedUserB extends StatelessWidget {
               children: [
                 Expanded(
                   child:
-                      BlocConsumer<AuthenticationBlocB, AuthenticationBState>(
-                    listener: (context, state) {
-                      if (state is UserBLogoutSuccessState) {
-                        Utils.snackBar(context, message: 'Logout Success');
-
-                        Future.delayed(const Duration(seconds: 1), () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, Routes.onBoarding1, (route) => false);
-                        });
-                      } else if (state is UserBLogoutFailureState) {
-                        Utils.snackBar(context, message: state.errorMessage);
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is UserBLogoutLoadingState) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (state is UserBLogoutFailureState) {
-                        return AppWidget.typeButtonStartAction2(
-                            context: context,
-                            input: 'Logout',
-                            onPressed: () {
-                              BlocProvider.of<AuthenticationBloc>(context)
-                                  .add(LogoutEvent());
-                            },
-                            bgColor: primary,
-                            borderColor: primary,
-                            textColor: grey1100);
-                      } else if (state is UserBLogoutSuccessState) {
-                        return Container();
-                      } else {
-                        return AppWidget.typeButtonStartAction2(
-                            context: context,
-                            input: 'Logout',
-                            onPressed: () {
-                              BlocProvider.of<AuthenticationBlocB>(context)
-                                  .add(UserBLogoutEvent());
-                            },
-                            bgColor: primary,
-                            borderColor: primary,
-                            textColor: grey1100);
-                      }
-                    },
-                  ),
+                      userBLogoutBloc(),
                 ),
               ],
             ),
@@ -148,6 +106,41 @@ class FeedUserB extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  BlocConsumer<AuthenticationBlocB, AuthenticationBState> userBLogoutBloc() {
+    return BlocConsumer<AuthenticationBlocB, AuthenticationBState>(
+                  listener: (context, state) {
+                    if (state is UserBLogoutSuccessState) {
+                      Utils.snackBar(context, message: 'Logout Success');
+
+                      Future.delayed(const Duration(seconds: 1), () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, Routes.onBoarding1, (route) => false);
+                      });
+                    } else if (state is UserBLogoutFailureState) {
+                      Utils.snackBar(context, message: state.errorMessage);
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is UserBLogoutLoadingState) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is UserBLogoutSuccessState) {
+                      return Container();
+                    } else {
+                      return AppWidget.typeButtonStartAction2(
+                          context: context,
+                          input: 'Logout',
+                          onPressed: () {
+                            BlocProvider.of<AuthenticationBlocB>(context)
+                                .add(UserBLogoutEvent());
+                          },
+                          bgColor: primary,
+                          borderColor: primary,
+                          textColor: grey1100);
+                    }
+                  },
+                );
   }
 }
 

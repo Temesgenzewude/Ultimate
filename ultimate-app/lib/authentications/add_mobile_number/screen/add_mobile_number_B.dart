@@ -35,11 +35,7 @@ double latitude = double.tryParse(prefManager.latitude ?? '0.0') ?? 0.0;
 double longitude = double.tryParse(prefManager.longitude ?? '0.0') ?? 0.0;
 
 class _AddMobileNumberBState extends State<AddMobileNumberB> {
-  void _submitForm({
-    required String name,
-    required String email,
-    required String password,
-  }) {
+  void _validatePhoneNumber() {
     if (phoneCtl.text.isEmpty) {
       Utils.flutterToast('Please enter phone number');
       return;
@@ -52,41 +48,48 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
           'Invalid Phone number:Please enter a valid phone number!');
       return;
     }
-
+//  If all validation passes
+    // Save the phone number in the shared preferences
     prefManager.phone = phoneNumber;
 
-    //  If all validation passes
-    final UserAModel user = UserAModel(
-      email: email,
-      password: password,
-      name: name,
-      address: address,
-      phoneNumber: phoneNumber,
-      coordinates: '10,10',
-      birthDate: '12-12-2015',
-    );
+// Navigate to the account information one page
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pushNamed(Routes.accountInformationOne,
+          arguments: '${phoneCtl.text}');
+    });
 
-    final UserBModel userB = UserBModel(
-        email: email,
-        password: password,
-        name: name,
-        phoneNumber: phoneNumber,
-        location: '10,10',
-        birthDate: '12-12-2015',
-        about: 'About me',
-        terms: true,
-        age: '21');
+    // //  If all validation passes
+    // final UserAModel user = UserAModel(
+    //   email: email,
+    //   password: password,
+    //   name: name,
+    //   address: address,
+    //   phoneNumber: phoneNumber,
+    //   coordinates: '10,10',
+    //   birthDate: '12-12-2015',
+    // );
 
-    print(prefManager.userType);
-    if (prefManager.userType == 'User B') {
-      BlocProvider.of<AuthenticationBlocB>(context).add(
-        UserBSignUpEvent(newUser: userB),
-      );
-    } else {
-      BlocProvider.of<AuthenticationBloc>(context).add(
-        UserASignUpEvent(newUser: user),
-      );
-    }
+    // final UserBModel userB = UserBModel(
+    //     email: email,
+    //     password: password,
+    //     name: name,
+    //     phoneNumber: phoneNumber,
+    //     location: '10,10',
+    //     birthDate: '12-12-2015',
+    //     about: 'About me',
+    //     terms: true,
+    //     age: '21');
+
+    // print(prefManager.userType);
+    // if (prefManager.userType == 'User B') {
+    //   BlocProvider.of<AuthenticationBlocB>(context).add(
+    //     UserBSignUpEvent(newUser: userB),
+    //   );
+    // } else {
+    //   BlocProvider.of<AuthenticationBloc>(context).add(
+    //     UserASignUpEvent(newUser: user),
+    //   );
+    // }
   }
 
   Widget getAuthWidget() {
@@ -116,7 +119,7 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
   @override
   void initState() {
     // Set the last viewed page in the preference manager
-    prefManager.lastViewedPage = Routes.addMobileNumberB;
+    // prefManager.lastViewedPage = Routes.addMobileNumberB;
 
     // Set the text of the phone controller to the saved phone number in the preference manager
     phoneCtl.text = prefManager.phone ?? '';
@@ -257,40 +260,54 @@ class _AddMobileNumberBState extends State<AddMobileNumberB> {
                       hintText: '+2519 123 456 7890',
                     ),
 
-                    getAuthWidget(),
+                    // getAuthWidget(),
                     const SizedBox(height: 32),
+                    AppWidget.typeButtonStartAction(
+                        context: context,
+                        input: 'CONTINUE',
+                        onPressed: () {
+                          _validatePhoneNumber();
+                          // if (prefManager.userType == 'User A') {
+                          //   context.read<OtpBloc>().add(OTPSendUserA());
+                          // } else {
+                          //   context.read<OtpBloc>().add(OtpSent());
+                          // }
+                        },
+                        bgColor: primary,
+                        icon: icArrowRight,
+                        colorAsset: grey1100,
+                        borderColor: primary,
+                        textColor: grey1100),
 
-                    BlocBuilder<AuthenticationBlocB, AuthenticationBState>(
-                      builder: (context, state) {
-                        if (state is AuthenticationLoadingStateB) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (state is AuthenticationSuccessStateB) {
-                          return Container();
-                        } else {
-                          return AppWidget.typeButtonStartAction(
-                              context: context,
-                              input: 'SIGN UP NOW',
-                              onPressed: () {
-                                _submitForm(
-                                  name: name,
-                                  email: email,
-                                  password: password,
-                                );
-                                // if (prefManager.userType == 'User A') {
-                                //   context.read<OtpBloc>().add(OTPSendUserA());
-                                // } else {
-                                //   context.read<OtpBloc>().add(OtpSent());
-                                // }
-                              },
-                              bgColor: primary,
-                              icon: icArrowRight,
-                              colorAsset: grey1100,
-                              borderColor: primary,
-                              textColor: grey1100);
-                        }
-                      },
-                    ),
+                    /* MOVE THE AUTHENTICATION BLOC TO THE LAST PAGE OF THE ACCOUNT INFORMATION PAGES*/
+
+                    // BlocBuilder<AuthenticationBlocB, AuthenticationBState>(
+                    //   builder: (context, state) {
+                    //     if (state is AuthenticationLoadingStateB) {
+                    //       return const Center(
+                    //           child: CircularProgressIndicator());
+                    //     } else if (state is AuthenticationSuccessStateB) {
+                    //       return Container();
+                    //     } else {
+                    //       return AppWidget.typeButtonStartAction(
+                    //           context: context,
+                    //           input: 'SIGN UP NOW',
+                    //           onPressed: () {
+                    //             _validatePhoneNumber();
+                    //             // if (prefManager.userType == 'User A') {
+                    //             //   context.read<OtpBloc>().add(OTPSendUserA());
+                    //             // } else {
+                    //             //   context.read<OtpBloc>().add(OtpSent());
+                    //             // }
+                    //           },
+                    //           bgColor: primary,
+                    //           icon: icArrowRight,
+                    //           colorAsset: grey1100,
+                    //           borderColor: primary,
+                    //           textColor: grey1100);
+                    //     }
+                    //   },
+                    // ),
                     // AnimationClick(
                     //   child: Align(
                     //     alignment: Alignment.center,

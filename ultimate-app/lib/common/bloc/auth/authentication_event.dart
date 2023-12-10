@@ -15,7 +15,7 @@ class UserASignInEvent extends AuthenticationEvent {
 // Define an event for user A sign up
 class UserASignUpEvent extends AuthenticationEvent {
   UserASignUpEvent({required this.newUser});
-  final UserAModel newUser;
+  final UserAOrBSignUpRequestModel newUser;
 }
 
 // Define an event for logout

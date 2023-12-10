@@ -7,6 +7,7 @@ import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
 
 import '../../../data/models/login_request_model.dart';
 import '../../../data/models/login_response_model.dart';
+import '../../../data/models/user_sign_up_request_model.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';

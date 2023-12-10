@@ -155,11 +155,13 @@ class _MyAppState extends State<MyApp> {
         // initialRoute: prefManager.lastViewedPage ??
         //     (_isLoggedIn ? Routes.accountInformation : Routes.onBoarding1),
 
-        initialRoute: Routes.profilesLanding,
+        // initialRoute: Routes.profilesLanding,
 
-        // initialRoute: _isLoggedIn
-        //     ? prefManager.lastViewedPage ?? Routes.accountInformationOne
-        //     : prefManager.lastViewedPage ?? Routes.onBoarding1,
+        initialRoute: _isLoggedIn
+            ? prefManager.userType == 'User A'
+                ? Routes.feedPage
+                : Routes.feedPage
+            : Routes.onBoarding1,
         // initialRoute: Routes.newUploadImages,
 
         navigatorKey: navigatorKey,

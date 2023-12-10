@@ -5,6 +5,7 @@ import 'package:flutter_ultimate/core/error/exception.dart';
 import 'package:flutter_ultimate/data/models/authentication_model.dart';
 import 'package:flutter_ultimate/data/models/login_request_model.dart';
 import 'package:flutter_ultimate/data/models/login_response_model.dart';
+import 'package:flutter_ultimate/data/models/user_sign_up_request_model.dart';
 import 'package:flutter_ultimate/data/repositories/auth/auth_repo.dart';
 
 part 'authentication_event_b.dart';
