@@ -4,6 +4,7 @@ import 'package:flutter_ultimate/core/error/failure.dart';
 import 'package:flutter_ultimate/core/network/network_info.dart';
 import 'package:flutter_ultimate/features/feed/data/datasources/feed_remote_datasource.dart';
 import 'package:flutter_ultimate/features/feed/domain/entities/feed_entity.dart';
+import 'package:flutter_ultimate/features/feed/domain/entities/notification_entitiy.dart';
 import 'package:flutter_ultimate/features/feed/domain/repositories/news_repository.dart';
 
 class FeedRepositoryImpl extends FeedRepository {
@@ -34,6 +35,37 @@ class FeedRepositoryImpl extends FeedRepository {
       try {
         final feedNews = await remoteDataSource.getAllNews();
         return Right(feedNews);
+      } on ServerException {
+        return const Left(ServerFailure('Internal Server'));
+      }
+    } else {
+      return const Left(NetworkFailure('No Internet Connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<NotificationEntity>>>
+      getAdminNotification() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final adminNotificaions =
+            await remoteDataSource.getAdminNotifications();
+        return Right(adminNotificaions);
+      } on ServerException {
+        return const Left(ServerFailure('Internal Server'));
+      }
+    } else {
+      return const Left(NetworkFailure('No Internet Connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<NotificationEntity>>>
+      getUserNotification() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final userNotificaions = await remoteDataSource.getUserNotifications();
+        return Right(userNotificaions);
       } on ServerException {
         return const Left(ServerFailure('Internal Server'));
       }
