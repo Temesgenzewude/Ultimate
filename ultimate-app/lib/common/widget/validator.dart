@@ -1,3 +1,4 @@
+// ignore: avoid_classes_with_only_static_members
 class GeneralValidator {
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
