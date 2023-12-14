@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number.dart';
-import 'package:flutter_ultimate/common/bloc/store_user_interests/store_user_interests_bloc.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/bloc/store_user_interests/store_user_interests_bloc.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/screens/add_mobile_number/add_mobile_number.dart';
+
 import 'package:flutter_ultimate/common/util/show_toast_message.dart';
-import 'package:flutter_ultimate/data/models/save_user_interests_request_model.dart';
+import 'package:flutter_ultimate/features/authentication/data/models/save_user_interests_request_model.dart';
 
 import '../../../app/widget_support.dart';
 import '../../../common/constant/colors.dart';

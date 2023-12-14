@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/app/widget_support.dart';
-import 'package:flutter_ultimate/common/bloc/auth/authentication_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/auth/b/authentication_bloc_b.dart';
+
 import 'package:flutter_ultimate/common/util/show_toast_message.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/bloc/auth/b/authentication_bloc_b.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
 import '../../../common/constant/colors.dart';
 import '../../../common/constant/images.dart';

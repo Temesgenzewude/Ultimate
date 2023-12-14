@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/app/widget_support.dart';
-import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/bloc/auth/authentication_bloc.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/bloc/auth/b/authentication_bloc_b.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/screens/add_mobile_number/add_mobile_number.dart';
 import 'package:flutter_ultimate/common/constant/colors.dart';
 import 'package:flutter_ultimate/common/constant/images.dart';
 import 'package:flutter_ultimate/common/constant/styles.dart';
@@ -19,8 +21,7 @@ import 'package:flutter_ultimate/features/feed/presentation/widgets/user_notific
 import 'package:flutter_ultimate/features/profiles/presentation/screens/profiles_landing_screen.dart';
 import 'package:flutter_ultimate/readings/main_seller_1/widget/podcast.dart';
 
-import '../../../../common/bloc/auth/authentication_bloc.dart';
-import '../../../../common/bloc/auth/b/authentication_bloc_b.dart';
+
 import '../../../../common/util/show_toast_message.dart';
 
 List<Map<String, dynamic>> hotToday = [
