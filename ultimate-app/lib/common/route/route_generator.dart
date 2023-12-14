@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ultimate/authentications/account_information/screen/account_information_3.dart';
-import 'package:flutter_ultimate/authentications/account_information/screen/account_information_4.dart';
-import 'package:flutter_ultimate/authentications/add_mobile_number/screen/add_mobile_number_B.dart';
-import 'package:flutter_ultimate/authentications/upload_images/new_upload_images_screen.dart';
-import 'package:flutter_ultimate/authentications/upload_images/upload_images_B.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/screens/account_information/account_information_3.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/screens/account_information/account_information_4.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/screens/add_mobile_number/add_mobile_number_B.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/screens/upload_image/new_upload_images_screen.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/screens/upload_image/upload_images_B.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/features/feed/presentation/screens/feed_screen.dart';
 import 'package:flutter_ultimate/features/profiles/domain/entities/user_b_profile_entity.dart';
@@ -13,21 +13,21 @@ import 'package:flutter_ultimate/features/settings/presentation/screens/settings
 import 'package:flutter_ultimate/onboardings/terms_and_conditions.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/screens/profile_screen.dart';
 
-import '../../authentications/account_information/screen/account_information_1.dart';
-import '../../authentications/account_information/screen/account_information_2.dart';
-import '../../authentications/add_mobile_number/screen/add_mobile_number.dart';
+import '../../features/authentication/presentation/screens/account_information/account_information_1.dart';
+import '../../features/authentication/presentation/screens/account_information/account_information_2.dart';
+import '../../features/authentication/presentation/screens/add_mobile_number/add_mobile_number.dart';
 import '../../authentications/forgot_password/screen/forgot_password.dart';
 import '../../authentications/kyc/screen/kyc.dart';
 import '../../authentications/login/screen/login.dart';
 
 import '../../authentications/register/screen/register.dart';
 import '../../authentications/reset_password/screen/reset_password.dart';
-import '../../authentications/sign_up/screen/auth_user_b.dart';
-import '../../authentications/sign_up/screen/sign_up.dart';
+import '../../features/authentication/presentation/screens/sign_up/auth_user_b.dart';
+import '../../features/authentication/presentation/screens/sign_up/sign_up.dart';
 import '../../authentications/sign_up_social/screen/sign_up_social.dart';
-import '../../authentications/upload_images/new_upload_images_screen_b.dart';
-import '../../authentications/upload_images/upload_images.dart';
-import '../../authentications/verify/screen/verify.dart';
+import '../../features/authentication/presentation/screens/upload_image/new_upload_images_screen_b.dart';
+import '../../features/authentication/presentation/screens/upload_image/upload_images.dart';
+import '../../features/authentication/presentation/screens/verify/verify.dart';
 import '../../ecommerces/card_product/screen/card_product_home.dart';
 import '../../ecommerces/customer_manager/screen/customer_manager.dart';
 import '../../ecommerces/customer_support/screen/customer_support.dart';
