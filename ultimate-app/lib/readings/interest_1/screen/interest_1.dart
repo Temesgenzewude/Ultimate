@@ -146,20 +146,20 @@ class _Interest1State extends State<Interest1> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: AppBarCpn(
-          right: AnimationClick(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Text(
-                'Skip',
-                style: headline(color: corn1),
-              ),
-            ),
-            function: () {
-              Navigator.of(context).pushNamed(Routes.feedPage);
-            },
-          ),
-        ),
+        // appBar: AppBarCpn(
+        //   // right: AnimationClick(
+        //   //   child: Padding(
+        //   //     padding: const EdgeInsets.only(right: 16),
+        //   //     child: Text(
+        //   //       'Skip',
+        //   //       style: headline(color: corn1),
+        //   //     ),
+        //   //   ),
+        //   //   function: () {
+        //   //     Navigator.of(context).pushNamed(Routes.feedPage);
+        //   //   },
+        //   // ),
+        // ),
         bottomNavigationBar: Padding(
           padding:
               const EdgeInsets.only(left: 16, right: 16, bottom: 24, top: 8),

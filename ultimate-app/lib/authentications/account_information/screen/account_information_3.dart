@@ -126,7 +126,7 @@ class _AccountInformationThreeState extends State<AccountInformationThree> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 TextFieldCpn(
                   controller: aboutCtl,
                   focusNode: aboutFn,

@@ -131,13 +131,13 @@ class _VerifyState extends State<Verify> {
                             // Navigate to newUploadImages screen for User A
                             Future.delayed(const Duration(seconds: 2), () {
                               Navigator.pushReplacementNamed(
-                                  context, Routes.newUploadImages);
+                                  context, Routes.accountInformationOne);
                             });
                           } else {
                             // Navigate to newUploadImagesB screen for User B
                             Future.delayed(const Duration(seconds: 2), () {
                               Navigator.pushReplacementNamed(
-                                  context, Routes.newUploadImagesB);
+                                  context, Routes.accountInformationOne);
                             });
                           }
                         } else if (state is OtpVerifiedFailure) {

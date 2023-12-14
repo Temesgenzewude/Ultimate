@@ -26,15 +26,54 @@ class AddMobileNumber extends StatefulWidget {
 }
 
 final prefManager = sl<PrefManager>();
-final String name = prefManager.name ?? '';
-final String email = prefManager.email ?? '';
-final String address = prefManager.address ?? '';
-final String birthday = prefManager.birthday ?? '';
-final String password = prefManager.password ?? '';
-double latitude = double.tryParse(prefManager.latitude ?? '0.0') ?? 0.0;
-double longitude = double.tryParse(prefManager.longitude ?? '0.0') ?? 0.0;
+
+String latitude = prefManager.latitude ?? '0.0';
+String longitude = prefManager.longitude ?? '0.0';
 
 class _AddMobileNumberState extends State<AddMobileNumber> {
+  /*  Authentication bloc for user type A*/
+  BlocConsumer<AuthenticationBloc, AuthenticationState>
+      buildUserAAuthenticationBlocConsumer() {
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+      listener: (context1, state) {
+        print('Auth state listener $state');
+        if (state is AuthenticationFailureState) {
+          Utils.flutterToast(state.errorMessage);
+        } else if (state is AuthenticationSuccessState) {
+          Utils.flutterToast(
+              'You have successfully registered. OTP is sent to ${prefManager.phone} Please verify your account!');
+          // Delay the navigation to the verification screen for 5 seconds
+          Future.delayed(const Duration(seconds: 3), () {
+            Navigator.of(context).pushReplacementNamed(Routes.verify,
+                arguments: '${prefManager.phone}');
+          });
+        }
+      },
+      builder: (context1, state) {
+        print('Auth state builder---- $state');
+        if (state is AuthenticationLoadingState) {
+          print('Auth state-- loading');
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is AuthenticationSuccessState) {
+          print('Auth state---- success');
+          return Container();
+        } else {
+          return AppWidget.typeButtonStartAction(
+              context: context,
+              input: 'SEND OTP NOW',
+              onPressed: () {
+                _validatePhoneNumber();
+              },
+              bgColor: primary,
+              // icon: icArrowRight,
+              colorAsset: grey1100,
+              borderColor: primary,
+              textColor: grey1100);
+        }
+      },
+    );
+  }
+
   void _validatePhoneNumber() {
     if (phoneCtl.text.isEmpty) {
       Utils.flutterToast('Please enter phone number');
@@ -52,62 +91,27 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
 // Save the phone number in the shared preferences
     prefManager.phone = phoneNumber;
 
-// Navigate to the account information one page
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).pushNamed(Routes.accountInformationOne,
-          arguments: '${phoneCtl.text}');
-    });
+    String userRole = 'A';
+    if (prefManager.userType == 'User B') {
+      userRole = 'B';
+    }
 
-    //  If all validation passes
-    // final UserAModel user = UserAModel(
-    //   email: email,
-    //   password: password,
-    //   name: name,
-    //   address: 'Test Address',
-    //   phoneNumber: phoneNumber,
-    //   coordinates: '10,10',
-    //   birthDate: '12-12-2000',
-    // );
-
-    // final UserBModel userB = UserBModel(
-    //     email: email,
-    //     password: password,
-    //     name: name,
-    //     phoneNumber: phoneNumber,
-    //     location: '10,10',
-    //     birthDate: '10-10-2000',
-    //     about: '',
-    //     terms: true,
-    //     age: '21');
-
-    // print(prefManager.userType);
-    // if (prefManager.userType == 'User B') {
-    //   BlocProvider.of<AuthenticationBlocB>(context).add(
-    //     UserBSignUpEvent(newUser: userB),
-    //   );
-    // } else {
-    //   BlocProvider.of<AuthenticationBloc>(context).add(
-    //     UserASignUpEvent(newUser: user),
-    //   );
-    // }
-  }
-
-  Widget getAuthWidget() {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
-      listener: (context, state) {
-        if (state is AuthenticationFailureState) {
-          Utils.flutterToast(state.errorMessage);
-        } else if (state is AuthenticationSuccessState) {
-          Utils.flutterToast(
-              'You have successfully registered. OTP is sent to ${phoneCtl.text} Please verify your account!');
-          Future.delayed(const Duration(seconds: 5), () {
-            Navigator.of(context).pushReplacementNamed(Routes.verify,
-                arguments: '${phoneCtl.text}');
-          });
-        }
-      },
-      child: Container(),
+    UserSignUpRequestModel userSignUpRequestModel = UserSignUpRequestModel(
+      name: prefManager.name ?? 'Test Name',
+      password: prefManager.password ?? '12345678',
+      email: prefManager.email ?? 'testusera@example.com',
+      phoneNumber: phoneNumber,
+      coordinates: '$latitude,$longitude',
+      user_role: userRole,
+      terms: true,
     );
+
+    print(prefManager.userType);
+    if (prefManager.userType == 'User A') {
+      BlocProvider.of<AuthenticationBloc>(context).add(
+        UserASignUpEvent(newUser: userSignUpRequestModel),
+      );
+    }
   }
 
   @override
@@ -125,16 +129,6 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
     final width = AppWidget.getWidthScreen(context);
-
-    // final formData =
-    //     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-
-    // Access the individual form fields
-    // final String name = formData['name'] ?? '';
-    // final String email = formData['email'] ?? '';
-    // final String address = formData['address'] ?? '';
-    // final String birthday = formData['birthday'] ?? '';
-    // final String password = formData['password'] ?? '';
 
     return UnfocusClick(
       child: Scaffold(
@@ -191,22 +185,6 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                   ],
                 ),
               ),
-              // BlocListener<OtpBloc, OtpState>(
-              //   listener: (context, state) {
-              //     if (state is OtpSentSuccess) {
-              //       ScaffoldMessenger.of(context).showSnackBar(
-              //         const SnackBar(
-              //           content: Text('OTP sent successfully!'),
-              //         ),
-              //       );
-              //       Navigator.pushNamed(context, Routes.verify,
-              //           arguments: phoneCtl.text);
-              //     } else if (state is OtpSentFailure) {
-              //       Utils.flutterToast(state.message);
-              //     }
-              //   },
-              //   child: Container(),
-              // ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
@@ -246,72 +224,8 @@ class _AddMobileNumberState extends State<AddMobileNumber> {
                       hintText: '+2519 245 245 6789',
                       keyboardType: TextInputType.phone,
                     ),
-
                     const SizedBox(height: 32),
-
-                    // getAuthWidget(),
-                    AppWidget.typeButtonStartAction(
-                        context: context,
-                        input: 'CONTINUE',
-                        onPressed: () {
-                          _validatePhoneNumber();
-                          // if (prefManager.userType == 'User A') {
-                          //   context.read<OtpBloc>().add(OTPSendUserA());
-                          // } else {
-                          //   context.read<OtpBloc>().add(OtpSent());
-                          // }
-                        },
-                        bgColor: primary,
-                        icon: icArrowRight,
-                        colorAsset: grey1100,
-                        borderColor: primary,
-                        textColor: grey1100),
-
-                    /*  MOVE SIGN UP BLOC TO THE LAST PAGE OF THE ACCOUNT INFORMATION PAGES */
-                    // BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                    //   builder: (context, state) {
-                    //     if (state is AuthenticationLoadingState) {
-                    //       return const Center(
-                    //           child: CircularProgressIndicator());
-                    //     } else if (state is AuthenticationSuccessState) {
-                    //       return Container();
-                    //     } else {
-                    //       return AppWidget.typeButtonStartAction(
-                    //           context: context,
-                    //           input: 'SIGN UP NOW',
-                    //           onPressed: () {
-                    //             _submitForm(
-                    //                 name: name,
-                    //                 email: email,
-                    //                 address: address,
-                    //                 password: password,
-                    //                 birthDate: birthday);
-                    //             // if (prefManager.userType == 'User A') {
-                    //             //   context.read<OtpBloc>().add(OTPSendUserA());
-                    //             // } else {
-                    //             //   context.read<OtpBloc>().add(OtpSent());
-                    //             // }
-                    //           },
-                    //           bgColor: primary,
-                    //           icon: icArrowRight,
-                    //           colorAsset: grey1100,
-                    //           borderColor: primary,
-                    //           textColor: grey1100);
-                    //     }
-                    //   },
-                    // ),
-                    // AnimationClick(
-                    //   child: Align(
-                    //     alignment: Alignment.center,
-                    //     child: Text(
-                    //       'Not now',
-                    //       style: title4(color: grey1100),
-                    //     ),
-                    //   ),
-                    //   function: () {
-                    //     Navigator.pushNamed(context, Routes.accountInformation);
-                    //   },
-                    // ),
+                    buildUserAAuthenticationBlocConsumer(),
                     const SizedBox(height: 24)
                   ],
                 ),

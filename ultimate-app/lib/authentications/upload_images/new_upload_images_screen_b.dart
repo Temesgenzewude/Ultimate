@@ -97,18 +97,18 @@ class _NewUploadImageBScreenState extends State<NewUploadImageBScreen> {
             'Upload Images',
             style: headline(color: grey1100),
           ),
-          right: AnimationClick(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Text(
-                'Skip',
-                style: headline(color: corn1),
-              ),
-            ),
-            function: () {
-              Navigator.of(context).pushNamed(Routes.feedPage);
-            },
-          ),
+          // right: AnimationClick(
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(right: 16),
+          //     child: Text(
+          //       'Skip',
+          //       style: headline(color: corn1),
+          //     ),
+          //   ),
+          //   function: () {
+          //     Navigator.of(context).pushNamed(Routes.feedPage);
+          //   },
+          // ),
         ),
         // appBar: AppWidget.createSimpleAppBar(
         //     context: context,

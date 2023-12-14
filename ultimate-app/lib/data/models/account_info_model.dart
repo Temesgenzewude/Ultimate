@@ -21,29 +21,32 @@ class AccountInfoModel {
   String? nationality = 'turkish';
   String? levelOfReligiously = 'Conservative';
   String? birthDate;
+  String? country;
+  String? postalCode;
 
-  AccountInfoModel({
-    this.about,
-    this.age,
-    this.bornReligious,
-    this.address,
-    this.child,
-    this.ethnicity,
-    this.gender,
-    this.lookingFor,
-    this.healthIssue,
-    this.height,
-    this.isDrink,
-    this.isMadication,
-    this.isSmoke,
-    this.levelOfReligiously,
-    this.maritalStatus,
-    this.nationality,
-    this.profession,
-    this.sect,
-    this.userId,
-    this.birthDate,
-  });
+  AccountInfoModel(
+      {this.about,
+      this.age,
+      this.bornReligious,
+      this.address,
+      this.child,
+      this.ethnicity,
+      this.gender,
+      this.lookingFor,
+      this.healthIssue,
+      this.height,
+      this.isDrink,
+      this.isMadication,
+      this.isSmoke,
+      this.levelOfReligiously,
+      this.maritalStatus,
+      this.nationality,
+      this.profession,
+      this.sect,
+      this.userId,
+      this.birthDate,
+      this.country,
+      this.postalCode});
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userId': userId,
@@ -66,6 +69,8 @@ class AccountInfoModel {
         'nationality': nationality,
         'levelOfReligiously': levelOfReligiously,
         'birthDate': birthDate,
+        'country': country,
+        'postalCode': postalCode
       };
 }
 

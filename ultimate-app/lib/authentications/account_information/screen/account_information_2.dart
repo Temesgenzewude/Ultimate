@@ -111,7 +111,7 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
                   children: [
                     GradientText(
                       // 'Update your personal information!',
-                       'Enter your personal information!',
+                      'Enter your personal information!',
                       style: const TextStyle(
                           fontSize: 28,
                           height: 1,
@@ -124,6 +124,7 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 20),
                 TextFieldCpn(
                   controller: birthdayCtl,
                   focusNode: birthdayFn,
@@ -251,4 +252,3 @@ class _AccountInformationTwoState extends State<AccountInformationTwo> {
     });
   }
 }
-

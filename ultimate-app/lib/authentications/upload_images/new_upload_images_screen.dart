@@ -97,18 +97,7 @@ class _NewUploadImageScreenState extends State<NewUploadImageScreen> {
             'Upload Images',
             style: headline(color: grey1100),
           ),
-          right: AnimationClick(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Text(
-                'Skip',
-                style: headline(color: corn1),
-              ),
-            ),
-            function: () {
-              Navigator.of(context).pushNamed(Routes.interest_1);
-            },
-          ),
+        
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -212,25 +201,7 @@ class _NewUploadImageScreenState extends State<NewUploadImageScreen> {
                         textColor: grey1100),
                   );
                 }
-                // return AppWidget.typeButtonStartAction2(
-                //     context: context,
-                //     input: 'Upload Images',
-                //     onPressed: () {
-                //       indexToImage.forEach((key, value) {
-                //         if (value != null) {
-                //           imageFileList.add(value);
-                //         }
-                //       });
-                //       print(imageFileList);
-                //       print("============================");
-                //       if (imageFileList.length == 6) {
-                //         BlocProvider.of<UploadImagesBloc>(context)
-                //             .add(UserAUploadImagesEvent(images: imageFileList));
-                //       }
-                //     },
-                //     bgColor: _isUploadReady ? primary : Colors.grey,
-                //     borderColor: _isUploadReady ? primary : Colors.grey,
-                //     textColor: grey1100);
+           
               },
             ),
           ],

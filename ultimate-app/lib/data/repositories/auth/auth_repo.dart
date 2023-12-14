@@ -67,7 +67,7 @@ class AuthenticationRepository {
   }
 
   Future<SingUpResponseModel> signUpUserA(
-      UserAOrBSignUpRequestModel newUser) async {
+      UserSignUpRequestModel newUser) async {
     if (await internetConnectionChecker.hasConnection) {
       try {
         final response = await remoteDataSource.signUpUserA(newUser);
@@ -148,7 +148,8 @@ class AuthenticationRepository {
     }
   }
 
-  Future<UserBSingUpResponse> signUpUserB(UserAOrBSignUpRequestModel newUser) async {
+  Future<UserBSingUpResponse> signUpUserB(
+      UserSignUpRequestModel newUser) async {
     // try {
     //   return await remoteDataSource.signUpUserB(newUser);
     // } catch (e) {
