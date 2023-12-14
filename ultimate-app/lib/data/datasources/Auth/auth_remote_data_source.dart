@@ -22,9 +22,9 @@ import '../../models/user_sign_up_request_model.dart';
 final prefManager = sl<PrefManager>();
 
 abstract class AuthenticationRemoteDataSource {
-  Future<SingUpResponseModel> signUpUserA(UserAOrBSignUpRequestModel newuser);
+  Future<SingUpResponseModel> signUpUserA(UserSignUpRequestModel newuser);
   Future<LoginResponseModel> signInUserA(UserALoginRequestModel user);
-  Future<UserBSingUpResponse> signUpUserB(UserAOrBSignUpRequestModel newuser);
+  Future<UserBSingUpResponse> signUpUserB(UserSignUpRequestModel newuser);
   Future<LoginResponseModel> signInUserB(UserBLoginRequestModel user);
   Future<List<dynamic>> uploadImagesA(List<XFile?> files);
   Future<List<dynamic>> uploadImagesB(List<XFile?> files);
@@ -95,8 +95,7 @@ class AuthenticationRemoteDataSourceImpl
   // Otherwise, it throws an UnknownException with a default error message.
   // It also handles SocketException and TimeoutException by throwing appropriate exceptions.
   @override
-  Future<SingUpResponseModel> signUpUserA(
-      UserAOrBSignUpRequestModel user) async {
+  Future<SingUpResponseModel> signUpUserA(UserSignUpRequestModel user) async {
     final String url = AppUrl.userASignUpEndPoint;
 
     try {
@@ -176,10 +175,9 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<UserBSingUpResponse> signUpUserB(
-      UserAOrBSignUpRequestModel user) async {
+  Future<UserBSingUpResponse> signUpUserB(UserSignUpRequestModel user) async {
     final String url = AppUrl.userBSignUpEndPoint;
-    
+
     user.coordinates = '31.536267224296935, 74.32805961092151';
 
     try {

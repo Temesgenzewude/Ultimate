@@ -143,7 +143,7 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                const SizedBox(height: 16),
+               
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -467,157 +467,64 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
                   height: 32,
                 ),
 
-                if (prefManager.userType == 'User B')
-                  buildUserBAuthenticationBlocConsumer(),
-
-                if (prefManager.userType == 'User A')
-                  buildUserAAuthenticationBlocConsumer(),
-
                 // Widget that listens to the AccountInfoBloc state and displays different UI based on the state
-                // BlocConsumer<AccountInfoBloc, AccInfoState>(
-                //   listener: (context, state) {
-                //     if (state is AccInfoSuccessState) {
-                //       Utils.flutterToast('Your profile is successfully updated!');
+                BlocConsumer<AccountInfoBloc, AccInfoState>(
+                  listener: (context, state) {
+                    if (state is AccInfoSuccessState) {
+                      Utils.flutterToast(
+                          'Your profile is successfully updated!');
 
-                //       // Future.delayed(const Duration(seconds: 2), () {
-                //       //   Navigator.of(context).pushNamed(Routes.interest_1);
-                //       // });
-                //     } else if (state is AccFailureState) {
-                //       Utils.flutterToast(state.errorMessage);
-                //     }
-                //   },
-                //   builder: (context, state) {
-                //     if (state is AccInfoLoadingState) {
-                //       // Display a loading indicator if the state is AccInfoLoadingState
-                //       return const Center(
-                //         child: CircularProgressIndicator(),
-                //       );
-                //     } else if (state is AccInfoSuccessState) {
-                //       // Display a button to continue to interests or feeds if the state is AccInfoSuccessState
-                //       return AppWidget.typeButtonStartAction2(
-                //         context: context,
-                //         input: prefManager.userType == 'User A'
-                //             ? 'CONTINUE TO ADD YOUR INTERESTS'
-                //             : 'CONTINUE TO FEEDS',
-                //         onPressed: () {
-                //           if (prefManager.userType == 'User A') {
-                //             Navigator.of(context).pushNamed(Routes.interest_1);
-                //           } else if (prefManager.userType == 'User B') {
-                //             Navigator.of(context).pushNamed(Routes.feed);
-                //           }
-                //         },
-                //         bgColor: primary,
-                //         borderColor: primary,
-                //         textColor: grey1100,
-                //       );
-                //     } else {
-                //       // Display a button to update the profile if the state is neither AccInfoLoadingState nor AccInfoSuccessState
-                //       return AppWidget.typeButtonStartAction2(
-                //         context: context,
-                //         input: 'UPDATE YOUR PROFILE',
-                //         onPressed: () {
-                //           _validateForm();
-                //         },
-                //         bgColor: primary,
-                //         borderColor: primary,
-                //         textColor: grey1100,
-                //       );
-                //     }
-                //   },
-                // ),
+                      // Future.delayed(const Duration(seconds: 2), () {
+                      //   Navigator.of(context).pushNamed(Routes.interest_1);
+                      // });
+                    } else if (state is AccFailureState) {
+                      Utils.flutterToast(state.errorMessage);
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is AccInfoLoadingState) {
+                      // Display a loading indicator if the state is AccInfoLoadingState
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state is AccInfoSuccessState) {
+                      // Display a button to continue to interests or feeds if the state is AccInfoSuccessState
+                      return AppWidget.typeButtonStartAction2(
+                        context: context,
+                        input: 'CONTINUE',
+                        onPressed: () {
+                          if (prefManager.userType == 'User A') {
+                            Navigator.of(context)
+                                .pushNamed(Routes.newUploadImages);
+                          } else if (prefManager.userType == 'User B') {
+                            Navigator.of(context)
+                                .pushNamed(Routes.newUploadImagesB);
+                          }
+                        },
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100,
+                      );
+                    } else {
+                      // Display a button to update the profile if the state is neither AccInfoLoadingState nor AccInfoSuccessState
+                      return AppWidget.typeButtonStartAction2(
+                        context: context,
+                        input: 'UPDATE YOUR PROFILE',
+                        onPressed: () {
+                          _validateForm();
+                        },
+                        bgColor: primary,
+                        borderColor: primary,
+                        textColor: grey1100,
+                      );
+                    }
+                  },
+                ),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-/*    Authentication bloc for user type B */
-  BlocConsumer<AuthenticationBlocB, AuthenticationBState>
-      buildUserBAuthenticationBlocConsumer() {
-    return BlocConsumer<AuthenticationBlocB, AuthenticationBState>(
-      listener: (context, outerState) {
-        // If authentication fails, display the error message
-        if (outerState is AuthenticationFailureStateB) {
-          Utils.flutterToast(outerState.errorMessage);
-        } else if (outerState is AuthenticationSuccessStateB) {
-          // If authentication is successful, display a success message and navigate to the verification screen
-          Utils.flutterToast(
-              'You have successfully registered. OTP is sent to ${prefManager.phone} Please verify your account!');
-          // Delay the navigation to the verification screen for 5 seconds
-          Future.delayed(const Duration(seconds: 3), () {
-            Navigator.of(context).pushReplacementNamed(Routes.verify,
-                arguments: '${prefManager.phone}');
-          });
-        }
-      },
-      builder: (context, outerState) {
-        if (outerState is AuthenticationLoadingStateB) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (outerState is AuthenticationSuccessStateB) {
-          return Container();
-        } else {
-          return AppWidget.typeButtonStartAction2(
-            context: context,
-            input: 'SIGN UP NOW',
-            onPressed: () {
-              _validateForm();
-            },
-            bgColor: primary,
-            borderColor: primary,
-            textColor: grey1100,
-          );
-        }
-      },
-    );
-  }
-
-  /*  Authentication bloc for user type A*/
-  BlocConsumer<AuthenticationBloc, AuthenticationState>
-      buildUserAAuthenticationBlocConsumer() {
-    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
-      listener: (context1, state) {
-        print('Auth state listener $state');
-        if (state is AuthenticationFailureState) {
-          Utils.flutterToast(state.errorMessage);
-        } else if (state is AuthenticationSuccessState) {
-          Utils.flutterToast(
-              'You have successfully registered. OTP is sent to ${prefManager.phone} Please verify your account!');
-          // Delay the navigation to the verification screen for 5 seconds
-          Future.delayed(const Duration(seconds: 3), () {
-            Navigator.of(context).pushReplacementNamed(Routes.verify,
-                arguments: '${prefManager.phone}');
-          });
-          // if (prefManager.userType == 'User A') {
-          //   context.read<OtpBloc>().add(OTPSendUserA());
-          // } else {
-          //   context.read<OtpBloc>().add(OtpSent());
-          // }
-        }
-      },
-      builder: (context1, state) {
-        print('Auth state builder---- $state');
-        if (state is AuthenticationLoadingState) {
-          print('Auth state-- loading');
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is AuthenticationSuccessState) {
-          print('Auth state---- success');
-          return Container();
-        } else {
-          return AppWidget.typeButtonStartAction(
-              context: context,
-              input: 'SIGN UP NOW',
-              onPressed: () {
-                _validateForm();
-              },
-              bgColor: primary,
-              // icon: icArrowRight,
-              colorAsset: grey1100,
-              borderColor: primary,
-              textColor: grey1100);
-        }
-      },
     );
   }
 
@@ -707,89 +614,87 @@ class _AccountInformationFourState extends State<AccountInformationFour> {
     prefManager.isSmoke = isSmoke;
 
     // Create the address string
-    String address =
-        '${prefManager.address}, ${prefManager.address2},${prefManager.address3}, ${prefManager.town}, ${prefManager.state}, ${prefManager.postCode}, ${prefManager.country}';
+
+    String address = '${prefManager.address},';
+
+    if (prefManager.address2 != null && prefManager.address2!.isNotEmpty) {
+      address += ' ${prefManager.address2},';
+    }
+
+    if (prefManager.address3 != null && prefManager.address3!.isNotEmpty) {
+      address += ' ${prefManager.address3},';
+    }
+
+    address +=
+        ' ${prefManager.town}, ${prefManager.state}, ${prefManager.postCode}, ${prefManager.country}';
 
     print('The address is $address');
-    final latitude = prefManager.latitude;
-    final longitude = prefManager.longitude;
-    final coordinates = '$latitude, $longitude';
 
-    // Create an instance of UserAOrBSignUpRequestModel with the selected values
-    final UserAOrBSignUpRequestModel signUpRequestModel =
-        UserAOrBSignUpRequestModel(
-            name: prefManager.name ?? 'Test Name',
-            about: prefManager.about ?? 'About me',
-            email: prefManager.email ?? 'testemail@gmail.com',
-            phoneNumber: prefManager.phone ?? '+92567676778',
-            password: prefManager.password ?? '12345678',
-            terms: 'true',
-            userRole: prefManager.userType == 'User A' ? 'A' : 'B',
-            coordinates: coordinates,
-            address: address,
-            age: prefManager.age ?? '21',
-            bornReligious: _selectedBornReligion ?? 'Muslim',
-            nationality: _selectedNationality ?? 'Nationality',
-            ethnicity: _selectedEthnicity ?? 'Black American',
-            height: _upperValueHeight.toStringAsFixed(2),
-            isDrink: isDrink,
-            isMadication: isMedication,
-            isSmoke: isSmoke,
-            profession: prefManager.profession ?? 'Doctor',
-            levelOfReligiously:
-                prefManager.levelOfReligiously ?? 'Non Conservative',
-            maritalStatus: prefManager.maritalStatus ?? 'Single',
-            gender: prefManager.gender ?? 'Male',
-            healthIssue: prefManager.healthIssue ?? 'No',
-            child: prefManager.child ?? '0',
-            lookingFor: prefManager.lookingFor ?? 'Nothing',
-            sect: prefManager.sect ?? 'Sunni',
-            birthDate: prefManager.birthday ?? '01-01-2000',
-            postalCode: prefManager.postCode ?? '1000',
-            country: prefManager.country ?? 'United Kingdom');
+    // // Create an instance of UserAOrBSignUpRequestModel with the selected values
+    // final UserAOrBSignUpRequestModel signUpRequestModel =
+    //     UserAOrBSignUpRequestModel(
+    //         name: prefManager.name ?? 'Test Name',
+    //         about: prefManager.about ?? 'About me',
+    //         email: prefManager.email ?? 'testemail@gmail.com',
+    //         phoneNumber: prefManager.phone ?? '+92567676778',
+    //         password: prefManager.password ?? '12345678',
+    //         terms: 'true',
+    //         userRole: prefManager.userType == 'User A' ? 'A' : 'B',
+    //         coordinates: coordinates,
+    //         address: address,
+    //         age: prefManager.age ?? '21',
+    //         bornReligious: _selectedBornReligion ?? 'Muslim',
+    //         nationality: _selectedNationality ?? 'Nationality',
+    //         ethnicity: _selectedEthnicity ?? 'Black American',
+    //         height: _upperValueHeight.toStringAsFixed(2),
+    //         isDrink: isDrink,
+    //         isMadication: isMedication,
+    //         isSmoke: isSmoke,
+    //         profession: prefManager.profession ?? 'Doctor',
+    //         levelOfReligiously:
+    //             prefManager.levelOfReligiously ?? 'Non Conservative',
+    //         maritalStatus: prefManager.maritalStatus ?? 'Single',
+    //         gender: prefManager.gender ?? 'Male',
+    //         healthIssue: prefManager.healthIssue ?? 'No',
+    //         child: prefManager.child ?? '0',
+    //         lookingFor: prefManager.lookingFor ?? 'Nothing',
+    //         sect: prefManager.sect ?? 'Sunni',
+    //         birthDate: prefManager.birthday ?? '01-01-2000',
+    //         postalCode: prefManager.postCode ?? '1000',
+    //         country: prefManager.country ?? 'United Kingdom');
 
     print(prefManager.userType);
 
-    // Add the user B sign up event to the AuthenticationBlocB
-    if (prefManager.userType == 'User B') {
-      BlocProvider.of<AuthenticationBlocB>(context).add(
-        UserBSignUpEvent(newUser: signUpRequestModel),
-      );
-    } else {
-      // Add user A sign up event to the AuthenticationBloc
-      BlocProvider.of<AuthenticationBloc>(context).add(
-        UserASignUpEvent(newUser: signUpRequestModel),
-      );
-    }
-
     // Create an instance of AccountInfoModel with the selected values
-    // final AccountInfoModel accountInfoModel = AccountInfoModel(
-    //   about: prefManager.about ?? 'About me',
-    //   address: address,
-    //   age: prefManager.age ?? '21',
-    //   bornReligious: _selectedBornReligion ?? 'Muslim',
-    //   nationality: _selectedNationality ?? 'Nationality',
-    //   ethnicity: _selectedEthnicity ?? 'Black American',
-    //   height: _upperValueHeight.toStringAsFixed(2),
-    //   isDrink: isDrink,
-    //   isMadication: isMedication,
-    //   isSmoke: isSmoke,
-    //   profession: prefManager.profession ?? 'Doctor',
-    //   levelOfReligiously: prefManager.levelOfReligiously ?? 'Non Conservative',
-    //   maritalStatus: prefManager.maritalStatus ?? 'Single',
-    //   gender: prefManager.gender ?? 'Male',
-    //   healthIssue: prefManager.healthIssue ?? 'No',
-    //   child: prefManager.child ?? '0',
-    //   lookingFor: prefManager.lookingFor ?? 'Friendship',
-    //   sect: prefManager.sect ?? 'Sunni',
-    //   userId: prefManager.userID ?? '0',
-    //   birthDate: prefManager.birthday ?? '01-01-2000',
-    // );
+    final AccountInfoModel accountInfoModel = AccountInfoModel(
+        about: prefManager.about ?? 'About me',
+        address: address,
+        age: prefManager.age ?? '21',
+        bornReligious: _selectedBornReligion ?? 'Muslim',
+        nationality: _selectedNationality ?? 'Nationality',
+        ethnicity: _selectedEthnicity ?? 'Black American',
+        height: _upperValueHeight.toStringAsFixed(2),
+        isDrink: isDrink,
+        isMadication: isMedication,
+        isSmoke: isSmoke,
+        profession: prefManager.profession ?? 'Doctor',
+        levelOfReligiously:
+            prefManager.levelOfReligiously ?? 'Non Conservative',
+        maritalStatus: prefManager.maritalStatus ?? 'Single',
+        gender: prefManager.gender ?? 'Male',
+        healthIssue: prefManager.healthIssue ?? 'No',
+        child: prefManager.child ?? '0',
+        lookingFor: prefManager.lookingFor ?? 'Friendship',
+        sect: prefManager.sect ?? 'Sunni',
+        userId: prefManager.userID ?? '0',
+        birthDate: prefManager.birthday ?? '01-01-2000',
+        country: prefManager.country ?? 'United Kingdom',
+        postalCode: prefManager.postCode ?? '10000');
 
-    // print('accountInfoModel: ${accountInfoModel.toJson()}');
+    print('accountInfoModel: ${accountInfoModel.toJson()}');
 
-    // // Add the account info event to the AccountInfoBloc
-    // BlocProvider.of<AccountInfoBloc>(context)
-    //     .add(AddAccInfoEvent(accInfo: accountInfoModel));
+    // Add the account info event to the AccountInfoBloc
+    BlocProvider.of<AccountInfoBloc>(context)
+        .add(AddAccInfoEvent(accInfo: accountInfoModel));
   }
 }
