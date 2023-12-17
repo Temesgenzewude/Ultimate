@@ -30,6 +30,9 @@ import '../features/authentication/data/data_sources/auth_remote_data_source.dar
 import '../features/authentication/data/repositories/auth_repo.dart';
 import '../sharedPreferences.dart';
 
+//TODO: THIS IS THE LATESTE CODE WORKING FINE FOR BOTH USER A AND USER B
+//TODO: CHECK THIS LINE TO CONFIRM THAT THE CODE IS THE LATEST ONE
+
 final GlobalKey<NavigatorState> navigatorKey =
     GlobalKey(debugLabel: 'Main Navigator');
 

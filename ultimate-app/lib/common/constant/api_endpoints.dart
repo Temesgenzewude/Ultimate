@@ -1,6 +1,7 @@
 // ignore: avoid_classes_with_only_static_members
 class AppUrl {
   static var baseUrl = 'http://13.48.221.106:5001/api';
+  //http://13.48.221.106:5001/api/save-profile-b
 
   static var userASignInEndPoint = '$baseUrl/signin'; // Endpoint for user A sign in
   static var userBSignInEndPoint = '$baseUrl/login-user'; // Endpoint for user B sign in

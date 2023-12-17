@@ -188,12 +188,12 @@ class _SignInTabState extends State<SignInTab> {
                 } else if (state is LoginSuccessState) {
                   Utils.flutterToast('Successfully logged in');
                   Future.delayed(const Duration(seconds: 3), () {
-                    Navigator.of(context).pushReplacementNamed(Routes.feed);
+                    Navigator.of(context).pushReplacementNamed(Routes.feedPage);
                   });
                   return AppWidget.typeButtonStartAction(
                     context: context,
-                    input: 'Sign In Now',
-                    onPressed: () {},
+                    input: 'Signed In',
+                    onPressed: null,
                     colorAsset: grey1100,
                     icon: icKeyboardRight,
                     sizeAsset: 24,
