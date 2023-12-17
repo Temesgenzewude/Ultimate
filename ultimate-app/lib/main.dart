@@ -14,6 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
 
+//TODO: THIS IS THE LATESTE CODE WORKING FINE FOR BOTH USER A AND USER B 
+//TODO: CHECK THIS LINE TO CONFIRM THAT THE CODE IS THE LATEST ONE
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();

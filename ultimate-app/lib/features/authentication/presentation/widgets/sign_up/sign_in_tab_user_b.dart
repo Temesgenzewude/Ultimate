@@ -34,8 +34,7 @@ class _SignInTabBState extends State<SignInTabB> {
   bool showPass = false;
   String? countryCode = 'US';
   String? languageCode = '+1';
-  // bool _logInWithEmail = true;
-  // bool _logInWithPhone = false;
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +151,7 @@ class _SignInTabBState extends State<SignInTabB> {
             } else if (state is LoginSuccessStateB) {
               Utils.flutterToast('Successfully logged in');
               Future.delayed(Duration.zero, () {
-                Navigator.of(context).pushReplacementNamed(Routes.feed);
+                Navigator.of(context).pushReplacementNamed(Routes.feedPage);
               });
               return AppWidget.typeButtonStartAction(
                 context: context,

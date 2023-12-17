@@ -539,7 +539,7 @@ class AuthenticationRemoteDataSourceImpl
     if (prefManager.userType == 'User B') {
       url = AppUrl.saveUserBProfile;
       token = prefManager.token ?? prefManager.kTokenB;
-    } else {
+    } else if (prefManager.userType == 'User A') {
       url = AppUrl.saveUserAProfile;
       token = prefManager.token ?? prefManager.kTokenA;
     }
@@ -551,27 +551,6 @@ class AuthenticationRemoteDataSourceImpl
     print('body: ${accountInfoModel.toJson()}');
     print('user id: ${prefManager.userID}');
     try {
-      // final tempAccountInfoModel = AccountInfoModel(
-      //   gender: accountInfoModel.gender,
-      //   age: accountInfoModel.age,
-      //   profession: accountInfoModel.profession,
-      //   about: 'I am test',
-      //   address: 'US',
-      //   maritalStatus: 'Single',
-      //   height: '188cm',
-      //   lookingFor: 'Friend',
-      //   child: '2',
-      //   sect: 'Sunni',
-      //   healthIssue: 'No',
-      //   bornReligious: 'Born Muslim',
-      //   isDrink: false,
-      //   isSmoke: false,
-      //   isMadication: false,
-      //   ethnicity: 'Turkish',
-      //   nationality: 'turkish',
-      //   levelOfReligiously: 'Conservative',
-      // );
-
       Map<String, dynamic> jsonBody = accountInfoModel.toJson();
       jsonBody['userId'] = '${prefManager.userID}';
       // jsonBody['userId'] = '654117b9ca01a37d7f8fe2e8';
@@ -583,6 +562,9 @@ class AuthenticationRemoteDataSourceImpl
         'Authorization': token,
         'Content-Type': 'application/json',
       }).timeout(const Duration(seconds: 10));
+
+      print('saving user profile response body ${response.body}');
+      print('saving user profile response status code ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
