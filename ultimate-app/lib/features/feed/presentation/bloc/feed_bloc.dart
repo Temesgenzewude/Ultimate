@@ -41,21 +41,13 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
   Future<void> _getFeed(GetFeedByIdEvent event, Emitter<FeedState> emit) async {
     emit(FeedLoadingState());
-
     final result = await getNews(event.feedId);
-    print('-------------- result ---------------');
-    print(result);
-    print('--------------- result');
     emit(FeedSuccessOrFailure(result));
   }
 
   Future<void> _getAllFeed(GetFeedsEvent event, Emitter<FeedState> emit) async {
     emit(FeedLoadingState());
-
     final result = await getAllNews();
-    print('-------------- result ---------------');
-    print(result);
-    print('--------------- result');
     emit(FeedsSuccessOrFailure(result));
   }
 }

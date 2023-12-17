@@ -737,11 +737,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(16),
-                            child: Image.asset(
-                              avtFemale,
-                              width: 80,
-                              height: 80,
-                            ),
+                            child: widget.userBProfile.imageUrl == ''
+                                ? Image.asset(
+                                    avtFemale,
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    widget.userBProfile.imageUrl,
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                           Positioned(
                             bottom: 0,

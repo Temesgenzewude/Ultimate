@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/admin_notification_injection.dart' as adminNotificationInjection;
+import 'package:flutter_ultimate/features/feed/presentation/bloc/admin_notification_bloc.dart';
 import 'package:flutter_ultimate/features/feed/presentation/bloc/feed_bloc.dart';
+import 'package:flutter_ultimate/features/feed/presentation/bloc/notification_bloc.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc.dart';
+// ignore: library_prefixes
+import 'package:flutter_ultimate/notification_injection.dart' as notificationInjection;
 import 'package:flutter_ultimate/profile_injection.dart' as injection;
 import 'package:http/http.dart' as http;
 import 'package:responsive_framework/responsive_framework.dart';
@@ -150,6 +155,12 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (BuildContext context) => injection.sl<FeedBloc>(),
         ),
+        BlocProvider(
+          create: (BuildContext context) => notificationInjection.sl<NotificationBloc>(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => adminNotificationInjection.sl<AdminNotificationBloc>(),
+        ),
       ],
       child: MaterialApp(
         // initialRoute: prefManager.lastViewedPage ??
@@ -157,12 +168,13 @@ class _MyAppState extends State<MyApp> {
 
         // initialRoute: Routes.profilesLanding,
 
-        initialRoute: _isLoggedIn
-            ? prefManager.userType == 'User A'
-                ? Routes.feedPage
-                : Routes.feedPage
-            : Routes.onBoarding1,
-        // initialRoute: Routes.newUploadImages,
+        // initialRoute: _isLoggedIn
+        //     ? prefManager.userType == 'User A'
+        //         ? Routes.feedPage
+        //         : Routes.feedPage
+        //     : Routes.onBoarding1,
+        // initialRoute: Routes.main_seller_2,
+        initialRoute: Routes.feedPage,
 
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,

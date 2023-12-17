@@ -24,8 +24,6 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
       'Authorization':
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMjE4MDB9.FjFHfuJ96OuCl_V67oICPZqZ1XyGsSEkaYkFtO0H5-Y'
     });
-    print('------------------------ response in datasource');
-    print(response.body);
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       final feedNewsJsonList = List<Map<String, dynamic>>.from(jsonResponse);
@@ -62,11 +60,12 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
       'Authorization':
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMjE4MDB9.FjFHfuJ96OuCl_V67oICPZqZ1XyGsSEkaYkFtO0H5-Y'
     });
+
     if (response.statusCode == 200) {
-      final List<dynamic> jsonResponse = json.decode(response.body);
-      final adminNotifications = await jsonResponse
-          .map((json) => NotificationModel.fromJson(json))
-          .toList();
+      final Map<String, dynamic> data = json.decode(response.body);
+      final List<dynamic> jsonResponse = data['data'];
+      final adminNotifications =
+          jsonResponse.map((json) => NotificationModel.fromJson(json)).toList();
 
       return adminNotifications;
     } else {

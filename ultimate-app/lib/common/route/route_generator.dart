@@ -139,7 +139,7 @@ mixin RouteGenerator {
         });
       case Routes.feedPage:
         return MaterialPageRoute<dynamic>(
-          builder: (context) => const FeedScreen(),
+          builder: (context) => const FeedScreenPage(),
         );
       case Routes.finance:
         return MaterialPageRoute<dynamic>(
