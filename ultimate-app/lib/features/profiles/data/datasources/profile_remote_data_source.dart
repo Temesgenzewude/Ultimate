@@ -43,11 +43,13 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);
+      // print('--------------------- json response profile --------');
+      print(jsonResponse);
       final userBProfiles = await jsonResponse
           .map((json) => UserBProfileModel.fromJson(json))
           .toList();
 
-      print('........ profile remote source  $userBProfiles');
+      // print('........ profile remote source  $userBProfiles');
 
       return userBProfiles;
     } else {

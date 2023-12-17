@@ -282,29 +282,35 @@ class Yesterday extends StatelessWidget {
                   Row(
                     children: [
                       ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(
-                            items[3]['image']!,
-                            width: 80,
-                            height: 80,
-                          )
+                        borderRadius: BorderRadius.circular(16),
+                        child:
+                            // Image.asset(
+                            //   userBProfiels[index].imageUrls[0],
+                            //   width: 80,
+                            //   height: 80,
+                            // )
 
-                          // ignore: unnecessary_null_comparison
-                          // userBProfiels[index].imageUrls != []
-                          //     ? Image.asset(items[3]['image']!,
-                          //         width: 80, height: 80)
-                          //     : Image.network(
-                          //         userBProfiels[index].imageUrls[0],
-                          //         width: 80,
-                          //         height: 80,
-                          //       ),
+                            // ignore: unnecessary_null_comparison
+                            userBProfiels[index].imageUrl == ''
+                                ? Image.asset(
+                                    items[3]['image']!,
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    userBProfiels[index].imageUrl,
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  ),
 
-                          //     Image.network(
-                          //   userBProfiels[index].imageUrls[0],
-                          //   width: 80,
-                          //   height: 80,
-                          // ),
-                          ),
+                        //     Image.network(
+                        //   userBProfiels[index].imageUrls[0],
+                        //   width: 80,
+                        //   height: 80,
+                        // ),
+                      ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: Column(
