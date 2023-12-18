@@ -607,7 +607,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     AnimationClick(
                       function: () {
                         Navigator.of(context).pop();
-                        
                       },
                       child: Image.asset(
                         careLeft,
