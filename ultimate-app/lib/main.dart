@@ -10,6 +10,8 @@ import 'package:flutter_ultimate/feed_injection.dart' as feed_injection;
 import 'package:flutter_ultimate/notification_injection.dart'
     as notification_injection;
 import 'package:flutter_ultimate/profile_injection.dart' as profile_injection;
+import 'package:flutter_ultimate/subscription_injection.dart'
+    as subscription_injection;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
@@ -27,6 +29,7 @@ Future<void> main() async {
   await feed_injection.feedInjectionInit();
   await notification_injection.notificationInjectionInit();
   await admin_notification_injection.adminNotificationInjectionInit();
+  await subscription_injection.subscriptionInjectionInit();
 
   Bloc.observer = SimpleBlocObserver();
 

@@ -435,21 +435,22 @@ class Yesterday extends StatelessWidget {
               ),
             ),
             Positioned(
-                right: 8,
-                top: 8,
-                child: AnimationClick(
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        color: green, borderRadius: BorderRadius.circular(24)),
-                    child: Image.asset(
-                      attachment,
-                      width: 16,
-                      height: 16,
-                      color: grey1100,
-                    ),
+              right: 8,
+              top: 8,
+              child: AnimationClick(
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: green, borderRadius: BorderRadius.circular(24)),
+                  child: Image.asset(
+                    attachment,
+                    width: 16,
+                    height: 16,
+                    color: grey1100,
                   ),
-                ))
+                ),
+              ),
+            )
           ],
         ),
       ),
