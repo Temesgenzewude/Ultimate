@@ -661,7 +661,7 @@ class _FeedScreenPageState extends State<FeedScreenPage> {
     listWidget = [
       Routes.feedPage,
       Routes.feedPage,
-      Routes.feedPage,
+      Routes.settingsScreen,
       Routes.profilesLanding,
     ];
     context
@@ -690,7 +690,7 @@ class _FeedScreenPageState extends State<FeedScreenPage> {
             elevation: 0,
             onTap: (value) {
               setState(() {
-                if (_currentIndex != value && value != 1 && value != 2) {
+                if (_currentIndex != value && value != 1) {
                   _currentIndex = value;
                   Future.delayed(Duration.zero, () {
                     Navigator.of(context).pushNamed(listWidget[value]);
@@ -767,8 +767,8 @@ class _FeedScreenPageState extends State<FeedScreenPage> {
           SliverAppBar(
             primary: true,
             pinned: true,
-            expandedHeight: 140,
-            collapsedHeight: 140,
+            expandedHeight: 150,
+            collapsedHeight: 150,
             flexibleSpace: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Column(
