@@ -42,6 +42,8 @@ class PrefManager {
   final String _kState = 'state';
   final String _kCountry = 'country';
   final String _kPostCode = 'postCode';
+  final String _messageKotification = 'message_notification';
+  final String _newsNotification = 'news_notification';
 
   final String _kLastViewedPage = Routes.onBoarding1;
   SharedPreferences preferences;
@@ -157,4 +159,12 @@ class PrefManager {
 
   set postCode(String? value) => preferences.setString(_kPostCode, value ?? '');
   String? get postCode => preferences.getString(_kPostCode);
+
+  set messageNotification(bool? value) =>
+      preferences.setBool(_messageKotification, value ?? true);
+  bool? get messageNotification => preferences.getBool(_messageKotification);
+
+  set newsNotification(bool? value) =>
+      preferences.setBool(_newsNotification, value ?? true);
+  bool? get newsNotification => preferences.getBool(_newsNotification);
 }

@@ -5,6 +5,10 @@ import 'package:flutter_ultimate/common/constant/colors.dart';
 import 'package:flutter_ultimate/common/constant/images.dart';
 import 'package:flutter_ultimate/common/constant/styles.dart';
 import 'package:flutter_ultimate/common/widget/animation_click.dart';
+import 'package:flutter_ultimate/sharedPreferences.dart';
+import 'package:flutter_ultimate/subscription_injection.dart';
+
+final prefManager = sl<PrefManager>();
 
 class NotificationSettings extends StatefulWidget {
   const NotificationSettings({super.key});
@@ -14,15 +18,30 @@ class NotificationSettings extends StatefulWidget {
 }
 
 class _NotificationSettingsState extends State<NotificationSettings> {
-  bool messageMode = false;
-  bool newsMode = false;
+  bool? messageNotification = prefManager.messageNotification;
+  bool? newsNotification = prefManager.newsNotification;
   bool otherMode = false;
 
-  Map<String, bool> switchStates = {
-    'messageMode': true,
-    'newsMode': true,
+  Map<String, bool?> switchStates = {
+    'messageNotification': prefManager.messageNotification,
+    'newsNotification': prefManager.newsNotification,
     'otherMode': true,
   };
+
+  handleSwitch(String type, value) {
+    print(switchStates);
+    setState(() {
+      switchStates[type] = value;
+    });
+
+    if (type == 'messageNotification') {
+      prefManager.messageNotification = value;
+    } else if (type == 'newsNotification') {
+      prefManager.newsNotification = value;
+    }
+    print(
+        'Swtich States$switchStates,\n message Notifications: ${prefManager.messageNotification}, \n news notifications: ${prefManager.newsNotification}');
+  }
 
   Widget item(
     String title,
@@ -54,11 +73,9 @@ class _NotificationSettingsState extends State<NotificationSettings> {
           if (isSwitch) ...[
             CupertinoSwitch(
               activeColor: primary,
-              value: switchStates[valueUsed]!,
+              value: switchStates[valueUsed] ?? true,
               onChanged: (value) {
-                setState(() {
-                  switchStates[valueUsed] = value;
-                });
+                handleSwitch(valueUsed, value);
               },
             )
           ] else ...[
@@ -77,7 +94,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Notificaitons Setting',
           style: TextStyle(
               color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
@@ -104,7 +121,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
               grey300,
               bellRinging,
               isSwitch: true,
-              valueUsed: 'messageMode',
+              valueUsed: 'messageNotification',
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24.0),
@@ -113,18 +130,19 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                 grey300,
                 bellRinging,
                 isSwitch: true,
-                valueUsed: 'newsMode',
+                valueUsed: 'newsNotification',
               ),
             ),
-            item(
-              'All notification',
-              grey300,
-              bellRinging,
-              isSwitch: true,
-              valueUsed: 'otherMode',
-            ),
+            // item(
+            //   'All notification',
+            //   grey300,
+            //   bellRinging,
+            //   isSwitch: true,
+            //   valueUsed: 'otherMode',
+            // ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
               child: AppWidget.typeButtonStartAction(
                 context: context,
                 input: 'Save Settings',
