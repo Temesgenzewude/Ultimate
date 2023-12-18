@@ -434,12 +434,12 @@
 //   }
 // }
 
+// ignore_for_file: always_declare_return_types, unnecessary_statements
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/slider/slider_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/slider/slider_event.dart';
 import 'package:flutter_ultimate/features/profiles/domain/entities/user_b_profile_entity.dart';
-import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/bloc/subscription_bloc/bloc/subscription_bloc_bloc.dart';
 
 import '../../../../app/widget_support.dart';
 import '../../../../common/constant/colors.dart';
@@ -459,15 +459,52 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // late ProfileBloc _profileBloc;
   // late SliderBloc sliderBloc;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _profileBloc = BlocProvider.of<ProfileBloc>(context);
-  //   sliderBloc = BlocProvider.of<SliderBloc>(context);
-  //   _profileBloc.add(GetProfileByIdEvent(userId: 'id'));
-  // }
+  @override
+  void initState() {
+    super.initState();
+    // sliderBloc = BlocProvider.of<SliderBloc>(context);
+  }
+
+  Widget buildSubscriptionButton(SubscriptionState state) {
+    if (state is SubscriptionSuccessState) {
+      // Subscription was successful
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        decoration: BoxDecoration(
+          color: Colors.grey, // Change color accordingly
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Icon(Icons.check, color: Colors.white),
+      );
+    } else if (state is SubscriptionFailureState) {
+      // Subscription failed
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        decoration: BoxDecoration(
+          color: Colors.red, // Change color accordingly
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child:
+            Text('Subscription Failed', style: TextStyle(color: Colors.white)),
+      );
+    } else {
+      // Subscription is in progress or initial state
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        decoration: BoxDecoration(
+          color: Colors.green, // Change color accordingly
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Image.asset(
+          addUser,
+          width: 24,
+          height: 24,
+          color: Colors.grey,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -488,6 +525,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //     print('------------------');
     //     print(state);
     //     print('------------------');
+
+    print('User B Profiles in Screen ${widget.userBProfile.id}');
     return Scaffold(
       body: Stack(
         children: [
@@ -568,6 +607,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     AnimationClick(
                       function: () {
                         Navigator.of(context).pop();
+                        
                       },
                       child: Image.asset(
                         careLeft,
@@ -631,21 +671,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               Row(
                                 children: [
-                                  AnimationClick(
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 16, horizontal: 24),
-                                      decoration: BoxDecoration(
-                                          color: green,
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
-                                      child: Image.asset(
-                                        addUser,
-                                        width: 24,
-                                        height: 24,
-                                        color: grey1100,
-                                      ),
-                                    ),
+                                  BlocBuilder<SubscriptionBloc,
+                                      SubscriptionState>(
+                                    builder: (context, state) {
+                                      return AnimationClick(
+                                        function: () {
+                                          checkSubscriptionState(context)
+                                              ? context
+                                                  .read<SubscriptionBloc>()
+                                                  .add(
+                                                    SubscribeToUserBEvent(
+                                                      userBId: widget
+                                                          .userBProfile.id,
+                                                    ),
+                                                  )
+                                              : () {};
+                                        },
+                                        child: buildSubscriptionButton(state),
+                                      );
+                                    },
                                   ),
                                   const SizedBox(width: 8),
                                   AnimationClick(
@@ -880,5 +924,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
+  }
+
+  bool checkSubscriptionState(BuildContext context) {
+    final state = context.read<SubscriptionBloc>().state;
+    if (state is SubscriptionSuccessState) {
+      return true;
+    }
+    return false;
   }
 }

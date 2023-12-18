@@ -4,13 +4,12 @@ import 'package:flutter_ultimate/features/profiles/data/repositories/profile_rep
 import 'package:flutter_ultimate/features/profiles/domain/repositories/profile_repository.dart';
 import 'package:flutter_ultimate/features/profiles/domain/usecases/getUserB.dart';
 import 'package:flutter_ultimate/features/profiles/domain/usecases/getUserBProfiles.dart';
-import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'features/profiles/data/repositories/profile_repo_impl.dart';
 
 final sl = GetIt.instance;
 Future<void> profileInjectionInit() async {

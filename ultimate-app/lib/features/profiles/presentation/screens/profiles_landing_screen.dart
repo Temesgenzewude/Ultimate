@@ -8,11 +8,9 @@ import 'package:flutter_ultimate/common/route/routes.dart';
 import 'package:flutter_ultimate/common/widget/animation_click.dart';
 import 'package:flutter_ultimate/common/widget/app_bar_cpn.dart';
 import 'package:flutter_ultimate/common/widget/gradient_text.dart';
-import 'package:flutter_ultimate/features/profiles/domain/usecases/getUserBProfiles.dart';
-import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/widgets/for_you.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/widgets/yesterday.dart';
-import 'package:flutter_ultimate/food_delivery/tracking_order/widget/button_swipe.dart';
 
 class ProfileLanding extends StatefulWidget {
   const ProfileLanding({Key? key}) : super(key: key);

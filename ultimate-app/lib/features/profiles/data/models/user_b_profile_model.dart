@@ -77,7 +77,7 @@ class UserBProfileModel extends UserBProfile {
 
   factory UserBProfileModel.fromJson(Map<String, dynamic> json) {
     return UserBProfileModel(
-      id: json['id'] != null ? json['id'] : '',
+      id: json['_id'] != null ? json['_id'] : '',
       name: json['name'] != null ? json['name'] : '',
       about: json['about'] != null ? json['about'] : '',
       address: json['address'] != null ? json['address'] : '',
