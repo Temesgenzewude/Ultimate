@@ -927,9 +927,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   bool checkSubscriptionState(BuildContext context) {
     final state = context.read<SubscriptionBloc>().state;
+    print('Staaaaaaaaaaaaaaaaaaaaaaaaaaaaate: $state');
     if (state is SubscriptionSuccessState) {
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 }
