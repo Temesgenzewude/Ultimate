@@ -21,7 +21,6 @@ import 'package:flutter_ultimate/features/feed/presentation/widgets/user_notific
 import 'package:flutter_ultimate/features/profiles/presentation/screens/profiles_landing_screen.dart';
 import 'package:flutter_ultimate/readings/main_seller_1/widget/podcast.dart';
 
-
 import '../../../../common/util/show_toast_message.dart';
 
 List<Map<String, dynamic>> hotToday = [
@@ -661,7 +660,7 @@ class _FeedScreenPageState extends State<FeedScreenPage> {
     listWidget = [
       Routes.feedPage,
       Routes.feedPage,
-      Routes.settingsScreen,
+      Routes.feedPage,
       Routes.profilesLanding,
     ];
     context
@@ -690,7 +689,7 @@ class _FeedScreenPageState extends State<FeedScreenPage> {
             elevation: 0,
             onTap: (value) {
               setState(() {
-                if (_currentIndex != value && value != 1) {
+                if (_currentIndex != value && value != 1 && value != 2) {
                   _currentIndex = value;
                   Future.delayed(Duration.zero, () {
                     Navigator.of(context).pushNamed(listWidget[value]);

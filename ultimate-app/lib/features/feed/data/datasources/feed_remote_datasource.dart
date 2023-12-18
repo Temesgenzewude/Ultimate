@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'package:flutter_ultimate/core/error/exception.dart';
+import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/features/feed/data/models/feed_model.dart';
 import 'package:flutter_ultimate/features/feed/data/models/notification_model.dart';
+import 'package:flutter_ultimate/sharedPreferences.dart';
 import 'package:http/http.dart' as http;
+
+final prefManager = sl<PrefManager>();
 
 abstract class FeedRemoteDataSource {
   Future<FeedModel> getNews(String id);
@@ -14,6 +18,8 @@ abstract class FeedRemoteDataSource {
 class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
   FeedRemoteDataSourceImpl({required this.client});
 
+  final token = prefManager.token;
+
   final http.Client client;
   final uriString = 'http://13.48.221.106:5001/api/get-all-news';
 
@@ -21,8 +27,7 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
   Future<List<FeedModel>> getAllNews() async {
     final response = await client.get(Uri.parse(uriString), headers: {
       'Content-Type': 'application/json',
-      'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMjE4MDB9.FjFHfuJ96OuCl_V67oICPZqZ1XyGsSEkaYkFtO0H5-Y'
+      'Authorization': '$token'
     });
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
@@ -39,8 +44,7 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
   Future<FeedModel> getNews(String id) async {
     final response = await client.get(Uri.parse(uriString), headers: {
       'Content-Type': 'application/json',
-      'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMjE4MDB9.FjFHfuJ96OuCl_V67oICPZqZ1XyGsSEkaYkFtO0H5-Y'
+      'Authorization': '$token'
     });
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
@@ -57,8 +61,7 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
         'http://13.48.221.106:5001/api/get-admin-notification/64c4f6f91023faf0c2eea068/64c4ec3a56ae9671a80794d7';
     final response = await client.get(Uri.parse(uriString), headers: {
       'Content-Type': 'application/json',
-      'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMjE4MDB9.FjFHfuJ96OuCl_V67oICPZqZ1XyGsSEkaYkFtO0H5-Y'
+      'Authorization': '$token'
     });
 
     if (response.statusCode == 200) {
@@ -79,8 +82,7 @@ class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
         'http://13.48.221.106:5001/api/get-user-notification/65667b59387a98014c307455/654117b9ca01a37d7f8fe2e8';
     final response = await client.get(Uri.parse(uriString), headers: {
       'Content-Type': 'application/json',
-      'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMjE4MDB9.FjFHfuJ96OuCl_V67oICPZqZ1XyGsSEkaYkFtO0H5-Y'
+      'Authorization': '$token'
     });
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);
