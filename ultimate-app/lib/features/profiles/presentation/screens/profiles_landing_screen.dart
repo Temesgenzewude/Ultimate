@@ -33,7 +33,7 @@ class _ProfileLandingState extends State<ProfileLanding> {
     listWidget = [
       Routes.feedPage,
       Routes.feedPage,
-      Routes.feedPage,
+      Routes.settingsScreen,
       Routes.profilesLanding,
     ];
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
@@ -75,7 +75,7 @@ class _ProfileLandingState extends State<ProfileLanding> {
                 elevation: 0,
                 onTap: (value) {
                   setState(() {
-                    if (_currentIndex != value && value != 1 && value != 2) {
+                    if (_currentIndex != value && value != 1) {
                       _currentIndex = value;
                       Future.delayed(Duration.zero, () {
                         Navigator.of(context).pushNamed(listWidget[value]);
