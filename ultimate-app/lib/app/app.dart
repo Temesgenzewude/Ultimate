@@ -181,9 +181,9 @@ class _MyAppState extends State<MyApp> {
         // initialRoute: Routes.profilesLanding,
         // initialRoute: Routes.profile,
 
-        // initialRoute: _isLoggedIn ? Routes.feedPage : Routes.signUp,
+        initialRoute: _isLoggedIn ? Routes.feedPage : Routes.onBoarding1,
         // initialRoute: Routes.main_seller_2,
-        initialRoute: Routes.feedPage,
+        // initialRoute: Routes.feedPage,
 
         navigatorKey: navigatorKey,
         onGenerateRoute: RouteGenerator.generateRoute,

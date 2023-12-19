@@ -98,10 +98,13 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
           // pinned: true,
           floating: false,
           // pinned: true,
-          expandedHeight: height / 1.5,
-          collapsedHeight: height / 1.5,
+          expandedHeight: height / 1.1,
+          collapsedHeight: height / 1.1,
           flexibleSpace: Stack(
             children: [
+              Container(
+                height: height / 1,
+              ),
               // Image Slider Widget
               Container(
                 height: height / 1.5,
@@ -128,40 +131,195 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                 bgProfile8,
                                 height: height / 1.5,
                                 width: width,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                               )
                             : Image.network(
                                 widget.userBProfile.userImages[index],
                                 height: height / 1.5,
                                 width: width,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                               );
                       },
                     );
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       AnimationClick(
+              //         function: () {
+              //           Navigator.of(context).pop();
+              //         },
+              //         child: Image.asset(
+              //           careLeft,
+              //           width: 32,
+              //           height: 32,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
+              Positioned(
+                bottom: 0,
+                left: 0,
+                child: Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    AnimationClick(
-                      function: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Image.asset(
-                        careLeft,
-                        width: 32,
-                        height: 32,
+                    Container(
+                      margin: const EdgeInsets.all(8),
+                      width: width - 16,
+                      decoration: BoxDecoration(
+                          color: grey200,
+                          borderRadius: BorderRadius.circular(16)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 24, right: 24, top: 28),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    //  Name of the user here, you can access it using state.userBProfile.name
+                                    SizedBox(
+                                      width: width / 2,
+                                      child: Text(
+                                        widget.userBProfile.name,
+                                        
+                                        overflow: TextOverflow.ellipsis,
+                                        // 'Albert Flores',
+                                        style: title3(color: grey1100),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      // state.userBProfile.address,
+                                      'UI/UX Designer',
+                                      style: body(color: grey800),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    BlocBuilder<SubscriptionBloc,
+                                        SubscriptionState>(
+                                      builder: (context, state) {
+                                        return AnimationClick(
+                                          function: () {
+                                            checkSubscriptionState(context)
+                                                ? context
+                                                    .read<SubscriptionBloc>()
+                                                    .add(
+                                                      SubscribeToUserBEvent(
+                                                        userBId: widget
+                                                            .userBProfile.id,
+                                                      ),
+                                                    )
+                                                : () {};
+                                          },
+                                          child: buildSubscriptionButton(state),
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(width: 8),
+                                    AnimationClick(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16, horizontal: 24),
+                                        decoration: BoxDecoration(
+                                            color: primary,
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        child: Image.asset(
+                                          chat,
+                                          width: 24,
+                                          height: 24,
+                                          color: grey1100,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+
+                          // User's Address goes here
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24.0, vertical: 10),
+                            child: Text(
+                              widget.userBProfile.address,
+                              style: body(color: grey800),
+                            ),
+                          ),
+                          AppWidget.divider(context,
+                              color: grey1100.withOpacity(0.1), vertical: 6),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  // User's age Section { access it using widget.userBProfile.age}
+                                  widget.userBProfile.age,
+                                  style:
+                                      body(color: grey800, fontWeight: '400'),
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                // User's gender Section { access it using widget.userBProfile.gender}
+
+                                Text(
+                                  widget.userBProfile.gender,
+                                  style: subhead(
+                                    color: grey800,
+                                    fontWeight: '400',
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Text(
+                                  '${widget.userBProfile.height} cm',
+                                  style: subhead(
+                                    color: grey800,
+                                    fontWeight: '400',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // User's About Section { access it using widget.userBProfile.about}
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 24),
+                            child: Text(
+                              widget.userBProfile.about,
+                              // 'Utilmate – UI KIT Mobile App is an unique & creative with high quality & modern design. This package included 1000+ iOS screens.',
+                              style: subhead(color: grey800, fontWeight: '400'),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
               Positioned(
-                top: height / 1.7,
-                left: 24,
+                top: height / 1.8,
+                left: 30,
                 child: IgnorePointer(
                   child: Stack(
                     clipBehavior: Clip.none,
@@ -203,148 +361,148 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
             ],
           ),
         ),
-        SliverToBoxAdapter(
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    color: grey200, borderRadius: BorderRadius.circular(16)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 24, right: 24, top: 28),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //  Name of the user here, you can access it using state.userBProfile.name
-                              Text(
-                                widget.userBProfile.name,
-                                // 'Albert Flores',
-                                style: title3(color: grey1100),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                // state.userBProfile.address,
-                                'UI/UX Designer',
-                                style: body(color: grey800),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              BlocBuilder<SubscriptionBloc, SubscriptionState>(
-                                builder: (context, state) {
-                                  return AnimationClick(
-                                    function: () {
-                                      checkSubscriptionState(context)
-                                          ? context
-                                              .read<SubscriptionBloc>()
-                                              .add(
-                                                SubscribeToUserBEvent(
-                                                  userBId:
-                                                      widget.userBProfile.id,
-                                                ),
-                                              )
-                                          : () {};
-                                    },
-                                    child: buildSubscriptionButton(state),
-                                  );
-                                },
-                              ),
-                              const SizedBox(width: 8),
-                              AnimationClick(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 16, horizontal: 24),
-                                  decoration: BoxDecoration(
-                                      color: primary,
-                                      borderRadius: BorderRadius.circular(16)),
-                                  child: Image.asset(
-                                    chat,
-                                    width: 24,
-                                    height: 24,
-                                    color: grey1100,
-                                  ),
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
+        // SliverToBoxAdapter(
+        //   child: Stack(
+        //     clipBehavior: Clip.none,
+        //     children: [
+        //       Container(
+        //         margin: const EdgeInsets.all(8),
+        //         decoration: BoxDecoration(
+        //             color: grey200, borderRadius: BorderRadius.circular(16)),
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           mainAxisSize: MainAxisSize.min,
+        //           children: [
+        //             Padding(
+        //               padding:
+        //                   const EdgeInsets.only(left: 24, right: 24, top: 28),
+        //               child: Row(
+        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                 children: [
+        //                   Column(
+        //                     crossAxisAlignment: CrossAxisAlignment.start,
+        //                     children: [
+        //                       //  Name of the user here, you can access it using state.userBProfile.name
+        //                       Text(
+        //                         widget.userBProfile.name,
+        //                         // 'Albert Flores',
+        //                         style: title3(color: grey1100),
+        //                       ),
+        //                       const SizedBox(height: 8),
+        //                       Text(
+        //                         // state.userBProfile.address,
+        //                         'UI/UX Designer',
+        //                         style: body(color: grey800),
+        //                       ),
+        //                       const SizedBox(
+        //                         height: 5,
+        //                       ),
+        //                     ],
+        //                   ),
+        //                   Row(
+        //                     children: [
+        //                       BlocBuilder<SubscriptionBloc, SubscriptionState>(
+        //                         builder: (context, state) {
+        //                           return AnimationClick(
+        //                             function: () {
+        //                               checkSubscriptionState(context)
+        //                                   ? context
+        //                                       .read<SubscriptionBloc>()
+        //                                       .add(
+        //                                         SubscribeToUserBEvent(
+        //                                           userBId:
+        //                                               widget.userBProfile.id,
+        //                                         ),
+        //                                       )
+        //                                   : () {};
+        //                             },
+        //                             child: buildSubscriptionButton(state),
+        //                           );
+        //                         },
+        //                       ),
+        //                       const SizedBox(width: 8),
+        //                       AnimationClick(
+        //                         child: Container(
+        //                           padding: const EdgeInsets.symmetric(
+        //                               vertical: 16, horizontal: 24),
+        //                           decoration: BoxDecoration(
+        //                               color: primary,
+        //                               borderRadius: BorderRadius.circular(16)),
+        //                           child: Image.asset(
+        //                             chat,
+        //                             width: 24,
+        //                             height: 24,
+        //                             color: grey1100,
+        //                           ),
+        //                         ),
+        //                       )
+        //                     ],
+        //                   )
+        //                 ],
+        //               ),
+        //             ),
 
-                    // User's Address goes here
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24.0, vertical: 10),
-                      child: Text(
-                        widget.userBProfile.address,
-                        style: body(color: grey800),
-                      ),
-                    ),
-                    AppWidget.divider(context,
-                        color: grey1100.withOpacity(0.1), vertical: 6),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            // User's age Section { access it using widget.userBProfile.age}
-                            widget.userBProfile.age,
-                            style: body(color: grey800, fontWeight: '400'),
-                          ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          // User's gender Section { access it using widget.userBProfile.gender}
+        //             // User's Address goes here
+        //             Padding(
+        //               padding: const EdgeInsets.symmetric(
+        //                   horizontal: 24.0, vertical: 10),
+        //               child: Text(
+        //                 widget.userBProfile.address,
+        //                 style: body(color: grey800),
+        //               ),
+        //             ),
+        //             AppWidget.divider(context,
+        //                 color: grey1100.withOpacity(0.1), vertical: 6),
+        //             Padding(
+        //               padding: const EdgeInsets.symmetric(horizontal: 24),
+        //               child: Row(
+        //                 mainAxisAlignment: MainAxisAlignment.start,
+        //                 children: [
+        //                   Text(
+        //                     // User's age Section { access it using widget.userBProfile.age}
+        //                     widget.userBProfile.age,
+        //                     style: body(color: grey800, fontWeight: '400'),
+        //                   ),
+        //                   const SizedBox(
+        //                     width: 16,
+        //                   ),
+        //                   // User's gender Section { access it using widget.userBProfile.gender}
 
-                          Text(
-                            widget.userBProfile.gender,
-                            style: subhead(
-                              color: grey800,
-                              fontWeight: '400',
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text(
-                            '${widget.userBProfile.height} cm',
-                            style: subhead(
-                              color: grey800,
-                              fontWeight: '400',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+        //                   Text(
+        //                     widget.userBProfile.gender,
+        //                     style: subhead(
+        //                       color: grey800,
+        //                       fontWeight: '400',
+        //                     ),
+        //                   ),
+        //                   const SizedBox(width: 16),
+        //                   Text(
+        //                     '${widget.userBProfile.height} cm',
+        //                     style: subhead(
+        //                       color: grey800,
+        //                       fontWeight: '400',
+        //                     ),
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
 
-                    // User's About Section { access it using widget.userBProfile.about}
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 24),
-                      child: Text(
-                        widget.userBProfile.about,
-                        // 'Utilmate – UI KIT Mobile App is an unique & creative with high quality & modern design. This package included 1000+ iOS screens.',
-                        style: subhead(color: grey800, fontWeight: '400'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        //             // User's About Section { access it using widget.userBProfile.about}
+        //             Padding(
+        //               padding: const EdgeInsets.symmetric(
+        //                   vertical: 10, horizontal: 24),
+        //               child: Text(
+        //                 widget.userBProfile.about,
+        //                 // 'Utilmate – UI KIT Mobile App is an unique & creative with high quality & modern design. This package included 1000+ iOS screens.',
+        //                 style: subhead(color: grey800, fontWeight: '400'),
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
         SliverToBoxAdapter(
           child: Container(
             // height: height / 4,
