@@ -1,4 +1,4 @@
-part of 'subscription_bloc_bloc.dart';
+part of 'subscription_bloc.dart';
 
 abstract class SubscriptionState extends Equatable {
   const SubscriptionState();
@@ -12,6 +12,7 @@ class SubscriptionInitialState extends SubscriptionState {}
 class SubscriptionLoadingState extends SubscriptionState {}
 
 class SubscriptionSuccessState extends SubscriptionState {}
+class UnSubscriptionSuccessState extends SubscriptionState {}
 
 class SubscriptionFailureState extends SubscriptionState {
   const SubscriptionFailureState({required this.error});

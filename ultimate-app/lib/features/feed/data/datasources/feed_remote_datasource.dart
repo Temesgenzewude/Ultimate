@@ -18,7 +18,9 @@ abstract class FeedRemoteDataSource {
 class FeedRemoteDataSourceImpl implements FeedRemoteDataSource {
   FeedRemoteDataSourceImpl({required this.client});
 
-  final token = prefManager.token;
+  final String token = prefManager.token != null
+      ? prefManager.token!
+      : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMTc5ODJ9.-PQ-asf1kutm-aROOOJU1ldheEogRK6ekMuzBF1GevA';
 
   final http.Client client;
   final uriString = 'http://13.48.221.106:5001/api/get-all-news';

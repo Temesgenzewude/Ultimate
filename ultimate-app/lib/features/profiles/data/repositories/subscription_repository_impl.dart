@@ -27,5 +27,19 @@ class SubscriptionRepositoryImpl implements SubscriptionRepository {
     } else {
       return const Left(NetworkFailure('No Internet Connection'));
     }
-  } 
+  }
+
+  Future<Either<Failure, bool>> unSubscribeToUserB(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        print('id in repository $id');
+        final state = await remoteDataSource.unSubscribeToUserBProfile(id);
+        return Right(state);
+      } on ServerException {
+        return const Left(ServerFailure('Internal Server Error'));
+      }
+    } else {
+      return const Left(NetworkFailure('No Internet Connection'));
+    }
+  }
 }
