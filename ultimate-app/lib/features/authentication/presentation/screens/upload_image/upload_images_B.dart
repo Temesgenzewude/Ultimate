@@ -104,6 +104,7 @@ class _UploadImagesState extends State<UploadImagesB> {
   @override
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
+    //REPLACED THE WILLPOPSCOPE WITH POPSCOPE 
     return PopScope(
       canPop: false,
       child: Scaffold(
