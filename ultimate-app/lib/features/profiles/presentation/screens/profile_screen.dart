@@ -621,6 +621,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   //   width: width,
                   //   fit: BoxFit.fill,
                   // ),
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      height: height / 2,
+                      width: width,
+                      decoration: BoxDecoration(
+                          gradient: Theme.of(context).colorLinearBottom2),
+                    ),
+                  ),
+                  // Image.asset(
+                  //   bgProfile8,
+                  //   height: height / 1.5,
+                  //   width: width,
+                  //   fit: BoxFit.fill,
+                  // ),
                   // Positioned(
                   //   bottom: 0,
                   //   child: Container(
