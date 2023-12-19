@@ -21,9 +21,9 @@ mixin AppWidget {
       barrierDismissible: false,
       barrierColor: grey900,
       builder: (BuildContext context) {
-        return WillPopScope(
-            onWillPop: () async => false,
-            child: const CupertinoActivityIndicator(
+        return const PopScope(
+            canPop: false,
+            child: CupertinoActivityIndicator(
               animating: true,
             ));
       },

@@ -104,10 +104,8 @@ class _UploadImagesState extends State<UploadImagesB> {
   @override
   Widget build(BuildContext context) {
     final height = AppWidget.getHeightScreen(context);
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         appBar: AppBarCpn(
           left: Padding(

@@ -36,10 +36,13 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
         decoration: BoxDecoration(
-          color: Colors.grey, // Change color accordingly
+          color: Colors.white, // Change color accordingly
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Icon(Icons.check, color: Colors.white),
+        child: const Icon(
+          Icons.check,
+          color: Colors.green,
+        ),
       );
     } else if (state is SubscriptionFailureState) {
       // Subscription failed
@@ -49,8 +52,10 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
           color: Colors.red, // Change color accordingly
           borderRadius: BorderRadius.circular(16),
         ),
-        child:
-            Text('Subscription Failed', style: TextStyle(color: Colors.white)),
+        child: const Text(
+          'Subscription Failed',
+          style: TextStyle(color: Colors.white),
+        ),
       );
     } else {
       // Subscription is in progress or initial state
@@ -193,7 +198,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                       width: width / 2,
                                       child: Text(
                                         widget.userBProfile.name,
-                                        
+
                                         overflow: TextOverflow.ellipsis,
                                         // 'Albert Flores',
                                         style: title3(color: grey1100),
@@ -217,16 +222,29 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                                       builder: (context, state) {
                                         return AnimationClick(
                                           function: () {
-                                            checkSubscriptionState(context)
-                                                ? context
-                                                    .read<SubscriptionBloc>()
-                                                    .add(
-                                                      SubscribeToUserBEvent(
-                                                        userBId: widget
-                                                            .userBProfile.id,
-                                                      ),
-                                                    )
-                                                : () {};
+                                            if (!checkSubscriptionState(
+                                                context)) {
+                                              // User is subscribed, trigger unsubscribe event
+                                              context
+                                                  .read<SubscriptionBloc>()
+                                                  .add(
+                                                    UnSubscribeToUserBEvent(
+                                                      userBId: widget
+                                                          .userBProfile.id,
+                                                    ),
+                                                  );
+                                            } else {
+                                              print("heeeeere");
+                                              // User is not subscribed, trigger subscribe event
+                                              context
+                                                  .read<SubscriptionBloc>()
+                                                  .add(
+                                                    SubscribeToUserBEvent(
+                                                      userBId: widget
+                                                          .userBProfile.id,
+                                                    ),
+                                                  );
+                                            }
                                           },
                                           child: buildSubscriptionButton(state),
                                         );
