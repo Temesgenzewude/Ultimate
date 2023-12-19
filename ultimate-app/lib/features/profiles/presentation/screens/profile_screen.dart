@@ -481,7 +481,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/slider/slider_bloc.dart';
 import 'package:flutter_ultimate/common/bloc/slider/slider_event.dart';
 import 'package:flutter_ultimate/features/profiles/domain/entities/user_b_profile_entity.dart';
-import 'package:flutter_ultimate/features/profiles/presentation/bloc/subscription_bloc/bloc/subscription_bloc_bloc.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/bloc/subscription_bloc/bloc/subscription_bloc.dart';
 
 import '../../../../app/widget_support.dart';
 import '../../../../common/constant/colors.dart';
