@@ -8,6 +8,7 @@ import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/features/feed/presentation/screens/feed_screen.dart';
 import 'package:flutter_ultimate/features/profiles/domain/entities/user_b_profile_entity.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/screens/profiles_landing_screen.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/screens/try.dart';
 import 'package:flutter_ultimate/features/settings/presentation/screens/notification_settings_screen.dart';
 import 'package:flutter_ultimate/features/settings/presentation/screens/settings_screen.dart';
 import 'package:flutter_ultimate/onboardings/terms_and_conditions.dart';
@@ -122,7 +123,7 @@ mixin RouteGenerator {
           builder: (context) => const MenuOnboardingNavigation(),
         );
 
-        case Routes.notificationSetting:
+      case Routes.notificationSetting:
         return MaterialPageRoute<dynamic>(
           builder: (context) => const NotificationSettings(),
         );
@@ -133,9 +134,9 @@ mixin RouteGenerator {
       case Routes.profile:
         return MaterialPageRoute<dynamic>(builder: (context) {
           final arguments = settings.arguments as UserBProfile;
-          return ProfileScreen(
-            userBProfile: arguments,
-          );
+          return ProfileScreen2(
+              userBProfile: arguments,
+              );
         });
       case Routes.feedPage:
         return MaterialPageRoute<dynamic>(
