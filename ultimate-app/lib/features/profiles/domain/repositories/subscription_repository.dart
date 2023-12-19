@@ -3,4 +3,5 @@ import 'package:flutter_ultimate/core/error/failure.dart';
 
 abstract class SubscriptionRepository {
   Future<Either<Failure, bool>> subscribeToUserB(String id);
+  Future<Either<Failure, bool>> unSubscribeToUserB(String id);
 }
