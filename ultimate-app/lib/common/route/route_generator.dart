@@ -134,7 +134,7 @@ mixin RouteGenerator {
       case Routes.profile:
         return MaterialPageRoute<dynamic>(builder: (context) {
           final arguments = settings.arguments as UserBProfile;
-          return ProfileScreen2(
+          return ProfileScreen(
               userBProfile: arguments,
               );
         });
