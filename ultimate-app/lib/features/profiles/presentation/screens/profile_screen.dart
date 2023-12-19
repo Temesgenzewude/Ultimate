@@ -2,7 +2,7 @@
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_ultimate/common/bloc/slider/slider_bloc.dart';
 // import 'package:flutter_ultimate/common/bloc/slider/slider_event.dart';
-// import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc.dart';
+// import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc/profile_bloc.dart';
 // import 'package:flutter_ultimate/socials_media/feed/widget/onboarding_widget.dart';
 
 // import '../../../../app/widget_support.dart';
@@ -13,7 +13,7 @@
 
 // List<String> items = [bgProfile51, bgProfile52, bgProfile53, bgProfile54];
 
-// class ProfileScreen extends widgetfulWidget {
+// class ProfileScreen extends StatefulWidget {
 //   const ProfileScreen({super.key});
 
 //   @override
@@ -21,15 +21,15 @@
 // }
 
 // class _ProfileScreenState extends State<ProfileScreen> {
-// late ProfileBloc _profileBloc;
-// late SliderBloc sliderBloc;
-// @override
-// void initState() {
-//   super.initState();
-//   _profileBloc = BlocProvider.of<ProfileBloc>(context);
-//   sliderBloc = BlocProvider.of<SliderBloc>(context);
-//   _profileBloc.add(GetProfileByIdEvent(userId: 'id'));
-// }
+//   late ProfileBloc _profileBloc;
+//   late SliderBloc sliderBloc;
+//   @override
+//   void initState() {
+//     super.initState();
+//     _profileBloc = BlocProvider.of<ProfileBloc>(context);
+//     sliderBloc = BlocProvider.of<SliderBloc>(context);
+//     _profileBloc.add(GetProfileByIdEvent(userId: 'id'));
+//   }
 
 //   Map<String, dynamic> item = <String, dynamic>{
 //     'avt': avtFemale,
@@ -56,19 +56,19 @@
 //   Widget build(BuildContext context) {
 //     final height = AppWidget.getHeightScreen(context);
 //     final width = AppWidget.getWidthScreen(context);
-// return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-//   if (state is ProfileLoadingState) {
-//     return const Scaffold(
-//       body: Center(child: CircularProgressIndicator()),
-//     );
-//   } else if (state is ProfileFailureState) {
-//     return const Scaffold(
-//       body: Text('Succcess'),
-//     );
-//   } else if (state is UserBProfileSuccessState) {
-//     print("Thisis state ");
-//     print(state);
-//     return Scaffold(
+//     return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+//       if (state is ProfileLoadingState) {
+//         return const Scaffold(
+//           body: Center(child: CircularProgressIndicator()),
+//         );
+//       } else if (state is ProfileFailureState) {
+//         return const Scaffold(
+//           body: Text('Succcess'),
+//         );
+//       } else if (state is UserBProfileSuccessState) {
+//         print("Thisis state ");
+//         print(state);
+//         return Scaffold(
 //           body: NestedScrollView(
 //             headerSliverBuilder:
 //                 (BuildContext context, bool innerBoxIsScrolled) {
@@ -81,48 +81,88 @@
 //                     background: Stack(
 //                       alignment: Alignment.bottomCenter,
 //                       children: [
-// AnimationClick(
-//   child: Container(
-//     margin: const EdgeInsets.symmetric(horizontal: 4),
-//     decoration: BoxDecoration(
-//         color: item['bgColor'],
-//         borderRadius: BorderRadius.circular(16)),
-//     child: BlocBuilder<SliderBloc, int>(
-//       builder: (context, sliderState) {
-//         return PageView.builder(
-//           scrollDirection: Axis.horizontal,
-//           itemCount: item['bgImage'].length,
-//           onPageChanged: (value) {
-//             if (value > sliderState) {
-//               sliderBloc.add(SwipeRight());
-//             } else {
-//               sliderBloc.add(SwipeLeft());
-//             }
-//           },
-//           itemBuilder: (context, index) {
-//             return
-//                 Image.asset(
-//                   item['bgImage'][index],
-//                 );
-//             //     ColorFiltered(
-//             //   colorFilter: ColorFilter.mode(
-//             //     const Color.fromARGB(255, 0, 0, 0)
-//             //         .withOpacity(
-//             //             0.5), // Adjust opacity and color as needed
-//             //     BlendMode.srcOver,
-//             //   ),
-//             //   child: Image.network(
-//             //     state.userBProfile.imageUrls[0],
-//             //     fit: BoxFit.fill,
-//             //     // opacity: ,
-//             //   ),
-//             // );
-//           },
-//         );
-//       },
-//     ),
-//   ),
-// ),
+//                         AnimationClick(
+//                           child: Container(
+//                             margin: const EdgeInsets.symmetric(horizontal: 4),
+//                             decoration: BoxDecoration(
+//                                 color: item['bgColor'],
+//                                 borderRadius: BorderRadius.circular(16)),
+//                             child: BlocBuilder<SliderBloc, int>(
+//                               builder: (context, sliderState) {
+//                                 return PageView.builder(
+//                                   scrollDirection: Axis.horizontal,
+//                                   itemCount: item['bgImage'].length,
+//                                   onPageChanged: (value) {
+//                                     if (value > sliderState) {
+//                                       sliderBloc.add(SwipeRight());
+//                                     } else {
+//                                       sliderBloc.add(SwipeLeft());
+//                                     }
+//                                   },
+//                                   itemBuilder: (context, index) {
+//                                     return Image.asset(
+//                                       item['bgImage'][index],
+//                                     );
+//                                     //     ColorFiltered(
+//                                     //   colorFilter: ColorFilter.mode(
+//                                     //     const Color.fromARGB(255, 0, 0, 0)
+//                                     //         .withOpacity(
+//                                     //             0.5), // Adjust opacity and color as needed
+//                                     //     BlendMode.srcOver,
+//                                     //   ),
+//                                     //   child: Image.network(
+//                                     //     state.userBProfile.imageUrls[0],
+//                                     //     fit: BoxFit.fill,
+//                                     //     // opacity: ,
+//                                     //   ),
+//                                     // );
+//                                   },
+//                                 );
+//                               },
+//                             ),
+//                           ),
+//                         ),
+//                         Positioned(
+//                           top: 260,
+//                           left: 24,
+//                           child: IgnorePointer(
+//                             child: Stack(
+//                               clipBehavior: Clip.none,
+//                               children: [
+//                                 ClipRRect(
+//                                     borderRadius: BorderRadius.circular(16),
+//                                     child: Image.asset(
+//                                       avtFemale,
+//                                       width: 80,
+//                                       height: 80,
+//                                       fit: BoxFit.cover,
+//                                     )
+//                                     // Image.network(
+//                                     //     widget.userBProfile.imageUrl,
+//                                     //     width: 80,
+//                                     //     height: 80,
+//                                     //     fit: BoxFit.cover,
+//                                     //   ),
+//                                     ),
+//                                 Positioned(
+//                                   bottom: 0,
+//                                   right: 0,
+//                                   child: Container(
+//                                     decoration: BoxDecoration(
+//                                         color: grey1100,
+//                                         borderRadius:
+//                                             BorderRadius.circular(32)),
+//                                     child: Image.asset(
+//                                       checkbox,
+//                                       width: 24,
+//                                       height: 24,
+//                                     ),
+//                                   ),
+//                                 )
+//                               ],
+//                             ),
+//                           ),
+//                         ),
 //                         Positioned(
 //                           bottom: 16,
 //                           child: BlocBuilder<SliderBloc, int>(
@@ -438,6 +478,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/slider/slider_bloc.dart';
+import 'package:flutter_ultimate/common/bloc/slider/slider_event.dart';
 import 'package:flutter_ultimate/features/profiles/domain/entities/user_b_profile_entity.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/bloc/subscription_bloc/bloc/subscription_bloc_bloc.dart';
 
@@ -459,11 +501,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // late SliderBloc sliderBloc;
+  late SliderBloc sliderBloc;
   @override
   void initState() {
     super.initState();
-    // sliderBloc = BlocProvider.of<SliderBloc>(context);
+    sliderBloc = BlocProvider.of<SliderBloc>(context);
   }
 
   Widget buildSubscriptionButton(SubscriptionState state) {
@@ -536,58 +578,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Stack(
                 children: [
                   // Image Slider Widget
-                  // Container(
-                  //   height: height / 1.5,
-                  //   margin: const EdgeInsets.symmetric(horizontal: 4),
-                  //   decoration: BoxDecoration(
-                  //       color: grey200,
-                  //       borderRadius: BorderRadius.circular(16)),
-                  //   child: BlocBuilder<SliderBloc, int>(
-                  //     builder: (context, sliderState) {
-                  //       return PageView.builder(
-                  //         scrollDirection: Axis.horizontal,
-                  //         itemCount: 3,
-                  //         onPageChanged: (value) {
-                  //           if (value > sliderState) {
-                  //             sliderBloc.add(SwipeRight());
-                  //           } else {
-                  //             sliderBloc.add(SwipeLeft());
-                  //           }
-                  //         },
-                  //         itemBuilder: (context, index) {
-                  //           return Image.asset(
-                  //             bgProfile8,
-                  //             height: height / 1.5,
-                  //             width: width,
-                  //             fit: BoxFit.fill,
-                  //           );
-                  //           //     Image.network(
-                  //           //   state.userBProfile.imageUrls[0],
-                  //           //   height: height / 1.5,
-                  //           //   width: width,
-                  //           //   fit: BoxFit.fill,
-                  //           // );
-                  //           // );
-                  //         },
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
-                  Image.asset(
-                    bgProfile8,
+                  Container(
                     height: height / 1.5,
-                    width: width,
-                    fit: BoxFit.fill,
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      height: height / 2,
-                      width: width,
-                      decoration: BoxDecoration(
-                          gradient: Theme.of(context).colorLinearBottom2),
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                        color: grey200,
+                        borderRadius: BorderRadius.circular(16)),
+                    child: BlocBuilder<SliderBloc, int>(
+                      builder: (context, sliderState) {
+                        return PageView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 3,
+                          onPageChanged: (value) {
+                            if (value > sliderState) {
+                              sliderBloc.add(SwipeRight());
+                            } else {
+                              sliderBloc.add(SwipeLeft());
+                            }
+                          },
+                          itemBuilder: (context, index) {
+                            return Image.asset(
+                              bgProfile8,
+                              height: height / 1.5,
+                              width: width,
+                              fit: BoxFit.fill,
+                            );
+                            //     Image.network(
+                            //   state.userBProfile.imageUrls[0],
+                            //   height: height / 1.5,
+                            //   width: width,
+                            //   fit: BoxFit.fill,
+                            // );
+                            // );
+                          },
+                        );
+                      },
                     ),
                   ),
+                  // Image.asset(
+                  //   bgProfile8,
+                  //   height: height / 1.5,
+                  //   width: width,
+                  //   fit: BoxFit.fill,
+                  // ),
+                  // Positioned(
+                  //   bottom: 0,
+                  //   child: Container(
+                  //     height: height / 2,
+                  //     width: width,
+                  //     decoration: BoxDecoration(
+                  //         gradient: Theme.of(context).colorLinearBottom2),
+                  //   ),
+                  // ),
                 ],
               ),
               Container(
@@ -919,7 +961,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               )
             ],
-          )
+          ),
         ],
       ),
     );
