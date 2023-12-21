@@ -19,19 +19,17 @@ class SubscriptionRemoteDataSourceImpl implements SubscriptionRemoteDataSource {
   final String token = prefManager.token != null
       ? prefManager.token!
       : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ0MjI3YTY3NjcxNWE3ZmZlZDk3NTMiLCJpYXQiOjE3MDEyMTc5ODJ9.-PQ-asf1kutm-aROOOJU1ldheEogRK6ekMuzBF1GevA';
-  final userId = prefManager.userID != null ? prefManager.userID : '650715c50bb99669bcab3816';
+  final userId = prefManager.userID != null
+      ? prefManager.userID
+      : '650715c50bb99669bcab3816';
 
   @override
   Future<bool> subscribeToUserBProfile(id) async {
-    final uriString =
-        'http://13.48.221.106:5001/api/subscribe/$userId';
+    final uriString = 'http://13.48.221.106:5001/api/subscribe/$userId';
     print('id $id');
     final response = await client.get(
       Uri.parse('$uriString/$id'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': '$token'
-      },
+      headers: {'Content-Type': 'application/json', 'Authorization': '$token'},
     );
 
     print('---------------------');
@@ -49,14 +47,14 @@ class SubscriptionRemoteDataSourceImpl implements SubscriptionRemoteDataSource {
   Future<bool> unSubscribeToUserBProfile(id) async {
     const uriString = 'https://teessidetech.live/api/unsubscribe';
     print('id $id');
+    print('id $userId');
     final response = await client.get(
-      Uri.parse('$uriString/$id/$userId'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization':
-            '$token'
-      },
+      Uri.parse('$uriString/$userId/$id'),
+      headers: {'Content-Type': 'application/json', 'Authorization': '$token'},
     );
+    print('------Unsubscribe-------');
+    print(response.body);
+    print('------Unsubscribe-------');
 
     if (response.statusCode == 200) {
       return true;
