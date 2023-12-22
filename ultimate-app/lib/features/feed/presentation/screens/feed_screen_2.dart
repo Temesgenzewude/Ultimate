@@ -13,9 +13,12 @@ import 'package:flutter_ultimate/features/feed/domain/entities/feed_entity.dart'
 import 'package:flutter_ultimate/features/feed/presentation/bloc/admin_notification_bloc.dart';
 import 'package:flutter_ultimate/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:flutter_ultimate/features/feed/presentation/bloc/notification_bloc.dart';
+import 'package:flutter_ultimate/features/feed/presentation/widgets/admin_notification_shimmer.dart';
 import 'package:flutter_ultimate/features/feed/presentation/widgets/admin_notification_widget.dart';
 import 'package:flutter_ultimate/features/feed/presentation/widgets/build_tab_bar.dart';
+import 'package:flutter_ultimate/features/feed/presentation/widgets/feed_shimmer.dart';
 import 'package:flutter_ultimate/features/feed/presentation/widgets/item_coin.dart';
+import 'package:flutter_ultimate/features/feed/presentation/widgets/user_notification_shimmer.dart';
 import 'package:flutter_ultimate/features/feed/presentation/widgets/user_notification_widget.dart';
 import 'package:flutter_ultimate/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
@@ -318,13 +321,10 @@ class _FeedScreenState extends State<FeedScreen> {
                         AdminNotificationState>(
                       builder: (context, state) {
                         if (state is AdminNotificationLoadingState) {
-                          return Column(
+                          return const Column(
                             children: [
-                              const Text('Loading Admin Notifications'),
-                              LoadingAnimationWidget.fourRotatingDots(
-                                color: Colors.white,
-                                size: 20,
-                              ),
+                              AdminNotificationShimmer(),
+                              AdminNotificationShimmer()
                             ],
                           );
                         } else if (state is AdminNotificationFailureState) {
@@ -344,7 +344,6 @@ class _FeedScreenState extends State<FeedScreen> {
                             ],
                           );
                         } else if (state is AdminNotificationSuccessState) {
-                          // List<NotificationEntity> adminNotifications = state.adminNotifications.reversed.toList();
                           return Column(
                             children: [
                               AdminNotificaton(
@@ -383,12 +382,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   child: BlocBuilder<FeedBloc, FeedState>(
                     builder: (context, state) {
                       if (state is FeedLoadingState) {
-                        return const Column(
-                          children: [
-                            Text('Loading Feed'),
-                            CircularProgressIndicator(),
-                          ],
-                        );
+                        return FeedShimmer();
                       } else if (state is FeedFailureState) {
                         return Column(
                           children: [
@@ -535,12 +529,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         BlocBuilder<NotificationBloc, NotificationState>(
                       builder: (context, state) {
                         if (state is NotificationLoadingState) {
-                          return const Column(
-                            children: [
-                              Text('Loading User Notifications'),
-                              CircularProgressIndicator(),
-                            ],
-                          );
+                          return const UserNotificationShimmer();
                         } else if (state is UserNotificationFailureState) {
                           return Column(
                             children: [

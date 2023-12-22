@@ -464,12 +464,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            87,
-                            163,
-                            198,
-                          ),
+                          backgroundColor:
+                              const Color.fromARGB(255, 87, 163, 198),
                           labelStyle: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,
