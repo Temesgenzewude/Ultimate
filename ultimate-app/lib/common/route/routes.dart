@@ -5,6 +5,7 @@ class Routes {
   static const String settingsScreen = '/settingsScreen';
   static const String profilesLanding = '/profilesLandingPage';
   static const String notificationSetting = '/notificationSettingPage';
+  static const String userNotificationsScreen = '/userNotificationsScreen';
 
 
   static const String profile1 = '/profile1';

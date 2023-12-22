@@ -20,9 +20,11 @@ import 'package:flutter_ultimate/features/feed/presentation/bloc/feed_bloc.dart'
 import 'package:flutter_ultimate/features/feed/presentation/bloc/notification_bloc.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/bloc/subscription_bloc/bloc/subscription_bloc.dart';
+import 'package:flutter_ultimate/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:flutter_ultimate/notification_injection.dart'
     as notificationInjection;
 import 'package:flutter_ultimate/profile_injection.dart' as injection;
+import 'package:flutter_ultimate/settings_injection.dart' as settingsInjection;
 import 'package:flutter_ultimate/subscription_injection.dart'
     as subscriptionInjection;
 import 'package:http/http.dart' as http;
@@ -173,6 +175,10 @@ class _MyAppState extends State<MyApp> {
           create: (BuildContext context) =>
               subscriptionInjection.sl<SubscriptionBloc>(),
         ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              settingsInjection.sl<NotificationSettingsBloc>(),
+        ),
       ],
       child: MaterialApp(
         // initialRoute: prefManager.lastViewedPage ??
@@ -182,7 +188,7 @@ class _MyAppState extends State<MyApp> {
         // initialRoute: Routes.profile,
 
         // initialRoute: _isLoggedIn ? Routes.feedPage : Routes.signUp,
-        // initialRoute: Routes.main_seller_2,
+        // initialRoute: Routes.main_seller_1,
         initialRoute: Routes.feedPage,
 
         navigatorKey: navigatorKey,

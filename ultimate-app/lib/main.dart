@@ -10,13 +10,14 @@ import 'package:flutter_ultimate/feed_injection.dart' as feed_injection;
 import 'package:flutter_ultimate/notification_injection.dart'
     as notification_injection;
 import 'package:flutter_ultimate/profile_injection.dart' as profile_injection;
+import 'package:flutter_ultimate/settings_injection.dart' as settings_injection;
 import 'package:flutter_ultimate/subscription_injection.dart'
     as subscription_injection;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
 
-//TODO: THIS IS THE LATESTE CODE WORKING FINE FOR BOTH USER A AND USER B 
+//TODO: THIS IS THE LATESTE CODE WORKING FINE FOR BOTH USER A AND USER B
 //TODO: CHECK THIS LINE TO CONFIRM THAT THE CODE IS THE LATEST ONE
 
 Future<void> main() async {
@@ -30,6 +31,7 @@ Future<void> main() async {
   await notification_injection.notificationInjectionInit();
   await admin_notification_injection.adminNotificationInjectionInit();
   await subscription_injection.subscriptionInjectionInit();
+  await settings_injection.settingsInjectionInit();
 
   Bloc.observer = SimpleBlocObserver();
 
