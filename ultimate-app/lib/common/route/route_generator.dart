@@ -6,6 +6,7 @@ import 'package:flutter_ultimate/features/authentication/presentation/screens/up
 import 'package:flutter_ultimate/features/authentication/presentation/screens/upload_image/upload_images_B.dart';
 import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/features/feed/presentation/screens/feed_screen.dart';
+import 'package:flutter_ultimate/features/feed/presentation/screens/feed_screen_2.dart';
 import 'package:flutter_ultimate/features/profiles/domain/entities/user_b_profile_entity.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/screens/profiles_landing_screen.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/screens/try.dart';
@@ -140,7 +141,7 @@ mixin RouteGenerator {
         });
       case Routes.feedPage:
         return MaterialPageRoute<dynamic>(
-          builder: (context) => const FeedScreenPage(),
+          builder: (context) => const FeedScreen2(),
         );
       case Routes.finance:
         return MaterialPageRoute<dynamic>(

@@ -1,10 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ultimate/app/widget_support.dart';
 import 'package:flutter_ultimate/common/constant/colors.dart';
 import 'package:flutter_ultimate/common/constant/images.dart';
 import 'package:flutter_ultimate/common/constant/styles.dart';
 import 'package:flutter_ultimate/common/route/routes.dart';
+import 'package:flutter_ultimate/common/util/show_toast_message.dart';
 import 'package:flutter_ultimate/common/widget/animation_click.dart';
+import 'package:flutter_ultimate/features/authentication/data/data_sources/auth_remote_data_source.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/bloc/auth/authentication_bloc.dart';
+import 'package:flutter_ultimate/features/authentication/presentation/bloc/auth/b/authentication_bloc_b.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -214,12 +220,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            AnimationClick(
-                              child: Text(
-                                'Logout',
-                                style: body(color: grey600),
-                              ),
-                            ),
+                            if (prefManager.userType == 'User A')
+                              Expanded(child: userALogoutBloc()),
+                            if (prefManager.userType == 'User B')
+                              Expanded(child: userBLogoutBloc()),
+                            // AnimationClick(
+                            //   child: Text(
+                            //     'Logout',
+                            //     style: body(color: grey600),
+                            //   ),
+                            // ),
                             Text(
                               'Feb 2021',
                               style: body(color: grey600),
@@ -236,6 +246,76 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  BlocConsumer<AuthenticationBlocB, AuthenticationBState> userBLogoutBloc() {
+    return BlocConsumer<AuthenticationBlocB, AuthenticationBState>(
+      listener: (context, state) {
+        if (state is UserBLogoutSuccessState) {
+          Utils.snackBar(context, message: 'Logout Success');
+
+          Future.delayed(const Duration(seconds: 1), () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, Routes.onBoarding1, (route) => false);
+          });
+        } else if (state is UserBLogoutFailureState) {
+          Utils.snackBar(context, message: state.errorMessage);
+        }
+      },
+      builder: (context, state) {
+        if (state is UserBLogoutLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is UserBLogoutSuccessState) {
+          return Container();
+        } else {
+          return AppWidget.typeButtonStartAction2(
+              context: context,
+              input: 'Logout',
+              onPressed: () {
+                BlocProvider.of<AuthenticationBlocB>(context)
+                    .add(UserBLogoutEvent());
+              },
+              bgColor: primary,
+              borderColor: primary,
+              textColor: grey1100);
+        }
+      },
+    );
+  }
+
+  BlocConsumer<AuthenticationBloc, AuthenticationState> userALogoutBloc() {
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+      listener: (context, state) {
+        if (state is LogoutSuccessState) {
+          Utils.snackBar(context, message: 'Logout Success');
+
+          Future.delayed(const Duration(seconds: 1), () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, Routes.onBoarding1, (route) => false);
+          });
+        } else if (state is LogoutFailureState) {
+          Utils.snackBar(context, message: state.errorMessage);
+        }
+      },
+      builder: (context, state) {
+        if (state is LogoutLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is LogoutSuccessState) {
+          return Container();
+        } else {
+          return AppWidget.typeButtonStartAction2(
+            context: context,
+            input: 'Logout',
+            onPressed: () {
+              BlocProvider.of<AuthenticationBloc>(context).add(LogoutEvent());
+            },
+            bgColor: primary,
+            borderColor: primary,
+            textColor: grey1100,
+          );
+        }
+      },
     );
   }
 }

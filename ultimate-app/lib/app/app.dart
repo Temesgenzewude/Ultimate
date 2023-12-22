@@ -19,7 +19,7 @@ import 'package:flutter_ultimate/features/feed/presentation/bloc/admin_notificat
 import 'package:flutter_ultimate/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:flutter_ultimate/features/feed/presentation/bloc/notification_bloc.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc/profile_bloc.dart';
-import 'package:flutter_ultimate/features/profiles/presentation/bloc/subscription_bloc/bloc/subscription_bloc_bloc.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/bloc/subscription_bloc/bloc/subscription_bloc.dart';
 import 'package:flutter_ultimate/notification_injection.dart'
     as notificationInjection;
 import 'package:flutter_ultimate/profile_injection.dart' as injection;

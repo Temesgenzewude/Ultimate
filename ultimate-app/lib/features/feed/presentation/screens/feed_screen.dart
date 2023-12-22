@@ -358,93 +358,90 @@ class _FeedScreenState extends State<FeedScreen> {
                     const SizedBox(height: 24),
                     buildTabBar(),
                     //TODO: THIS IS CAUSING ISSUE WITH THE LAYOUT
-                    SizedBox(
-                      height: state.feeds.isEmpty ? 100 : 500,
-                      child: state.feeds.isEmpty
-                          ? Text(
-                              'There is no feed right now',
-                              style: headline(color: grey1100),
-                            )
-                          : ListView.builder(
-                              // physics: const NeverScrollableScrollPhysics(),
-                              // shrinkWrap: true,
-                              itemCount: state.feeds.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: AnimationClick(
-                                    child: Container(
-                                      height: 400,
-                                      width: width - 24,
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                          color: grey200,
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              child: Image.asset(
-                                                main_seller_1,
-                                                width: width - 24,
-                                                fit: BoxFit.cover,
-                                              ),
+                    state.feeds.isEmpty
+                        ? Text(
+                            'There is no feed right now',
+                            style: headline(color: grey1100),
+                          )
+                        : ListView.builder(
+                            // physics: const NeverScrollableScrollPhysics(),
+                            // shrinkWrap: true,
+                            itemCount: state.feeds.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AnimationClick(
+                                  child: Container(
+                                    height: 400,
+                                    width: width - 24,
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                        color: grey200,
+                                        borderRadius:
+                                            BorderRadius.circular(16)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                            child: Image.asset(
+                                              main_seller_1,
+                                              width: width - 24,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 16),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 8,
-                                                        horizontal: 12),
-                                                decoration: BoxDecoration(
-                                                    color: primary,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12)),
-                                                child: Text(
-                                                  'Tag',
-                                                  style:
-                                                      caption1(color: grey1100),
-                                                ),
-                                              ),
-                                              Text(
-                                                state.feeds[index].newsExcerpt,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 16),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8,
+                                                      horizontal: 12),
+                                              decoration: BoxDecoration(
+                                                  color: primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12)),
+                                              child: Text(
+                                                'Tag',
                                                 style:
-                                                    headline(color: grey1100),
+                                                    caption1(color: grey1100),
                                               ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                state.feeds[index]
-                                                    .dateAuthorered,
-                                                style: subhead(color: grey400),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                state.feeds[index].newsContent,
-                                                style: body(color: grey1100),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                            ),
+                                            Text(
+                                              state.feeds[index].newsExcerpt,
+                                              style:
+                                                  headline(color: grey1100),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              state.feeds[index]
+                                                  .dateAuthorered,
+                                              style: subhead(color: grey400),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              state.feeds[index].newsContent,
+                                              style: body(color: grey1100),
+                                            )
+                                          ],
+                                        )
+                                      ],
                                     ),
                                   ),
-                                );
-                              },
-                            ),
-                    ),
+                                ),
+                              );
+                            },
+                          ),
                     const SizedBox(height: 8),
                     const Podcast()
                   ],
@@ -979,34 +976,7 @@ class _FeedScreenPageState extends State<FeedScreenPage> {
               childCount: _calculateFeedChildCount(context),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GradientText(
-                    'Podcast',
-                    style: const TextStyle(
-                        fontSize: 22,
-                        height: 1.2,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'SpaceGrotesk'),
-                    gradient: LinearGradient(colors: [
-                      const Color(0xFFCFE1FD).withOpacity(0.9),
-                      const Color(0xFFFFFDE1).withOpacity(0.9),
-                    ]),
-                  ),
-                  AnimationClick(
-                    child: Text(
-                      'See All',
-                      style: headline(color: primary),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+          
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) =>
