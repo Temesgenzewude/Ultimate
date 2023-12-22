@@ -47,167 +47,163 @@ class Yesterday extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-        shrinkWrap: true,
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: items.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 4),
-        itemBuilder: (context, index) => AnimationClick(
-              child: Stack(
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      separatorBuilder: (context, index) => const SizedBox(height: 4),
+      itemBuilder: (context, index) => AnimationClick(
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  color: grey300, borderRadius: BorderRadius.circular(16)),
+              padding: const EdgeInsets.all(16),
+              child: Column(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: grey300,
-                        borderRadius: BorderRadius.circular(16)),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Row(
+                  Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.asset(items[index]['image']!,
+                            width: 80, height: 80),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Image.asset(items[index]['image']!,
-                                  width: 80, height: 80),
+                            Text(
+                              items[index]['title']!,
+                              style: title4(color: grey1100),
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    items[index]['title']!,
-                                    style: title4(color: grey1100),
+                                    'from ',
+                                    style: subhead(color: corn1),
                                   ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          'from ',
-                                          style: subhead(color: corn1),
-                                        ),
-                                        Text(
-                                          items[index]['balance']!,
-                                          style: title4(color: corn1),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        items[index]['star']!,
-                                        style: subhead(
-                                            color: grey1100, fontWeight: '400'),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        child: Text(
-                                          items[index]['distance']!,
-                                          style: subhead(
-                                              color: grey1100,
-                                              fontWeight: '400'),
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    items[index]['balance']!,
+                                    style: title4(color: corn1),
                                   ),
                                 ],
                               ),
                             ),
+                            Row(
+                              children: [
+                                Text(
+                                  items[index]['star']!,
+                                  style: subhead(
+                                      color: grey1100, fontWeight: '400'),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: Text(
+                                    items[index]['distance']!,
+                                    style: subhead(
+                                        color: grey1100, fontWeight: '400'),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                        AppWidget.divider(context,
-                            vertical: 16, color: grey400),
-                        Row(
+                      ),
+                    ],
+                  ),
+                  AppWidget.divider(context, vertical: 16, color: grey400),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Row(
                           children: [
-                            Expanded(
+                            AnimationClick(
                               child: Row(
                                 children: [
-                                  AnimationClick(
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          hand_pointing,
-                                          width: 16,
-                                          height: 16,
-                                          color: grey1100,
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          '12k',
-                                          style: subhead(color: grey1100),
-                                        )
-                                      ],
-                                    ),
+                                  Image.asset(
+                                    hand_pointing,
+                                    width: 16,
+                                    height: 16,
+                                    color: grey1100,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 24),
-                                    child: AnimationClick(
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            chats_circle,
-                                            width: 16,
-                                            height: 16,
-                                            color: grey1100,
-                                          ),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            '234',
-                                            style: subhead(color: grey1100),
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                                  const SizedBox(
+                                    width: 8,
                                   ),
+                                  Text(
+                                    '12k',
+                                    style: subhead(color: grey1100),
+                                  )
                                 ],
                               ),
                             ),
-                            Expanded(
-                              child: AppWidget.typeButtonStartAction(
-                                  context: context,
-                                  input: 'Book Again',
-                                  vertical: 12,
-                                  borderColor: primary,
-                                  borderRadius: 16,
-                                  onPressed: () {},
-                                  bgColor: primary,
-                                  textColor: grey1100),
-                            )
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                              child: AnimationClick(
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      chats_circle,
+                                      width: 16,
+                                      height: 16,
+                                      color: grey1100,
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text(
+                                      '234',
+                                      style: subhead(color: grey1100),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                      right: 8,
-                      top: 8,
-                      child: AnimationClick(
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              color: green,
-                              borderRadius: BorderRadius.circular(24)),
-                          child: Image.asset(
-                            attachment,
-                            width: 16,
-                            height: 16,
-                            color: grey1100,
-                          ),
                         ),
-                      ))
+                      ),
+                      Expanded(
+                        child: AppWidget.typeButtonStartAction(
+                            context: context,
+                            input: 'Book Again',
+                            vertical: 12,
+                            borderColor: primary,
+                            borderRadius: 16,
+                            onPressed: () {},
+                            bgColor: primary,
+                            textColor: grey1100),
+                      )
+                    ],
+                  )
                 ],
               ),
-            ));
+            ),
+            Positioned(
+              right: 8,
+              top: 8,
+              child: AnimationClick(
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: green, borderRadius: BorderRadius.circular(24)),
+                  child: Image.asset(
+                    attachment,
+                    width: 16,
+                    height: 16,
+                    color: grey1100,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

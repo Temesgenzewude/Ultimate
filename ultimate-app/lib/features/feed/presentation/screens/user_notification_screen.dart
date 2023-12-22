@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ultimate/common/constant/colors.dart';
 import 'package:flutter_ultimate/common/constant/images.dart';
-import 'package:flutter_ultimate/common/constant/styles.dart';
 import 'package:flutter_ultimate/common/widget/animation_click.dart';
 import 'package:flutter_ultimate/common/widget/app_bar_cpn.dart';
 import 'package:flutter_ultimate/common/widget/gradient_text.dart';
@@ -89,12 +88,6 @@ class _UserNotificationScreenState extends State<UserNotificationScreen> {
                       const Color(0xFFFFFDE1).withOpacity(0.9),
                     ]),
                   ),
-                  // AnimationClick(
-                  //   child: Text(
-                  //     'See All',
-                  //     style: headline(color: primary),
-                  //   ),
-                  // )
                 ],
               ),
             ),

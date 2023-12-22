@@ -1,10 +1,14 @@
-// part of 'settings_bloc.dart';
+part of 'settings_bloc.dart';
 
-// abstract class NotificationSettingsEvent {}
+abstract class NotificationSettingsEvent extends Equatable {
+  const NotificationSettingsEvent();
 
-// class ToggleNotificationEvent extends NotificationSettingsEvent {
-//   final String type;
-//   final bool value;
+  @override
+  List<Object> get props => [];
+}
 
-//   ToggleNotificationEvent({required this.type, required this.value});
-// }
+class ToggleAdminNotificationVisibility extends NotificationSettingsEvent {}
+
+class ToggleFeedVisibility extends NotificationSettingsEvent {}
+
+class ToggleUserNotificationVisibility extends NotificationSettingsEvent {}

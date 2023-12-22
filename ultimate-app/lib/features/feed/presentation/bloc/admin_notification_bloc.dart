@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/core/error/failure.dart';
 import 'package:flutter_ultimate/features/feed/domain/entities/notification_entitiy.dart';
 import 'package:flutter_ultimate/features/feed/domain/usecases/get_admin_notification.dart';
-import 'package:flutter_ultimate/features/feed/domain/usecases/get_user_notification.dart';
 
 part 'admin_notification_event.dart';
 part 'admin_notification_state.dart';

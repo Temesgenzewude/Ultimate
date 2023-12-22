@@ -1,14 +1,36 @@
-// part of 'settings_bloc.dart';
+part of 'settings_bloc.dart';
 
-// abstract class SettingsState extends Equatable {
-//   const SettingsState();
+class NotificationSettingsState extends Equatable {
+  final bool adminNotificationVisibility;
+  final bool feedVisibility;
+  final bool userNotificationVisibility;
 
-//   @override
-//   List<Object?> get props => [];
-// }
+  const NotificationSettingsState({
+    this.adminNotificationVisibility = true,
+    this.feedVisibility = true,
+    this.userNotificationVisibility = true,
+  });
 
+  NotificationSettingsState copyWith({
+    bool? adminNotificationVisibility,
+    bool? feedVisibility,
+    bool? userNotificationVisibility,
+  }) {
+    return NotificationSettingsState(
+      adminNotificationVisibility:
+          adminNotificationVisibility ?? this.adminNotificationVisibility,
+      feedVisibility: feedVisibility ?? this.feedVisibility,
+      userNotificationVisibility:
+          userNotificationVisibility ?? this.userNotificationVisibility,
+    );
+  }
 
-// class NotificationSettingsState extends SettingsState {
-//   const NotificationSettingsState({required this.switchStates});
-//   final Map<String, bool> switchStates;
-// }
+  @override
+  List<Object> get props => [
+        adminNotificationVisibility,
+        feedVisibility,
+        userNotificationVisibility,
+      ];
+}
+
+class NotificationSettingsInitialState extends NotificationSettingsState {}
