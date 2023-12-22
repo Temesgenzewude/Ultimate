@@ -20,12 +20,12 @@ class NotificationSettings extends StatefulWidget {
 class _NotificationSettingsState extends State<NotificationSettings> {
   bool? messageNotification = prefManager.messageNotification;
   bool? newsNotification = prefManager.newsNotification;
-  bool otherMode = false;
+  bool adminNotificaion = false;
 
   Map<String, bool?> switchStates = {
     'messageNotification': prefManager.messageNotification,
     'newsNotification': prefManager.newsNotification,
-    'otherMode': true,
+    'adminNotificaion': prefManager.adminNotification,
   };
 
   handleSwitch(String type, value) {
@@ -38,6 +38,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       prefManager.messageNotification = value;
     } else if (type == 'newsNotification') {
       prefManager.newsNotification = value;
+    } else {
+      prefManager.adminNotification = value;
     }
     print(
         'Swtich States$switchStates,\n message Notifications: ${prefManager.messageNotification}, \n news notifications: ${prefManager.newsNotification}');
@@ -133,20 +135,20 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                 valueUsed: 'newsNotification',
               ),
             ),
-            // item(
-            //   'All notification',
-            //   grey300,
-            //   bellRinging,
-            //   isSwitch: true,
-            //   valueUsed: 'otherMode',
-            // ),
+            item(
+              'Admin Notification',
+              grey300,
+              bellRinging,
+              isSwitch: true,
+              valueUsed: 'adminNotificaion',
+            ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+                  const EdgeInsets.symmetric(horizontal: 34.0, vertical: 20),
               child: AppWidget.typeButtonStartAction(
                 context: context,
                 input: 'Save Settings',
-                vertical: 12,
+                vertical: 16,
                 borderColor: primary,
                 borderRadius: 16,
                 onPressed: () {

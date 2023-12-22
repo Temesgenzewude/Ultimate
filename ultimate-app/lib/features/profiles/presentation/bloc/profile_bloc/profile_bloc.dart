@@ -22,7 +22,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final GetUserBProfiles getUserBProfiles;
 
   ProfileState profileBSuccessOrFailure(Either<Failure, UserBProfile> data) {
-    print("DATATATATA");
     print(data);
     return data.fold(
       (failure) => ProfileFailureState(error: failure),

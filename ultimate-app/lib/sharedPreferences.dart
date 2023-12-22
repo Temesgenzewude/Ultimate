@@ -42,7 +42,8 @@ class PrefManager {
   final String _kState = 'state';
   final String _kCountry = 'country';
   final String _kPostCode = 'postCode';
-  final String _messageKotification = 'message_notification';
+  final String _messageNotification = 'message_notification';
+  final String _adminNotification = 'admin_notification';
   final String _newsNotification = 'news_notification';
 
   final String _kLastViewedPage = Routes.onBoarding1;
@@ -161,10 +162,14 @@ class PrefManager {
   String? get postCode => preferences.getString(_kPostCode);
 
   set messageNotification(bool? value) =>
-      preferences.setBool(_messageKotification, value ?? true);
-  bool? get messageNotification => preferences.getBool(_messageKotification);
+      preferences.setBool(_messageNotification, value ?? true);
+  bool? get messageNotification => preferences.getBool(_messageNotification);
 
   set newsNotification(bool? value) =>
       preferences.setBool(_newsNotification, value ?? true);
   bool? get newsNotification => preferences.getBool(_newsNotification);
+
+  set adminNotification(bool? value) =>
+      preferences.setBool(_adminNotification, value ?? true);
+  bool? get adminNotification => preferences.getBool(_adminNotification);
 }
