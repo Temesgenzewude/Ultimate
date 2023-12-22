@@ -1,37 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/features/authentication/presentation/screens/account_information/account_information_3.dart';
 import 'package:flutter_ultimate/features/authentication/presentation/screens/account_information/account_information_4.dart';
 import 'package:flutter_ultimate/features/authentication/presentation/screens/add_mobile_number/add_mobile_number_B.dart';
 import 'package:flutter_ultimate/features/authentication/presentation/screens/upload_image/new_upload_images_screen.dart';
 import 'package:flutter_ultimate/features/authentication/presentation/screens/upload_image/upload_images_B.dart';
-import 'package:flutter_ultimate/dependency_indjection.dart';
 import 'package:flutter_ultimate/features/feed/domain/entities/notification_entitiy.dart';
-import 'package:flutter_ultimate/features/feed/presentation/screens/feed_screen.dart';
 import 'package:flutter_ultimate/features/feed/presentation/screens/feed_screen_2.dart';
 import 'package:flutter_ultimate/features/feed/presentation/screens/user_notification_screen.dart';
 import 'package:flutter_ultimate/features/profiles/domain/entities/user_b_profile_entity.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/screens/profile_screen.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/screens/profiles_landing_screen.dart';
-import 'package:flutter_ultimate/features/profiles/presentation/screens/try.dart';
 import 'package:flutter_ultimate/features/settings/presentation/screens/notification_settings_screen.dart';
 import 'package:flutter_ultimate/features/settings/presentation/screens/settings_screen.dart';
 import 'package:flutter_ultimate/onboardings/terms_and_conditions.dart';
-import 'package:flutter_ultimate/features/profiles/presentation/screens/profile_screen.dart';
 
-import '../../features/authentication/presentation/screens/account_information/account_information_1.dart';
-import '../../features/authentication/presentation/screens/account_information/account_information_2.dart';
-import '../../features/authentication/presentation/screens/add_mobile_number/add_mobile_number.dart';
 import '../../authentications/forgot_password/screen/forgot_password.dart';
 import '../../authentications/kyc/screen/kyc.dart';
 import '../../authentications/login/screen/login.dart';
-
 import '../../authentications/register/screen/register.dart';
 import '../../authentications/reset_password/screen/reset_password.dart';
-import '../../features/authentication/presentation/screens/sign_up/auth_user_b.dart';
-import '../../features/authentication/presentation/screens/sign_up/sign_up.dart';
 import '../../authentications/sign_up_social/screen/sign_up_social.dart';
-import '../../features/authentication/presentation/screens/upload_image/new_upload_images_screen_b.dart';
-import '../../features/authentication/presentation/screens/upload_image/upload_images.dart';
-import '../../features/authentication/presentation/screens/verify/verify.dart';
 import '../../ecommerces/card_product/screen/card_product_home.dart';
 import '../../ecommerces/customer_manager/screen/customer_manager.dart';
 import '../../ecommerces/customer_support/screen/customer_support.dart';
@@ -43,6 +32,26 @@ import '../../ecommerces/menu.dart';
 import '../../ecommerces/order_management/screen/order_management_home.dart';
 import '../../ecommerces/payment_processing/screen/payment_processing_home.dart';
 import '../../ecommerces/product_details/screen/product_details.dart';
+import '../../features/authentication/presentation/screens/account_information/account_information_1.dart';
+import '../../features/authentication/presentation/screens/account_information/account_information_2.dart';
+import '../../features/authentication/presentation/screens/add_mobile_number/add_mobile_number.dart';
+import '../../features/authentication/presentation/screens/sign_up/auth_user_b.dart';
+import '../../features/authentication/presentation/screens/sign_up/sign_up.dart';
+import '../../features/authentication/presentation/screens/upload_image/new_upload_images_screen_b.dart';
+import '../../features/authentication/presentation/screens/upload_image/upload_images.dart';
+import '../../features/authentication/presentation/screens/verify/verify.dart';
+import '../../features/profiles/profile_eight/screen/profile_eight.dart';
+import '../../features/profiles/profile_elevent/screen/profile_elevent_home.dart';
+import '../../features/profiles/profile_five/screen/profile_five.dart';
+import '../../features/profiles/profile_four/screen/profile_four.dart';
+import '../../features/profiles/profile_nine/screen/profile_nine.dart';
+import '../../features/profiles/profile_one/screen/profile_one_home.dart';
+import '../../features/profiles/profile_seven/screen/profile_seven_home.dart';
+import '../../features/profiles/profile_six/screen/profile_six_home.dart';
+import '../../features/profiles/profile_ten/screen/profile_ten.dart';
+import '../../features/profiles/profile_three/screen/profile_three.dart';
+import '../../features/profiles/profile_twenty/screen/profile_twenty.dart';
+import '../../features/profiles/profile_two/screen/profile_two_home.dart';
 import '../../finances/bill_payment_1/screen/bill_payment_1_home.dart';
 import '../../finances/bill_payment_2/screen/bill_payment_2_home.dart';
 import '../../finances/chart_saving/screen/chart_saving_home.dart';
@@ -77,18 +86,6 @@ import '../../food_delivery/today_food/screen/today_food.dart';
 import '../../food_delivery/tracking_order/screen/tracking_order.dart';
 import '../../onboardings/menu.dart';
 import '../../onboardings/onboarding_1/screen/onboarding_1.dart';
-import '../../features/profiles/profile_eight/screen/profile_eight.dart';
-import '../../features/profiles/profile_elevent/screen/profile_elevent_home.dart';
-import '../../features/profiles/profile_five/screen/profile_five.dart';
-import '../../features/profiles/profile_four/screen/profile_four.dart';
-import '../../features/profiles/profile_nine/screen/profile_nine.dart';
-import '../../features/profiles/profile_one/screen/profile_one_home.dart';
-import '../../features/profiles/profile_seven/screen/profile_seven_home.dart';
-import '../../features/profiles/profile_six/screen/profile_six_home.dart';
-import '../../features/profiles/profile_ten/screen/profile_ten.dart';
-import '../../features/profiles/profile_three/screen/profile_three.dart';
-import '../../features/profiles/profile_twenty/screen/profile_twenty.dart';
-import '../../features/profiles/profile_two/screen/profile_two_home.dart';
 import '../../readings/book_detail/screen/book_detail.dart';
 import '../../readings/bookmark_1/screen/bookmark_1_home.dart';
 import '../../readings/bookmark_2/screen/bookmark_2_home.dart';
@@ -143,7 +140,7 @@ mixin RouteGenerator {
         });
       case Routes.feedPage:
         return MaterialPageRoute<dynamic>(
-          builder: (context) => const FeedScreen2(),
+          builder: (context) => const FeedScreen(),
         );
       case Routes.userNotificationsScreen:
         return MaterialPageRoute<dynamic>(builder: (context) {

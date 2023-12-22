@@ -1,84 +1,59 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ultimate/features/authentication/data/data_sources/auth_remote_data_source.dart';
 
-// Events
-abstract class NotificationSettingsEvent {}
+part 'settings_event.dart';
+part 'settings_state.dart';
 
-class ToggleNotificationEvent extends NotificationSettingsEvent {
-  ToggleNotificationEvent({required this.type, required this.value});
-  final String type;
-  final bool value;
-}
-
-class GetNotificationStateEvent extends NotificationSettingsEvent {}
-
-// abstract class NotificationSettingsState {}
-
-// States
-class NotificationSettingsState {
-  NotificationSettingsState({required this.switchStates});
-  final Map<String, bool> switchStates;
-}
-
-// class GetNotificationSettingsState extends NotificationSettingsState{
-//   GetNotificationSettingsState({required this.switchStates});
-//   final Map<String, bool> switchStates;
-// }
-
-// Bloc
 class NotificationSettingsBloc
     extends Bloc<NotificationSettingsEvent, NotificationSettingsState> {
-  NotificationSettingsBloc()
-      : super(NotificationSettingsState(switchStates: {
-          'messageNotification': prefManager.messageNotification ?? true,
-          'newsNotification': prefManager.newsNotification ?? true,
-          'adminNotification': prefManager.adminNotification ?? true,
-        })) {
-    on<ToggleNotificationEvent>(_toggleNotifications);
-    // on<GetNotificationStateEvent>(_getNotifications);
+  NotificationSettingsBloc() : super(NotificationSettingsInitialState()) {
+    _loadInitialState().then((initialState) => emit(initialState));
+
+    on<ToggleAdminNotificationVisibility>(
+      (event, emit) async {
+        emit(
+          state.copyWith(
+            adminNotificationVisibility: !state.adminNotificationVisibility,
+          ),
+        );
+        prefManager.adminNotification = state.adminNotificationVisibility;
+      },
+    );
+
+    on<ToggleFeedVisibility>(
+      (event, emit) async {
+        emit(
+          state.copyWith(
+            feedVisibility: !state.feedVisibility,
+          ),
+        );
+        prefManager.feedNotification = state.feedVisibility;
+      },
+    );
+
+    on<ToggleUserNotificationVisibility>(
+      (event, emit) async {
+        emit(
+          state.copyWith(
+            userNotificationVisibility: !state.userNotificationVisibility,
+          ),
+        );
+        prefManager.userNotification = state.userNotificationVisibility;
+      },
+    );
   }
 
-  Future<void> _toggleNotifications(ToggleNotificationEvent event,
-      Emitter<NotificationSettingsState> emit) async {
-    final Map<String, bool> updatedSwitchStates = Map.from(state.switchStates)
-      ..[event.type] = event.value;
-
-    emit(NotificationSettingsState(switchStates: updatedSwitchStates));
-    if (event.type == 'messageNotification') {
-      prefManager.messageNotification = event.value;
-    } else if (event.type == 'newsNotification') {
-      prefManager.newsNotification = event.value;
-    } else if (event.type == 'adminNotification') {
-      prefManager.adminNotification = event.value;
-    }
+  static Future<NotificationSettingsState> _loadInitialState() async {
+    final adminNotificationVisibility = prefManager.adminNotification ?? true;
+    final feedVisibility = prefManager.feedNotification ?? true;
+    final userNotificationVisibility = prefManager.userNotification ?? true;
+    return NotificationSettingsState(
+      adminNotificationVisibility: adminNotificationVisibility,
+      feedVisibility: feedVisibility,
+      userNotificationVisibility: userNotificationVisibility,
+    );
   }
-
-  // Future<void> _getNotifications(GetNotificationStateEvent event,
-  //     Emitter<NotificationSettingsState> emit) async {
-  //   final Map<String, bool> switches = {
-  //     'messageNotification' : prefManager.messageNotification ?? true,
-  //     'newsNotification' : prefManager.newsNotification ?? true,
-  //     'adminNotification' : prefManager.adminNotification ?? true,
-  //   };
-
-  //   emit(GetNotificationSettingsState(switchStates: switches));
-  // }
-
-  // Stream<NotificationSettingsState> mapEventToState(
-  //     NotificationSettingsEvent event) async* {
-  //   if (event is ToggleNotificationEvent) {
-  //     final Map<String, bool> updatedSwitchStates = Map.from(state.switchStates)
-  //       ..[event.type] = event.value;
-  //     yield NotificationSettingsState(switchStates: updatedSwitchStates);
-
-  //     // Update shared preferences here
-  //     if (event.type == 'messageNotification') {
-  //       prefManager.messageNotification = event.value;
-  //     } else if (event.type == 'newsNotification') {
-  //       prefManager.newsNotification = event.value;
-  //     } else if (event.type == 'adminNotificaion') {
-  //       prefManager.adminNotification = event.value;
-  //     }
-  //   }
-  // }
 }

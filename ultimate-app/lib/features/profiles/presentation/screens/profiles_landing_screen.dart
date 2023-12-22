@@ -10,8 +10,10 @@ import 'package:flutter_ultimate/common/widget/app_bar_cpn.dart';
 import 'package:flutter_ultimate/common/widget/gradient_text.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/widgets/for_you.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/widgets/profile_landing_loading.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/widgets/yesterday.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProfileLanding extends StatefulWidget {
   const ProfileLanding({Key? key}) : super(key: key);
@@ -149,37 +151,6 @@ class _ProfileLandingState extends State<ProfileLanding> {
           )),
         ),
       ),
-
-      // Roll now floating action button
-
-      // floatingActionButton: SizedBox(
-      //   width: width / 1.5,
-      //   child: SwipeableButtonView(
-      //     buttonText: 'Roll Now',
-      //     icon: dice_four,
-      //     buttonWidget: Container(
-      //       child: const Icon(
-      //         Icons.arrow_forward_ios_rounded,
-      //         color: Colors.grey,
-      //       ),
-      //     ),
-      //     activeColor: const Color(0xFF009C41),
-      //     isFinished: isFinished,
-      //     onWaitingProcess: () {
-      //       Future.delayed(const Duration(seconds: 2), () {
-      //         setState(() {
-      //           isFinished = true;
-      //         });
-      //       });
-      //     },
-      //     onFinish: () async {
-      //       setState(() {
-      //         isFinished = false;
-      //       });
-      //     },
-      //   ),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Stack(
         children: [
           ListView(
@@ -260,10 +231,11 @@ class _ProfileLandingState extends State<ProfileLanding> {
                 builder: (context, state) {
                   if (state is ProfileLoadingState ||
                       state is ProfileInitialState) {
-                    return LoadingAnimationWidget.fourRotatingDots(
-                      color: Colors.white,
-                      size: 20,
-                    );
+                    // return LoadingAnimationWidget.fourRotatingDots(
+                    //   color: Colors.white,
+                    //   size: 20,
+                    // );
+                    return ProfileLandingLoading();
                   } else if (state is UserBProfilesSuccessState) {
                     return Yesterday(userBProfiels: state.userBProfiles);
                   }
