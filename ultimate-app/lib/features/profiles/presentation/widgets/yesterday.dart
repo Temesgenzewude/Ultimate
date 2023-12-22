@@ -8,6 +8,7 @@ import 'package:flutter_ultimate/common/constant/styles.dart';
 import 'package:flutter_ultimate/common/route/routes.dart';
 import 'package:flutter_ultimate/common/widget/animation_click.dart';
 import 'package:flutter_ultimate/features/profiles/domain/entities/user_b_profile_entity.dart';
+import 'package:shimmer/shimmer.dart';
 
 List<Map<String, String>> items = [
   {
@@ -88,6 +89,27 @@ class Yesterday extends StatelessWidget {
                                     width: 80,
                                     height: 80,
                                     fit: BoxFit.cover,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Shimmer.fromColors(
+                                        baseColor: const Color.fromARGB(
+                                            195, 224, 224, 224),
+                                        highlightColor: const Color.fromARGB(
+                                            125, 189, 189, 189),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          child: Container(
+                                            width: 80,
+                                            height: 80,
+                                            color: Colors
+                                                .grey, // Shimmer for image
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                           ),
                           const SizedBox(width: 16),
