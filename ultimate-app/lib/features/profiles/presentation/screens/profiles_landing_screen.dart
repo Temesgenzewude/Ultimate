@@ -58,7 +58,7 @@ class _ProfileLandingState extends State<ProfileLanding> {
             elevation: 0,
             onTap: (value) {
               setState(() {
-                if (_currentIndex != value && value != 1) {
+                if (_currentIndex != value && value != 1 && value != 2) {
                   _currentIndex = value;
                   Future.delayed(Duration.zero, () {
                     Navigator.of(context).pushNamed(listWidget[value]);
