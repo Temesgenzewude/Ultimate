@@ -12,8 +12,6 @@ import 'package:flutter_ultimate/features/profiles/presentation/bloc/profile_blo
 import 'package:flutter_ultimate/features/profiles/presentation/widgets/for_you.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/widgets/profile_landing_loading.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/widgets/yesterday.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:shimmer/shimmer.dart';
 
 class ProfileLanding extends StatefulWidget {
   const ProfileLanding({Key? key}) : super(key: key);
