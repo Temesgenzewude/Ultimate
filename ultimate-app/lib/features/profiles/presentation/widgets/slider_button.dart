@@ -23,8 +23,10 @@ class SliderButton extends StatefulWidget {
 class _SliderButtonState extends State<SliderButton> {
   @override
   int _currentPage = 0;
-  Color _leftButtonColor = grey600;
+  Color _leftButtonColor = grey600 ;
   Color _rightButtonColor = primary;
+  bool _isLeftDisabled = true; // Initialize as true for the initial page
+  bool _isRightDisabled = false;
 
   @override
   void initState() {
@@ -33,17 +35,26 @@ class _SliderButtonState extends State<SliderButton> {
       setState(() {
         _currentPage = widget._pageController.page!.round();
         _updateButtonColors();
+        _updateButtonStates();
       });
     });
   }
 
   void _updateButtonColors() {
     _leftButtonColor = _currentPage == 0 ? grey600 : primary;
-    _rightButtonColor = _currentPage == widget.length - 1 ? grey600 : primary;
+    _rightButtonColor = _currentPage == widget.length - 1 || widget.length == 1 ? grey600 : primary;
+  }
+
+  void _updateButtonStates() {
+    _isLeftDisabled = _currentPage == 0;
+    _isRightDisabled = _currentPage == widget.length - 1 || widget.length == 1;
   }
 
   Widget build(BuildContext context) {
+    print('length: ${widget.length}');
     return AnimationClick(
+      disabled:
+          widget.direction == 'right' ? _isRightDisabled : _isLeftDisabled,
       function: () {
         if (widget.direction == 'right') {
           widget._pageController.nextPage(

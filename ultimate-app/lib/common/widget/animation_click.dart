@@ -21,20 +21,22 @@ class _AnimationClickState extends State<AnimationClick> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _visible = false;
-        });
-        Future<dynamic>.delayed(const Duration(milliseconds: 100))
-            .whenComplete(() {
-          setState(() {
-            _visible = true;
-            if (widget.function != null) {
-              widget.function!();
-            }
-          });
-        });
-      },
+      onTap: widget.disabled
+          ? null
+          : () {
+              setState(() {
+                _visible = false;
+              });
+              Future<dynamic>.delayed(const Duration(milliseconds: 100))
+                  .whenComplete(() {
+                setState(() {
+                  _visible = true;
+                  if (widget.function != null) {
+                    widget.function!();
+                  }
+                });
+              });
+            },
       child: AnimatedOpacity(
           opacity: _visible ? 1.0 : 0.6,
           duration: const Duration(milliseconds: 100),
