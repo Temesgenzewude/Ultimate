@@ -103,11 +103,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SliderButton(
                     pageController: _pageController,
                     direction: 'left',
+                    length: widget.userBProfile.userImages.length,
                   ),
                   // Right Slider
                   SliderButton(
                     pageController: _pageController,
                     direction: 'right',
+                    length: widget.userBProfile.userImages.length
                   ),
                 ],
               ),
