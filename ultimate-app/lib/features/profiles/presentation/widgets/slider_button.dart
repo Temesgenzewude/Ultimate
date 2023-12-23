@@ -1,3 +1,5 @@
+// ignore_for_file: override_on_non_overriding_member
+
 import 'package:flutter/material.dart';
 import 'package:flutter_ultimate/common/constant/colors.dart';
 import 'package:flutter_ultimate/common/constant/images.dart';
@@ -23,14 +25,16 @@ class SliderButton extends StatefulWidget {
 class _SliderButtonState extends State<SliderButton> {
   @override
   int _currentPage = 0;
-  Color _leftButtonColor = grey600 ;
-  Color _rightButtonColor = primary;
+  Color _leftButtonColor = grey600;
+  late Color _rightButtonColor;
   bool _isLeftDisabled = true; // Initialize as true for the initial page
-  bool _isRightDisabled = false;
+  late bool _isRightDisabled;
 
   @override
   void initState() {
     super.initState();
+    _rightButtonColor = widget.length <= 1 ? grey600 : primary;
+    _isRightDisabled = widget.length <= 1 ? true : false;
     widget._pageController.addListener(() {
       setState(() {
         _currentPage = widget._pageController.page!.round();
@@ -42,7 +46,9 @@ class _SliderButtonState extends State<SliderButton> {
 
   void _updateButtonColors() {
     _leftButtonColor = _currentPage == 0 ? grey600 : primary;
-    _rightButtonColor = _currentPage == widget.length - 1 || widget.length == 1 ? grey600 : primary;
+    _rightButtonColor = _currentPage == widget.length - 1 || widget.length == 1
+        ? grey600
+        : primary;
   }
 
   void _updateButtonStates() {
