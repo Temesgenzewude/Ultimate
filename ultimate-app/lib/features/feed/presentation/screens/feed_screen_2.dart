@@ -8,7 +8,6 @@ import 'package:flutter_ultimate/common/route/routes.dart';
 import 'package:flutter_ultimate/common/widget/animation_click.dart';
 import 'package:flutter_ultimate/common/widget/app_bar_cpn.dart';
 import 'package:flutter_ultimate/common/widget/gradient_text.dart';
-import 'package:flutter_ultimate/common/widget/loading_widget.dart';
 import 'package:flutter_ultimate/features/feed/domain/entities/feed_entity.dart';
 import 'package:flutter_ultimate/features/feed/presentation/bloc/admin_notification_bloc.dart';
 import 'package:flutter_ultimate/features/feed/presentation/bloc/feed_bloc.dart';
@@ -23,7 +22,6 @@ import 'package:flutter_ultimate/features/feed/presentation/widgets/user_notific
 import 'package:flutter_ultimate/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:flutter_ultimate/sharedPreferences.dart';
 import 'package:flutter_ultimate/subscription_injection.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // Shared Preference
 final prefManager = sl<PrefManager>();
@@ -41,14 +39,9 @@ class _FeedScreenState extends State<FeedScreen> {
 
   List<String> listWidget = [];
   int _currentIndex = 0;
-  // late bool viewAdminNotificaion;
-  // late bool viewFeed;
-  // late bool viewUserNotificaion;
-  // late NotificationSettingsBloc _notificationSettingsBloc;
   @override
   void initState() {
     super.initState();
-    // _notificationSettingsBloc = NotificationSettingsBloc();
     listWidget = [
       Routes.feedPage,
       Routes.feedPage,

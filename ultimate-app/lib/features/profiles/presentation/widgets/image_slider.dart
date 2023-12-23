@@ -30,10 +30,13 @@ class ImageSliderWidget extends StatelessWidget {
       child: PageView.builder(
         controller: _pageController,
         scrollDirection: Axis.horizontal,
-        itemCount: widget.userBProfile.userImages.length,
+        itemCount: widget.userBProfile.userImages.length > 1
+            ? widget.userBProfile.userImages.length
+            : 1,
         onPageChanged: (value) {},
         itemBuilder: (context, index) {
-          return widget.userBProfile.userImages[index] == ''
+          return widget.userBProfile.userImages.isEmpty ||
+                  widget.userBProfile.userImages[index] == ''
               ? Image.asset(
                   bgProfile8,
                   height: height / 1.5,
