@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/slider/slider_bloc.dart';
-import 'package:flutter_ultimate/common/bloc/slider/slider_event.dart';
 import 'package:flutter_ultimate/features/profiles/domain/entities/user_b_profile_entity.dart';
 import 'package:flutter_ultimate/features/profiles/presentation/bloc/subscription_bloc/bloc/subscription_bloc.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/widgets/image_slider.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/widgets/main_profile_image.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/widgets/slider_button.dart';
+import 'package:flutter_ultimate/features/profiles/presentation/widgets/subscription_builder.dart';
 
 import '../../../../app/widget_support.dart';
 import '../../../../common/constant/colors.dart';
@@ -25,61 +27,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late SliderBloc sliderBloc;
   @override
   void initState() {
     super.initState();
-    sliderBloc = BlocProvider.of<SliderBloc>(context);
   }
 
-  // Subscription of unsubscription button builder.
-  Widget buildSubscriptionButton(SubscriptionState state) {
-    if (state is SubscriptionSuccessState) {
-      // Subscription was successful
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-        decoration: BoxDecoration(
-          color: Colors.white, // Change color accordingly
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: const Icon(
-          Icons.check,
-          color: Colors.green,
-        ),
-      );
-    } else if (state is SubscriptionFailureState) {
-      // Subscription failed
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-        decoration: BoxDecoration(
-          color: Colors.red, // Change color accordingly
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: const Text(
-          'Subscription Failed',
-          style: TextStyle(color: Colors.white),
-        ),
-      );
-    } else {
-      // Subscription is in progress or initial state
-      return Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 14,
-          horizontal: 16,
-        ),
-        decoration: BoxDecoration(
-          color: green,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Image.asset(
-          addUser,
-          width: 24,
-          height: 24,
-          color: grey1100,
-        ),
-      );
-    }
-  }
+  // Page controlelr
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -90,46 +44,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Column(
             children: [
-              // const SizedBox(height: 64),
               Stack(
                 children: [
                   // Image Slider Widget
-                  Container(
-                    height: height / 1.5,
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    decoration: BoxDecoration(
-                        color: grey200,
-                        borderRadius: BorderRadius.circular(16)),
-                    child: BlocBuilder<SliderBloc, int>(
-                      builder: (context, sliderState) {
-                        return PageView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 3,
-                          onPageChanged: (value) {
-                            if (value > sliderState) {
-                              sliderBloc.add(SwipeRight());
-                            } else {
-                              sliderBloc.add(SwipeLeft());
-                            }
-                          },
-                          itemBuilder: (context, index) {
-                            return widget.userBProfile.imageUrl == ''
-                                ? Image.asset(
-                                    bgProfile8,
-                                    height: height / 1.5,
-                                    width: width,
-                                    fit: BoxFit.fill,
-                                  )
-                                : Image.network(
-                                    widget.userBProfile.imageUrl,
-                                    height: height / 1.5,
-                                    width: width,
-                                    fit: BoxFit.fill,
-                                  );
-                          },
-                        );
-                      },
-                    ),
+                  ImageSliderWidget(
+                    height: height,
+                    pageController: _pageController,
+                    widget: widget,
+                    width: width,
                   ),
                 ],
               ),
@@ -170,7 +92,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               SizedBox(
-                height: height / 2,
+                height: height / 4,
+              ),
+
+              // Image Sliders
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Left Slider
+                  SliderButton(
+                    pageController: _pageController,
+                    direction: 'left',
+                  ),
+                  // Right Slider
+                  SliderButton(
+                    pageController: _pageController,
+                    direction: 'right',
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height / 4,
               ),
               Stack(
                 clipBehavior: Clip.none,
@@ -199,7 +141,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ? widget.userBProfile.name
                                             .substring(0, 15)
                                         : widget.userBProfile.name,
-                                    // 'Albert Flores martinaze',
                                     style: title3(color: grey1100),
                                     overflow: TextOverflow.clip,
                                   ),
@@ -244,7 +185,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 );
                                           }
                                         },
-                                        child: buildSubscriptionButton(state),
+                                        child:
+                                            SubscriptionBuilder(state: state),
                                       );
                                     },
                                   ),
@@ -329,48 +271,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
-                  Positioned(
-                    top: -48,
-                    left: 24,
-                    child: IgnorePointer(
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: widget.userBProfile.imageUrl == ''
-                                ? Image.asset(
-                                    avtFemale,
-                                    width: 80,
-                                    height: 80,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.network(
-                                    widget.userBProfile.imageUrl,
-                                    width: 80,
-                                    height: 80,
-                                    fit: BoxFit.cover,
-                                  ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: grey1100,
-                                borderRadius: BorderRadius.circular(32),
-                              ),
-                              child: Image.asset(
-                                checkbox,
-                                width: 24,
-                                height: 24,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                  MainProfileImage(widget: widget),
                 ],
               ),
               Container(
