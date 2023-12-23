@@ -462,7 +462,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                 const SizedBox(
                               width: 10,
                             ),
-                            itemCount: feeds.length,
+                            itemCount: feeds.length > 4 ? 4 : feeds.length,
                           ),
                         );
                       }
